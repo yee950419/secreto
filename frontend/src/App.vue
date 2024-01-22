@@ -3,8 +3,13 @@ import { RouterLink, RouterView } from 'vue-router'
 import ButtonAtom from './components/atoms/ButtonAtom.vue'
 import CharacterAtom from '@/components/atoms/CharacterAtom.vue'
 import LogoAtom from '@/components/atoms/LogoAtom.vue'
-import AvatarAtom from './components/atoms/AvatarAtom.vue'
-import HeaderLogoMolecules from './components/molecules/HeaderLogoMolecules.vue'
+import AvatarAtom from '@/components/atoms/AvatarAtom.vue'
+import HeaderLogo from '@/components/molecules/HeaderLogo.vue'
+import MainLogo from '@/components/molecules/MainLogo.vue'
+import HeaderProfile from '@/components/molecules/HeaderProfile.vue'
+const clickhandler = (data: string) => {
+    console.log('data : ' + data)
+}
 </script>
 
 <template>
@@ -19,8 +24,12 @@ import HeaderLogoMolecules from './components/molecules/HeaderLogoMolecules.vue'
         <RouterView />
     </header>
     <div>
-        <ButtonAtom customClass="button-style1 button-shadow button-claret">label</ButtonAtom><br />
-        <ButtonAtom customClass="button-style2 button-shadow button-cream">label</ButtonAtom><br />
+        <ButtonAtom customClass="button-style1 button-shadow button-claret" @click="clickhandler"
+            >label</ButtonAtom
+        ><br />
+        <ButtonAtom customClass="button-style2 button-shadow button-cream" @click="clickhandler"
+            >label</ButtonAtom
+        ><br />
         <ButtonAtom customClass="button-style3 button-shadow button-white">label</ButtonAtom><br />
         <ButtonAtom customClass="button-style4 button-shadow button-violet">label</ButtonAtom><br />
         <ButtonAtom customClass="button-style5 button-claret button-border-violet">label</ButtonAtom
@@ -34,7 +43,9 @@ import HeaderLogoMolecules from './components/molecules/HeaderLogoMolecules.vue'
         <CharacterAtom />
         <LogoAtom />
         <AvatarAtom />
-        <HeaderLogoMolecules />
+        <HeaderLogo />
+        <MainLogo />
+        <HeaderProfile />
     </div>
 </template>
 

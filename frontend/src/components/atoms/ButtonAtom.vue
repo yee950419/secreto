@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { defineProps, defineEmits } from 'vue'
 
-const { label, customClass } = defineProps(['label', 'customClass'])
+const { customClass } = defineProps(['label', 'customClass'])
 const emit = defineEmits()
 
 type ClickHandler = () => void

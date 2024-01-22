@@ -1,7 +1,16 @@
 <script setup lang="ts">
 import { defineProps, defineEmits } from 'vue'
 
-const { label, customClass } = defineProps(['label', 'customClass'])
+defineProps({
+    customClass: {
+        type: String
+    },
+    imageUrl: {
+        type: String,
+        default: 'https://www.gravatar.com/avatar/?d=mp'
+    }
+})
+
 const emit = defineEmits()
 
 type ClickHandler = () => void
@@ -13,7 +22,7 @@ const handleClick: ClickHandler = () => {
 
 <template>
     <div :class="customClass" @click="handleClick">
-        <img src="@/assets/images/character.png" alt="Character" />
+        <img :src="imageUrl" alt="Avatar" />
     </div>
 </template>
 

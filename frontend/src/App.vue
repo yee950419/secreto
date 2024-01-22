@@ -1,6 +1,10 @@
 <script setup lang="ts">
 import { RouterLink, RouterView } from 'vue-router'
 import ButtonAtom from './components/atoms/ButtonAtom.vue'
+import CharacterAtom from '@/components/atoms/CharacterAtom.vue'
+import LogoAtom from '@/components/atoms/LogoAtom.vue'
+import AvatarAtom from './components/atoms/AvatarAtom.vue'
+import HeaderLogoMolecules from './components/molecules/HeaderLogoMolecules.vue'
 </script>
 
 <template>
@@ -27,6 +31,10 @@ import ButtonAtom from './components/atoms/ButtonAtom.vue'
         <ButtonAtom customClass="button-style5 button-khaki button-border-violet">label</ButtonAtom
         ><br />
         <ButtonAtom customClass="button-style6 button-blue">label</ButtonAtom><br />
+        <CharacterAtom />
+        <LogoAtom />
+        <AvatarAtom />
+        <HeaderLogoMolecules />
     </div>
 </template>
 

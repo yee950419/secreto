@@ -7,6 +7,8 @@ import AvatarAtom from '@/components/atoms/AvatarAtom.vue'
 import HeaderLogo from '@/components/molecules/HeaderLogo.vue'
 import MainLogo from '@/components/molecules/MainLogo.vue'
 import HeaderProfile from '@/components/molecules/HeaderProfile.vue'
+import FooterBar from '@/components/organisms/FooterBar.vue'
+import HeaderBar from '@/components/organisms/HeaderBar.vue'
 const clickhandler = (data: string) => {
     console.log('data : ' + data)
 }
@@ -46,6 +48,8 @@ const clickhandler = (data: string) => {
         <HeaderLogo />
         <MainLogo />
         <HeaderProfile />
+        <FooterBar />
+        <HeaderBar />
     </div>
 </template>
 

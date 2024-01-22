@@ -1,3 +1,43 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.test-container {
+    margin: 10px;
+}
+
+.input-box-style-1 {
+    border-radius: 30px;
+    width: 240px;
+    height: 40px;
+    padding: 5px 20px;
+    font-size: 16px;
+    transition: 0.3s;
+    
+}
+.input-box-style-2 {
+    border-radius: 3px;
+    width: 240px;
+    height: 32px;
+    padding: 5px 20px;
+    font-size: 16px;
+    color: #656F77;
+    transition: 0.3s;
+}
+.line-claret {
+    border: 1px solid #E0AED0;
+}
+.line-claret:focus {
+    border: 1px solid #AC87C5;
+    outline: none;
+}
+.line-claret:read-only {
+    background-color: #EEEEEE;
+}
+.line-darkgray {
+    border: 1px solid #3D4A3D;
+}
+.line-darkgray:focus {
+    border: 1px solid #000000;
+    outline: none;
+}

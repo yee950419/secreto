@@ -3,10 +3,18 @@ import { defineProps, defineEmits } from 'vue'
 
 const { customClass } = defineProps(['customClass'])
 const emit = defineEmits()
+
+type ClickHandler = () => void
+
+const handleClick: ClickHandler = () => {
+    emit('click')
+}
 </script>
 
 <template>
-    <input type="text" :class="customClass" value="input-atom-default-value">
+    <button :class="customClass" @click="handleClick">
+        <slot></slot>
+    </button>
 </template>
 
 <style scoped></style>

@@ -23,6 +23,7 @@ public class UserMission {
 
     private String missionReceivedAt;
 
+    @Column(columnDefinition = "TEXT")
     private String content;
 
     @Enumerated(value = EnumType.STRING)

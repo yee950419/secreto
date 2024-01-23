@@ -290,7 +290,7 @@
         background-color: var(--A805White);
     }
     
-    .checkbox-morecule-style-1 {
+    .checkbox-molecule-style-1 {
         display: flex;
         margin : 0px;
         font-size: 20px;
@@ -298,7 +298,7 @@
         align-items: baseline;
     }
 
-   .checkbox-morecule-style-1 input {
+   .checkbox-molecule-style-1 input {
         margin: 5px 10px;
         transform: scale(1.5);
    }

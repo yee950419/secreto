@@ -301,4 +301,13 @@
         margin: 5px 10px;
         transform: scale(1.5);
     }
+
+    .modal-template-style-1 {
+        background-color: var(--A805Cream);
+        border: 1px solid var(--A805Claret);
+        border-radius: 5px;
+        padding: 20px 20px;
+        display: flex;
+        flex-direction: column;
+    }
 }

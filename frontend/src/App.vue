@@ -11,6 +11,7 @@ import HeaderProfile from '@/components/molecules/HeaderProfile.vue'
 import FooterBar from '@/components/organisms/FooterBar.vue'
 import HeaderBar from '@/components/organisms/HeaderBar.vue'
 import CheckBoxMolecule from './components/molecules/CheckBoxMolecule.vue'
+import Modal from './components/templates/Modal.vue'
 
 const clickhandler = (data: string) => {
     console.log('data : ' + data)

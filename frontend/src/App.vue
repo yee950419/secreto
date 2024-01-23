@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { RouterLink, RouterView } from 'vue-router'
-import ButtonAtom from './components/atoms/ButtonAtom.vue'
-import InputBox from './components/molecules/InputBox.vue'
+import ButtonAtom from '@/components/atoms/ButtonAtom.vue'
+import InputAtom from '@/components/atoms/InputAtom.vue'
 import CharacterAtom from '@/components/atoms/CharacterAtom.vue'
 import LogoAtom from '@/components/atoms/LogoAtom.vue'
 import AvatarAtom from '@/components/atoms/AvatarAtom.vue'
@@ -10,9 +10,7 @@ import MainLogo from '@/components/molecules/MainLogo.vue'
 import HeaderProfile from '@/components/molecules/HeaderProfile.vue'
 import FooterBar from '@/components/organisms/FooterBar.vue'
 import HeaderBar from '@/components/organisms/HeaderBar.vue'
-import CheckBoxMolecule from './components/molecules/CheckBoxMolecule.vue'
-import Modal from './components/templates/Modal.vue'
-
+import NavBar from '@/components/organisms/NavBar.vue'
 const clickhandler = (data: string) => {
     console.log('data : ' + data)
 }

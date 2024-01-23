@@ -11,7 +11,7 @@ defineProps({
     }
 })
 
-const emit = defineEmits()
+const emit = defineEmits(['click'])
 
 type ClickHandler = () => void
 

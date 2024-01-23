@@ -2,6 +2,7 @@
 import { RouterLink, RouterView } from 'vue-router'
 import ButtonAtom from './components/atoms/ButtonAtom.vue'
 import InputAtom from './components/atoms/InputAtom.vue';
+import CheckBoxMorecule from './components/atoms/CheckBoxMorecule.vue';
 </script>
 
 <template>
@@ -31,10 +32,31 @@ import InputAtom from './components/atoms/InputAtom.vue';
     </div>
     <div>
         <InputAtom customClass="input-box-style-1 line-claret" value="Testing...">content</InputAtom>
-        <InputAtom customClass="input-box-style-1 line-claret" value="Testing..." readonly>content</InputAtom>
+        <InputAtom customClass="input-box   -style-1 line-claret" value="Testing..." readonly>content</InputAtom>
         <InputAtom customClass="input-box-style-2 line-khaki" value="Testing...">content</InputAtom>
-        <InputAtom customClass="input-box-style-2 line-khaki" value="Testing..." readonly>content</InputAtom>
+        <InputAtom customClass="input-box-style-2 line-khaki" customValue="Testing..." id="qwer" readonly>content</InputAtom>
+
+        <input type="checkbox" id="test">
+        <label for="test">test</label>
     </div>
+    <div>
+    <div class="flex">
+        <!-- <CheckBoxMorecule customClass="checkbox-morecule-style-1" id="appvueId">content</CheckBoxMorecule> -->
+        <CheckBoxMorecule customClass="checkbox-morecule-style-1" id="appvueId">It is a very long content and I hate a this case</CheckBoxMorecule>
+
+        <CheckBoxMorecule customClass="checkbox-morecule-style-1" id="appvueId">It is a very long content and I hate a this case</CheckBoxMorecule>
+        <CheckBoxMorecule customClass="checkbox-morecule-style-1" id="appvueId">It is a very long content and I hate a this case</CheckBoxMorecule>
+        <CheckBoxMorecule customClass="checkbox-morecule-style-1" id="appvueId">It is a very long content and I hate a this case</CheckBoxMorecule>
+        <CheckBoxMorecule customClass="checkbox-morecule-style-1" id="appvueId">It is a very long content and I hate a this case</CheckBoxMorecule>
+        <CheckBoxMorecule customClass="checkbox-morecule-style-1" id="appvueId">It is a very long content and I hate a this case</CheckBoxMorecule>
+        <CheckBoxMorecule customClass="checkbox-morecule-style-1" id="appvueId">It is a very long content and I hate a this case</CheckBoxMorecule>
+    </div>
+    <div>
+        <CheckBoxMorecule customClass="checkbox-morecule-style-1" id="appvueId">It is a very long content and I hate a this case</CheckBoxMorecule>
+
+    </div>
+
+</div>
 </template>
 
 <style scoped></style>

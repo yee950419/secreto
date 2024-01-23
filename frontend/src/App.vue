@@ -77,7 +77,6 @@ const clickhandler = (data: string) => {
     </div>
     <div>
         <CheckBoxMorecule customClass="checkbox-morecule-style-1" id="appvueId">It is a very long content and I hate a this case</CheckBoxMorecule>
-
     </div>
 
 </div>

@@ -28,3 +28,5 @@ public class BoardEntryLog {
     private String entryAt;
 
 }
+
+

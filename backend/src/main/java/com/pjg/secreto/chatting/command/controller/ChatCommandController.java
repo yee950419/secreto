@@ -10,8 +10,15 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 @RestController
 public class ChatCommandController {
-    @MessageMapping("/chat")
+    @MessageMapping("/message")
     public ResponseEntity<?> saveMessage(){
+        saveMessage();
+        return ResponseEntity.ok().body(new SuccessResponse(HttpStatus.OK, "개인 채팅 내역 저장 성공"));
+    }
+
+    @MessageMapping("/group_message")
+    public ResponseEntity<?> saveGroupMessage(){
+        saveGroupMessage();
         return ResponseEntity.ok().body(new SuccessResponse(HttpStatus.OK, "개인 채팅 내역 저장 성공"));
     }
 }

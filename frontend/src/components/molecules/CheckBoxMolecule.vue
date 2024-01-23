@@ -6,9 +6,9 @@ const emit = defineEmits()
 </script>
 
 <template>
-    <div :class="customClass" :id="customId">
-      <input type="checkbox" id="checkboxId" />
-      <label for="checkboxId"><slot></slot></label>
+    <div :class="customClass">
+      <input type="checkbox" :id="customId" />
+      <label :for="customId"><slot></slot></label>
     </div>  
 </template>
 

@@ -6,7 +6,7 @@ const emit = defineEmits()
 </script>
 
 <template>
-    <input type="text" :class="customClass" :value="customValue" id="customId" >
+    <input type="text" :class="customClass" :value="customValue" :id="customId" >
 </template>
 
 <style scoped></style>

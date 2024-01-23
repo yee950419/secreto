@@ -119,7 +119,7 @@
         -moz-box-shadow: 3px 3px 10px 0px rgba(0, 0, 0, 0.2);
     }
 
-    .button-style1 {
+    .button-style-1 {
         text-transform: uppercase;
         font-size: 40px;
         width: 160px;
@@ -130,7 +130,7 @@
         font-family: 'Iceland';
     }
 
-    .button-style2 {
+    .button-style-2 {
         font-size: 24px;
         width: 240px;
         height: 40px;
@@ -139,7 +139,7 @@
         transition: 0.3s;
     }
 
-    .button-style3 {
+    .button-style-3 {
         font-size: 20px;
         width: 240px;
         height: 40px;
@@ -147,7 +147,7 @@
         transition: 0.3s;
     }
 
-    .button-style4 {
+    .button-style-4 {
         font-size: 20px;
         width: 80px;
         height: 40px;
@@ -155,7 +155,7 @@
         transition: 0.3s;
     }
 
-    .button-style5 {
+    .button-style-5 {
         font-size: 20px;
         width: 80px;
         height: 40px;
@@ -163,7 +163,7 @@
         transition: 0.3s;
     }
 
-    .button-style6 {
+    .button-style-6 {
         font-size: 20px;
         width: 80px;
         height: 40px;

@@ -1,4 +1,4 @@
-package com.pjg.secreto.board.command.dto;
+package com.pjg.secreto.board.common.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

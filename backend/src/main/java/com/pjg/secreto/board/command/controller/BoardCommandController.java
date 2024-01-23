@@ -1,6 +1,6 @@
 package com.pjg.secreto.board.command.controller;
 
-import com.pjg.secreto.board.command.dto.BoardDto;
+import com.pjg.secreto.board.common.dto.BoardDto;
 import com.pjg.secreto.common.response.SuccessResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;

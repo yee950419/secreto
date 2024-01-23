@@ -1,7 +1,7 @@
 package com.pjg.secreto.board.query.controller;
 
-import com.pjg.secreto.board.command.dto.BoardDto;
-import com.pjg.secreto.board.command.dto.ReplyDto;
+import com.pjg.secreto.board.common.dto.BoardDto;
+import com.pjg.secreto.board.common.dto.ReplyDto;
 import com.pjg.secreto.common.response.SuccessResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;

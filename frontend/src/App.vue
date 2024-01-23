@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { RouterLink, RouterView } from 'vue-router'
-import ButtonAtom from './components/atoms/ButtonAtom.vue'
-import InputAtom from './components/atoms/InputAtom.vue';
+import ButtonAtom from '@/components/atoms/ButtonAtom.vue'
+import InputAtom from '@/components/atoms/InputAtom.vue'
 import CharacterAtom from '@/components/atoms/CharacterAtom.vue'
 import LogoAtom from '@/components/atoms/LogoAtom.vue'
 import AvatarAtom from '@/components/atoms/AvatarAtom.vue'
@@ -10,6 +10,7 @@ import MainLogo from '@/components/molecules/MainLogo.vue'
 import HeaderProfile from '@/components/molecules/HeaderProfile.vue'
 import FooterBar from '@/components/organisms/FooterBar.vue'
 import HeaderBar from '@/components/organisms/HeaderBar.vue'
+import NavBar from '@/components/organisms/NavBar.vue'
 const clickhandler = (data: string) => {
     console.log('data : ' + data)
 }
@@ -34,8 +35,10 @@ const clickhandler = (data: string) => {
             >label</ButtonAtom
         ><br />
         <ButtonAtom customClass="button-style-3 button-shadow button-white">label</ButtonAtom><br />
-        <ButtonAtom customClass="button-style-4 button-shadow button-violet">label</ButtonAtom><br />
-        <ButtonAtom customClass="button-style-5 button-claret button-border-violet">label</ButtonAtom
+        <ButtonAtom customClass="button-style-4 button-shadow button-violet">label</ButtonAtom
+        ><br />
+        <ButtonAtom customClass="button-style-5 button-claret button-border-violet"
+            >label</ButtonAtom
         ><br />
         <ButtonAtom customClass="button-style-5 button-lightGrey button-border-grey"
             >label</ButtonAtom
@@ -53,10 +56,18 @@ const clickhandler = (data: string) => {
         <HeaderBar />
     </div>
     <div>
-        <InputAtom customClass="input-box-style-1 line-claret" value="Testing...">content</InputAtom>
-        <InputAtom customClass="input-box-style-1 line-claret" value="Testing..." readonly>content</InputAtom>
+        <InputAtom customClass="input-box-style-1 line-claret" value="Testing..."
+            >content</InputAtom
+        >
+        <InputAtom customClass="input-box-style-1 line-claret" value="Testing..." readonly
+            >content</InputAtom
+        >
         <InputAtom customClass="input-box-style-2 line-khaki" value="Testing...">content</InputAtom>
-        <InputAtom customClass="input-box-style-2 line-khaki" value="Testing..." readonly>content</InputAtom>
+        <InputAtom customClass="input-box-style-2 line-khaki" value="Testing..." readonly
+            >content</InputAtom
+        >
+
+        <NavBar />
     </div>
 </template>
 

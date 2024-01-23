@@ -2,7 +2,7 @@
 import { defineProps, defineEmits } from 'vue'
 
 const { customClass } = defineProps(['customClass'])
-const emit = defineEmits()
+const emit = defineEmits(['click'])
 
 type ClickHandler = () => void
 

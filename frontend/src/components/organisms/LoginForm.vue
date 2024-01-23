@@ -2,6 +2,7 @@
 import ButtonAtom from '@/components/atoms/ButtonAtom.vue'
 import InputBox from '@/components/molecules/InputBox.vue'
 import TextAtom from '@/components/atoms/TextAtom.vue'
+import CheckBoxMolecule from '@/components/molecules/CheckBoxMolecule.vue'
 import { ref } from 'vue'
 import type { Ref } from 'vue'
 
@@ -51,11 +52,12 @@ const buttonHandler = () => {
                 placeHolder="비밀번호를 입력해주세요"
                 @inputChange="passwordInputChangeHandler"
             ></InputBox>
-            <div class="text-[12px] w-full flex justify-between">
-                <div>
-                    <input type="checkbox" />
-                    <label class="text-[12px]">아이디 기억하기</label>
-                </div>
+            <div class="text-[12px] w-full flex justify-between items-center">
+                <CheckBoxMolecule
+                    customClass="checkbox-molecule-style-1 text-[14px]"
+                    customId="remember"
+                    >아이디 기억하기</CheckBoxMolecule
+                >
                 <a href="#" class="text-A805Blue">비밀번호를 잊어버리셨나요?</a>
             </div>
         </div>

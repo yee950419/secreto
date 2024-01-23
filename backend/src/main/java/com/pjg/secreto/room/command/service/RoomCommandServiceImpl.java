@@ -23,11 +23,41 @@ public class RoomCommandServiceImpl implements RoomCommandService {
     }
 
     @Override
-    public SetRoomResponseDto setRoom(SetRoomRequestDto setRoomRequestDto) {
+    public SetRoomResponseDto setRoom(Long roomNo) {
 
         SetRoomResponseDto result = new SetRoomResponseDto();
-        result.setRoomNo(1L);
+        result.setRoomNo(roomNo);
 
         return result;
+    }
+
+    @Override
+    public void enterRoom(EnterRoomRequestDto enterRoomRequestDto) {
+
+    }
+
+    @Override
+    public void setNickname(SetNicknameRequestDto setNicknameRequestDto) {
+
+    }
+
+    @Override
+    public void acceptUser(AcceptUserRequestDto acceptUserRequestDto) {
+
+    }
+
+    @Override
+    public void deligateAdmin(DeligateAdminRequestDto deligateAdminRequestDto) {
+
+    }
+
+    @Override
+    public void bookmarkRoom(BookmarkRoomRequestDto bookmarkRoomRequestDto) {
+
+    }
+
+    @Override
+    public void terminateRoom(TerminateRoomRequestDto terminateRoomRequestDto) {
+
     }
 }

@@ -28,4 +28,6 @@ public class UserMemo {
     @Column(nullable = false)
     private ManitoPredictType manitoPredictType;
 
+    private Long memoTo;
+
 }

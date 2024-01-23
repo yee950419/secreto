@@ -21,6 +21,7 @@ public class RoomMission {
     @JoinColumn(name = "room_no")
     private Room room;
 
+    @Column(columnDefinition = "TEXT")
     private String content;
 
 

@@ -1,12 +1,16 @@
 <script setup lang="ts">
 import LogoAtom from '@/components/atoms/LogoAtom.vue'
 import CharacterAtom from '@/components/atoms/CharacterAtom.vue'
+const { size } = defineProps(['size'])
 </script>
 
 <template>
-    <div class="flex flex-col w-[300px] h-[360px]">
-        <CharacterAtom customClass="w-full h-[234px]" />
-        <LogoAtom customClass="w-full h-[126px]" />
+    <div
+        class="flex flex-col justify-center content-center"
+        :style="{ width: `${size}px`, height: `${size}px`, padding: `${size / 10}px` }"
+    >
+        <CharacterAtom customClass="w-full" />
+        <LogoAtom customClass="w-full" />
     </div>
 </template>
 

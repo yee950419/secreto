@@ -1,0 +1,74 @@
+<script setup lang="ts">
+import ButtonAtom from '@/components/atoms/ButtonAtom.vue'
+import InputBox from '@/components/molecules/InputBox.vue'
+import TextAtom from '@/components/atoms/TextAtom.vue'
+import { ref } from 'vue'
+import type { Ref } from 'vue'
+
+type LoginDataType = Ref<{
+    email: string
+    password: string
+}>
+const userData: LoginDataType = ref({
+    email: '',
+    password: ''
+})
+const emailInputChangeHandler = (data: string) => {
+    userData.value.email = data
+}
+const passwordInputChangeHandler = (data: string) => {
+    userData.value.password = data
+}
+const buttonHandler = () => {
+    console.log(JSON.stringify(userData.value))
+}
+</script>
+
+<template>
+    <div
+        class="bg-A805RealWhite flex flex-col justify-between items-center h-[500px] w-full max-w-[400px] py-[20px] px-[40px]"
+    >
+        <TextAtom customClass="text-[48px] font-Iceland">Login</TextAtom>
+
+        <div class="w-full flex flex-col justify-between h-[200px]">
+            <InputBox
+                label="이메일"
+                type="text"
+                labelClass="ps-[10px]"
+                inputClass="input-box-style-1 line-claret"
+                customClass="w-full"
+                customId="email"
+                placeHolder="example@secreto.com"
+                @inputChange="emailInputChangeHandler"
+            ></InputBox>
+            <InputBox
+                label="비밀번호"
+                type="password"
+                labelClass="ps-[10px]"
+                inputClass="input-box-style-1 line-claret"
+                customClass="w-full"
+                customId="password"
+                placeHolder="비밀번호를 입력해주세요"
+                @inputChange="passwordInputChangeHandler"
+            ></InputBox>
+            <div class="text-[12px] w-full flex justify-between">
+                <div>
+                    <input type="checkbox" />
+                    <label class="text-[12px]">아이디 기억하기</label>
+                </div>
+                <a href="#" class="text-A805Blue">비밀번호를 잊어버리셨나요?</a>
+            </div>
+        </div>
+        <ButtonAtom
+            customClass="button-style-2 w-full button-shadow button-cream"
+            @buttonClick="buttonHandler"
+            >로그인</ButtonAtom
+        >
+        <div class="flex justify-center w-full h-[60px]">
+            <ButtonAtom>구글</ButtonAtom>
+            <ButtonAtom>카카오</ButtonAtom>
+        </div>
+    </div>
+</template>
+
+<style scoped></style>

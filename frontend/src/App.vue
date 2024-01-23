@@ -10,6 +10,8 @@ import MainLogo from '@/components/molecules/MainLogo.vue'
 import HeaderProfile from '@/components/molecules/HeaderProfile.vue'
 import FooterBar from '@/components/organisms/FooterBar.vue'
 import HeaderBar from '@/components/organisms/HeaderBar.vue'
+import CheckBoxMolecule from './components/molecules/CheckBoxMolecule.vue';
+
 const clickhandler = (data: string) => {
     console.log('data : ' + data)
 }
@@ -54,10 +56,29 @@ const clickhandler = (data: string) => {
     </div>
     <div>
         <InputAtom customClass="input-box-style-1 line-claret" value="Testing...">content</InputAtom>
-        <InputAtom customClass="input-box-style-1 line-claret" value="Testing..." readonly>content</InputAtom>
+        <InputAtom customClass="input-box   -style-1 line-claret" value="Testing..." readonly>content</InputAtom>
         <InputAtom customClass="input-box-style-2 line-khaki" value="Testing...">content</InputAtom>
-        <InputAtom customClass="input-box-style-2 line-khaki" value="Testing..." readonly>content</InputAtom>
+        <InputAtom customClass="input-box-style-2 line-khaki" customValue="Testing..." id="qwer" readonly>content</InputAtom>
+
+        <input type="checkbox" id="test">
+        <label for="test">test</label>
     </div>
+    <div>
+    <div class="flex">
+        <!-- <CheckBoxMolecule customClass="checkbox-molecule-style-1" id="appvueId">content</CheckBoxMolecule> -->
+        <CheckBoxMolecule customClass="checkbox-molecule-style-1" id="appvueId">It is a very long content and I hate a this case</CheckBoxMolecule>
+        <CheckBoxMolecule customClass="checkbox-molecule-style-1" id="appvueId">It is a very long content and I hate a this case</CheckBoxMolecule>
+        <CheckBoxMolecule customClass="checkbox-molecule-style-1" id="appvueId">It is a very long content and I hate a this case</CheckBoxMolecule>
+        <CheckBoxMolecule customClass="checkbox-molecule-style-1" id="appvueId">It is a very long content and I hate a this case</CheckBoxMolecule>
+        <CheckBoxMolecule customClass="checkbox-molecule-style-1" id="appvueId">It is a very long content and I hate a this case</CheckBoxMolecule>
+        <CheckBoxMolecule customClass="checkbox-molecule-style-1" id="appvueId">It is a very long content and I hate a this case</CheckBoxMolecule>
+        <CheckBoxMolecule customClass="checkbox-molecule-style-1" id="appvueId">It is a very long content and I hate a this case</CheckBoxMolecule>
+    </div>
+    <div>
+        <CheckBoxMolecule customClass="checkbox-molecule-style-1" id="appvueId">It is a very long content and I hate a this case</CheckBoxMolecule>
+    </div>
+
+</div>
 </template>
 
 <style scoped></style>

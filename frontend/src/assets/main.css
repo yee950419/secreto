@@ -290,4 +290,16 @@
         background-color: var(--A805White);
     }
     
+    .checkbox-molecule-style-1 {
+        display: flex;
+        margin : 0px;
+        font-size: 20px;
+        transition: 0.3s;
+        align-items: baseline;
+    }
+
+   .checkbox-molecule-style-1 input {
+        margin: 5px 10px;
+        transform: scale(1.5);
+   }
 }

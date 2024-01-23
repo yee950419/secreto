@@ -67,6 +67,7 @@ const googleLoginButtonHandler: ClickHandler = () => {
                 <CheckBoxMolecule
                     customClass="checkbox-molecule-style-1 text-[14px]"
                     customId="remember"
+                    color="#E0AED0"
                     >아이디 기억하기</CheckBoxMolecule
                 >
                 <a href="#" class="text-A805Blue">비밀번호를 잊어버리셨나요?</a>

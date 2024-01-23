@@ -67,7 +67,6 @@ const clickhandler = (data: string) => {
     <div class="flex">
         <!-- <CheckBoxMolecule customClass="checkbox-molecule-style-1" id="appvueId">content</CheckBoxMolecule> -->
         <CheckBoxMolecule customClass="checkbox-molecule-style-1" id="appvueId">It is a very long content and I hate a this case</CheckBoxMolecule>
-
         <CheckBoxMolecule customClass="checkbox-molecule-style-1" id="appvueId">It is a very long content and I hate a this case</CheckBoxMolecule>
         <CheckBoxMolecule customClass="checkbox-molecule-style-1" id="appvueId">It is a very long content and I hate a this case</CheckBoxMolecule>
         <CheckBoxMolecule customClass="checkbox-molecule-style-1" id="appvueId">It is a very long content and I hate a this case</CheckBoxMolecule>

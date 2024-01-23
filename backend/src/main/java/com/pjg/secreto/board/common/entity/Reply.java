@@ -17,7 +17,7 @@ public class Reply {
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "post_no")
+    @JoinColumn(name = "board_no")
     private Board board;
 
     @Column(columnDefinition = "TEXT")

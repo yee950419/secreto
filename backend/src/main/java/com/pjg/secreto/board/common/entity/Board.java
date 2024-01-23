@@ -17,7 +17,7 @@ public class Board {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name="post_no")
+    @Column(name="board_no")
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)

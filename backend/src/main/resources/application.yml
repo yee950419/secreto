@@ -2,4 +2,4 @@
 spring:
   profiles:
     default: dev
-    include: aws
+#    include: aws

@@ -5,11 +5,14 @@ import TextAtom from '@/components/atoms/TextAtom.vue'
 import CheckBoxMolecule from '@/components/molecules/CheckBoxMolecule.vue'
 import { ref } from 'vue'
 import type { Ref } from 'vue'
+import type CheckBoxMoleculeVue from '@/components/molecules/CheckBoxMolecule.vue'
 
 type LoginDataType = Ref<{
     email: string
     password: string
 }>
+type ClickHandler = () => void
+
 const userData: LoginDataType = ref({
     email: '',
     password: ''
@@ -20,8 +23,16 @@ const emailInputChangeHandler = (data: string) => {
 const passwordInputChangeHandler = (data: string) => {
     userData.value.password = data
 }
-const buttonHandler = () => {
+const loginButtonHandler: ClickHandler = () => {
     console.log(JSON.stringify(userData.value))
+    alert('Login')
+}
+
+const kakaoLoginButtonHandler: ClickHandler = () => {
+    alert('Kakao Login')
+}
+const googleLoginButtonHandler: ClickHandler = () => {
+    alert('Google Login')
 }
 </script>
 
@@ -63,12 +74,21 @@ const buttonHandler = () => {
         </div>
         <ButtonAtom
             customClass="button-style-2 w-full button-shadow button-cream"
-            @buttonClick="buttonHandler"
+            @buttonClick="loginButtonHandler"
             >로그인</ButtonAtom
         >
         <div class="flex justify-center w-full h-[60px]">
-            <ButtonAtom>구글</ButtonAtom>
-            <ButtonAtom>카카오</ButtonAtom>
+            <ButtonAtom @buttonClick="googleLoginButtonHandler">
+                <img
+                    class="w-[40px] h-[40px] mx-[20px]"
+                    src="@/assets/images/button/login-google.png"
+                />
+            </ButtonAtom>
+            <ButtonAtom @buttonClick="kakaoLoginButtonHandler">
+                <img
+                    class="w-[40px] h-[40px] mx-[20px]"
+                    src="@/assets/images/button/login-kakao.png"
+            /></ButtonAtom>
         </div>
     </div>
 </template>

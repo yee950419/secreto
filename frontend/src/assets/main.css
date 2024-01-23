@@ -57,6 +57,62 @@
 }
 
 @layer components {
+    .text-1 {
+        font-size: 40px;
+        line-height: 1.5;
+    }
+
+    .text-2 {
+        font-size: 32px;
+        line-height: 1.5;
+    }
+
+    .text-3 {
+        font-size: 24px;
+        line-height: 1.5;
+    }
+
+    .text-4 {
+        font-size: 20px;
+        line-height: 1.5;
+    }
+
+    .header-profile {
+        width: 90px;
+        height: 90px;
+        border-radius: 50%;
+    }
+
+    .header-profile img {
+        width: 100%;
+        height: 100%;
+        border-radius: 50%;
+    }
+
+    .chat-profile {
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
+    }
+
+    .chat-profile img {
+        width: 100%;
+        height: 100%;
+        border-radius: 50%;
+    }
+
+    .whole-chat-profile {
+        width: 30px;
+        height: 30px;
+        border-radius: 50%;
+    }
+
+    .whole-chat-profile img {
+        width: 100%;
+        height: 100%;
+        border-radius: 50%;
+    }
+
     .button-shadow {
         box-shadow: 3px 3px 10px 0px rgba(0, 0, 0, 0.2);
         -webkit-box-shadow: 3px 3px 10px 0px rgba(0, 0, 0, 0.2);

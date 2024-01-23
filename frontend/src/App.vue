@@ -10,6 +10,8 @@ import MainLogo from '@/components/molecules/MainLogo.vue'
 import HeaderProfile from '@/components/molecules/HeaderProfile.vue'
 import FooterBar from '@/components/organisms/FooterBar.vue'
 import HeaderBar from '@/components/organisms/HeaderBar.vue'
+import CheckBoxMolecule from './components/molecules/CheckBoxMolecule.vue'
+
 const clickhandler = (data: string) => {
     console.log('data : ' + data)
 }

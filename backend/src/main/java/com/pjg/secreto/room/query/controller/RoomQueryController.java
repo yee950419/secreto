@@ -24,6 +24,7 @@ public class RoomQueryController {
 
     private final RoomQueryService roomQueryService;
 
+    // 방에 속한 모든 유저 조회
     @GetMapping("/user/{roomNo}")
     public ResponseEntity<?> searchRoomUserList(@PathVariable Long roomNo) {
 
@@ -35,6 +36,7 @@ public class RoomQueryController {
         return ResponseEntity.ok().body(new SuccessResponse(HttpStatus.OK, "유저 리스트를 조회하였습니다.", result));
     }
 
+    // 유저가 속한 모든 방 조회 api
     @GetMapping("/user/user_room")
     public ResponseEntity<?> searchRoomList() {
 
@@ -46,6 +48,7 @@ public class RoomQueryController {
         return ResponseEntity.ok().body(new SuccessResponse(HttpStatus.OK, "방 리스트를 조회하였습니다.", result));
     }
 
+    // 룸 단건 조회 api
     @GetMapping("/{roomNo}")
     public ResponseEntity<?> searchRoom(@PathVariable Long roomNo) {
 

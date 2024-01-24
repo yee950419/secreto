@@ -12,6 +12,7 @@ import com.pjg.secreto.mission.common.entity.UserMission;
 import com.pjg.secreto.user.common.entity.User;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -68,10 +69,21 @@ public class RoomUser {
 
     private String userLeaveAt;
 
-    private boolean standbyYn;
+    private Boolean standbyYn;
 
     private String nickname;
 
-    private boolean bookmarkYn;
+    private Boolean bookmarkYn;
+
+    @Builder
+    public RoomUser(User user, Room room, String userEntryAt, String userLeaveAt, Boolean standByYn, String nickname, Boolean bookmarkYn) {
+        this.user = user;
+        this.room = room;
+        this.userEntryAt = userEntryAt;
+        this.userLeaveAt = userLeaveAt;
+        this.standbyYn = standByYn;
+        this.nickname = nickname;
+        this.bookmarkYn = bookmarkYn;
+    }
 
 }

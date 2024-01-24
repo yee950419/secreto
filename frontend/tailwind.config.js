@@ -21,6 +21,10 @@ export default {
                 A805RealWhite: '#FFFFFF',
                 A805Neutral: '#EAEEF3'
             }
+        },
+        fontFamily: {
+            Iceland: ['Iceland'],
+            Prentedard: ['Prentedard']
         }
     },
     plugins: []

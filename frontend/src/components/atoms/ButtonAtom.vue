@@ -7,7 +7,7 @@ const emit = defineEmits()
 type ClickHandler = () => void
 
 const handleClick: ClickHandler = () => {
-    emit('buttonClick')
+    emit('button-click')
 }
 </script>
 

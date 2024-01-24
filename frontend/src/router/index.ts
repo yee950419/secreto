@@ -15,10 +15,6 @@ const router = createRouter({
             path: '/game',
             name: 'game',
             component: () => import('@/views/HomeView.vue')
-        }
-            path: '/about',
-            name: 'about',
-            component: () => import('../views/AboutView.vue')
         },
         {
             path: '/sswtest',

@@ -2,6 +2,7 @@
 import ButtonAtom from '@/components/atoms/ButtonAtom.vue'
 import InputBox from '@/components/molecules/InputBox.vue'
 import TextAtom from '@/components/atoms/TextAtom.vue'
+import CheckBox from '@/components/molecules/CheckBox.vue'
 import { ref } from 'vue'
 import type { Ref } from 'vue'
 
@@ -9,6 +10,8 @@ type LoginDataType = Ref<{
     email: string
     password: string
 }>
+type ClickHandler = () => void
+
 const userData: LoginDataType = ref({
     email: '',
     password: ''
@@ -19,8 +22,16 @@ const emailInputChangeHandler = (data: string) => {
 const passwordInputChangeHandler = (data: string) => {
     userData.value.password = data
 }
-const buttonHandler = () => {
+const loginButtonHandler: ClickHandler = () => {
     console.log(JSON.stringify(userData.value))
+    alert('Login')
+}
+
+const kakaoLoginButtonHandler: ClickHandler = () => {
+    alert('Kakao Login')
+}
+const googleLoginButtonHandler: ClickHandler = () => {
+    alert('Google Login')
 }
 </script>
 
@@ -51,22 +62,32 @@ const buttonHandler = () => {
                 placeHolder="비밀번호를 입력해주세요"
                 @inputChange="passwordInputChangeHandler"
             ></InputBox>
-            <div class="text-[12px] w-full flex justify-between">
-                <div>
-                    <input type="checkbox" />
-                    <label class="text-[12px]">아이디 기억하기</label>
-                </div>
+            <div class="text-[12px] w-full flex justify-between items-center">
+                <CheckBox
+                    customClass="checkbox-molecule-style-1 text-[14px] accent-[#E0AED0]"
+                    customId="remember"
+                    >아이디 기억하기</CheckBox
+                >
                 <a href="#" class="text-A805Blue">비밀번호를 잊어버리셨나요?</a>
             </div>
         </div>
         <ButtonAtom
             customClass="button-style-2 w-full button-shadow button-cream"
-            @buttonClick="buttonHandler"
+            @buttonClick="loginButtonHandler"
             >로그인</ButtonAtom
         >
         <div class="flex justify-center w-full h-[60px]">
-            <ButtonAtom>구글</ButtonAtom>
-            <ButtonAtom>카카오</ButtonAtom>
+            <ButtonAtom @buttonClick="googleLoginButtonHandler">
+                <img
+                    class="w-[40px] h-[40px] mx-[20px]"
+                    src="@/assets/images/button/login-google.png"
+                />
+            </ButtonAtom>
+            <ButtonAtom @buttonClick="kakaoLoginButtonHandler">
+                <img
+                    class="w-[40px] h-[40px] mx-[20px]"
+                    src="@/assets/images/button/login-kakao.png"
+            /></ButtonAtom>
         </div>
     </div>
 </template>

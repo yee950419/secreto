@@ -35,9 +35,12 @@ const {
 const emit = defineEmits()
 
 const inputRef = ref(defaultValue)
-type ChangeHandler = () => void
-const handleChange: ChangeHandler = () => {
+type handler = () => void
+const handleChange: handler = () => {
     emit('input-change', inputRef.value)
+}
+const buttonClick: handler = () => {
+    emit('button-click', inputRef.value)
 }
 </script>
 
@@ -59,9 +62,11 @@ const handleChange: ChangeHandler = () => {
                 @change="handleChange"
                 v-model.lazy="inputRef"
             />
-            <ButtonAtom class="rounded-s-none button-style-6 button-claret pe-[3px]">{{
-                buttonLabel
-            }}</ButtonAtom>
+            <ButtonAtom
+                class="rounded-s-none button-style-6 button-claret pe-[3px]"
+                @buttonClick="buttonClick"
+                >{{ buttonLabel }}</ButtonAtom
+            >
         </div>
     </div>
 </template>

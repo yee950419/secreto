@@ -23,4 +23,6 @@ public class ManitoExpectLog {
 
     private String expectedAt;
 
+    private Long expectedUser;
+
 }

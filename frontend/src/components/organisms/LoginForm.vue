@@ -4,33 +4,27 @@ import InputBox from '@/components/molecules/InputBox.vue'
 import TextAtom from '@/components/atoms/TextAtom.vue'
 import CheckBox from '@/components/molecules/CheckBox.vue'
 import { ref } from 'vue'
-import type { Ref } from 'vue'
+import type { Handler, DataHandler } from '@/types/common'
+import type { LoginRequestType } from '@/types/user'
 
-type LoginDataType = Ref<{
-    email: string
-    password: string
-}>
-type ClickHandler = () => void
-
-const userData: LoginDataType = ref({
+const loginRequest: LoginRequestType = ref({
     email: '',
     password: ''
 })
-const emailInputChangeHandler = (data: string) => {
-    userData.value.email = data
+const emailInputChangeHandler: DataHandler<string> = (data: string) => {
+    loginRequest.value.email = data
 }
-const passwordInputChangeHandler = (data: string) => {
-    userData.value.password = data
+const passwordInputChangeHandler: DataHandler<string> = (data: string) => {
+    loginRequest.value.password = data
 }
-const loginButtonHandler: ClickHandler = () => {
-    console.log(JSON.stringify(userData.value))
+const loginButtonHandler: Handler = () => {
+    console.log(JSON.stringify(loginRequest.value))
     alert('Login')
 }
-
-const kakaoLoginButtonHandler: ClickHandler = () => {
+const kakaoLoginButtonHandler: Handler = () => {
     alert('Kakao Login')
 }
-const googleLoginButtonHandler: ClickHandler = () => {
+const googleLoginButtonHandler: Handler = () => {
     alert('Google Login')
 }
 </script>

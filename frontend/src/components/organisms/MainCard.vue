@@ -1,6 +1,11 @@
 <script setup lang="ts">
 import MainLogo from '@/components/molecules/MainLogo.vue'
 import ButtonAtom from '@/components/atoms/ButtonAtom.vue'
+import type { Handler } from '@/types/common'
+
+const buttonClickHandler: Handler = () => {
+    alert('button click')
+}
 </script>
 
 <template>
@@ -15,7 +20,9 @@ import ButtonAtom from '@/components/atoms/ButtonAtom.vue'
                 quasi saepe, maiores illum aliquam fugit ut consequuntur aut?
             </p>
         </div>
-        <ButtonAtom custom-class="button-style-1 button-claret button-shadow m-[20px]"
+        <ButtonAtom
+            custom-class="button-style-1 button-claret button-shadow m-[20px]"
+            @button-click="buttonClickHandler"
             >START</ButtonAtom
         >
     </div>

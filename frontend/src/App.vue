@@ -2,7 +2,6 @@
 import { ref, computed } from 'vue'
 import { RouterLink, RouterView } from 'vue-router'
 import ButtonAtom from '@/components/atoms/ButtonAtom.vue'
-import InputAtom from '@/components/atoms/InputAtom.vue'
 import CharacterAtom from '@/components/atoms/CharacterAtom.vue'
 import LogoAtom from '@/components/atoms/LogoAtom.vue'
 import AvatarAtom from '@/components/atoms/AvatarAtom.vue'

@@ -9,13 +9,16 @@ const router = createRouter({
         {
             path: '/',
             name: 'home',
-            component: sswTestVue
+            component: () => import('@/views/MainPageView.vue'),
+            meta: {
+                hide: true
+            }
         },
         {
             path: '/game',
             name: 'game',
-            component: () => import('@/views/HomeView.vue')
-        },
+            component: () => import('@/components/templates/TimeLine.vue')
+        }
     ]
 })
 

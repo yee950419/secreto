@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import type { Handler } from '@/types/common'
 defineProps({
     customClass: {
         type: String
@@ -10,10 +11,7 @@ defineProps({
 })
 
 const emit = defineEmits(['imageClick'])
-
-type ClickHandler = () => void
-
-const handleClick: ClickHandler = () => {
+const handleClick: Handler = () => {
     emit('imageClick')
 }
 </script>

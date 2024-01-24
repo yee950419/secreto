@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { ref, computed } from 'vue'
 import { RouterLink, RouterView } from 'vue-router'
 import ButtonAtom from './components/atoms/ButtonAtom.vue'
 import InputAtom from './components/atoms/InputAtom.vue';
@@ -15,6 +16,12 @@ import Modal from './components/templates/Modal.vue'
 
 const clickhandler = (data: string) => {
     console.log('data : ' + data)
+}
+const seen = ref(false)
+const testhandler = () => {
+    seen.value = !seen.value
+    console.log('Testing...', seen.value)
+    return seen.value
 }
 </script>
 
@@ -79,7 +86,12 @@ const clickhandler = (data: string) => {
         <CheckBoxMolecule customClass="checkbox-molecule-style-1" customId="appvueId">It is a very long content and I hate a this case</CheckBoxMolecule>
     </div>
     <div>
-        <Modal custom-class="modal-template-style-1" seen="true">
+        <ButtonAtom @click="testhandler" customClass="button-style-1 button-shadow button-claret">label</ButtonAtom><br />
+        <ButtonAtom customClass="button-style-2 button-shadow button-cream" @click.prevent="clickhandler"
+            >label</ButtonAtom
+        ><br />
+        <p>123{{seen}}</p>
+        <Modal v-if="seen" @modalClose="testhandler" custom-class="modal-template-style-1">
             content
             <InputAtom customClass="input-box-style-2 line-khaki" value="Testing...">content</InputAtom>
             <ButtonAtom customClass="button-style-5 button-claret button-border-violet">label</ButtonAtom>

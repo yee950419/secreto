@@ -4,23 +4,23 @@ defineProps({
         type: String
     },
     imageUrl: {
-        type: String,
-        default: 'https://www.gravatar.com/avatar/?d=mp'
+        type: String as () => string | null,
+        required: true
     }
 })
 
-const emit = defineEmits(['click'])
+const emit = defineEmits(['imageClick'])
 
 type ClickHandler = () => void
 
 const handleClick: ClickHandler = () => {
-    emit('click')
+    emit('imageClick')
 }
 </script>
 
 <template>
     <div :class="customClass" @click="handleClick">
-        <img :src="imageUrl" alt="Avatar" />
+        <img :src="imageUrl ? imageUrl : 'src/assets/images/default-avatar.png'" alt="Avatar" />
     </div>
 </template>
 

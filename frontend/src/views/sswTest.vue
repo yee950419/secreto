@@ -2,7 +2,8 @@
 import {ref} from 'vue'
 import ButtonAtom from '@/components/atoms/ButtonAtom.vue';
 import ModalTemplate from '@/components/templates/ModalTemplate.vue';
-
+import SelectBox from '@/components/molecules/SelectBox.vue';
+import ButtonInputBox from '@/components/molecules/ButtonInputBox.vue';
 const seen = ref(false)
 const testhandler = () => {
     seen.value = !seen.value
@@ -21,6 +22,7 @@ const testhandler = () => {
         >
         qwer
     </ModalTemplate>
-
+    <SelectBox custom-class="select-box-style-1"></SelectBox>
+    <ButtonInputBox custom-class="button-input-box-style-1"></ButtonInputBox>
     </div>
 </template>

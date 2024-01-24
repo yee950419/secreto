@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { ref, computed } from 'vue'
 import { RouterLink, RouterView } from 'vue-router'
 import ButtonAtom from '@/components/atoms/ButtonAtom.vue'
 import InputAtom from '@/components/atoms/InputAtom.vue'
@@ -13,6 +14,12 @@ import HeaderBar from '@/components/organisms/HeaderBar.vue'
 import NavBar from '@/components/organisms/NavBar.vue'
 const clickhandler = (data: string) => {
     console.log('data : ' + data)
+}
+const seen = ref(false)
+const testhandler = () => {
+    seen.value = !seen.value
+    console.log('Testing...', seen.value)
+    return seen.value
 }
 </script>
 

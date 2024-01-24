@@ -4,6 +4,7 @@ import com.pjg.secreto.room.query.dto.SearchRoomListResponseDto;
 import com.pjg.secreto.room.query.dto.SearchRoomResponseDto;
 import com.pjg.secreto.room.query.dto.SearchRoomUserListResponseDto;
 
+import java.sql.SQLException;
 import java.util.List;
 
 public interface RoomQueryService {

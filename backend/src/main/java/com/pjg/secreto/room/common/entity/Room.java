@@ -6,6 +6,7 @@ import com.pjg.secreto.mission.common.entity.RoomMission;
 import com.pjg.secreto.mission.common.entity.SuddenMission;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -46,16 +47,32 @@ public class Room {
 
     private String roomEndAt;
 
-    private boolean hostParticipantYn;
+    private Boolean hostParticipantYn;
 
-    private boolean commonYn;
+    private Boolean commonYn;
 
     private String missionSubmitTime;
 
     private String missionStartAt;
 
-    private boolean roomStartYn;
+    private Boolean roomStartYn;
 
     private Long hostNo;
+
+    @Builder
+    public Room(String roomName, String entryCode, String roomStartAt, String roomEndAt, Boolean hostParticipantYn,
+                Boolean commonYn, String missionSubmitTime, String missionStartAt, Boolean roomStartYn, Long hostNo) {
+
+        this.roomName = roomName;
+        this.entryCode = entryCode;
+        this.roomStartAt = roomStartAt;
+        this.roomEndAt = roomEndAt;
+        this.hostParticipantYn = hostParticipantYn;
+        this.commonYn = commonYn;
+        this.missionSubmitTime = missionSubmitTime;
+        this.missionStartAt = missionStartAt;
+        this.roomStartYn = roomStartYn;
+        this.hostNo = hostNo;
+    }
 
 }

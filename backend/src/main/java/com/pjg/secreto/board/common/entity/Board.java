@@ -44,7 +44,7 @@ public class Board {
 
     private BoardCategory boardCategory;
 
-    private boolean publicYn;
+    private Boolean publicYn;
 
     private String missionCategory;
 

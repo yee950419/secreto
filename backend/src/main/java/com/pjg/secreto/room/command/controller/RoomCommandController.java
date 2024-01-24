@@ -26,7 +26,7 @@ public class RoomCommandController {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(new MediaType("application", "json", StandardCharsets.UTF_8));
 
-        CreateRoomResponseDto result = roomCommandService.joinMember(createRoomRequestDto);
+        CreateRoomResponseDto result = roomCommandService.createRoom(createRoomRequestDto);
 
         return ResponseEntity.ok().body(new SuccessResponse(HttpStatus.OK, "방이 생성되었습니다.", result));
     }

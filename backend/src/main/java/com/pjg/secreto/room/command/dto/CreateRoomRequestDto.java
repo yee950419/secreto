@@ -6,4 +6,6 @@ import lombok.Data;
 public class CreateRoomRequestDto {
 
     private String roomName;
+
+    private String hostNickname;
 }

@@ -1,10 +1,36 @@
 <script setup lang="ts">
 import ButtonAtom from '@/components/atoms/ButtonAtom.vue'
 import InputBox from '@/components/molecules/InputBox.vue'
-import ButtonInputBox from '@/components/molecules/ButtonInputBox.vue'
 import TextAtom from '@/components/atoms/TextAtom.vue'
 import { ref } from 'vue'
-import type { Ref } from 'vue'
+import type { Handler, DataHandler } from '@/types/common'
+import type { PasswordChangeRequest } from '@/types/user'
+
+const passwordChangeRequest: PasswordChangeRequest = ref({
+    currentPassword: '',
+    newPassword: ''
+})
+const newPasswordConfirm = ref('')
+const passwordInputChangeHandler: DataHandler<string> = (data: string) => {
+    passwordChangeRequest.value.currentPassword = data
+}
+const newPasswordInputChangeHandler: DataHandler<string> = (data: string) => {
+    passwordChangeRequest.value.newPassword = data
+}
+const newPasswordConfirmInputChangeHandler: DataHandler<string> = (data: string) => {
+    newPasswordConfirm.value = data
+}
+const changePasswordButtonHandler: Handler = () => {
+    console.log(passwordChangeRequest.value.newPassword, newPasswordConfirm.value)
+    if (passwordChangeRequest.value.newPassword !== newPasswordConfirm.value) {
+        alert('wrong new password confirm')
+        return
+    }
+    alert('change password' + JSON.stringify(passwordChangeRequest.value))
+}
+const myPageButtonHandler: Handler = () => {
+    alert('go to my page')
+}
 </script>
 
 <template>
@@ -19,19 +45,19 @@ import type { Ref } from 'vue'
                 type="password"
                 label-class="ps-[10px]"
                 input-class="input-box-style-1 line-claret"
-                custom-class="w-full my-[30px]"
+                custom-class="w-full my-[20px]"
                 custom-id="password"
-                place-holder="햔제 비밀번호를 입력해주세요"
+                place-holder="현재 비밀번호를 입력해주세요"
                 @input-change="passwordInputChangeHandler"
             ></InputBox>
             <InputBox
-                label="새로운 비밀번호 확인"
+                label="새 비밀번호"
                 type="password"
                 label-class="ps-[10px]"
                 input-class="input-box-style-1 line-claret"
-                custom-class="w-full my-[30px]"
+                custom-class="w-full my-[20px]"
                 custom-id="newPassword"
-                place-holder="비밀번호 확인을 입력해주세요"
+                place-holder="새 비밀번호를 입력해주세요"
                 @input-change="newPasswordInputChangeHandler"
             ></InputBox>
             <InputBox
@@ -39,16 +65,23 @@ import type { Ref } from 'vue'
                 type="password"
                 label-class="ps-[10px]"
                 input-class="input-box-style-1 line-claret"
-                custom-class="w-full my-[30px]"
+                custom-class="w-full my-[20px]"
                 custom-id="newPasswordConfirm"
-                place-holder="비밀번호 확인을 입력해주세요"
+                place-holder="새 비밀번호를 한번 더 입력해주세요"
                 @input-change="newPasswordConfirmInputChangeHandler"
             ></InputBox>
             <ButtonAtom
-                custom-class="button-style-2 w-full button-shadow button-cream mt-[15px] mb-[30px]"
+                custom-class="button-style-2 w-full button-shadow button-cream my-[15px]"
                 @button-click="changePasswordButtonHandler"
                 >비밀번호 변경</ButtonAtom
             >
+            <div class="flex justify-around w-full">
+                <ButtonAtom
+                    custom-class="text-[14px] text-A805DarkGrey"
+                    @button-click="myPageButtonHandler"
+                    >뒤로가기</ButtonAtom
+                >
+            </div>
         </div>
     </div>
 </template>

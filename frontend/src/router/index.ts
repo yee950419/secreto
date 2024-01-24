@@ -17,7 +17,7 @@ const router = createRouter({
         {
             path: '/game',
             name: 'game',
-            component: () => import('@/components/pages/TimeLine.vue')
+            component: () => import('@/components/templates/TimeLine.vue')
         }
     ]
 })

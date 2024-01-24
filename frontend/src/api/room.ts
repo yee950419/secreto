@@ -1,5 +1,4 @@
-
-import type { AxiosInstance, AxiosResponse } from 'axios'
+import type { AxiosInstance } from 'axios'
 import { localAxios } from '@/utils/http-commons'
 const room: AxiosInstance = localAxios()
 

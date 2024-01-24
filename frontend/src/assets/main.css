@@ -147,6 +147,18 @@
         border-radius: 50%;
     }
 
+    .my-page-profile {
+        width: 100px;
+        height: 100px;
+        border-radius: 50%;
+    }
+
+    .my-page-profile img {
+        width: 100%;
+        height: 100%;
+        border-radius: 50%;
+    }
+
     .whole-chat-profile {
         width: 30px;
         height: 30px;

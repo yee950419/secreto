@@ -9,13 +9,16 @@ const router = createRouter({
         {
             path: '/',
             name: 'home',
-            component: HomeView
+            component: () => import('@/views/MainPageView.vue'),
+            meta: {
+                hide: true
+            }
         },
         {
             path: '/game',
             name: 'game',
-            component: () => import('@/views/HomeView.vue')
-        },
+            component: () => import('@/components/pages/TimeLine.vue')
+        }
     ]
 })
 

@@ -39,51 +39,51 @@ const googleLoginButtonHandler: ClickHandler = () => {
     <div
         class="bg-A805RealWhite flex flex-col justify-between items-center h-[500px] w-full max-w-[400px] py-[20px] px-[40px]"
     >
-        <TextAtom customClass="text-[48px] font-Iceland">Login</TextAtom>
+        <TextAtom custom-class="text-[48px] font-Iceland">Login</TextAtom>
 
         <div class="w-full flex flex-col justify-between h-[200px]">
             <InputBox
                 label="이메일"
                 type="text"
-                labelClass="ps-[10px]"
-                inputClass="input-box-style-1 line-claret"
-                customClass="w-full"
-                customId="email"
-                placeHolder="example@secreto.com"
-                @inputChange="emailInputChangeHandler"
+                label-class="ps-[10px]"
+                input-class="input-box-style-1 line-claret"
+                custom-class="w-full"
+                custom-id="email"
+                place-holder="example@secreto.com"
+                @input-change="emailInputChangeHandler"
             ></InputBox>
             <InputBox
                 label="비밀번호"
                 type="password"
-                labelClass="ps-[10px]"
-                inputClass="input-box-style-1 line-claret"
-                customClass="w-full"
-                customId="password"
-                placeHolder="비밀번호를 입력해주세요"
-                @inputChange="passwordInputChangeHandler"
+                label-class="ps-[10px]"
+                input-class="input-box-style-1 line-claret"
+                custom-class="w-full"
+                custom-id="password"
+                place-holder="비밀번호를 입력해주세요"
+                @input-change="passwordInputChangeHandler"
             ></InputBox>
             <div class="text-[12px] w-full flex justify-between items-center">
                 <CheckBox
-                    customClass="checkbox-molecule-style-1 text-[14px] accent-[#E0AED0]"
-                    customId="remember"
+                    custom-class="checkbox-molecule-style-1 text-[14px] accent-[#E0AED0]"
+                    custom-id="remember"
                     >아이디 기억하기</CheckBox
                 >
                 <a href="#" class="text-A805Blue">비밀번호를 잊어버리셨나요?</a>
             </div>
         </div>
         <ButtonAtom
-            customClass="button-style-2 w-full button-shadow button-cream"
-            @buttonClick="loginButtonHandler"
+            custom-class="button-style-2 w-full button-shadow button-cream"
+            @button-click="loginButtonHandler"
             >로그인</ButtonAtom
         >
         <div class="flex justify-center w-full h-[60px]">
-            <ButtonAtom @buttonClick="googleLoginButtonHandler">
+            <ButtonAtom @button-click="googleLoginButtonHandler">
                 <img
                     class="w-[40px] h-[40px] mx-[20px]"
                     src="@/assets/images/button/login-google.png"
                 />
             </ButtonAtom>
-            <ButtonAtom @buttonClick="kakaoLoginButtonHandler">
+            <ButtonAtom @button-click="kakaoLoginButtonHandler">
                 <img
                     class="w-[40px] h-[40px] mx-[20px]"
                     src="@/assets/images/button/login-kakao.png"

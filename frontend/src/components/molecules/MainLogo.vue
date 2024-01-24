@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import LogoAtom from '@/components/atoms/LogoAtom.vue'
 import CharacterAtom from '@/components/atoms/CharacterAtom.vue'
-const { size } = defineProps(['size'])
+defineProps(['size'])
 </script>
 
 <template>

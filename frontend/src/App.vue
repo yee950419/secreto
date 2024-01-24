@@ -1,40 +1,21 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue'
 import { RouterLink, RouterView } from 'vue-router'
-import ButtonAtom from '@/components/atoms/ButtonAtom.vue'
-import InputAtom from '@/components/atoms/InputAtom.vue'
-import CharacterAtom from '@/components/atoms/CharacterAtom.vue'
-import LogoAtom from '@/components/atoms/LogoAtom.vue'
-import AvatarAtom from '@/components/atoms/AvatarAtom.vue'
-import HeaderLogo from '@/components/molecules/HeaderLogo.vue'
-import MainLogo from '@/components/molecules/MainLogo.vue'
-import HeaderProfile from '@/components/molecules/HeaderProfile.vue'
-import FooterBar from '@/components/organisms/FooterBar.vue'
 import HeaderBar from '@/components/organisms/HeaderBar.vue'
-import NavBar from '@/components/organisms/NavBar.vue'
-const clickhandler = (data: string) => {
-    console.log('data : ' + data)
-}
-const seen = ref(false)
-const testhandler = () => {
-    seen.value = !seen.value
-    console.log('Testing...', seen.value)
-    return seen.value
-}
+import FooterBar from '@/components/organisms/FooterBar.vue'
+
+const showNav = computed(() => {
+    // 현재 라우트의 메타 데이터에서 헤더 표시 여부 확인
+    return $route.meta.showNav !== false || true
+})
 </script>
 
 <template>
-    <header class="bg-A805Claret">
-        <div>
-            Secreto Project
-            <nav>
-                <RouterLink to="/">Home</RouterLink>
-                <RouterLink to="/about">About</RouterLink>
-                <RouterLink to="/main-page">Main Page</RouterLink>
-            </nav>
-        </div>
-    </header>
-    <RouterView />
+    <div>
+        <HeaderBar v-if="false" />
+        <RouterView />
+        <FooterBar v-if="false" />
+    </div>
 </template>
 
 <style scoped></style>

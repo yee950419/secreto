@@ -1,8 +1,6 @@
 <script setup lang="ts">
-import { defineProps, defineEmits } from 'vue'
-
-const { customClass, customId } = defineProps(['customClass', 'customId'])
-const emit = defineEmits()
+defineProps(['customClass', 'customId'])
+const emit = defineEmits([])
 </script>
 
 <template>

@@ -14,7 +14,7 @@ import TextAtom from '@/components/atoms/TextAtom.vue'
             <TextAtom class="text-3 max-md:text-center">SSAFY A805&nbsp;</TextAtom>
             <TextAtom class="text-3 max-md:text-center"> All Rights Reserved</TextAtom>
         </div>
-        <LogoAtom customClass="w-[140px] h-[50px] max-md:mt-[32px]" />
+        <LogoAtom custom-class="w-[140px] h-[50px] max-md:mt-[32px]" />
     </div>
 </template>
 

@@ -2,6 +2,7 @@
 import MainCard from '../components/organisms/MainCard.vue'
 import LoginForm from '../components/organisms/LoginForm.vue'
 import JoinForm from '@/components/organisms/JoinForm.vue'
+import MyPage from '@/components/organisms/MyPage.vue'
 </script>
 
 <template>
@@ -11,5 +12,7 @@ import JoinForm from '@/components/organisms/JoinForm.vue'
         <LoginForm></LoginForm>
         <br />
         <JoinForm></JoinForm>
+        <br />
+        <MyPage></MyPage>
     </div>
 </template>

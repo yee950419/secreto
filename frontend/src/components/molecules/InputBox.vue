@@ -1,20 +1,6 @@
 <script setup lang="ts">
-import { defineProps, defineEmits, ref } from 'vue'
-const {
-    label,
-    customClass,
-    labelClass,
-    inputClass,
-    customId,
-    defaultValue,
-    placeHolder,
-    type,
-    readonly,
-    hidden,
-    min,
-    max,
-    name
-} = defineProps([
+import { ref } from 'vue'
+const props = defineProps([
     'label',
     'customClass',
     'labelClass',
@@ -29,12 +15,12 @@ const {
     'max',
     'name'
 ])
-const emit = defineEmits()
+const emit = defineEmits(['inputChange'])
+const inputRef = ref(props.defaultValue)
 
-const inputRef = ref(defaultValue)
 type ChangeHandler = () => void
 const handleChange: ChangeHandler = () => {
-    emit('input-change', inputRef.value)
+    emit('inputChange', inputRef.value)
 }
 </script>
 

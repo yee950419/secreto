@@ -1,22 +1,7 @@
 <script setup lang="ts">
-import { defineProps, defineEmits, ref } from 'vue'
-import ButtonAtom from '../atoms/ButtonAtom.vue'
-const {
-    label,
-    customClass,
-    labelClass,
-    inputClass,
-    customId,
-    defaultValue,
-    placeHolder,
-    type,
-    readonly,
-    hidden,
-    min,
-    max,
-    name,
-    buttonLabel
-} = defineProps([
+import { ref } from 'vue'
+import ButtonAtom from '@/components/atoms/ButtonAtom.vue'
+const props = defineProps([
     'label',
     'customClass',
     'labelClass',
@@ -32,15 +17,15 @@ const {
     'name',
     'buttonLabel'
 ])
-const emit = defineEmits()
+const emit = defineEmits(['inputChange', 'buttonClick'])
 
-const inputRef = ref(defaultValue)
+const inputRef = ref(props.defaultValue)
 type handler = () => void
 const handleChange: handler = () => {
-    emit('input-change', inputRef.value)
+    emit('inputChange', inputRef.value)
 }
 const buttonClick: handler = () => {
-    emit('button-click', inputRef.value)
+    emit('buttonClick', inputRef.value)
 }
 </script>
 

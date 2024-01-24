@@ -1,5 +1,5 @@
 <script setup lang="ts">
-const { customClass } = defineProps(['customClass'])
+defineProps(['customClass'])
 </script>
 
 <template>

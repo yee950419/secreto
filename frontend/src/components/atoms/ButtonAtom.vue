@@ -1,13 +1,11 @@
 <script setup lang="ts">
-import { defineProps, defineEmits } from 'vue'
-
-const { customClass } = defineProps(['customClass'])
-const emit = defineEmits()
+defineProps(['customClass'])
+const emit = defineEmits(['buttonClick'])
 
 type ClickHandler = () => void
 
 const handleClick: ClickHandler = () => {
-    emit('button-click')
+    emit('buttonClick')
 }
 </script>
 

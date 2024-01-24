@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { defineProps, defineEmits } from 'vue'
 import TextAtom from '@/components/atoms/TextAtom.vue'
-const { customClass, active } = defineProps({
+const props = defineProps({
     customClass: {
         type: String,
         default: ''
@@ -12,10 +12,10 @@ const { customClass, active } = defineProps({
     }
 })
 
-const emit = defineEmits(['menu-click'])
+const emit = defineEmits(['menuClick'])
 
 const handleItemClick = () => {
-    emit('menu-click', active)
+    emit('menuClick', props.active)
 }
 </script>
 

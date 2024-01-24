@@ -2,10 +2,9 @@
 import ButtonAtom from '@/components/atoms/ButtonAtom.vue'
 import InputBox from '@/components/molecules/InputBox.vue'
 import TextAtom from '@/components/atoms/TextAtom.vue'
-import CheckBoxMolecule from '@/components/molecules/CheckBoxMolecule.vue'
+import CheckBox from '@/components/molecules/CheckBox.vue'
 import { ref } from 'vue'
 import type { Ref } from 'vue'
-import type CheckBoxMoleculeVue from '@/components/molecules/CheckBoxMolecule.vue'
 
 type LoginDataType = Ref<{
     email: string
@@ -64,10 +63,10 @@ const googleLoginButtonHandler: ClickHandler = () => {
                 @inputChange="passwordInputChangeHandler"
             ></InputBox>
             <div class="text-[12px] w-full flex justify-between items-center">
-                <CheckBoxMolecule
+                <CheckBox
                     customClass="checkbox-molecule-style-1 text-[14px] accent-[#E0AED0]"
                     customId="remember"
-                    >아이디 기억하기</CheckBoxMolecule
+                    >아이디 기억하기</CheckBox
                 >
                 <a href="#" class="text-A805Blue">비밀번호를 잊어버리셨나요?</a>
             </div>

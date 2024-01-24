@@ -3,6 +3,7 @@ import MainCard from '../components/organisms/MainCard.vue'
 import LoginForm from '../components/organisms/LoginForm.vue'
 import JoinForm from '@/components/organisms/JoinForm.vue'
 import MyPage from '@/components/organisms/MyPage.vue'
+import ChangePasswordForm from '@/components/organisms/ChangePasswordForm.vue'
 </script>
 
 <template>
@@ -14,5 +15,7 @@ import MyPage from '@/components/organisms/MyPage.vue'
         <JoinForm></JoinForm>
         <br />
         <MyPage></MyPage>
+        <br />
+        <ChangePasswordForm></ChangePasswordForm>
     </div>
 </template>

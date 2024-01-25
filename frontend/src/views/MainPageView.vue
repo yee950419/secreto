@@ -10,6 +10,10 @@ import { useUserStore } from '@/stores/user'
 import FindPasswordForm from '@/components/organisms/FindPasswordForm.vue'
 import WideCardTemplate from '@/components/template/WideCardTemplate.vue'
 import type { Handler } from '@/types/common'
+import ModalTemplate from '@/components/template/ModalTemplate.vue'
+import DeleteModalContent1 from '@/components/organisms/DeleteModalContent1.vue'
+import DeleteModalContent2 from '@/components/organisms/DeleteModalContent2.vue'
+import DeleteModalContent3 from '@/components/organisms/DeleteModalContent3.vue'
 const userStore = useUserStore()
 const { getUserInfo } = userStore
 
@@ -58,5 +62,11 @@ const buttonEvent: Handler = () => {
                 >API 호출</ButtonAtom
             >
         </div>
+
+        <ModalTemplate custom-id="modal" custom-class="modal-template-style-1 w-[350px]">
+            <DeleteModalContent1 />
+            <!-- <DeleteModalContent2 />
+            <DeleteModalContent3 /> -->
+        </ModalTemplate>
     </div>
 </template>

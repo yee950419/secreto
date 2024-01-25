@@ -4,9 +4,16 @@ import ButtonAtom from '@/components/atoms/ButtonAtom.vue'
 import ModalTemplate from '@/components/template/ModalTemplate.vue'
 import SelectBox from '@/components/molecules/SelectBox.vue'
 import ButtonInputBox from '@/components/molecules/ButtonInputBox.vue'
+import CheckBox from '@/components/molecules/CheckBox.vue'
+import MissionList from '@/components/organisms/MissionList.vue'
+import type { Handler } from '@/types/common'
 const seen = ref(false)
+const check = ref(false)
 const testhandler = () => {
     seen.value = !seen.value
+}
+const checkBoxStateHandler: Handler = () => {
+    check.value = !check.value
 }
 </script>
 
@@ -23,6 +30,15 @@ const testhandler = () => {
             qwer
         </ModalTemplate>
         <SelectBox custom-class="select-box-style-1"></SelectBox>
+        <SelectBox custom-class="select-box-style-2"></SelectBox>
+        {{ check }}
+        <!-- <CheckBox
+            custom-class="check-box-style-1"
+            custom-id="first-id"
+            @check-box-change="checkBoxStateHandler"
+            >label</CheckBox
+        > -->
         <ButtonInputBox custom-class="button-input-box-style-1"></ButtonInputBox>
+        <MissionList></MissionList>
     </div>
 </template>

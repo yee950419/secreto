@@ -10,7 +10,11 @@ async function createRoom(
     roomInstance.post(`/room`, JSON.stringify(param)).then(success).catch(fail)
 }
 
-async function getRoom(param: number, success: (response) => void, fail: (error: any) => void) {
+async function getRoom(
+    param: number,
+    success: (response: AxiosResponse) => void,
+    fail: (error: any) => void
+) {
     roomInstance.get(`/room/${param}`).then(success).catch(fail)
 }
 

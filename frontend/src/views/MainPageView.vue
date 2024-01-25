@@ -7,6 +7,7 @@ import ButtonAtom from '@/components/atoms/ButtonAtom.vue'
 import ChangePasswordForm from '@/components/organisms/ChangePasswordForm.vue'
 // import { getUser } from '@/api/user'
 import { useUserStore } from '@/stores/user'
+import FindPasswordForm from '@/components/organisms/FindPasswordForm.vue'
 const userStore = useUserStore()
 const { getUserInfo } = userStore
 
@@ -27,6 +28,8 @@ const eventHandler = async () => {
         <MyPage></MyPage>
         <br />
         <ChangePasswordForm></ChangePasswordForm>
+        <br />
+        <FindPasswordForm></FindPasswordForm>
         <br />
         <div class="flex flex-col gap-[20px]">
             <RouterLink to="/game"

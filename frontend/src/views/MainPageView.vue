@@ -1,72 +1,54 @@
 <script setup lang="ts">
-import MainCard from '@/components/organisms/MainCard.vue'
-import LoginForm from '@/components/organisms/LoginForm.vue'
-import JoinForm from '@/components/organisms/JoinForm.vue'
-import MyPage from '@/components/organisms/MyPage.vue'
-import ButtonAtom from '@/components/atoms/ButtonAtom.vue'
-import ChangePasswordForm from '@/components/organisms/ChangePasswordForm.vue'
-// import { getUser } from '@/api/user'
-import { useUserStore } from '@/stores/user'
-import FindPasswordForm from '@/components/organisms/FindPasswordForm.vue'
-import WideCardTemplate from '@/components/template/WideCardTemplate.vue'
-import type { Handler } from '@/types/common'
+import type { DataHandler, Handler } from '@/types/common'
 import ModalTemplate from '@/components/template/ModalTemplate.vue'
 import DeleteModalContent1 from '@/components/organisms/DeleteModalContent1.vue'
 import DeleteModalContent2 from '@/components/organisms/DeleteModalContent2.vue'
 import DeleteModalContent3 from '@/components/organisms/DeleteModalContent3.vue'
-const userStore = useUserStore()
-const { getUserInfo } = userStore
+import { ref, type Ref } from 'vue'
+import ButtonAtom from '@/components/atoms/ButtonAtom.vue'
 
-const eventHandler = async () => {
-    console.log('eventHandler')
-    await getUserInfo('kjsw12@naver.com')
+// template
+const deleteModal: Ref<{ seen: boolean; step: number }> = ref({
+    seen: false,
+    step: 0
+})
+
+const deleteModalToggle: Handler = () => {
+    deleteModal.value.step = 0
+    deleteModal.value.seen = !deleteModal.value.seen
 }
-const buttonEvent: Handler = () => {
-    alert('event!!')
+const withdrawSubmitButtonHandle: DataHandler<string> = (password: string) => {
+    alert(password)
+    deleteModalToggle()
 }
 </script>
 
 <template>
-    <div class="bg-A805White">
-        <WideCardTemplate
-            title="Verify Please"
-            :content-messages="[
-                '사용자 이메일로 비밀번호 변경 링크를 전송했어요.',
-                '이메일을 통해 비밀번호 변경을 완료해주세요.'
-            ]"
-            button-label="메인화면 이동"
-            @button-click="buttonEvent"
-        ></WideCardTemplate>
-        <br />
-        <MainCard></MainCard>
-        <br />
-        <LoginForm></LoginForm>
-        <br />
-        <JoinForm></JoinForm>
-        <br />
-        <MyPage></MyPage>
-        <br />
-        <ChangePasswordForm></ChangePasswordForm>
-        <br />
-        <FindPasswordForm></FindPasswordForm>
-        <br />
-        <div class="flex flex-col gap-[20px]">
-            <RouterLink to="/game"
-                ><ButtonAtom customClass="button-style-1 button-border-violet button-violet "
-                    >방 이동</ButtonAtom
-                ></RouterLink
-            >
-            <ButtonAtom
-                @click="eventHandler"
-                customClass="button-style-1 button-border-violet button-violet "
-                >API 호출</ButtonAtom
-            >
-        </div>
-
-        <ModalTemplate custom-id="modal" custom-class="modal-template-style-1 w-[350px]">
-            <DeleteModalContent1 />
-            <!-- <DeleteModalContent2 />
-            <DeleteModalContent3 /> -->
-        </ModalTemplate>
+    <div class="bg-A805White h-full flex justify-center items-center">
+        <ButtonAtom custom-class="button-style-2 button-claret" @button-click="deleteModalToggle"
+            >회원 탈퇴</ButtonAtom
+        >
     </div>
+
+    <ModalTemplate
+        custom-id="modal"
+        custom-class="modal-template-style-1 w-[350px]"
+        :seen="deleteModal.seen"
+        @modal-close="deleteModalToggle"
+    >
+        <DeleteModalContent1
+            v-show="deleteModal.seen && deleteModal.step === 0"
+            @yes-button-handle="() => ++deleteModal.step"
+            @no-button-handle="deleteModalToggle"
+        />
+        <DeleteModalContent2
+            v-show="deleteModal.seen && deleteModal.step === 1"
+            @yes-button-handle="() => ++deleteModal.step"
+            @no-button-handle="deleteModalToggle"
+        />
+        <DeleteModalContent3
+            v-show="deleteModal.seen && deleteModal.step === 2"
+            @submit-button-handle="withdrawSubmitButtonHandle"
+        />
+    </ModalTemplate>
 </template>

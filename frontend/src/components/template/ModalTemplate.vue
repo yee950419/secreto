@@ -10,6 +10,7 @@ const handleClose = () => {
 
 <template>
     <div
+        v-if="seen"
         class="w-full h-full fixed top-0 left-0 flex justify-center items-center bg-A805Black bg-opacity-50"
     >
         <div :class="customClass" class="shadow-2xl">

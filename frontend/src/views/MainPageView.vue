@@ -4,6 +4,7 @@ import LoginForm from '../components/organisms/LoginForm.vue'
 import JoinForm from '@/components/organisms/JoinForm.vue'
 import MyPage from '@/components/organisms/MyPage.vue'
 import ButtonAtom from '@/components/atoms/ButtonAtom.vue'
+import ChangePasswordForm from '@/components/organisms/ChangePasswordForm.vue'
 // import { getUser } from '@/api/user'
 import { useUserStore } from '@/stores/user'
 const userStore = useUserStore()
@@ -24,6 +25,9 @@ const eventHandler = async () => {
         <JoinForm></JoinForm>
         <br />
         <MyPage></MyPage>
+        <br />
+        <ChangePasswordForm></ChangePasswordForm>
+        <br />
         <div class="flex flex-col gap-[20px]">
             <RouterLink to="/game"
                 ><ButtonAtom customClass="button-style-1 button-border-violet button-violet "

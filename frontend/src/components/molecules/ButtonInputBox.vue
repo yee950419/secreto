@@ -20,7 +20,7 @@ const props = defineProps([
     'buttonLabel'
 ])
 const emit = defineEmits(['inputChange', 'buttonClick'])
-const inputRef = ref(props.defaultValue)
+const inputRef = ref(props.defaultValue ? props.defaultValue : '')
 
 const handleChange: Handler = () => {
     emit('inputChange', inputRef.value)

@@ -18,7 +18,7 @@ const props = defineProps([
     'name'
 ])
 const emit = defineEmits(['inputChange'])
-const inputRef = ref(props.defaultValue)
+const inputRef = ref(props.defaultValue ? props.defaultValue : '')
 const handleChange: Handler = () => {
     emit('inputChange', inputRef.value)
 }

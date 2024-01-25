@@ -2,7 +2,7 @@
 import ButtonAtom from '@/components/atoms/ButtonAtom.vue'
 import InputBox from '@/components/molecules/InputBox.vue'
 import TextAtom from '@/components/atoms/TextAtom.vue'
-import AvatarAtom from '../atoms/AvatarAtom.vue'
+import AvatarAtom from '@/components/atoms/AvatarAtom.vue'
 import { ref } from 'vue'
 import type { Handler, DataHandler } from '@/types/common'
 import type { MyPageUserDataType } from '@/types/user'

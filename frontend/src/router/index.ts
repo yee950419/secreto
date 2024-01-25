@@ -1,7 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import HomeView from '../views/HomeView.vue'
-import MainPageView from '../views/MainPageView.vue'
-import sswTestVue from '../views/sswTest.vue'
+import HomeView from '@/views/HomeView.vue'
+import MainPageView from '@/views/MainPageView.vue'
+import sswTestVue from '@/views/sswTest.vue'
 
 const router = createRouter({
     history: createWebHistory(import.meta.env.BASE_URL),
@@ -17,7 +17,7 @@ const router = createRouter({
         {
             path: '/game',
             name: 'game',
-            component: () => import('@/components/templates/TimeLine.vue')
+            component: () => import('@/components/template/TimeLine.vue')
         }
     ]
 })

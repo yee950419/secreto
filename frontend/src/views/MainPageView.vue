@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import MainCard from '../components/organisms/MainCard.vue'
-import LoginForm from '../components/organisms/LoginForm.vue'
+import MainCard from '@/components/organisms/MainCard.vue'
+import LoginForm from '@/components/organisms/LoginForm.vue'
 import JoinForm from '@/components/organisms/JoinForm.vue'
 import MyPage from '@/components/organisms/MyPage.vue'
 import ButtonAtom from '@/components/atoms/ButtonAtom.vue'

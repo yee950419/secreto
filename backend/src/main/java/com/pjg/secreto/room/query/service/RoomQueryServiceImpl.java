@@ -1,17 +1,25 @@
 package com.pjg.secreto.room.query.service;
 
+import com.pjg.secreto.room.common.entity.Room;
+import com.pjg.secreto.room.common.exception.RoomException;
 import com.pjg.secreto.room.query.dto.SearchRoomListResponseDto;
 import com.pjg.secreto.room.query.dto.SearchRoomResponseDto;
 import com.pjg.secreto.room.query.dto.SearchRoomUserListResponseDto;
+import com.pjg.secreto.room.query.repository.RoomQueryRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+@RequiredArgsConstructor
 @Transactional(readOnly = true)
 @Service
 public class RoomQueryServiceImpl implements RoomQueryService{
+
+    private final RoomQueryRepository roomQueryRepository;
 
     @Override
     public List<SearchRoomUserListResponseDto> searchRoomUserList(Long roomNo) {
@@ -56,6 +64,16 @@ public class RoomQueryServiceImpl implements RoomQueryService{
         resultList.add(result6);
 
         return resultList;
+
+//        try {
+//
+//
+//        } catch (Exception e) {
+//            e.getStackTrace();
+//        }
+//
+//        return null;
+
     }
 
     @Override
@@ -91,12 +109,23 @@ public class RoomQueryServiceImpl implements RoomQueryService{
     @Override
     public SearchRoomResponseDto searchRoom(Long roomNo) {
 
-        SearchRoomResponseDto result = SearchRoomResponseDto.builder()
-                .roomNo(1L).roomName("싸피 10기 방").entryCode("3DFSas")
-                .roomStartAt("2024/01/15 00:00:00").roomEndAt("2024/01/22 00:00:00")
-                .hostParticipantYn(true).commonYn(false).missionSubmitTime("12:00:00")
-                .missionStartAt("2024/01/10").roomStartYn(false).build();
+        try {
 
-        return result;
+            Room find = roomQueryRepository.findById(roomNo).orElseThrow(() -> new RoomException("해당 방이 없습니다."));
+
+            SearchRoomResponseDto result = SearchRoomResponseDto.builder()
+                    .roomNo(find.getId()).roomName(find.getRoomName()).entryCode(find.getEntryCode())
+                    .roomStartAt(find.getRoomStartAt()).roomEndAt(find.getRoomEndAt())
+                    .hostParticipantYn(find.getHostParticipantYn()).commonYn(find.getCommonYn())
+                    .missionSubmitTime(find.getMissionSubmitTime()).missionStartAt(find.getMissionStartAt())
+                    .roomStartYn(find.getRoomStartYn()).build();
+
+            return result;
+
+        } catch (Exception e) {
+            e.getStackTrace();
+        }
+
+        return null;
     }
 }

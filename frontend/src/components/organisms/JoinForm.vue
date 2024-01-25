@@ -4,44 +4,38 @@ import InputBox from '@/components/molecules/InputBox.vue'
 import ButtonInputBox from '@/components/molecules/ButtonInputBox.vue'
 import TextAtom from '@/components/atoms/TextAtom.vue'
 import { ref } from 'vue'
-import type { Ref } from 'vue'
+import type { Handler, DataHandler } from '@/types/common'
+import type { JoinRequestType } from '@/types/user'
 
-type LoginDataType = Ref<{
-    email: string
-    password: string
-    nickname: string
-}>
-type handler = () => void
-type dataHandler = (data: string) => void
 const passwordConfirm = ref()
 const verificationCode = ref()
-const userData: LoginDataType = ref({
+const userData: JoinRequestType = ref({
     email: '',
     password: '',
     nickname: ''
 })
-const emailInputChangeHandler: dataHandler = (data: string) => {
+const emailInputChangeHandler: DataHandler<string> = (data: string) => {
     userData.value.email = data
 }
-const passwordInputChangeHandler: dataHandler = (data: string) => {
+const passwordInputChangeHandler: DataHandler<string> = (data: string) => {
     userData.value.password = data
 }
-const passwordConfirmInputChangeHandler: dataHandler = (data: string) => {
+const passwordConfirmInputChangeHandler: DataHandler<string> = (data: string) => {
     passwordConfirm.value = data
 }
-const verificationCodeInputChangeHandler: dataHandler = (data: string) => {
+const verificationCodeInputChangeHandler: DataHandler<string> = (data: string) => {
     verificationCode.value = data
 }
-const nicknameInputChangeHandler: dataHandler = (data: string) => {
+const nicknameInputChangeHandler: DataHandler<string> = (data: string) => {
     userData.value.nickname = data
 }
-const emailVerificationButtonHandler: dataHandler = (data: string) => {
+const emailVerificationButtonHandler: DataHandler<string> = (data: string) => {
     alert(`send to : ${data}`)
 }
-const verificationCodeButtonHandler: dataHandler = (data: string) => {
+const verificationCodeButtonHandler: DataHandler<string> = (data: string) => {
     alert(`verification code : ${data}`)
 }
-const joinButtonHandler: handler = () => {
+const joinButtonHandler: Handler = () => {
     if (userData.value.password !== passwordConfirm.value) {
         alert('incorrect password confirm.')
     }

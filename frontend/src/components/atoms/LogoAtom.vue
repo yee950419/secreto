@@ -1,11 +1,11 @@
 <script setup lang="ts">
+import type { Handler } from '@/types/common'
+
 defineProps(['customClass'])
-const emit = defineEmits(['click'])
 
-type ClickHandler = () => void
-
-const handleClick: ClickHandler = () => {
-    emit('click')
+const emit = defineEmits(['imageClick'])
+const handleClick: Handler = () => {
+    emit('imageClick')
 }
 </script>
 

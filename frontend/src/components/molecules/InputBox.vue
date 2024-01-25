@@ -1,5 +1,7 @@
 <script setup lang="ts">
 import { ref } from 'vue'
+import type { Handler } from '@/types/common'
+
 const props = defineProps([
     'label',
     'customClass',
@@ -17,9 +19,7 @@ const props = defineProps([
 ])
 const emit = defineEmits(['inputChange'])
 const inputRef = ref(props.defaultValue)
-
-type ChangeHandler = () => void
-const handleChange: ChangeHandler = () => {
+const handleChange: Handler = () => {
     emit('inputChange', inputRef.value)
 }
 </script>

@@ -4,12 +4,21 @@ import HeaderProfile from '@/components/molecules/HeaderProfile.vue'
 import TextAtom from '@/components/atoms/TextAtom.vue'
 import { MenuOutlined } from '@ant-design/icons-vue'
 import { ref, computed, onMounted, onUnmounted } from 'vue'
+import { useUserStore } from '@/stores/user'
+import { storeToRefs } from 'pinia'
+
+const userStore = useUserStore()
+const { userInfo } = storeToRefs(userStore)
 
 const windowWidth = ref(window.innerWidth)
 const isMdOrLarger = computed(() => windowWidth.value >= 768) // 예시에서는 md의 화면 크기가 768px이라고 가정
 
 const handleResize = () => {
     windowWidth.value = window.innerWidth
+}
+
+const clickHandler = () => {
+    console.log('clickHandler', userInfo.value)
 }
 
 onMounted(() => {
@@ -29,7 +38,13 @@ onUnmounted(() => {
         <MenuOutlined v-if="!isMdOrLarger" style="font-size: 24px" class="ml-[40px]" />
         <HeaderLogo class="md:ml-[20px] max-md:mx-auto" />
         <TextAtom class="text-1" v-if="isMdOrLarger">방제목</TextAtom>
-        <HeaderProfile v-if="isMdOrLarger" class="mr-[40px]" />
+        <HeaderProfile
+            @click="clickHandler"
+            v-if="isMdOrLarger"
+            :imageUrl="userInfo.profileUrl"
+            :name="userInfo.userName"
+            class="mr-[40px]"
+        />
     </div>
 </template>
 

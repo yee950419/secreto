@@ -9,7 +9,7 @@ const checkBoxHandler: Handler = () => {
 
 <template>
     <div class="flex items-center" :class="customClass">
-        <input @click="checkBoxHandler" type="checkbox" :id="customId" />
+        <input @change="checkBoxHandler" type="checkbox" :id="customId" />
         <label :for="customId"><slot></slot></label>
     </div>
 </template>

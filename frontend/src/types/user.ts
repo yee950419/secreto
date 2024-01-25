@@ -16,3 +16,8 @@ export type JoinRequestType = Ref<{
     password: string
     nickname: string
 }>
+    
+export type PasswordChangeRequest = Ref<{
+    currentPassword: string
+    newPassword: string
+}>

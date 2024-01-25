@@ -1,28 +1,65 @@
 <script setup lang="ts">
+import CheckBox from '@/components/molecules/CheckBox.vue'
 import { ref } from 'vue'
-import ButtonAtom from '@/components/atoms/ButtonAtom.vue'
-import ModalTemplate from '@/components/template/ModalTemplate.vue'
-import SelectBox from '@/components/molecules/SelectBox.vue'
-import ButtonInputBox from '@/components/molecules/ButtonInputBox.vue'
-const seen = ref(false)
-const testhandler = () => {
-    seen.value = !seen.value
+import type { DataHandler } from '@/types/common'
+import { PlusSquareOutlined } from '@ant-design/icons-vue'
+const dummyList = ref([
+    {
+        id: 1,
+        name: 'test1',
+        checked: true
+    },
+    {
+        id: 2,
+        name: 'test2',
+        checked: false
+    },
+    {
+        id: 3,
+        name: 'test3',
+        checked: false
+    }
+])
+const falseValue = ref(true)
+const listChecked: DataHandler<boolean> = (data: boolean) => {
+    if (data) {
+        dummyList.value.forEach((item) => {
+            item.checked = true
+        })
+    } else {
+        dummyList.value.forEach((item) => {
+            item.checked = false
+        })
+    }
+}
+const check = ref(false)
+const checkBoxStateHandler: DataHandler<object> = (ob) => {
+    ob.checked = !ob.checked
+    console.log(ob)
 }
 </script>
 
 <template>
-    <div class="bg-A805White">
-        {{ seen }}
-        <ButtonAtom
-            @button-click="testhandler"
-            custom-class="button-style-1 button-border-violet button-claret"
-            >aqwe</ButtonAtom
+    <div class="bg-A805RealWhite border w-full border-A805DarkGrey">
+        <CheckBox custom-class="checkbox-molecule-style-1">전체 선택</CheckBox>
+        {{ dummyList }}
+        <hr class="border-A805DarkGrey" />
+        <CheckBox
+            v-for="mission in dummyList"
+            :key="mission.id"
+            :value="mission.id"
+            custom-class="checkbox-molecule-style-1"
+            :checkbox-content="mission"
+            @check-box-change="checkBoxStateHandler(mission)"
+            >{{ mission.name }} {{ mission.checked }}!</CheckBox
         >
-        <ButtonAtom custom-class="button-style-2" />
-        <ModalTemplate v-if="seen" custom-class="modal-template-style-1" @modal-close="testhandler">
-            qwer
-        </ModalTemplate>
-        <SelectBox custom-class="select-box-style-1"></SelectBox>
-        <ButtonInputBox custom-class="button-input-box-style-1"></ButtonInputBox>
+        <div class="flex items-center" custom-class="checkbox-molecule-style-1">
+            <PlusSquareOutlined class="my-[5px] mx-[8px]" />
+            추가 하기
+        </div>
+        <input type="checkbox" :checked="falseValue" />
+        {{ dummyList }}
     </div>
 </template>
+
+<style scoped></style>

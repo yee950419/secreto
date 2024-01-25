@@ -33,7 +33,7 @@ onUnmounted(() => {
 
 <template>
     <div
-        class="flex md:h-[140px] max-md:h-[100px] bg-A805Cream w-full md:justify-between items-center"
+        class="flex w-full items-center max-md:h-[100px] md:justify-between md:h-[140px] bg-A805Cream"
     >
         <MenuOutlined v-if="!isMdOrLarger" style="font-size: 24px" class="ml-[40px]" />
         <HeaderLogo class="md:ml-[20px] max-md:mx-auto" />

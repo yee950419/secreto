@@ -5,7 +5,6 @@ import JoinForm from '@/components/organisms/JoinForm.vue'
 import MyPage from '@/components/organisms/MyPage.vue'
 import ButtonAtom from '@/components/atoms/ButtonAtom.vue'
 import ChangePasswordForm from '@/components/organisms/ChangePasswordForm.vue'
-// import { getUser } from '@/api/user'
 import { useUserStore } from '@/stores/user'
 import FindPasswordForm from '@/components/organisms/FindPasswordForm.vue'
 import WideCardTemplate from '@/components/template/WideCardTemplate.vue'
@@ -13,9 +12,9 @@ import type { Handler } from '@/types/common'
 const userStore = useUserStore()
 const { getUserInfo } = userStore
 
-const eventHandler = async () => {
+const eventHandler = async (email: string) => {
     console.log('eventHandler')
-    await getUserInfo('kjsw12@naver.com')
+    await getUserInfo(email)
 }
 const buttonEvent: Handler = () => {
     alert('event!!')
@@ -53,7 +52,7 @@ const buttonEvent: Handler = () => {
                 ></RouterLink
             >
             <ButtonAtom
-                @click="eventHandler"
+                @click="eventHandler('kjsw12@naver.com')"
                 customClass="button-style-1 button-border-violet button-violet "
                 >API 호출</ButtonAtom
             >

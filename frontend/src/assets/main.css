@@ -518,4 +518,17 @@
         width: 100%;
         outline: none;
     }
+    .select-box-style-2 {
+        width: 110px;
+        height: 30px;
+        border-radius: 30px;
+        font-size: 14px;
+    }
+    .select-box-style-2 select {
+        appearance: none;
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        width: 100%;
+        outline: none;
+    }
 }

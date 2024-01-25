@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import ButtonAtom from '@/components/atoms/ButtonAtom.vue'
-import { ref } from 'vue'
+import { ref, type Ref } from 'vue'
 import type { Handler } from '@/types/common'
 
 const props = defineProps([
@@ -20,7 +20,7 @@ const props = defineProps([
     'buttonLabel'
 ])
 const emit = defineEmits(['inputChange', 'buttonClick'])
-const inputRef = ref(props.defaultValue ? props.defaultValue : '')
+const inputRef: Ref<string> = ref(props.defaultValue ? props.defaultValue : '')
 
 const handleChange: Handler = () => {
     emit('inputChange', inputRef.value)

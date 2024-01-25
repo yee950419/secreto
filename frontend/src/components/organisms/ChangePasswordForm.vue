@@ -2,7 +2,7 @@
 import ButtonAtom from '@/components/atoms/ButtonAtom.vue'
 import InputBox from '@/components/molecules/InputBox.vue'
 import TextAtom from '@/components/atoms/TextAtom.vue'
-import { ref } from 'vue'
+import { ref, type Ref } from 'vue'
 import type { Handler, DataHandler } from '@/types/common'
 import type { PasswordChangeRequest } from '@/types/user'
 
@@ -10,7 +10,7 @@ const passwordChangeRequest: PasswordChangeRequest = ref({
     currentPassword: '',
     newPassword: ''
 })
-const newPasswordConfirm = ref('')
+const newPasswordConfirm: Ref<string> = ref('')
 const passwordInputChangeHandler: DataHandler<string> = (data: string) => {
     passwordChangeRequest.value.currentPassword = data
 }
@@ -34,9 +34,7 @@ const myPageButtonHandler: Handler = () => {
 </script>
 
 <template>
-    <div
-        class="bg-A805RealWhite flex flex-col justify-between items-center h-[500px] w-full max-w-[400px] py-[20px] px-[40px]"
-    >
+    <div class="card-container">
         <TextAtom custom-class="text-[44px] font-Iceland">Change Password</TextAtom>
         <TextAtom custom-class="text-[14px]">새로 사용할 비밀번호를 입력해 주세요.</TextAtom>
         <div class="w-full mb-[20px]">

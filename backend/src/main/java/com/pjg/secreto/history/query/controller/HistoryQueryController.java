@@ -11,8 +11,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.Period;
-import java.time.ZonedDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -98,11 +96,11 @@ public class HistoryQueryController {
         ));
 
         summary_result.add(new SummaryDto(
-                "가장 빨리 마니또를 맞춘 맴버는?",
+                "최고의 맴버는?",
                 new SummaryResultData(
                         null,
                         "이싸피",
-                        null,
+                        10000L,
                         null,
                         "2023-01-19 17:49:00",
                         "https://www.nis.go.kr/main.do"
@@ -295,8 +293,8 @@ class B {
 
 
 class Tests {
-
     void testing() {
+
         List<Object> list = new ArrayList<>();
         list.add(new A(LocalDateTime.parse("2024-01-24T12:23")));
         list.add(new A(LocalDateTime.parse("2024-01-24T12:24")));

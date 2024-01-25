@@ -21,9 +21,10 @@ public class UserQueryController {
         result.put("tokenType", "bearer");
         result.put("userInfo", new UserInfo(
                 "",
-                "jdragonkee@naver.com",
-                "이재용",
-                "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQNdo1B7toUex0AGHmARKlTxFoUzlwRE9nz_6EnunVwnA&s"
+                "hm_son7@naver.com",
+                "손흥민",
+                "https://i.namu.wiki/i/_BVQ0GmKg_SW5_wWhgZPO1v_A6w7kGGPBww_5HaSQJcxl-QMHqzgqd1143pU8jsvEvD-G03lBPf24ZekZ875NPFyLaeQx6RxPGb-S0GFwkhHS1psHxaK_BkThCl40V-MEY-g2dZp8rHaTCrzA_CD5w.webp"
+                
         ));
 
 
@@ -47,9 +48,9 @@ public class UserQueryController {
         Map<String, Object> result = new HashMap<>();
         result.put("userInfo", new UserInfo(
                 "",
-                "jdragonkee@naver.com",
-                "이재용",
-                "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQNdo1B7toUex0AGHmARKlTxFoUzlwRE9nz_6EnunVwnA&s"
+                "hm_son7@naver.com",
+                "손흥민",
+                "https://i.namu.wiki/i/_BVQ0GmKg_SW5_wWhgZPO1v_A6w7kGGPBww_5HaSQJcxl-QMHqzgqd1143pU8jsvEvD-G03lBPf24ZekZ875NPFyLaeQx6RxPGb-S0GFwkhHS1psHxaK_BkThCl40V-MEY-g2dZp8rHaTCrzA_CD5w.webp"
         ));
 
         SuccessResponse response = new SuccessResponse(HttpStatus.OK, "정상적으로 반환하였습니다.", result);

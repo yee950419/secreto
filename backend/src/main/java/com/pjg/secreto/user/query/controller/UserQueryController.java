@@ -23,7 +23,7 @@ public class UserQueryController {
                 "",
                 "jdragonkee@naver.com",
                 "이재용",
-                "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQNdo1B7toUex0AGHmARKlTxFoUzlwRE9nz_6EnunVwnA&s"
+                "https://www.google.com/url?sa=i&url=https%3A%2F%2Fnamu.wiki%2Fw%2F%25EC%2586%2590%25ED%259D%25A5%25EB%25AF%25BC&psig=AOvVaw3hwk1U_g8hmvtI9YGXxndF&ust=1706258699363000&source=images&cd=vfe&opi=89978449&ved=0CBIQjRxqFwoTCKCTz46T-IMDFQAAAAAdAAAAABAE"
         ));
 
 
@@ -49,7 +49,7 @@ public class UserQueryController {
                 "",
                 "jdragonkee@naver.com",
                 "이재용",
-                "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQNdo1B7toUex0AGHmARKlTxFoUzlwRE9nz_6EnunVwnA&s"
+                "https://www.google.com/url?sa=i&url=https%3A%2F%2Fnamu.wiki%2Fw%2F%25EC%2586%2590%25ED%259D%25A5%25EB%25AF%25BC&psig=AOvVaw3hwk1U_g8hmvtI9YGXxndF&ust=1706258699363000&source=images&cd=vfe&opi=89978449&ved=0CBIQjRxqFwoTCKCTz46T-IMDFQAAAAAdAAAAABAE"
         ));
 
         SuccessResponse response = new SuccessResponse(HttpStatus.OK, "정상적으로 반환하였습니다.", result);

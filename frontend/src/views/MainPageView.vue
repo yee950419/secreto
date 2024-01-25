@@ -8,6 +8,8 @@ import ChangePasswordForm from '@/components/organisms/ChangePasswordForm.vue'
 // import { getUser } from '@/api/user'
 import { useUserStore } from '@/stores/user'
 import FindPasswordForm from '@/components/organisms/FindPasswordForm.vue'
+import WideCardTemplate from '@/components/template/WideCardTemplate.vue'
+import type { Handler } from '@/types/common'
 const userStore = useUserStore()
 const { getUserInfo } = userStore
 
@@ -15,10 +17,23 @@ const eventHandler = async () => {
     console.log('eventHandler')
     await getUserInfo('kjsw12@naver.com')
 }
+const buttonEvent: Handler = () => {
+    alert('event!!')
+}
 </script>
 
 <template>
     <div class="bg-A805White">
+        <WideCardTemplate
+            title="Verify Please"
+            :content-messages="[
+                '사용자 이메일로 비밀번호 변경 링크를 전송했어요.',
+                '이메일을 통해 비밀번호 변경을 완료해주세요.'
+            ]"
+            button-label="메인화면 이동"
+            @button-click="buttonEvent"
+        ></WideCardTemplate>
+        <br />
         <MainCard></MainCard>
         <br />
         <LoginForm></LoginForm>

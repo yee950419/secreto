@@ -5,3 +5,8 @@ export type MyPageUserDataType = Ref<{
     nickname: string
     profileUrl: string | null
 }>
+
+export type PasswordChangeRequest = Ref<{
+    currentPassword: string
+    newPassword: string
+}>

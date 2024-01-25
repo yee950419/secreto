@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import ButtonAtom from '../atoms/ButtonAtom.vue'
-import CharacterAtom from '../atoms/CharacterAtom.vue'
-import TextAtom from '../atoms/TextAtom.vue'
+import ButtonAtom from '@/components/atoms/ButtonAtom.vue'
+import CharacterAtom from '@/components/atoms/CharacterAtom.vue'
+import TextAtom from '@/components/atoms/TextAtom.vue'
 import type { Handler } from '@/types/common'
 
 defineProps(['title', 'titleClass', 'contentMessages', 'contentClass', 'buttonLabel'])

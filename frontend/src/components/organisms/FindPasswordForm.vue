@@ -6,6 +6,7 @@ import { ref } from 'vue'
 import type { Handler, DataHandler } from '@/types/common'
 import type { PasswordFindMailRequest } from '@/types/user'
 
+const emit = defineEmits(['emailSubmitHandle', 'prevPageHandle'])
 const passwordFindMailRequest: PasswordFindMailRequest = ref({
     email: ''
 })
@@ -13,17 +14,15 @@ const emailInputChangeHandler: DataHandler<string> = (data: string) => {
     passwordFindMailRequest.value.email = data
 }
 const findPasswordButtonHandler: Handler = () => {
-    alert('find password :' + passwordFindMailRequest.value.email)
+    emit('emailSubmitHandle', passwordFindMailRequest.value)
 }
-const myPageButtonHandler: Handler = () => {
-    alert('go to my page')
+const prevPageButtonHandler: Handler = () => {
+    emit('prevPageHandle')
 }
 </script>
 
 <template>
-    <div
-        class="bg-A805RealWhite flex flex-col justify-between items-center h-[500px] w-full max-w-[400px] py-[20px] px-[40px]"
-    >
+    <div class="card-container">
         <div class="flex flex-col items-center">
             <TextAtom custom-class="text-[44px] font-Iceland">Find Password</TextAtom>
             <TextAtom custom-class="text-[14px]">기존에 사용하던 이메일을 입력해주세요.</TextAtom>
@@ -47,7 +46,7 @@ const myPageButtonHandler: Handler = () => {
             <div class="flex justify-around w-full">
                 <ButtonAtom
                     custom-class="text-[14px] text-A805DarkGrey"
-                    @button-click="myPageButtonHandler"
+                    @button-click="prevPageButtonHandler"
                     >뒤로가기</ButtonAtom
                 >
             </div>

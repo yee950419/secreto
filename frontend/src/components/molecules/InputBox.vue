@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, type Ref } from 'vue'
 import type { Handler } from '@/types/common'
 
 const props = defineProps([
@@ -18,7 +18,7 @@ const props = defineProps([
     'name'
 ])
 const emit = defineEmits(['inputChange'])
-const inputRef = ref(props.defaultValue ? props.defaultValue : '')
+const inputRef: Ref<string> = ref(props.defaultValue ? props.defaultValue : '')
 const handleChange: Handler = () => {
     emit('inputChange', inputRef.value)
 }

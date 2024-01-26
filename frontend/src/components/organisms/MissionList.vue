@@ -1,8 +1,9 @@
 <script setup lang="ts">
 import CheckBox from '@/components/molecules/CheckBox.vue'
+import InputBox from '@/components/molecules/InputBox.vue'
 import { ref } from 'vue'
 import type { Handler, DataHandler } from '@/types/common'
-import { CheckOutlined, PlusSquareOutlined } from '@ant-design/icons-vue'
+import { PlusSquareOutlined } from '@ant-design/icons-vue'
 
 const myMisssionName = ref('')
 const myMissionChecked = ref(true)
@@ -31,7 +32,19 @@ const addMission: Handler = () => {
         checked: myMissionChecked.value
     })
     myMisssionName.value = ''
+    console.log('Add')
+}
+const datata = ref('')
+const ic: DataHandler<string> = (data: string) => {
+    datata.value = data
+    dummyList.value.push({
+        id: dummyList.value.length + 1,
+        name: data,
+        checked: myMissionChecked.value
+    })
+    myMisssionName.value = ''
     myMissionChecked.value = true
+    console.log('Add')
 }
 </script>
 
@@ -39,6 +52,7 @@ const addMission: Handler = () => {
     <div class="bg-A805RealWhite border w-full border-A805DarkGrey">
         <!-- <CheckBox custom-class="checkbox-molecule-style-1">전체 선택</CheckBox> -->
         {{ dummyList }}
+        {{ myMissionChecked }}
         <hr class="border-A805DarkGrey" />
         <CheckBox
             v-for="mission in dummyList"
@@ -48,17 +62,23 @@ const addMission: Handler = () => {
             v-model="mission.checked"
             >{{ mission.name }}</CheckBox
         >
+        <div class="flex flex-col"></div>
         <CheckBox
             custom-class="checkbox-molecule-style-1"
-            :custom-id="123"
+            :custom-id="123123"
             v-model="myMissionChecked"
-            ><input type="text" :value="myMisssionName" class="w-10"
-        /></CheckBox>
-        <CheckBox custom-class="checkbox-molecule-style-1" :custom-id="123">aaa</CheckBox>
-        <div class="flex items-center" custom-class="checkbox-molecule-style-1" @click="addMission">
+        >
+            <InputBox
+                custom-class="input-box-style-1 px-0"
+                custom-id="new-mission"
+                @input-change="ic"
+            />
+        </CheckBox>
+        <div class="flex items-center" custom-class="checkbox-molecule-style-1" @click="() => {}">
             <PlusSquareOutlined class="my-[5px] mx-[8px]" />
             추가 하기
         </div>
+        <InputBox custom-class="input-box-style-2"></InputBox>
     </div>
 </template>
 

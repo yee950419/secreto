@@ -502,7 +502,7 @@
         align-items: baseline;
     }
 
-    .checkbox-molecule-style-1 input {
+    .checkbox-molecule-style-1 .check-box-style {
         margin: 5px 10px;
         transform: scale(1.5);
     }

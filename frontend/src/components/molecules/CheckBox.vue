@@ -5,7 +5,12 @@ const model = defineModel({ default: false })
 
 <template>
     <div class="flex items-center" :class="customClass">
-        <input type="checkbox" :id="customId" v-model="model" />
+        <input
+            class="transform scale-150 check-box-style"
+            type="checkbox"
+            :id="customId"
+            v-model="model"
+        />
         <label :for="customId"><slot></slot></label>
     </div>
 </template>

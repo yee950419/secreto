@@ -71,7 +71,7 @@ const ic: DataHandler<string> = (data: string) => {
             <InputBox
                 custom-class="input-box-style-1 px-0"
                 custom-id="new-mission"
-                @input-change="ic"
+                @input-enter="ic"
             />
         </CheckBox>
         <div class="flex items-center" custom-class="checkbox-molecule-style-1" @click="() => {}">

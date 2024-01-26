@@ -44,7 +44,7 @@
         content: '';
         position: absolute;
         width: 6px;
-        background-color: blue;
+        background-color: var(--A805Blue);
         top: 0;
         bottom: 0;
         left: 50%;
@@ -119,6 +119,13 @@
     .content {
         padding: 20px 30px;
         background-color: white;
+        position: relative;
+        border-radius: 6px;
+    }
+
+    .predict {
+        padding: 20px 30px;
+        background-color: var(--A805Cream);
         position: relative;
         border-radius: 6px;
     }

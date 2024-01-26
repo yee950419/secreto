@@ -3,16 +3,13 @@ import ButtonAtom from '@/components/atoms/ButtonAtom.vue'
 import InputBox from '@/components/molecules/InputBox.vue'
 import TextAtom from '@/components/atoms/TextAtom.vue'
 import { ref } from 'vue'
-import type { Handler, DataHandler } from '@/types/common'
+import type { Handler } from '@/types/common'
 import type { PasswordFindMailRequest } from '@/types/user'
 
 const emit = defineEmits(['emailSubmitHandle', 'prevPageHandle'])
 const passwordFindMailRequest: PasswordFindMailRequest = ref({
     email: ''
 })
-const emailInputChangeHandler: DataHandler<string> = (data: string) => {
-    passwordFindMailRequest.value.email = data
-}
 const findPasswordButtonHandler: Handler = () => {
     emit('emailSubmitHandle', passwordFindMailRequest.value)
 }
@@ -35,7 +32,7 @@ const prevPageButtonHandler: Handler = () => {
             custom-class="w-full"
             custom-id="email"
             place-holder="example@secreto.com"
-            @input-change="emailInputChangeHandler"
+            v-model="passwordFindMailRequest.email"
         ></InputBox>
         <div class="w-full mb-[20px]">
             <ButtonAtom

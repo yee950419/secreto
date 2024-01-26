@@ -3,7 +3,7 @@ import ButtonAtom from '@/components/atoms/ButtonAtom.vue'
 import InputBox from '@/components/molecules/InputBox.vue'
 import TextAtom from '@/components/atoms/TextAtom.vue'
 import { ref, type Ref } from 'vue'
-import type { Handler, DataHandler } from '@/types/common'
+import type { Handler } from '@/types/common'
 import type { PasswordChangeRequest } from '@/types/user'
 
 const passwordChangeRequest: PasswordChangeRequest = ref({
@@ -11,15 +11,6 @@ const passwordChangeRequest: PasswordChangeRequest = ref({
     newPassword: ''
 })
 const newPasswordConfirm: Ref<string> = ref('')
-const passwordInputChangeHandler: DataHandler<string> = (data: string) => {
-    passwordChangeRequest.value.currentPassword = data
-}
-const newPasswordInputChangeHandler: DataHandler<string> = (data: string) => {
-    passwordChangeRequest.value.newPassword = data
-}
-const newPasswordConfirmInputChangeHandler: DataHandler<string> = (data: string) => {
-    newPasswordConfirm.value = data
-}
 const changePasswordButtonHandler: Handler = () => {
     console.log(passwordChangeRequest.value.newPassword, newPasswordConfirm.value)
     if (passwordChangeRequest.value.newPassword !== newPasswordConfirm.value) {
@@ -46,7 +37,7 @@ const myPageButtonHandler: Handler = () => {
                 custom-class="w-full my-[20px]"
                 custom-id="password"
                 place-holder="현재 비밀번호를 입력해주세요"
-                @input-change="passwordInputChangeHandler"
+                v-model="passwordChangeRequest.currentPassword"
             ></InputBox>
             <InputBox
                 label="새 비밀번호"
@@ -56,7 +47,7 @@ const myPageButtonHandler: Handler = () => {
                 custom-class="w-full my-[20px]"
                 custom-id="newPassword"
                 place-holder="새 비밀번호를 입력해주세요"
-                @input-change="newPasswordInputChangeHandler"
+                v-model="passwordChangeRequest.newPassword"
             ></InputBox>
             <InputBox
                 label="새로운 비밀번호 확인"
@@ -66,7 +57,7 @@ const myPageButtonHandler: Handler = () => {
                 custom-class="w-full my-[20px]"
                 custom-id="newPasswordConfirm"
                 place-holder="새 비밀번호를 한번 더 입력해주세요"
-                @input-change="newPasswordConfirmInputChangeHandler"
+                v-model="newPasswordConfirm"
             ></InputBox>
             <ButtonAtom
                 custom-class="button-style-2 w-full button-shadow button-cream my-[15px]"

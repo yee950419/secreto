@@ -2,14 +2,11 @@
 import ButtonAtom from '@/components/atoms/ButtonAtom.vue'
 import TextAtom from '@/components/atoms/TextAtom.vue'
 import InputBox from '@/components/molecules/InputBox.vue'
-import type { DataHandler, Handler } from '@/types/common'
+import type { Handler } from '@/types/common'
 import { ref, type Ref } from 'vue'
 
 const emit = defineEmits(['submitButtonHandle'])
 const inputRef: Ref<string> = ref('')
-const passwordInputChangeHandler: DataHandler<string> = (password: string) => {
-    inputRef.value = password
-}
 const submitButtonClick: Handler = () => {
     emit('submitButtonHandle', inputRef.value)
 }
@@ -24,7 +21,7 @@ const submitButtonClick: Handler = () => {
         <div class="flex flex-col justify-center items-center">
             <InputBox
                 type="password"
-                @input-change="passwordInputChangeHandler"
+                v-model="inputRef"
                 custom-class="input-box-style-2 line-claret w-[250px] h-[40px] my-[10px]"
             />
             <ButtonAtom

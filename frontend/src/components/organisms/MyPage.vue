@@ -4,7 +4,7 @@ import InputBox from '@/components/molecules/InputBox.vue'
 import TextAtom from '@/components/atoms/TextAtom.vue'
 import AvatarAtom from '@/components/atoms/AvatarAtom.vue'
 import { ref } from 'vue'
-import type { Handler, DataHandler } from '@/types/common'
+import type { Handler } from '@/types/common'
 import type { MyPageUserDataType } from '@/types/user'
 
 const userInfo: MyPageUserDataType = ref({
@@ -12,9 +12,6 @@ const userInfo: MyPageUserDataType = ref({
     nickname: '테스트유저',
     profileUrl: null
 })
-const nicknameInputChangeHandler: DataHandler<string> = (data: string) => {
-    userInfo.value.nickname = data
-}
 const profileImageChangeHandler: Handler = () => {
     alert('profile image change')
 }
@@ -55,7 +52,7 @@ const withdrawalButtonHandler: Handler = () => {
                 custom-class="w-full"
                 custom-id="email"
                 :default-value="userInfo.nickname"
-                @input-change="nicknameInputChangeHandler"
+                v-model="userInfo.nickname"
             ></InputBox>
             <div class="w-full flex justify-left ps-[20px] items-center">
                 <AvatarAtom

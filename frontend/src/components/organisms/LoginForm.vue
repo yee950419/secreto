@@ -4,7 +4,7 @@ import InputBox from '@/components/molecules/InputBox.vue'
 import TextAtom from '@/components/atoms/TextAtom.vue'
 import CheckBox from '@/components/molecules/CheckBox.vue'
 import { ref } from 'vue'
-import type { Handler, DataHandler } from '@/types/common'
+import type { Handler } from '@/types/common'
 import type { LoginRequestType } from '@/types/user'
 
 const emit = defineEmits([
@@ -17,12 +17,6 @@ const loginRequest: LoginRequestType = ref({
     email: '',
     password: ''
 })
-const emailInputChangeHandler: DataHandler<string> = (data: string) => {
-    loginRequest.value.email = data
-}
-const passwordInputChangeHandler: DataHandler<string> = (data: string) => {
-    loginRequest.value.password = data
-}
 const loginButtonHandler: Handler = () => {
     emit('loginHandle', loginRequest.value)
 }
@@ -50,7 +44,7 @@ const findPasswordButtonHandler: Handler = () => {
                 custom-class="w-full"
                 custom-id="email"
                 place-holder="example@secreto.com"
-                @input-change="emailInputChangeHandler"
+                v-model="loginRequest.email"
             ></InputBox>
             <InputBox
                 label="비밀번호"
@@ -60,7 +54,7 @@ const findPasswordButtonHandler: Handler = () => {
                 custom-class="w-full"
                 custom-id="password"
                 place-holder="비밀번호를 입력해주세요"
-                @input-change="passwordInputChangeHandler"
+                v-model="loginRequest.password"
             ></InputBox>
             <div class="text-[12px] w-full flex justify-between items-center">
                 <CheckBox

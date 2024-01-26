@@ -15,21 +15,6 @@ const userData: JoinRequestType = ref({
     password: '',
     nickname: ''
 })
-const emailInputChangeHandler: DataHandler<string> = (data: string) => {
-    userData.value.email = data
-}
-const passwordInputChangeHandler: DataHandler<string> = (data: string) => {
-    userData.value.password = data
-}
-const passwordConfirmInputChangeHandler: DataHandler<string> = (data: string) => {
-    passwordConfirm.value = data
-}
-const verificationCodeInputChangeHandler: DataHandler<string> = (data: string) => {
-    verificationCode.value = data
-}
-const nicknameInputChangeHandler: DataHandler<string> = (data: string) => {
-    userData.value.nickname = data
-}
 const emailVerificationButtonHandler: DataHandler<string> = (data: string) => {
     alert(`send to : ${data}`)
 }
@@ -57,7 +42,7 @@ const joinButtonHandler: Handler = () => {
                 custom-class="w-full my-[30px]"
                 custom-id="email"
                 place-holder="example@secreto.com"
-                @input-change="emailInputChangeHandler"
+                v-model="userData.email"
                 button-label="인증"
                 @button-click="emailVerificationButtonHandler"
             ></ButtonInputBox>
@@ -69,7 +54,7 @@ const joinButtonHandler: Handler = () => {
                 custom-class="w-full my-[30px]"
                 custom-id="verificationCode"
                 place-holder="인증코드를 입력해주세요"
-                @input-change="verificationCodeInputChangeHandler"
+                v-model="verificationCode"
                 button-label="확인"
                 @button-click="verificationCodeButtonHandler"
             ></ButtonInputBox>
@@ -81,7 +66,7 @@ const joinButtonHandler: Handler = () => {
                 custom-class="w-full my-[30px]"
                 custom-id="password"
                 place-holder="비밀번호를 입력해주세요"
-                @input-change="passwordInputChangeHandler"
+                v-model="userData.password"
             ></InputBox>
             <InputBox
                 label="비밀번호 확인"
@@ -91,7 +76,7 @@ const joinButtonHandler: Handler = () => {
                 custom-class="w-full my-[30px]"
                 custom-id="passwordConfirm"
                 place-holder="비밀번호 확인을 입력해주세요"
-                @input-change="passwordConfirmInputChangeHandler"
+                v-model="passwordConfirm"
             ></InputBox>
             <InputBox
                 label="닉네임"
@@ -101,7 +86,7 @@ const joinButtonHandler: Handler = () => {
                 custom-class="w-full my-[30px]"
                 custom-id="nickname"
                 place-holder="닉네임을 입력해주세요"
-                @input-change="nicknameInputChangeHandler"
+                v-model="userData.nickname"
             ></InputBox>
             <ButtonAtom
                 custom-class="button-style-2 w-full button-shadow button-cream mt-[15px]"

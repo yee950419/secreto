@@ -17,10 +17,10 @@ const props = defineProps([
     'max',
     'name'
 ])
-const emit = defineEmits(['inputChange'])
-const inputRef: Ref<string> = ref(props.defaultValue ? props.defaultValue : '')
-const handleChange: Handler = () => {
-    emit('inputChange', inputRef.value)
+const emit = defineEmits(['inputEnter'])
+const model = defineModel()
+const handleEnter: Handler = () => {
+    emit('inputEnter')
 }
 </script>
 
@@ -37,8 +37,8 @@ const handleChange: Handler = () => {
             :min="min"
             :max="max"
             :hidden="hidden"
-            v-model="inputRef"
-            @keypress.enter="handleChange"
+            v-model="model"
+            @keypress.enter="handleEnter"
         />
     </div>
 </template>

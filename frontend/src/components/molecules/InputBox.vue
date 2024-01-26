@@ -2,13 +2,12 @@
 import { ref, type Ref } from 'vue'
 import type { Handler } from '@/types/common'
 
-const props = defineProps([
+defineProps([
     'label',
     'customClass',
     'labelClass',
     'inputClass',
     'customId',
-    'defaultValue',
     'placeHolder',
     'type',
     'readonly',

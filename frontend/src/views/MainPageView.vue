@@ -8,6 +8,10 @@ import type { DataHandler, Handler, WideCardTemplateType } from '@/types/common'
 import type { LoginRequestType, PasswordFindMailRequest } from '@/types/user'
 import type { Ref } from 'vue'
 import { ref } from 'vue'
+import DeleteModalContent1 from '@/components/organisms/DeleteModalContent1.vue'
+import DeleteModalContent2 from '@/components/organisms/DeleteModalContent2.vue'
+import DeleteModalContent3 from '@/components/organisms/DeleteModalContent3.vue'
+import ModalTemplate from '@/components/template/ModalTemplate.vue'
 
 const ButtonLabel = Object.freeze({
     START: 'start',
@@ -96,31 +100,45 @@ const findPasswordPrevPageHandler: Handler = () => {
     state.value = State.LOGIN
     buttonLabel.value = ButtonLabel.JOIN
 }
+
+// template
+const deleteModal: Ref<{ seen: boolean; step: number }> = ref({
+    seen: false,
+    step: 0
+})
+const deleteModalToggle: Handler = () => {
+    deleteModal.value.step = 0
+    deleteModal.value.seen = !deleteModal.value.seen
+}
+const withdrawSubmitButtonHandle: DataHandler<string> = (password: string) => {
+    alert(password)
+    deleteModalToggle()
+}
 </script>
 
 <template>
     <div class="bg-A805White h-full w-full flex justify-center items-center">
         <div class="card-template-container">
             <MainCard
-                v-show="state !== State.TEMPLATE"
+                v-if="state !== State.TEMPLATE"
                 @button-click="buttonClickHandler"
                 :button-label-ref="buttonLabel"
             />
             <LoginForm
-                v-show="state === State.LOGIN"
+                v-if="state === State.LOGIN"
                 @login-handle="loginHandler"
                 @google-login-handle="googleLoginHandler"
                 @kakao-login-handle="kakaoLoginHandler"
                 @find-password-handle="findPasswordHandler"
             />
-            <JoinForm v-show="state === State.JOIN" @join-submit-handle="joinHandler" />
+            <JoinForm v-if="state === State.JOIN" @join-submit-handle="joinHandler" />
             <FindPasswordForm
-                v-show="state === State.PASSWORD"
+                v-if="state === State.PASSWORD"
                 @emailSubmitHandle="findPasswordEmailSubmitHandler"
                 @prev-page-handle="findPasswordPrevPageHandler"
             />
             <WideCardTemplate
-                v-show="state === State.TEMPLATE"
+                v-if="state === State.TEMPLATE"
                 :title="template.title"
                 :content-messages="template.contentMessages"
                 :button-label="template.buttonLabel"
@@ -136,17 +154,17 @@ const findPasswordPrevPageHandler: Handler = () => {
         @modal-close="deleteModalToggle"
     >
         <DeleteModalContent1
-            v-show="deleteModal.seen && deleteModal.step === 0"
+            v-if="deleteModal.seen && deleteModal.step === 0"
             @yes-button-handle="() => ++deleteModal.step"
             @no-button-handle="deleteModalToggle"
         />
         <DeleteModalContent2
-            v-show="deleteModal.seen && deleteModal.step === 1"
+            v-if="deleteModal.seen && deleteModal.step === 1"
             @yes-button-handle="() => ++deleteModal.step"
             @no-button-handle="deleteModalToggle"
         />
         <DeleteModalContent3
-            v-show="deleteModal.seen && deleteModal.step === 2"
+            v-if="deleteModal.seen && deleteModal.step === 2"
             @submit-button-handle="withdrawSubmitButtonHandle"
         />
     </ModalTemplate>

@@ -34,9 +34,7 @@ const withdrawalButtonHandler: Handler = () => {
 </script>
 
 <template>
-    <div
-        class="bg-A805RealWhite flex flex-col justify-between items-center h-[500px] w-full max-w-[400px] py-[20px] px-[40px]"
-    >
+    <div class="card-container">
         <TextAtom custom-class="text-[48px] font-Iceland">My Page</TextAtom>
         <div class="w-full flex flex-col justify-between h-[270px]">
             <InputBox

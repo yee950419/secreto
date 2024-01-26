@@ -7,6 +7,12 @@ import { ref } from 'vue'
 import type { Handler, DataHandler } from '@/types/common'
 import type { LoginRequestType } from '@/types/user'
 
+const emit = defineEmits([
+    'loginHandle',
+    'kakaoLoginHandle',
+    'googleLoginHandle',
+    'findPasswordHandle'
+])
 const loginRequest: LoginRequestType = ref({
     email: '',
     password: ''
@@ -18,21 +24,21 @@ const passwordInputChangeHandler: DataHandler<string> = (data: string) => {
     loginRequest.value.password = data
 }
 const loginButtonHandler: Handler = () => {
-    console.log(JSON.stringify(loginRequest.value))
-    alert('Login')
+    emit('loginHandle', loginRequest.value)
 }
 const kakaoLoginButtonHandler: Handler = () => {
-    alert('Kakao Login')
+    emit('kakaoLoginHandle')
 }
 const googleLoginButtonHandler: Handler = () => {
-    alert('Google Login')
+    emit('googleLoginHandle')
+}
+const findPasswordButtonHandler: Handler = () => {
+    emit('findPasswordHandle')
 }
 </script>
 
 <template>
-    <div
-        class="bg-A805RealWhite flex flex-col justify-between items-center h-[500px] w-full max-w-[400px] py-[20px] px-[40px]"
-    >
+    <div class="card-container">
         <TextAtom custom-class="text-[48px] font-Iceland">Login</TextAtom>
 
         <div class="w-full flex flex-col justify-between h-[200px]">
@@ -62,11 +68,13 @@ const googleLoginButtonHandler: Handler = () => {
                     custom-id="remember"
                     >아이디 기억하기</CheckBox
                 >
-                <a href="#" class="text-A805Blue">비밀번호를 잊어버리셨나요?</a>
+                <ButtonAtom custom-class="text-A805Blue" @button-click="findPasswordButtonHandler"
+                    >비밀번호를 잊어버리셨나요?</ButtonAtom
+                >
             </div>
         </div>
         <ButtonAtom
-            custom-class="button-style-2 w-full button-shadow button-cream"
+            custom-class="button-style-2 w-full button-shadow button-cream mt-[20px] mb-[10px]"
             @button-click="loginButtonHandler"
             >로그인</ButtonAtom
         >

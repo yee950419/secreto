@@ -37,8 +37,8 @@ const handleChange: Handler = () => {
             :min="min"
             :max="max"
             :hidden="hidden"
-            @change="handleChange"
-            v-model.lazy="inputRef"
+            v-model="inputRef"
+            @keypress.enter="handleChange"
         />
     </div>
 </template>

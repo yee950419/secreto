@@ -1,15 +1,11 @@
 <script setup lang="ts">
-import type { Handler } from '@/types/common'
-defineProps(['customClass', 'customId'])
-const emit = defineEmits(['checkBoxChange'])
-const checkBoxHandler: Handler = () => {
-    emit('checkBoxChange')
-}
+const props = defineProps(['customClass', 'customId'])
+const model = defineModel({ default: false })
 </script>
 
 <template>
     <div class="flex items-center" :class="customClass">
-        <input @click="checkBoxHandler" type="checkbox" :id="customId" />
+        <input type="checkbox" :id="customId" v-model="model" />
         <label :for="customId"><slot></slot></label>
     </div>
 </template>

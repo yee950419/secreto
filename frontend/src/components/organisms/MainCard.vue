@@ -15,13 +15,7 @@ const buttonClickHandler: Handler = () => {
         class="bg-A805Cream flex flex-col justify-between items-center h-[500px] w-[400px] p-[20px]"
     >
         <MainLogo size="200"></MainLogo>
-        <div class="text-[16px]">
-            <p>
-                Lorem ipsum dolor sit amet consectetur, adipisicing elit. Quasi consequatur iure
-                quos accusantium corrupti velit officiis dignissimos est porro! Tempore aperiam
-                quasi saepe, maiores illum aliquam fugit ut consequuntur aut?
-            </p>
-        </div>
+        <slot></slot>
         <ButtonAtom
             custom-class="button-style-1 button-claret button-shadow m-[20px]"
             @button-click="buttonClickHandler"

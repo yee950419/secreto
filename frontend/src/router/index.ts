@@ -5,8 +5,16 @@ const router = createRouter({
     routes: [
         {
             path: '/',
-            name: 'home',
-            component: () => import('@/views/MainPageView.vue'),
+            name: 'beforeLogin',
+            component: () => import('@/views/LoginView.vue'),
+            meta: {
+                hide: true
+            }
+        },
+        {
+            path: '/main',
+            name: 'main',
+            component: () => import('@/views/MainView.vue'),
             meta: {
                 hide: true
             }

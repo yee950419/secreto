@@ -7,6 +7,7 @@ import { ref } from 'vue'
 import type { Handler } from '@/types/common'
 import type { MyPageUserDataType } from '@/types/user'
 
+const emit = defineEmits(['passwordChangeHandle', 'withdrawalHandle'])
 const userInfo: MyPageUserDataType = ref({
     email: 'test@secreto.com',
     nickname: '테스트유저',
@@ -21,12 +22,13 @@ const modifyButtonHandler: Handler = () => {
 }
 const profileImageDeleteButtonHandler: Handler = () => {
     alert('profile image delete')
+    changePasswordButtonHandler
 }
 const changePasswordButtonHandler: Handler = () => {
-    alert('move change password page')
+    emit('passwordChangeHandle')
 }
 const withdrawalButtonHandler: Handler = () => {
-    alert('withrawal modal')
+    emit('withdrawalHandle')
 }
 </script>
 
@@ -41,7 +43,7 @@ const withdrawalButtonHandler: Handler = () => {
                 input-class="input-box-style-1 line-claret"
                 custom-class="w-full"
                 custom-id="email"
-                :default-value="userInfo.email"
+                v-model="userInfo.email"
                 readonly
             ></InputBox
             ><InputBox
@@ -51,12 +53,11 @@ const withdrawalButtonHandler: Handler = () => {
                 input-class="input-box-style-1 line-claret"
                 custom-class="w-full"
                 custom-id="email"
-                :default-value="userInfo.nickname"
                 v-model="userInfo.nickname"
             ></InputBox>
             <div class="w-full flex justify-left ps-[20px] items-center">
                 <AvatarAtom
-                    custom-class="my-page-profile cursor-pointer"
+                    custom-class="my-page-profile h-[100px] cursor-pointer"
                     :image-url="userInfo.profileUrl"
                     @image-click="profileImageChangeHandler"
                 ></AvatarAtom>

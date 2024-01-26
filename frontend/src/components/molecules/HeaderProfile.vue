@@ -10,12 +10,15 @@ defineProps({
     imageUrl: {
         type: String as () => string | null,
         required: true
+    },
+    customClass: {
+        type: String
     }
 })
 </script>
 
 <template>
-    <div class="flex items-center gap-[20px]">
+    <div class="flex items-center gap-[20px]" :class="customClass">
         <AvatarAtom customClass="header-profile" :imageUrl="imageUrl" />
         <TextAtom class="text-4"
             ><span class="text-A805Blue">{{ name }}</span

@@ -4,6 +4,7 @@ import JoinForm from '@/components/organisms/JoinForm.vue'
 import LoginForm from '@/components/organisms/LoginForm.vue'
 import MainCard from '@/components/organisms/MainCard.vue'
 import WideCardTemplate from '@/components/template/WideCardTemplate.vue'
+import TextAtom from '@/components/atoms/TextAtom.vue'
 import type { DataHandler, Handler, WideCardTemplateType } from '@/types/common'
 import type { LoginRequestType, PasswordFindMailRequest } from '@/types/user'
 import type { Ref } from 'vue'
@@ -100,20 +101,6 @@ const findPasswordPrevPageHandler: Handler = () => {
     state.value = State.LOGIN
     buttonLabel.value = ButtonLabel.JOIN
 }
-
-// template
-const deleteModal: Ref<{ seen: boolean; step: number }> = ref({
-    seen: false,
-    step: 0
-})
-const deleteModalToggle: Handler = () => {
-    deleteModal.value.step = 0
-    deleteModal.value.seen = !deleteModal.value.seen
-}
-const withdrawSubmitButtonHandle: DataHandler<string> = (password: string) => {
-    alert(password)
-    deleteModalToggle()
-}
 </script>
 
 <template>
@@ -123,7 +110,13 @@ const withdrawSubmitButtonHandle: DataHandler<string> = (password: string) => {
                 v-if="state !== State.TEMPLATE"
                 @button-click="buttonClickHandler"
                 :button-label-ref="buttonLabel"
-            />
+            >
+                <TextAtom custom-class="text-[16px]">
+                    Lorem ipsum dolor sit amet consectetur, adipisicing elit. Quasi consequatur iure
+                    quos accusantium corrupti velit officiis dignissimos est porro! Tempore aperiam
+                    quasi saepe, maiores illum aliquam fugit ut consequuntur aut?
+                </TextAtom></MainCard
+            >
             <LoginForm
                 v-if="state === State.LOGIN"
                 @login-handle="loginHandler"
@@ -146,26 +139,4 @@ const withdrawSubmitButtonHandle: DataHandler<string> = (password: string) => {
             />
         </div>
     </div>
-
-    <ModalTemplate
-        custom-id="modal"
-        custom-class="modal-template-style-1 w-[350px]"
-        :seen="deleteModal.seen"
-        @modal-close="deleteModalToggle"
-    >
-        <DeleteModalContent1
-            v-if="deleteModal.seen && deleteModal.step === 0"
-            @yes-button-handle="() => ++deleteModal.step"
-            @no-button-handle="deleteModalToggle"
-        />
-        <DeleteModalContent2
-            v-if="deleteModal.seen && deleteModal.step === 1"
-            @yes-button-handle="() => ++deleteModal.step"
-            @no-button-handle="deleteModalToggle"
-        />
-        <DeleteModalContent3
-            v-if="deleteModal.seen && deleteModal.step === 2"
-            @submit-button-handle="withdrawSubmitButtonHandle"
-        />
-    </ModalTemplate>
 </template>

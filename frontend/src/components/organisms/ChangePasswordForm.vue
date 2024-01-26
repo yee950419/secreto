@@ -6,6 +6,7 @@ import { ref, type Ref } from 'vue'
 import type { Handler } from '@/types/common'
 import type { PasswordChangeRequest } from '@/types/user'
 
+const emit = defineEmits(['prevButtonHandle'])
 const passwordChangeRequest: PasswordChangeRequest = ref({
     currentPassword: '',
     newPassword: ''
@@ -20,7 +21,7 @@ const changePasswordButtonHandler: Handler = () => {
     alert('change password' + JSON.stringify(passwordChangeRequest.value))
 }
 const myPageButtonHandler: Handler = () => {
-    alert('go to my page')
+    emit('prevButtonHandle')
 }
 </script>
 

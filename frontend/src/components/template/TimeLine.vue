@@ -4,15 +4,7 @@ import HistoryCard from '@/components/organisms/HistoryCard.vue'
 import { ref, watch, onMounted } from 'vue'
 import TextAtom from '@/components/atoms/TextAtom.vue'
 import PredictCard from '@/components/organisms/PredictCard.vue'
-type HistoryType = {
-    index: number
-    title: string
-    date: string
-    content: string
-    imageUrl: string | null
-    link: string
-    activity: string
-}
+import type { HistoryType } from '@/types/history'
 
 //TODO: HistoryData API 연동 필요
 const HistoryData = ref<Array<HistoryType>>([
@@ -106,8 +98,8 @@ onMounted(() => {
             </div>
 
             <div class="timeline relative mx-auto">
-                <div class="container left">
-                    <div class="content">
+                <div class="container">
+                    <div class="predict">
                         <PredictCard />
                     </div>
                 </div>

@@ -44,7 +44,7 @@
         content: '';
         position: absolute;
         width: 6px;
-        background-color: var(--A805LightBlue);
+        background-color: var(--A805Blue);
         top: 0;
         bottom: 0;
         left: 50%;
@@ -180,9 +180,37 @@
         -ms-user-select: none;
         user-select: none;
     }
+
+    input {
+        background-color: transparent;
+        height: 100%;
+        border: none;
+        outline: none;
+    }
 }
 
 @layer components {
+    .card-template-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        box-shadow: 10px 10px 10px 0px rgba(0, 0, 0, 0.25);
+        -webkit-box-shadow: 10px 10px 10px 0px rgba(0, 0, 0, 0.25);
+        -moz-box-shadow: 10px 10px 10px 0px rgba(0, 0, 0, 0.25);
+    }
+
+    .card-container {
+        /* bg-A805RealWhite flex flex-col justify-between items-center h-[500px] w-[400px] py-[20px] px-[40px] */
+        background-color: var(--A805RealWhite);
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        align-items: center;
+        height: 500px;
+        width: 400px;
+        padding: 20px 20px;
+    }
+
     .menu-item.active {
         background-color: var(--A805Cream);
     }
@@ -441,10 +469,9 @@
         border-radius: 3px;
         width: 100%;
         height: 32px;
-        padding: 5px 20px;
+        padding: 5px 10px;
         font-size: 16px;
-        color: #656f77;
-        color: #656f77;
+        color: var(--A805DarkGrey);
         transition: 0.3s;
     }
 
@@ -482,7 +509,7 @@
         align-items: baseline;
     }
 
-    .checkbox-molecule-style-1 input {
+    .checkbox-molecule-style-1 .check-box-style {
         margin: 5px 10px;
         transform: scale(1.5);
     }

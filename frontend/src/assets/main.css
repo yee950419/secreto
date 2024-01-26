@@ -44,7 +44,7 @@
         content: '';
         position: absolute;
         width: 6px;
-        background-color: blue;
+        background-color: var(--A805LightBlue);
         top: 0;
         bottom: 0;
         left: 50%;

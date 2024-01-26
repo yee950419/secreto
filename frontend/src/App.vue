@@ -2,8 +2,6 @@
 import { RouterView } from 'vue-router'
 import HeaderBar from '@/components/organisms/HeaderBar.vue'
 import FooterBar from '@/components/organisms/FooterBar.vue'
-import { onMounted } from 'vue'
-const { VITE_API_BASE_URL } = import.meta.env
 
 // const handleServerSentEvent = () => {
 //     const eventSource = new EventSource(VITE_API_BASE_URL + '/alarm') // 서버 엔드포인트를 적절히 설정해야 합니다.

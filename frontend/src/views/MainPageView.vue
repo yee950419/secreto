@@ -128,4 +128,26 @@ const findPasswordPrevPageHandler: Handler = () => {
             />
         </div>
     </div>
+
+    <ModalTemplate
+        custom-id="modal"
+        custom-class="modal-template-style-1 w-[350px]"
+        :seen="deleteModal.seen"
+        @modal-close="deleteModalToggle"
+    >
+        <DeleteModalContent1
+            v-show="deleteModal.seen && deleteModal.step === 0"
+            @yes-button-handle="() => ++deleteModal.step"
+            @no-button-handle="deleteModalToggle"
+        />
+        <DeleteModalContent2
+            v-show="deleteModal.seen && deleteModal.step === 1"
+            @yes-button-handle="() => ++deleteModal.step"
+            @no-button-handle="deleteModalToggle"
+        />
+        <DeleteModalContent3
+            v-show="deleteModal.seen && deleteModal.step === 2"
+            @submit-button-handle="withdrawSubmitButtonHandle"
+        />
+    </ModalTemplate>
 </template>

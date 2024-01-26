@@ -3,12 +3,13 @@ import ButtonAtom from '@/components/atoms/ButtonAtom.vue'
 import InputBox from '@/components/molecules/InputBox.vue'
 import ButtonInputBox from '@/components/molecules/ButtonInputBox.vue'
 import TextAtom from '@/components/atoms/TextAtom.vue'
-import { ref } from 'vue'
+import { ref, type Ref } from 'vue'
 import type { Handler, DataHandler } from '@/types/common'
 import type { JoinRequestType } from '@/types/user'
 
-const passwordConfirm = ref()
-const verificationCode = ref()
+const emit = defineEmits(['joinSubmitHandle'])
+const passwordConfirm: Ref<String> = ref('')
+const verificationCode: Ref<String> = ref('')
 const userData: JoinRequestType = ref({
     email: '',
     password: '',
@@ -40,13 +41,12 @@ const joinButtonHandler: Handler = () => {
         alert('incorrect password confirm.')
     }
     console.log(JSON.stringify(userData.value))
+    emit('joinSubmitHandle')
 }
 </script>
 
 <template>
-    <div
-        class="bg-A805RealWhite flex flex-col justify-between items-center h-[500px] w-full max-w-[400px] py-[20px] px-[40px] scroll-container"
-    >
+    <div class="card-container scroll-container">
         <TextAtom custom-class="text-[48px] font-Iceland">Join</TextAtom>
         <div class="w-full mb-[20px]">
             <ButtonInputBox
@@ -104,7 +104,7 @@ const joinButtonHandler: Handler = () => {
                 @input-change="nicknameInputChangeHandler"
             ></InputBox>
             <ButtonAtom
-                custom-class="button-style-2 w-full button-shadow button-cream mt-[15px] mb-[30px]"
+                custom-class="button-style-2 w-full button-shadow button-cream mt-[15px]"
                 @button-click="joinButtonHandler"
                 >회원가입</ButtonAtom
             >

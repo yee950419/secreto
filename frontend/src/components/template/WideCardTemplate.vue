@@ -12,9 +12,7 @@ const handleClick: Handler = () => {
 </script>
 
 <template>
-    <div
-        class="bg-A805RealWhite flex flex-col justify-between items-center h-[500px] w-full max-w-[800px] py-[20px] px-[40px] scroll-container"
-    >
+    <div class="card-container w-[800px]">
         <TextAtom custom-class="text-[48px] font-Iceland" :class="titleClass">{{ title }}</TextAtom>
         <CharacterAtom class="w-[160px]"></CharacterAtom>
         <div class="h-[80px] text-[24px] leading-[24px] flex flex-col justify-between items-center">

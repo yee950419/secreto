@@ -4,7 +4,7 @@ import InputBox from '@/components/molecules/InputBox.vue'
 import TextAtom from '@/components/atoms/TextAtom.vue'
 import AvatarAtom from '@/components/atoms/AvatarAtom.vue'
 import { ref } from 'vue'
-import type { Handler, DataHandler } from '@/types/common'
+import type { Handler } from '@/types/common'
 import type { MyPageUserDataType } from '@/types/user'
 
 const userInfo: MyPageUserDataType = ref({
@@ -12,9 +12,6 @@ const userInfo: MyPageUserDataType = ref({
     nickname: '테스트유저',
     profileUrl: null
 })
-const nicknameInputChangeHandler: DataHandler<string> = (data: string) => {
-    userInfo.value.nickname = data
-}
 const profileImageChangeHandler: Handler = () => {
     alert('profile image change')
 }
@@ -34,9 +31,7 @@ const withdrawalButtonHandler: Handler = () => {
 </script>
 
 <template>
-    <div
-        class="bg-A805RealWhite flex flex-col justify-between items-center h-[500px] w-full max-w-[400px] py-[20px] px-[40px]"
-    >
+    <div class="card-container">
         <TextAtom custom-class="text-[48px] font-Iceland">My Page</TextAtom>
         <div class="w-full flex flex-col justify-between h-[270px]">
             <InputBox
@@ -57,7 +52,7 @@ const withdrawalButtonHandler: Handler = () => {
                 custom-class="w-full"
                 custom-id="email"
                 :default-value="userInfo.nickname"
-                @input-change="nicknameInputChangeHandler"
+                v-model="userInfo.nickname"
             ></InputBox>
             <div class="w-full flex justify-left ps-[20px] items-center">
                 <AvatarAtom

@@ -24,16 +24,6 @@ const dummyList = ref([
         checked: false
     }
 ])
-
-const addMission: Handler = () => {
-    dummyList.value.push({
-        id: dummyList.value.length + 1,
-        name: myMisssionName.value,
-        checked: myMissionChecked.value
-    })
-    myMisssionName.value = ''
-    console.log('Add')
-}
 const datata = ref('')
 const ic: DataHandler<string> = (data: string) => {
     datata.value = data
@@ -42,8 +32,6 @@ const ic: DataHandler<string> = (data: string) => {
         name: data,
         checked: myMissionChecked.value
     })
-    myMisssionName.value = ''
-    myMissionChecked.value = true
     console.log('Add')
 }
 </script>
@@ -60,17 +48,17 @@ const ic: DataHandler<string> = (data: string) => {
             custom-class="checkbox-molecule-style-1"
             :custom-id="mission.id"
             v-model="mission.checked"
-            >{{ mission.name }}</CheckBox
+            >{{ mission.name }} {{ mission.id }}</CheckBox
         >
         <div class="flex flex-col"></div>
         <CheckBox
             custom-class="checkbox-molecule-style-1"
-            :custom-id="123123"
+            custom-id="new-mission-checkbox"
             v-model="myMissionChecked"
         >
             <InputBox
                 custom-class="input-box-style-1 px-0"
-                custom-id="new-mission"
+                custom-id="new-mission-text"
                 @input-change="ic"
             />
         </CheckBox>

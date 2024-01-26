@@ -9,9 +9,3 @@ export type WideCardTemplateType = {
     buttonLabel: string
     buttonClickHandler?: Handler | null
 }
-
-export type Mission = {
-    id: number
-    name: string
-    checked: boolean
-}

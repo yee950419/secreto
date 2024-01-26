@@ -2,7 +2,8 @@
 import CheckBox from '@/components/molecules/CheckBox.vue'
 import InputBox from '@/components/molecules/InputBox.vue'
 import { ref } from 'vue'
-import type { Handler, Mission } from '@/types/common'
+import type { Handler } from '@/types/common'
+import type { Mission } from '@/types/mission'
 import { PlusSquareOutlined } from '@ant-design/icons-vue'
 
 const myMisssionName = ref('')
@@ -10,6 +11,7 @@ const myMissionChecked = ref(true)
 const allMissionChecked = ref(false)
 const missionInputVisibility = ref(false)
 // 데이터 바뀌면 v-model로 바꿀 예정
+
 const dummyList = ref([
     {
         id: 1,

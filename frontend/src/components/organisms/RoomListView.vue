@@ -1,15 +1,13 @@
 <script setup lang="ts">
 import ButtonAtom from '@/components/atoms/ButtonAtom.vue'
-import InputBox from '@/components/molecules/InputBox.vue'
-import ButtonInputBox from '@/components/molecules/ButtonInputBox.vue'
-import TextAtom from '@/components/atoms/TextAtom.vue'
 import { ref, watch, type Ref } from 'vue'
 import type { Handler, DataHandler } from '@/types/common'
-import type { JoinRequestType } from '@/types/user'
 import RoomCard from '@/components/molecules/RoomCard.vue'
 import RoomCreateCard from '@/components/molecules/RoomCreateCard.vue'
 
-const emit = defineEmits(['joinSubmitHandle'])
+/**
+ * dummy data
+ */
 const roomInfoList = ref([
     {
         roomNo: 1,

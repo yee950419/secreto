@@ -10,7 +10,7 @@ import type { JoinRequestType } from '@/types/user'
 const emit = defineEmits(['joinSubmitHandle'])
 const passwordConfirm: Ref<String> = ref('')
 const verificationCode: Ref<String> = ref('')
-const userData: JoinRequestType = ref({
+const userData: Ref<JoinRequestType> = ref({
     email: '',
     password: '',
     nickname: ''

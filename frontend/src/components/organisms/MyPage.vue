@@ -3,12 +3,12 @@ import ButtonAtom from '@/components/atoms/ButtonAtom.vue'
 import InputBox from '@/components/molecules/InputBox.vue'
 import TextAtom from '@/components/atoms/TextAtom.vue'
 import AvatarAtom from '@/components/atoms/AvatarAtom.vue'
-import { ref } from 'vue'
+import { ref, type Ref } from 'vue'
 import type { Handler } from '@/types/common'
 import type { MyPageUserDataType } from '@/types/user'
 
 const emit = defineEmits(['passwordChangeHandle', 'withdrawalHandle'])
-const userInfo: MyPageUserDataType = ref({
+const userInfo: Ref<MyPageUserDataType> = ref({
     email: 'test@secreto.com',
     nickname: '테스트유저',
     profileUrl: null

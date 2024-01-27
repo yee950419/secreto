@@ -2,12 +2,12 @@
 import ButtonAtom from '@/components/atoms/ButtonAtom.vue'
 import InputBox from '@/components/molecules/InputBox.vue'
 import TextAtom from '@/components/atoms/TextAtom.vue'
-import { ref } from 'vue'
+import { ref, type Ref } from 'vue'
 import type { Handler } from '@/types/common'
 import type { PasswordFindMailRequest } from '@/types/user'
 
 const emit = defineEmits(['emailSubmitHandle', 'prevPageHandle'])
-const passwordFindMailRequest: PasswordFindMailRequest = ref({
+const passwordFindMailRequest: Ref<PasswordFindMailRequest> = ref({
     email: ''
 })
 const findPasswordButtonHandler: Handler = () => {

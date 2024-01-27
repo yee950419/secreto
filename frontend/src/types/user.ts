@@ -1,27 +1,25 @@
-import type { Ref } from 'vue'
-
-export type MyPageUserDataType = Ref<{
+export type MyPageUserDataType = {
     email: string
     nickname: string
     profileUrl: string | null
-}>
+}
 
-export type LoginRequestType = Ref<{
+export type LoginRequestType = {
     email: string
     password: string
-}>
+}
 
-export type JoinRequestType = Ref<{
+export type JoinRequestType = {
     email: string
     password: string
     nickname: string
-}>
+}
 
-export type PasswordChangeRequest = Ref<{
+export type PasswordChangeRequest = {
     currentPassword: string
     newPassword: string
-}>
+}
 
-export type PasswordFindMailRequest = Ref<{
+export type PasswordFindMailRequest = {
     email: string
-}>
+}

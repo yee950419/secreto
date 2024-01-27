@@ -15,6 +15,7 @@ import MyPage from '@/components/organisms/MyPage.vue'
 import ChangePasswordForm from '@/components/organisms/ChangePasswordForm.vue'
 import RoomCreateModalContent from '@/components/organisms/RoomCreateModalContent.vue'
 import RoomDeleteModalContent from '@/components/organisms/RoomDeleteModalContent.vue'
+import RoomEnterModalContent from '@/components/organisms/RoomEnterModalContent.vue'
 import type { RoomCreateRequestType } from '@/types/room'
 
 const ButtonLabel = Object.freeze({
@@ -38,6 +39,7 @@ const ModalState = Object.freeze({
     NONE: 'none',
     WITHDRAW: 'withdraw',
     ROOM_CREATE: 'room_create',
+    ROOM_ENTER: 'room_enter',
     ROOM_LEAVE: 'room_leave'
 })
 
@@ -47,7 +49,8 @@ const state: Ref<string> = ref(State.MAIN_AFTER_LOGIN)
 const buttonClickHandler: Handler = () => {
     switch (state.value) {
         case State.MAIN_AFTER_LOGIN:
-            alert('방 접속 이벤트')
+            modalToggle()
+            modalState.value = ModalState.ROOM_ENTER
             break
         case State.CHANGE_PWD:
         case State.MY_PAGE:
@@ -82,10 +85,13 @@ const withdrawSubmitButtonHandle: DataHandler<string> = (password: string) => {
 
 // room
 const roomCreateHandler: DataHandler<RoomCreateRequestType> = (request: RoomCreateRequestType) => {
-    alert('방 생성' + JSON.stringify(request))
+    alert('방 생성 ' + JSON.stringify(request))
 }
 const roomLeaveHandler: DataHandler<number> = (roomNo: number) => {
-    alert('방 나가기' + roomNo)
+    alert('방 나가기 ' + roomNo)
+}
+const roomEnterHandler: DataHandler<string> = (nickname: string) => {
+    alert('방 입장 ' + nickname)
 }
 
 // main
@@ -170,6 +176,11 @@ const profileClickHandler = () => {
         <RoomDeleteModalContent
             v-if="modalState === ModalState.ROOM_LEAVE"
             @yes-button-handle="roomLeaveHandler"
+            @no-button-handle="modalToggle"
+        />
+        <RoomEnterModalContent
+            v-if="modalState === ModalState.ROOM_ENTER"
+            @yes-button-handle="roomEnterHandler"
             @no-button-handle="modalToggle"
         />
     </ModalTemplate>

@@ -13,6 +13,8 @@ import HeaderProfile from '@/components/molecules/HeaderProfile.vue'
 import InputBox from '@/components/molecules/InputBox.vue'
 import MyPage from '@/components/organisms/MyPage.vue'
 import ChangePasswordForm from '@/components/organisms/ChangePasswordForm.vue'
+import RoomCreateModalContent from '@/components/organisms/RoomCreateModalContent.vue'
+import type { RoomCreateRequestType } from '@/types/room'
 
 const ButtonLabel = Object.freeze({
     START: 'start',
@@ -70,6 +72,12 @@ const withdrawSubmitButtonHandle: DataHandler<string> = (password: string) => {
     deleteModalToggle()
 }
 
+// room create modal
+const roomCreateModalSeen: Ref<boolean> = ref(false)
+const roomCreateHandler: DataHandler<RoomCreateRequestType> = (request: RoomCreateRequestType) => {
+    alert('방 생성' + JSON.stringify(request))
+}
+
 // main
 const profileClickHandler = () => {
     state.value = State.MY_PAGE
@@ -117,25 +125,41 @@ const profileClickHandler = () => {
         </div>
     </div>
 
+    <!-- 회원 탈퇴 모달창 -->
     <ModalTemplate
         custom-id="modal"
         custom-class="modal-template-style-1 w-[350px]"
         :seen="deleteModal.seen"
+        v-if="deleteModal.seen"
         @modal-close="deleteModalToggle"
     >
         <DeleteModalContent1
-            v-if="deleteModal.seen && deleteModal.step === 0"
+            v-if="deleteModal.step === 0"
             @yes-button-handle="() => ++deleteModal.step"
             @no-button-handle="deleteModalToggle"
         />
         <DeleteModalContent2
-            v-if="deleteModal.seen && deleteModal.step === 1"
+            v-if="deleteModal.step === 1"
             @yes-button-handle="() => ++deleteModal.step"
             @no-button-handle="deleteModalToggle"
         />
         <DeleteModalContent3
-            v-if="deleteModal.seen && deleteModal.step === 2"
+            v-if="deleteModal.step === 2"
             @submit-button-handle="withdrawSubmitButtonHandle"
+        />
+    </ModalTemplate>
+
+    <!-- 방 생성 모달창 -->
+    <ModalTemplate
+        custom-id="modal"
+        custom-class="modal-template-style-1 w-[350px]"
+        :seen="roomCreateModalSeen"
+        v-if="roomCreateModalSeen"
+        @modal-close="() => (roomCreateModalSeen = !roomCreateModalSeen)"
+    >
+        <RoomCreateModalContent
+            @yes-button-handle="roomCreateHandler"
+            @no-button-handle="() => (roomCreateModalSeen = !roomCreateModalSeen)"
         />
     </ModalTemplate>
 </template>

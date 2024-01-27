@@ -7,6 +7,7 @@ import { ref, watch, type Ref } from 'vue'
 import type { Handler, DataHandler } from '@/types/common'
 import type { JoinRequestType } from '@/types/user'
 import RoomCard from '@/components/molecules/RoomCard.vue'
+import RoomCreateCard from '@/components/molecules/RoomCreateCard.vue'
 
 const emit = defineEmits(['joinSubmitHandle'])
 const roomInfoList = ref([
@@ -113,6 +114,9 @@ const roomFavoriteHandler: DataHandler<number> = (roomNo: number) => {
 const roomLeaveHandler: DataHandler<number> = (roomNo: number) => {
     alert(roomNo + '번 방 삭제 이벤트')
 }
+const roomCreateHandler: Handler = () => {
+    alert('새로운 방 만들기 이벤트')
+}
 </script>
 
 <template>
@@ -165,6 +169,7 @@ const roomLeaveHandler: DataHandler<number> = (roomNo: number) => {
                 @favorite-handle="() => roomFavoriteHandler(roomInfo.roomNo)"
                 @delete-handle="() => roomLeaveHandler(roomInfo.roomNo)"
             />
+            <RoomCreateCard @click="roomCreateHandler" />
         </div>
     </div>
 </template>

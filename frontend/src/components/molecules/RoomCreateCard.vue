@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import TextAtom from '../atoms/TextAtom.vue'
+import TextAtom from '@/components/atoms/TextAtom.vue'
 </script>
 
 <template>

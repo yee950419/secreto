@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import type { Handler } from '@/types/common'
-import TextAtom from '../atoms/TextAtom.vue'
-import BadgeAtom from '../atoms/BadgeAtom.vue'
-import ButtonAtom from '../atoms/ButtonAtom.vue'
+import TextAtom from '@/components/atoms/TextAtom.vue'
+import BadgeAtom from '@/components/atoms/BadgeAtom.vue'
+import ButtonAtom from '@/components/atoms/ButtonAtom.vue'
 
 const props = defineProps({
     roomInfo: {

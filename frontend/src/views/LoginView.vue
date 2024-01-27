@@ -9,10 +9,6 @@ import type { DataHandler, Handler, WideCardTemplateType } from '@/types/common'
 import type { LoginRequestType, PasswordFindMailRequest } from '@/types/user'
 import type { Ref } from 'vue'
 import { ref } from 'vue'
-import DeleteModalContent1 from '@/components/organisms/DeleteModalContent1.vue'
-import DeleteModalContent2 from '@/components/organisms/DeleteModalContent2.vue'
-import DeleteModalContent3 from '@/components/organisms/DeleteModalContent3.vue'
-import ModalTemplate from '@/components/template/ModalTemplate.vue'
 
 const ButtonLabel = Object.freeze({
     START: 'start',

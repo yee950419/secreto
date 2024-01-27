@@ -14,6 +14,7 @@ import InputBox from '@/components/molecules/InputBox.vue'
 import MyPage from '@/components/organisms/MyPage.vue'
 import ChangePasswordForm from '@/components/organisms/ChangePasswordForm.vue'
 import RoomCreateModalContent from '@/components/organisms/RoomCreateModalContent.vue'
+import RoomDeleteModalContent from '@/components/organisms/RoomDeleteModalContent.vue'
 import type { RoomCreateRequestType } from '@/types/room'
 
 const ButtonLabel = Object.freeze({
@@ -32,6 +33,12 @@ const State = Object.freeze({
     MY_PAGE: 'my_page',
     CHANGE_PWD: 'change_password',
     TEMPLATE: 'template'
+})
+const ModalState = Object.freeze({
+    NONE: 'none',
+    WITHDRAW: 'withdraw',
+    ROOM_CREATE: 'room_create',
+    ROOM_LEAVE: 'room_leave'
 })
 
 const buttonLabel: Ref<string> = ref(ButtonLabel.ENTER)
@@ -58,24 +65,27 @@ const template: Ref<WideCardTemplateType> = ref({
     buttonClickHandler: null
 })
 
+// modal
+const modalSeen: Ref<boolean> = ref(false)
+const modalState: Ref<string> = ref(ModalState.NONE)
+
 // delete Modal
-const deleteModal: Ref<{ seen: boolean; step: number }> = ref({
-    seen: false,
-    step: 0
-})
-const deleteModalToggle: Handler = () => {
-    deleteModal.value.step = 0
-    deleteModal.value.seen = !deleteModal.value.seen
+const deleteModalStep: Ref<number> = ref(0)
+const modalToggle: Handler = () => {
+    if (deleteModalStep.value > 0) deleteModalStep.value = 0
+    modalSeen.value = !modalSeen.value
 }
 const withdrawSubmitButtonHandle: DataHandler<string> = (password: string) => {
     alert(password)
-    deleteModalToggle()
+    modalToggle()
 }
 
-// room create modal
-const roomCreateModalSeen: Ref<boolean> = ref(false)
+// room
 const roomCreateHandler: DataHandler<RoomCreateRequestType> = (request: RoomCreateRequestType) => {
     alert('방 생성' + JSON.stringify(request))
+}
+const roomLeaveHandler: DataHandler<number> = (roomNo: number) => {
+    alert('방 나가기' + roomNo)
 }
 
 // main
@@ -109,7 +119,12 @@ const profileClickHandler = () => {
             <MyPage
                 v-if="state === State.MY_PAGE"
                 @password-change-handle="() => (state = State.CHANGE_PWD)"
-                @withdrawal-handle="() => (deleteModal.seen = true)"
+                @withdrawal-handle="
+                    () => {
+                        modalSeen = true
+                        modalState = ModalState.WITHDRAW
+                    }
+                "
             />
             <ChangePasswordForm
                 v-if="state === State.CHANGE_PWD"
@@ -129,37 +144,33 @@ const profileClickHandler = () => {
     <ModalTemplate
         custom-id="modal"
         custom-class="modal-template-style-1 w-[350px]"
-        :seen="deleteModal.seen"
-        v-if="deleteModal.seen"
-        @modal-close="deleteModalToggle"
+        :seen="modalSeen"
+        v-if="modalSeen"
+        @modal-close="modalToggle"
     >
         <DeleteModalContent1
-            v-if="deleteModal.step === 0"
-            @yes-button-handle="() => ++deleteModal.step"
-            @no-button-handle="deleteModalToggle"
+            v-if="modalState === ModalState.WITHDRAW && deleteModalStep === 0"
+            @yes-button-handle="() => ++deleteModalStep"
+            @no-button-handle="modalToggle"
         />
         <DeleteModalContent2
-            v-if="deleteModal.step === 1"
-            @yes-button-handle="() => ++deleteModal.step"
-            @no-button-handle="deleteModalToggle"
+            v-if="modalState === ModalState.WITHDRAW && deleteModalStep === 1"
+            @yes-button-handle="() => ++deleteModalStep"
+            @no-button-handle="modalToggle"
         />
         <DeleteModalContent3
-            v-if="deleteModal.step === 2"
+            v-if="modalState === ModalState.WITHDRAW && deleteModalStep === 2"
             @submit-button-handle="withdrawSubmitButtonHandle"
         />
-    </ModalTemplate>
-
-    <!-- 방 생성 모달창 -->
-    <ModalTemplate
-        custom-id="modal"
-        custom-class="modal-template-style-1 w-[350px]"
-        :seen="roomCreateModalSeen"
-        v-if="roomCreateModalSeen"
-        @modal-close="() => (roomCreateModalSeen = !roomCreateModalSeen)"
-    >
         <RoomCreateModalContent
+            v-if="modalState === ModalState.ROOM_CREATE"
             @yes-button-handle="roomCreateHandler"
-            @no-button-handle="() => (roomCreateModalSeen = !roomCreateModalSeen)"
+            @no-button-handle="modalToggle"
+        />
+        <RoomDeleteModalContent
+            v-if="modalState === ModalState.ROOM_LEAVE"
+            @yes-button-handle="roomLeaveHandler"
+            @no-button-handle="modalToggle"
         />
     </ModalTemplate>
 </template>

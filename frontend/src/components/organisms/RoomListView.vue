@@ -3,7 +3,7 @@ import ButtonAtom from '@/components/atoms/ButtonAtom.vue'
 import InputBox from '@/components/molecules/InputBox.vue'
 import ButtonInputBox from '@/components/molecules/ButtonInputBox.vue'
 import TextAtom from '@/components/atoms/TextAtom.vue'
-import { ref, type Ref } from 'vue'
+import { ref, watch, type Ref } from 'vue'
 import type { Handler, DataHandler } from '@/types/common'
 import type { JoinRequestType } from '@/types/user'
 import RoomCard from '@/components/molecules/RoomCard.vue'
@@ -92,6 +92,17 @@ const roomInfoList = ref([
         roomEndAt: '2024/03/15 00:00:00'
     }
 ])
+const SelectState = {
+    ALL: 'all',
+    WAITING: 'waiting',
+    IN_PROGRESS: 'in_progress',
+    TERMINATED: 'terminated',
+    FAVORITES: 'favorites'
+}
+const selectState: Ref<string> = ref(SelectState.ALL)
+watch(selectState, () => {
+    alert('방 불러오기 이벤트 발생!!!')
+})
 
 const roomEnterHandler: DataHandler<number> = (roomNo: number) => {
     alert(roomNo + '번 방 입장 이벤트')
@@ -109,11 +120,39 @@ const roomLeaveHandler: DataHandler<number> = (roomNo: number) => {
         <div
             class="w-full flex gap-[30px] px-[10px] pb-[10px] text-A805DarkGrey border-b-[1px] border-A805Black"
         >
-            <ButtonAtom>전체</ButtonAtom>
-            <ButtonAtom>대기중</ButtonAtom>
-            <ButtonAtom>참여중</ButtonAtom>
-            <ButtonAtom>종료</ButtonAtom>
-            <ButtonAtom>즐겨찾기</ButtonAtom>
+            <ButtonAtom
+                :custom-class="selectState === SelectState.ALL ? 'text-A805Black font-bold' : ''"
+                @click="() => (selectState = SelectState.ALL)"
+                >전체</ButtonAtom
+            >
+            <ButtonAtom
+                :custom-class="
+                    selectState === SelectState.WAITING ? 'text-A805Black font-bold' : ''
+                "
+                @click="() => (selectState = SelectState.WAITING)"
+                >대기중</ButtonAtom
+            >
+            <ButtonAtom
+                :custom-class="
+                    selectState === SelectState.IN_PROGRESS ? 'text-A805Black font-bold' : ''
+                "
+                @click="() => (selectState = SelectState.IN_PROGRESS)"
+                >참여중</ButtonAtom
+            >
+            <ButtonAtom
+                :custom-class="
+                    selectState === SelectState.TERMINATED ? 'text-A805Black font-bold' : ''
+                "
+                @click="() => (selectState = SelectState.TERMINATED)"
+                >종료</ButtonAtom
+            >
+            <ButtonAtom
+                :custom-class="
+                    selectState === SelectState.FAVORITES ? 'text-A805Black font-bold' : ''
+                "
+                @click="() => (selectState = SelectState.FAVORITES)"
+                >즐겨찾기</ButtonAtom
+            >
         </div>
         <div
             class="w-full flex justify-around items-start flex-wrap gap-x-[10px] gap-y-[30px] my-[20px]"

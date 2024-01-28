@@ -23,6 +23,11 @@ const router = createRouter({
             path: '/game',
             name: 'game',
             component: () => import('@/components/template/TimeLine.vue')
+        },
+        {
+            path: '/info',
+            name: 'info',
+            component: () => import('@/views/ServiceView.vue')
         }
     ]
 })

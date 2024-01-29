@@ -2,7 +2,6 @@
 import MainCard from '@/components/organisms/MainCard.vue'
 import WideCardTemplate from '@/components/template/WideCardTemplate.vue'
 import type { DataHandler, Handler, WideCardTemplateType } from '@/types/common'
-import type { LoginRequestType, PasswordFindMailRequest } from '@/types/user'
 import type { Ref } from 'vue'
 import { ref } from 'vue'
 import DeleteModalContent1 from '@/components/organisms/DeleteModalContent1.vue'
@@ -10,11 +9,14 @@ import DeleteModalContent2 from '@/components/organisms/DeleteModalContent2.vue'
 import DeleteModalContent3 from '@/components/organisms/DeleteModalContent3.vue'
 import ModalTemplate from '@/components/template/ModalTemplate.vue'
 import RoomListView from '@/components/organisms/RoomListView.vue'
-import TextAtom from '@/components/atoms/TextAtom.vue'
 import HeaderProfile from '@/components/molecules/HeaderProfile.vue'
 import InputBox from '@/components/molecules/InputBox.vue'
 import MyPage from '@/components/organisms/MyPage.vue'
 import ChangePasswordForm from '@/components/organisms/ChangePasswordForm.vue'
+import RoomCreateModalContent from '@/components/organisms/RoomCreateModalContent.vue'
+import RoomDeleteModalContent from '@/components/organisms/RoomDeleteModalContent.vue'
+import RoomEnterModalContent from '@/components/organisms/RoomEnterModalContent.vue'
+import type { RoomCreateRequestType } from '@/types/room'
 
 const ButtonLabel = Object.freeze({
     START: 'start',
@@ -33,6 +35,13 @@ const State = Object.freeze({
     CHANGE_PWD: 'change_password',
     TEMPLATE: 'template'
 })
+const ModalState = Object.freeze({
+    NONE: 'none',
+    WITHDRAW: 'withdraw',
+    ROOM_CREATE: 'room_create',
+    ROOM_ENTER: 'room_enter',
+    ROOM_LEAVE: 'room_leave'
+})
 
 const buttonLabel: Ref<string> = ref(ButtonLabel.ENTER)
 const state: Ref<string> = ref(State.MAIN_AFTER_LOGIN)
@@ -40,7 +49,8 @@ const state: Ref<string> = ref(State.MAIN_AFTER_LOGIN)
 const buttonClickHandler: Handler = () => {
     switch (state.value) {
         case State.MAIN_AFTER_LOGIN:
-            alert('방 접속 이벤트')
+            modalToggle()
+            modalState.value = ModalState.ROOM_ENTER
             break
         case State.CHANGE_PWD:
         case State.MY_PAGE:
@@ -58,18 +68,30 @@ const template: Ref<WideCardTemplateType> = ref({
     buttonClickHandler: null
 })
 
+// modal
+const modalSeen: Ref<boolean> = ref(false)
+const modalState: Ref<string> = ref(ModalState.NONE)
+
 // delete Modal
-const deleteModal: Ref<{ seen: boolean; step: number }> = ref({
-    seen: false,
-    step: 0
-})
-const deleteModalToggle: Handler = () => {
-    deleteModal.value.step = 0
-    deleteModal.value.seen = !deleteModal.value.seen
+const deleteModalStep: Ref<number> = ref(0)
+const modalToggle: Handler = () => {
+    if (deleteModalStep.value > 0) deleteModalStep.value = 0
+    modalSeen.value = !modalSeen.value
 }
 const withdrawSubmitButtonHandle: DataHandler<string> = (password: string) => {
     alert(password)
-    deleteModalToggle()
+    modalToggle()
+}
+
+// room
+const roomCreateHandler: DataHandler<RoomCreateRequestType> = (request: RoomCreateRequestType) => {
+    alert('방 생성 ' + JSON.stringify(request))
+}
+const roomLeaveHandler: DataHandler<number> = (roomNo: number) => {
+    alert('방 나가기 ' + roomNo)
+}
+const roomEnterHandler: DataHandler<string> = (nickname: string) => {
+    alert('방 입장 ' + nickname)
 }
 
 // main
@@ -103,7 +125,12 @@ const profileClickHandler = () => {
             <MyPage
                 v-if="state === State.MY_PAGE"
                 @password-change-handle="() => (state = State.CHANGE_PWD)"
-                @withdrawal-handle="() => (deleteModal.seen = true)"
+                @withdrawal-handle="
+                    () => {
+                        modalSeen = true
+                        modalState = ModalState.WITHDRAW
+                    }
+                "
             />
             <ChangePasswordForm
                 v-if="state === State.CHANGE_PWD"
@@ -119,25 +146,42 @@ const profileClickHandler = () => {
         </div>
     </div>
 
+    <!-- 회원 탈퇴 모달창 -->
     <ModalTemplate
         custom-id="modal"
         custom-class="modal-template-style-1 w-[350px]"
-        :seen="deleteModal.seen"
-        @modal-close="deleteModalToggle"
+        :seen="modalSeen"
+        v-if="modalSeen"
+        @modal-close="modalToggle"
     >
         <DeleteModalContent1
-            v-if="deleteModal.seen && deleteModal.step === 0"
-            @yes-button-handle="() => ++deleteModal.step"
-            @no-button-handle="deleteModalToggle"
+            v-if="modalState === ModalState.WITHDRAW && deleteModalStep === 0"
+            @yes-button-handle="() => ++deleteModalStep"
+            @no-button-handle="modalToggle"
         />
         <DeleteModalContent2
-            v-if="deleteModal.seen && deleteModal.step === 1"
-            @yes-button-handle="() => ++deleteModal.step"
-            @no-button-handle="deleteModalToggle"
+            v-if="modalState === ModalState.WITHDRAW && deleteModalStep === 1"
+            @yes-button-handle="() => ++deleteModalStep"
+            @no-button-handle="modalToggle"
         />
         <DeleteModalContent3
-            v-if="deleteModal.seen && deleteModal.step === 2"
+            v-if="modalState === ModalState.WITHDRAW && deleteModalStep === 2"
             @submit-button-handle="withdrawSubmitButtonHandle"
+        />
+        <RoomCreateModalContent
+            v-if="modalState === ModalState.ROOM_CREATE"
+            @yes-button-handle="roomCreateHandler"
+            @no-button-handle="modalToggle"
+        />
+        <RoomDeleteModalContent
+            v-if="modalState === ModalState.ROOM_LEAVE"
+            @yes-button-handle="roomLeaveHandler"
+            @no-button-handle="modalToggle"
+        />
+        <RoomEnterModalContent
+            v-if="modalState === ModalState.ROOM_ENTER"
+            @yes-button-handle="roomEnterHandler"
+            @no-button-handle="modalToggle"
         />
     </ModalTemplate>
 </template>

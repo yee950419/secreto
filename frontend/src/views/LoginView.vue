@@ -9,6 +9,8 @@ import type { DataHandler, Handler, WideCardTemplateType } from '@/types/common'
 import type { LoginRequestType, PasswordFindMailRequest } from '@/types/user'
 import type { Ref } from 'vue'
 import { ref } from 'vue'
+import { useRouter } from 'vue-router'
+const router = useRouter()
 
 const ButtonLabel = Object.freeze({
     START: 'start',
@@ -56,7 +58,7 @@ const template: Ref<WideCardTemplateType> = ref({
 
 // login view
 const loginHandler: DataHandler<LoginRequestType> = (loginRequest: LoginRequestType) => {
-    alert('login')
+    router.push('/main')
     console.log(JSON.stringify(loginRequest))
 }
 const googleLoginHandler: Handler = () => {

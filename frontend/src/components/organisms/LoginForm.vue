@@ -3,7 +3,7 @@ import ButtonAtom from '@/components/atoms/ButtonAtom.vue'
 import InputBox from '@/components/molecules/InputBox.vue'
 import TextAtom from '@/components/atoms/TextAtom.vue'
 import CheckBox from '@/components/molecules/CheckBox.vue'
-import { ref } from 'vue'
+import { ref, type Ref } from 'vue'
 import type { Handler } from '@/types/common'
 import type { LoginRequestType } from '@/types/user'
 
@@ -13,7 +13,7 @@ const emit = defineEmits([
     'googleLoginHandle',
     'findPasswordHandle'
 ])
-const loginRequest: LoginRequestType = ref({
+const loginRequest: Ref<LoginRequestType> = ref({
     email: '',
     password: ''
 })

@@ -7,7 +7,7 @@ import type { Handler } from '@/types/common'
 import type { PasswordChangeRequest } from '@/types/user'
 
 const emit = defineEmits(['prevButtonHandle'])
-const passwordChangeRequest: PasswordChangeRequest = ref({
+const passwordChangeRequest: Ref<PasswordChangeRequest> = ref({
     currentPassword: '',
     newPassword: ''
 })

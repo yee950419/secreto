@@ -15,7 +15,7 @@ defineProps({
 
 <template>
     <div
-        class="flex flex-col relative bg-A805RealWhite border-2 border-A805DarkGrey overflow-hidden w-[450px]"
+        class="flex flex-col bg-A805RealWhite border-2 border-A805DarkGrey overflow-hidden w-[450px]"
     >
         <div>
             <p class="text-[32px] px-6 py-5">참여 유저</p>

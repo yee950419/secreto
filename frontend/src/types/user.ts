@@ -30,3 +30,11 @@ export type ProfileInfoType = {
     profileUrl: string
     email: string
 }
+
+export type ProfileInfoCheckBoxType = {
+    id: number
+    nickname: string
+    profileUrl: string
+    email: string
+    checked: boolean
+}

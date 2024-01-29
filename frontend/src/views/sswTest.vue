@@ -10,15 +10,13 @@ import HeaderProfile from '@/components/molecules/HeaderProfile.vue'
 import AvatarAtom from '@/components/atoms/AvatarAtom.vue'
 import ApprovedUserList from '@/components/organisms/ApprovedUserList.vue'
 import MissionList from '@/components/organisms/MissionList.vue'
-import type { Handler } from '@/types/common'
-import type { ProfileInfoType } from '@/types/user'
+import type { DataHandler, Handler } from '@/types/common'
+import type { ProfileInfoType, ProfileInfoCheckBoxType } from '@/types/user'
+import UnapprovedUserList from '@/components/organisms/UnapprovedUserList.vue'
 const seen = ref(false)
 const check = ref(false)
 const testhandler = () => {
     seen.value = !seen.value
-}
-const checkBoxStateHandler: Handler = () => {
-    check.value = !check.value
 }
 const roomName = ref('당신만의 수호천사 Screto')
 
@@ -42,6 +40,26 @@ const dummyUserList: Ref<ProfileInfoType[]> = ref([
         email: 'test3@test.com'
     }
 ])
+const dummyWaitingUserList: Ref<ProfileInfoType[]> = ref([
+    {
+        id: 4,
+        nickname: 'test4',
+        profileUrl: 'src/assets/images/member/member4.png',
+        email: 'test1@test.com'
+    },
+    {
+        id: 5,
+        nickname: 'test5',
+        profileUrl: 'src/assets/images/member/member5.png',
+        email: 'test2@test.com'
+    },
+    {
+        id: 6,
+        nickname: 'test6',
+        profileUrl: 'src/assets/images/member/member6.png',
+        email: 'test6@test.com'
+    }
+])
 </script>
 
 <template>
@@ -54,8 +72,9 @@ const dummyUserList: Ref<ProfileInfoType[]> = ref([
         >
         <ButtonAtom custom-class="button-style-2" />
         <ModalTemplate v-if="seen" custom-class="modal-template-style-1" @modal-close="testhandler">
-            qwer
+            qwerasdf
         </ModalTemplate>
+
         <SelectBox custom-class="select-box-style-1"></SelectBox>
         <SelectBox custom-class="select-box-style-2"></SelectBox>
         {{ check }}
@@ -77,6 +96,9 @@ const dummyUserList: Ref<ProfileInfoType[]> = ref([
         <ProfileInfo name="test" image-url="src/assets/images/member/member1.png"></ProfileInfo>
 
         <hr />
+        <UnapprovedUserList :user-list="dummyWaitingUserList"></UnapprovedUserList>
+        <hr />
         <ApprovedUserList :user-list="dummyUserList"></ApprovedUserList>
+        <ModalTemplate :seen="seen" @modal-close="testhandler">asdf</ModalTemplate>
     </div>
 </template>

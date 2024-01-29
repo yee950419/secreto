@@ -481,6 +481,20 @@
         transition: 0.3s;
     }
 
+    .input-box-style-3 {
+        border-radius: 30px;
+        width: 650px;
+        height: 40px;
+        padding: 5px 20px;
+        font-size: 16px;
+        transition: 0.3s;
+        background-color: var(--A805RealWhite);
+        color: var(--A805Black);
+        transition: 0.3s;
+        text-align: center;
+        border: 1px solid var(--A805DarkGrey);
+    }
+
     .line-claret {
         border: 1px solid var(--A805Claret);
     }
@@ -507,6 +521,14 @@
         background-color: var(--A805White);
     }
 
+    .line-darkgrey {
+        border: 1px solid var(--A805DarkGrey);
+    }
+
+    .line-darkgrey:focus {
+        border: 1px solid var(--A805DarkGrey);
+        outline: none;
+    }
     .checkbox-molecule-style-1 {
         display: flex;
         margin: 0px;

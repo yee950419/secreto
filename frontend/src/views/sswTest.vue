@@ -15,6 +15,7 @@ const testhandler = () => {
 const checkBoxStateHandler: Handler = () => {
     check.value = !check.value
 }
+const roomName = ref('당신만의 수호천사 Screto')
 </script>
 
 <template>
@@ -40,5 +41,12 @@ const checkBoxStateHandler: Handler = () => {
         > -->
         <ButtonInputBox custom-class="button-input-box-style-1"></ButtonInputBox>
         <MissionList></MissionList>
+        <ButtonInputBox
+            label="방 제목"
+            button-class="button-blue text-white line-darkgrey  border-s-0"
+            input-class="input-box-style-3 text-center line-darkgrey bg-white"
+            v-model="roomName"
+            button-label="수정"
+        />
     </div>
 </template>

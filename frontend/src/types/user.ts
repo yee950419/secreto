@@ -23,3 +23,10 @@ export type PasswordChangeRequest = {
 export type PasswordFindMailRequest = {
     email: string
 }
+
+export type ProfileInfoType = {
+    id: number
+    nickname: string
+    profileUrl: string
+    email: string
+}

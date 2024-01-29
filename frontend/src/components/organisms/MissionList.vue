@@ -64,7 +64,7 @@ const allChangeHandler: Handler = () => {
             <!-- <hr class="border-A805DarkGrey" /> -->
         </div>
         <!-- 목록 -->
-        <div class="flex flex-col overflow-y-auto">
+        <div class="flex flex-col overflow-y-auto scroll-container">
             <CheckBox
                 v-for="mission in dummyList"
                 :key="mission.id"

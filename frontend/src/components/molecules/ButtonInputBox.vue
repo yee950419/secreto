@@ -8,6 +8,7 @@ const props = defineProps([
     'customClass',
     'labelClass',
     'inputClass',
+    'buttonClass',
     'customId',
     'defaultValue',
     'placeHolder',
@@ -21,7 +22,7 @@ const props = defineProps([
 ])
 const emit = defineEmits(['inputChange', 'buttonClick'])
 const inputRef: Ref<string> = ref(props.defaultValue ? props.defaultValue : '')
-
+const model = defineModel()
 const handleChange: Handler = () => {
     emit('inputChange', inputRef.value)
 }
@@ -33,7 +34,7 @@ const buttonClick: Handler = () => {
 <template>
     <div class="flex flex-col" :class="customClass">
         <label :class="labelClass" :for="customId" v-if="label && !hidden">{{ label }}</label>
-        <div class="flex">
+        <div class="flex items-center">
             <input
                 class="rounded-e-none"
                 :id="customId"
@@ -46,10 +47,11 @@ const buttonClick: Handler = () => {
                 :max="max"
                 :hidden="hidden"
                 @change="handleChange"
-                v-model.lazy="inputRef"
+                v-model.lazy="model"
             />
             <ButtonAtom
                 class="rounded-s-none button-style-6 button-claret pe-[3px]"
+                :class="buttonClass"
                 @buttonClick="buttonClick"
                 >{{ buttonLabel }}</ButtonAtom
             >

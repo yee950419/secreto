@@ -1,5 +1,5 @@
 <script setup lang="ts">
-const props = defineProps(['customClass', 'customId'])
+const props = defineProps(['customClass', 'customId', 'inputClass'])
 const model = defineModel({ default: false })
 </script>
 
@@ -7,6 +7,7 @@ const model = defineModel({ default: false })
     <div class="flex items-center" :class="customClass">
         <input
             class="transform scale-150 check-box-style"
+            :class="inputClass"
             type="checkbox"
             :id="customId"
             v-model="model"

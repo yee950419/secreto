@@ -539,7 +539,7 @@
 
     .checkbox-molecule-style-1 .check-box-style {
         margin: 5px 10px;
-        transform: scale(1.5);
+        transform: scale(2);
     }
 
     .modal-template-style-1 {
@@ -592,5 +592,16 @@
         -moz-appearance: none;
         width: 100%;
         outline: none;
+    }
+
+    .profile-style-1 {
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
+    }
+    .profile-style-1 img {
+        width: 100%;
+        height: 100%;
+        border-radius: 50%;
     }
 }

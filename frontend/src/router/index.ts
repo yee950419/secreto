@@ -25,6 +25,12 @@ const router = createRouter({
             component: () => import('@/components/template/TimeLine.vue')
         },
         {
+
+            path: '/chat',
+            name: 'chat',
+            component: () => import('@/views/ChattingView.vue')
+        },
+        {
             path: '/info',
             name: 'info',
             component: () => import('@/views/ServiceView.vue')

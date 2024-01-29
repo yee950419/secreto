@@ -6,6 +6,7 @@ spring:
           google:
             client-id: 787093774505-eks42l1227pfcefgftgerol4bpb7e50p.apps.googleusercontent.com
             client-secret: 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
+            redirect-uri: http://localhost:8080/login/oauth2/code/google
             scope: openid,profile,email
 
           kakao:
@@ -42,10 +43,8 @@ jwt:
     expiration: 604800000 # 7 days
 
 
-
 email:
   expiration: 240
-
 
 password:
   expiration: 1800

@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { ref, type Ref } from 'vue'
 import type { Handler } from '@/types/common'
 
 defineProps([

@@ -190,6 +190,12 @@
 }
 
 @layer components {
+    .shadow-rb {
+        box-shadow: 3px 3px 10px 0px rgba(0, 0, 0, 0.2);
+        -webkit-box-shadow: 3px 3px 10px 0px rgba(0, 0, 0, 0.2);
+        -moz-box-shadow: 3px 3px 10px 0px rgba(0, 0, 0, 0.2);
+    }
+
     .card-template-container {
         display: flex;
         justify-content: center;

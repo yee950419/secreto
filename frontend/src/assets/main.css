@@ -2,6 +2,14 @@
 @tailwind components;
 @tailwind utilities;
 
+* {
+    font-family: 'Prentedard';
+    font-weight: 400;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
 :root {
     --A805Black: #292929;
     --A805White: #f7f7f7;
@@ -169,6 +177,9 @@
     * {
         font-family: 'Prentedard';
         font-weight: 400;
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
     }
 
     button {
@@ -190,6 +201,12 @@
 }
 
 @layer components {
+    .chat-button {
+        width: 80px;
+        height: 40px;
+        background-color: var(--A805LightBlue);
+    }
+
     .card-template-container {
         display: flex;
         justify-content: center;

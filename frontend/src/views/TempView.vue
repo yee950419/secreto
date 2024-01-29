@@ -6,7 +6,7 @@ import { ref } from 'vue'
 
 const enterApprove: Ref<boolean> = ref(false)
 const prevPageButtonHandler: Handler = () => {
-    alert('뒤로가기 이벱트 발생')
+    alert('뒤로가기 이벤트 발생')
 }
 </script>
 

@@ -3,7 +3,7 @@ defineProps(['customClass'])
 </script>
 
 <template>
-    <div class="border-b border-A805Black w-full" :class="customClass"></div>
+    <hr class="border-A805Black w-full" :class="customClass" />
 </template>
 
 <style scoped></style>

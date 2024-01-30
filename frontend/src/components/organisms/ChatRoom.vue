@@ -3,7 +3,7 @@ import ButtonAtom from '@/components/atoms/ButtonAtom.vue'
 import ChatProfile from '@/components/molecules/ChatProfile.vue'
 import { CloseOutlined } from '@ant-design/icons-vue'
 import { ref, onMounted, onUnmounted } from 'vue'
-import { io } from 'socket.io-client'
+import { socket } from '@/socket'
 import type { Message } from '@/types/chat'
 
 const { imageUrl, name } = defineProps({
@@ -18,8 +18,6 @@ const { imageUrl, name } = defineProps({
 })
 const messages = ref<Message[]>([])
 
-const socket = io('http://localhost:3000')
-
 // 서버와 웹소켓을 연결한다
 socket.on('connect', () => {
     displayConnect('You are connected!', 'connect')
@@ -31,7 +29,7 @@ socket.emit('join-room', name, (datas: Message[]) => {
 
 const textMessage = ref<string>('')
 
-socket.on('message', ({ content, type }) => {
+socket.on('message', ({ content, type }: Message) => {
     console.log(content, type)
     displayMessage(content, type)
 })

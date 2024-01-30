@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { defineProps, ref } from 'vue'
+import { ref } from 'vue'
 import TextAtom from '@/components/atoms/TextAtom.vue'
 
 const isActive = ref(false)

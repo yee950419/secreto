@@ -13,11 +13,11 @@ export const convertStringToRegistrationDate = (dateString: string) => {
     if (isToday(new Date(dateString))) {
         return dateString.substring(11, 16)
     }
-    return dateString.substring(2, 10).replace(/-/gi, '.') + '.'
+    return dateString.substring(0, 10).replace(/-/gi, '.') + '.'
 }
 export const convertStringToMobileRegistrationDate = (dateString: string) => {
     if (isToday(new Date(dateString))) {
         return dateString.substring(11, 16)
     }
-    return dateString.substring(0, 10).replace(/-/gi, '.') + '.'
+    return dateString.substring(2, 10).replace(/-/gi, '.') + '.'
 }

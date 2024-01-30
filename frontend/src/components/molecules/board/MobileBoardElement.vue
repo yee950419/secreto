@@ -6,12 +6,13 @@ defineProps(['board'])
 
 <template>
     <div
-        class="md:hidden text-left min-w-[390px] mx-[20px] py-[10px] border-b border-A805Grey cursor-pointer"
+        class="flex flex-1 flex-col cursor-pointer md:hidden text-left border-b mx-[20px] py-[20px] border-A805Grey"
     >
-        <p class="truncate text-[16px] text-A805Black w-[400px]">
+        <div class="flex flex-col"></div>
+        <TextAtom custom-class="truncate text-[16px] text-A805Black">
             {{ board.title }}
-        </p>
-        <TextAtom custom-class="text-[14px] text-A805Khaki">{{ board.writer }}</TextAtom>
+        </TextAtom>
+        <TextAtom custom-class=" text-[14px] text-A805Khaki">{{ board.writer }}</TextAtom>
         <div class="flex justify-start text-left text-[12px] text-A805Khaki">
             <span class="w-[90px]">{{
                 convertStringToMobileRegistrationDate(board.registerAt)

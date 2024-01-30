@@ -198,6 +198,11 @@
         border: none;
         outline: none;
     }
+
+    select {
+        outline: none;
+        cursor: pointer;
+    }
 }
 
 @layer components {
@@ -408,10 +413,11 @@
 
     .button-style-7 {
         font-size: 30px;
-        width: 80px;
+        width: 40px;
         height: auto;
         border-radius: 100px;
         transition: 0.3s;
+        text-align: center;
     }
 
     .button-border-violet {
@@ -487,6 +493,10 @@
         background-color: var(--A805Blue);
     }
 
+    .border-khaki {
+        border: 1px solid var(--A805Khaki);
+    }
+
     .input-box-style-1 {
         border-radius: 30px;
         width: 100%;
@@ -518,18 +528,10 @@
         border: 1px solid var(--A805DarkGrey);
     }
 
-    .input-box-style-3 {
-        border-radius: 30px;
-        width: 650px;
-        height: 40px;
-        padding: 5px 20px;
-        font-size: 16px;
-        transition: 0.3s;
-        background-color: var(--A805RealWhite);
-        color: var(--A805Black);
-        transition: 0.3s;
-        text-align: center;
-        border: 1px solid var(--A805DarkGrey);
+    .input-box-style-4::-webkit-inner-spin-button {
+        appearance: none;
+        -moz-appearance: none;
+        -webkit-appearance: none;
     }
 
     .line-claret {

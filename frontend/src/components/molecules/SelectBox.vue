@@ -1,10 +1,8 @@
 <script setup lang="ts">
-defineProps(['customClass', 'customId'])
+import ButtonAtom from '@/components/atoms/ButtonAtom.vue'
+
+defineProps(['options', 'customClass', 'customId', 'buttonClass'])
 const emit = defineEmits([])
-const options = [
-    { value: 'customClass', label: 'Custom1' },
-    { value: 'customId', label: 'button-style-1 button-border-violet button-claret' }
-]
 </script>
 
 <template>
@@ -12,17 +10,18 @@ const options = [
         class="flex relative rounded-md border border-A805DarkGrey overflow-hidden"
         :class="customClass"
     >
-        <select class="px-1">
+        <select class="px-1 w-full">
             <option v-for="option in options" :key="option.value" :value="option.value">
                 {{ option.label }}
             </option>
         </select>
 
-        <div
-            class="bg-A805LightBlue text-white h-full w-[30px] text-center absolute right-0 pointer-events-none leading-[27px]"
+        <ButtonAtom
+            class="bg-A805LightBlue text-A805White h-full w-[30px] absolute right-0 pointer-events-none flex justify-center items-center"
+            :class="buttonClass"
         >
             ▼
-        </div>
+        </ButtonAtom>
     </div>
 </template>
 

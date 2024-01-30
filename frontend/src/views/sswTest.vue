@@ -8,6 +8,7 @@ import CheckBox from '@/components/molecules/CheckBox.vue'
 import ProfileInfo from '@/components/molecules/ProfileInfo.vue'
 import HeaderProfile from '@/components/molecules/HeaderProfile.vue'
 import AvatarAtom from '@/components/atoms/AvatarAtom.vue'
+import DateButton from '@/components/molecules/DateButton.vue'
 import ApprovedUserList from '@/components/organisms/ApprovedUserList.vue'
 import MissionList from '@/components/organisms/MissionList.vue'
 import type { DataHandler, Handler } from '@/types/common'
@@ -99,6 +100,8 @@ const dummyWaitingUserList: Ref<ProfileInfoType[]> = ref([
         <UnapprovedUserList :user-list="dummyWaitingUserList"></UnapprovedUserList>
         <hr />
         <ApprovedUserList :user-list="dummyUserList"></ApprovedUserList>
+        <DateButton></DateButton>
+
         <ModalTemplate :seen="seen" @modal-close="testhandler">asdf</ModalTemplate>
     </div>
 </template>

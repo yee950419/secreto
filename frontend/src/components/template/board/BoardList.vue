@@ -65,6 +65,104 @@ onMounted(() => {
                 writerEmail: '',
                 writerProfileUrl: '',
                 replyCount: 1
+            },
+            {
+                boardNo: 3,
+                title: 'title1asdfasdfasdfsdfasdfsdsdfasdfasdfsdfasdfsdsasdfsd',
+                registerAt: '2024-01-29T13:22:09',
+                hit: 1,
+                boardCategory: 'certification',
+                publicYn: true,
+                missionCategory: 'mission',
+                likedCount: 0,
+                writer: '00님의 마니또',
+                writerEmail: '',
+                writerProfileUrl: '',
+                replyCount: 1
+            },
+            {
+                boardNo: 3,
+                title: 'title1asdfasdfasdfsdfasdfsdsdfasdfasdfsdfasdfsdsasdfsd',
+                registerAt: '2024-01-29T13:22:09',
+                hit: 1,
+                boardCategory: 'certification',
+                publicYn: true,
+                missionCategory: 'mission',
+                likedCount: 0,
+                writer: '00님의 마니또',
+                writerEmail: '',
+                writerProfileUrl: '',
+                replyCount: 1
+            },
+            {
+                boardNo: 3,
+                title: 'title1asdfasdfasdfsdfasdfsdsdfasdfasdfsdfasdfsdsasdfsd',
+                registerAt: '2024-01-29T13:22:09',
+                hit: 1,
+                boardCategory: 'certification',
+                publicYn: true,
+                missionCategory: 'mission',
+                likedCount: 0,
+                writer: '00님의 마니또',
+                writerEmail: '',
+                writerProfileUrl: '',
+                replyCount: 1
+            },
+            {
+                boardNo: 3,
+                title: 'title1asdfasdfasdfsdfasdfsdsdfasdfasdfsdfasdfsdsasdfsd',
+                registerAt: '2024-01-29T13:22:09',
+                hit: 1,
+                boardCategory: 'certification',
+                publicYn: true,
+                missionCategory: 'mission',
+                likedCount: 0,
+                writer: '00님의 마니또',
+                writerEmail: '',
+                writerProfileUrl: '',
+                replyCount: 1
+            },
+            {
+                boardNo: 3,
+                title: 'title1asdfasdfasdfsdfasdfsdsdfasdfasdfsdfasdfsdsasdfsd',
+                registerAt: '2024-01-29T13:22:09',
+                hit: 1,
+                boardCategory: 'certification',
+                publicYn: true,
+                missionCategory: 'mission',
+                likedCount: 0,
+                writer: '00님의 마니또',
+                writerEmail: '',
+                writerProfileUrl: '',
+                replyCount: 1
+            },
+            {
+                boardNo: 3,
+                title: 'title1asdfasdfasdfsdfasdfsdsdfasdfasdfsdfasdfsdsasdfsd',
+                registerAt: '2024-01-29T13:22:09',
+                hit: 1,
+                boardCategory: 'certification',
+                publicYn: true,
+                missionCategory: 'mission',
+                likedCount: 0,
+                writer: '00님의 마니또',
+                writerEmail: '',
+                writerProfileUrl: '',
+                replyCount: 1
+            },
+            {
+                boardNo: 3,
+                title: 'title1asdfasdfasdfsdfasdfsdsdfasdfasdfsdfasdfsdsasdfsd',
+                registerAt: '2024-01-29T13:22:09',
+                hit: 1,
+                boardCategory: 'certification',
+                publicYn: true,
+                missionCategory: 'mission',
+                likedCount: 0,
+                writer: '00님의 마니또',
+                writerEmail: '',
+                writerProfileUrl: '',
+                replyCount: 1
             }
         ],
         pageable: {
@@ -100,22 +198,26 @@ const current = ref(1)
 </script>
 
 <template>
-    <div class="bg-A805RealWhite flex flex-col justify-center items-center">
+    <div class="bg-A805RealWhite flex flex-col flex-1 max-md:w-full items-center">
         <BoardHeader
-            class="w-full min-w-[768px] max-w-[1024px] max-md:min-w-0 max-md:hidden py-[20px] ps-[10px]"
+            class="w-full min-w-[768px] max-w-[1080px] max-md:min-w-0 max-md:hidden py-[20px] ps-[10px]"
         />
         <LineAtom class="mb-[30px]" />
-        <div class="w-full min-w-[768px] max-w-[1024px] max-md:min-w-0 flex flex-col">
+        <div class="flex flex-col w-full md:min-w-[768px] max-w-[1080px] max-md:min-w-0">
             <BoardSearchBox class="max-md:px-[20px] mb-[30px]" />
-            <table class="table-auto text-center w-full">
+
+            <!-- pc -->
+            <table class="table-auto text-center max-md:hidden">
                 <BoardTableHeader class="max-md:hidden" />
                 <tbody>
-                    <template v-for="(board, i) in boards" :key="board.boardNo">
-                        <BoardElement :board="board" class="max-md:hidden" />
-                        <MobileBoardElement :board="board" :class="i == 0 ? 'border-t' : ''" />
-                    </template>
+                    <BoardElement v-for="board in boards" :key="board.boardNo" :board="board" />
                 </tbody>
             </table>
+
+            <!-- mobile -->
+            <template v-for="(board, i) in boards" :key="board.boardNo">
+                <MobileBoardElement :board="board" :class="i == 0 ? 'border-t' : ''" />
+            </template>
         </div>
         <a-pagination class="my-[30px]" v-model:current="current" :total="50" show-less-items />
     </div>

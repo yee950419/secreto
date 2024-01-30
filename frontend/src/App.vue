@@ -23,7 +23,7 @@ import FooterBar from '@/components/organisms/FooterBar.vue'
 </script>
 
 <template>
-    <div class="flex flex-1 flex-col w-screen h-screen">
+    <div class="flex flex-1 flex-col w-screen h-screen overflow-x-hidden">
         <HeaderBar v-if="$route.meta.hide !== true" />
         <RouterView />
         <FooterBar v-if="$route.meta.hide !== true" />

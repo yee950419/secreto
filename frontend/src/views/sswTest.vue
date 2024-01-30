@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, type Ref } from 'vue'
+import { ref, type Ref, watch } from 'vue'
 import ButtonAtom from '@/components/atoms/ButtonAtom.vue'
 import ModalTemplate from '@/components/template/ModalTemplate.vue'
 import SelectBox from '@/components/molecules/SelectBox.vue'
@@ -14,6 +14,7 @@ import MissionList from '@/components/organisms/MissionList.vue'
 import type { DataHandler, Handler } from '@/types/common'
 import type { ProfileInfoType, ProfileInfoCheckBoxType } from '@/types/user'
 import UnapprovedUserList from '@/components/organisms/UnapprovedUserList.vue'
+import useClipboard from 'vue-clipboard3'
 const seen = ref(false)
 const check = ref(false)
 const testhandler = () => {
@@ -61,6 +62,18 @@ const dummyWaitingUserList: Ref<ProfileInfoType[]> = ref([
         email: 'test6@test.com'
     }
 ])
+const period = ref<number>(7)
+// const testChange: DataHandler<number> = (newPeriod: number) => {
+//     period.value = newPeriod > 1000 ? 1000 : newPeriod < 1 ? 1 : newPeriod
+// }
+
+const roomCode = ref('qwe123rt')
+const { toClipboard } = useClipboard()
+const clipboardHandler: Handler = () => {
+    toClipboard(roomCode.value)
+    console.log(roomCode.value)
+    alert('복사했습니다.')
+}
 </script>
 
 <template>
@@ -100,8 +113,27 @@ const dummyWaitingUserList: Ref<ProfileInfoType[]> = ref([
         <UnapprovedUserList :user-list="dummyWaitingUserList"></UnapprovedUserList>
         <hr />
         <ApprovedUserList :user-list="dummyUserList"></ApprovedUserList>
-        <DateButton></DateButton>
+        <DateButton
+            custon-class=""
+            button-class="button-style-7 button-blue text-white"
+            input-class="input-box-style-4"
+            type="number"
+            label="미션 주기"
+            v-model="period"
+            >일 마다</DateButton
+        >
 
+        <ButtonInputBox
+            :readonly="true"
+            label="초대 코드"
+            button-label="복사"
+            v-model="roomCode"
+            custom-class="w-[200px]"
+            input-class="text-center w-[70%]"
+            button-class="button-blue button-style-7 text-white w-[30%] text-[20pt]"
+            @button-click="clipboardHandler"
+            >qwer1234</ButtonInputBox
+        >
         <ModalTemplate :seen="seen" @modal-close="testhandler">asdf</ModalTemplate>
     </div>
 </template>

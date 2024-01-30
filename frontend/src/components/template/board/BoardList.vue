@@ -8,7 +8,7 @@ import BoardTableHeader from '@/components/molecules/board/BoardTableHeader.vue'
 import BoardElement from '@/components/molecules/board/BoardElement.vue'
 import MobileBoardElement from '@/components/molecules/board/MobileBoardElement.vue'
 import LineAtom from '@/components/atoms/LineAtom.vue'
-
+import { Pagination } from 'ant-design-vue'
 const boards: Ref<BoardResponseType[]> = ref([])
 getBoard(
     {},
@@ -219,7 +219,7 @@ const current = ref(1)
                 <MobileBoardElement :board="board" :class="i == 0 ? 'border-t' : ''" />
             </template>
         </div>
-        <a-pagination class="my-[30px]" v-model:current="current" :total="50" show-less-items />
+        <Pagination class="my-[30px]" v-model:current="current" :total="50" show-less-items />
     </div>
 </template>
 

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import BoardList from '@/components/organisms/BoardList.vue'
+import BoardList from '@/components/template/board/BoardList.vue'
 </script>
 
 <template>

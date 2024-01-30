@@ -198,6 +198,11 @@
         border: none;
         outline: none;
     }
+
+    select {
+        outline: none;
+        cursor: pointer;
+    }
 }
 
 @layer components {
@@ -486,6 +491,10 @@
 
     .button-blue:hover {
         background-color: var(--A805Blue);
+    }
+
+    .border-khaki {
+        border: 1px solid var(--A805Khaki);
     }
 
     .input-box-style-1 {

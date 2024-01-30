@@ -3,6 +3,9 @@ import ButtonAtom from '@/components/atoms/ButtonAtom.vue'
 import ChatProfile from '@/components/molecules/ChatProfile.vue'
 import { CloseOutlined } from '@ant-design/icons-vue'
 import { ref, onMounted, onUnmounted } from 'vue'
+import { socket } from '@/socket'
+import type { Message } from '@/types/chat'
+
 const { imageUrl, name } = defineProps({
     imageUrl: {
         type: String,
@@ -13,6 +16,37 @@ const { imageUrl, name } = defineProps({
         default: ''
     }
 })
+const messages = ref<Message[]>([])
+
+// 서버와 웹소켓을 연결한다
+socket.on('connect', () => {
+    displayConnect('You are connected!', 'connect')
+})
+
+socket.emit('join-room', name, (datas: Message[]) => {
+    messages.value = datas
+})
+
+const textMessage = ref<string>('')
+
+socket.on('message', ({ content, type }: Message) => {
+    console.log(content, type)
+    displayMessage(content, type)
+})
+
+const displayConnect = (message: string, type: string) => {
+    messages.value.push({ content: message, type: type })
+}
+
+const displayMessage = (message: string, type: string) => {
+    messages.value.push({ content: message, type: type })
+}
+
+const sendMessage = () => {
+    // 첫번째 인자로 이벤트명, 두번째 인자로 데이터, 세번째 인자로 방식별자
+    socket.emit('message', { content: textMessage.value, type: 'sent' }, name)
+    displayMessage(textMessage.value, 'sent')
+}
 
 const emit = defineEmits(['close-chat-room'])
 
@@ -53,6 +87,7 @@ const handleResize = () => {
 onMounted(() => {
     handleResize()
     window.addEventListener('resize', handleResize)
+    console.log(messages.value)
 })
 
 onUnmounted(() => {
@@ -77,27 +112,35 @@ onUnmounted(() => {
             />
         </div>
         <div class="flex flex-[6] flex-col bg-A805White contentsSection px-[10px]">
-            <div class="flex items-end justify-start mb-2">
-                <div class="bg-white p-3 rounded-md shadow-md">
-                    <p>상대방이 쓴 메세지 내용</p>
+            <div v-for="(message, index) in messages" :key="index">
+                <div class="flex items-end justify-start mb-2" v-if="message.type === 'received'">
+                    <div class="bg-white p-3 rounded-md shadow-md">
+                        <p>{{ message.content }}</p>
+                    </div>
                 </div>
-            </div>
 
-            <!-- 내 댓글 -->
-            <div class="flex items-end justify-end mb-2">
-                <div class="bg-yellow-500 p-3 rounded-md shadow-md text-white">
-                    <p>내가 쓴 메세지 내용</p>
+                <div class="flex items-end justify-end mb-2" v-else-if="message.type === 'sent'">
+                    <div class="bg-yellow-500 p-3 rounded-md shadow-md text-white">
+                        <p>{{ message.content }}</p>
+                    </div>
+                </div>
+
+                <div class="text-center" v-else>
+                    <p>{{ message.content }}</p>
                 </div>
             </div>
         </div>
         <div class="flex flex-[1] inputSection">
             <textarea
                 class="resize-none rounded-md border-2 border-solid border-A805Black cursor-text w-full bg-A805White m-[10px] p-[10px]"
+                v-model="textMessage"
                 placeholder="내용을 입력해보세요"
             ></textarea>
         </div>
         <div class="flex justify-end">
-            <ButtonAtom custom-class="chat-button rounded-md m-[10px]">전송</ButtonAtom>
+            <ButtonAtom custom-class="chat-button rounded-md m-[10px]" @button-click="sendMessage"
+                >전송</ButtonAtom
+            >
         </div>
     </div>
 </template>

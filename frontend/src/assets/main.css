@@ -2,6 +2,14 @@
 @tailwind components;
 @tailwind utilities;
 
+* {
+    font-family: 'Prentedard';
+    font-weight: 400;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
 :root {
     --A805Black: #292929;
     --A805White: #f7f7f7;
@@ -169,6 +177,9 @@
     * {
         font-family: 'Prentedard';
         font-weight: 400;
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
     }
 
     button {
@@ -195,6 +206,12 @@
 }
 
 @layer components {
+    .chat-button {
+        width: 80px;
+        height: 40px;
+        background-color: var(--A805LightBlue);
+    }
+
     .shadow-rb {
         box-shadow: 3px 3px 10px 0px rgba(0, 0, 0, 0.2);
         -webkit-box-shadow: 3px 3px 10px 0px rgba(0, 0, 0, 0.2);
@@ -394,6 +411,14 @@
         transition: 0.3s;
     }
 
+    .button-style-7 {
+        font-size: 30px;
+        width: 80px;
+        height: auto;
+        border-radius: 100px;
+        transition: 0.3s;
+    }
+
     .button-border-violet {
         border: 1px solid var(--A805Violet);
     }
@@ -489,6 +514,32 @@
         color: var(--A805DarkGrey);
         transition: 0.3s;
     }
+    .input-box-style-3 {
+        border-radius: 3px;
+        width: 650px;
+        height: 100%;
+        padding: 5px 20px;
+        font-size: 20px;
+        background-color: var(--A805RealWhite);
+        color: var(--A805Black);
+        transition: 0.3s;
+        text-align: center;
+        border: 1px solid var(--A805DarkGrey);
+    }
+
+    .input-box-style-3 {
+        border-radius: 30px;
+        width: 650px;
+        height: 40px;
+        padding: 5px 20px;
+        font-size: 16px;
+        transition: 0.3s;
+        background-color: var(--A805RealWhite);
+        color: var(--A805Black);
+        transition: 0.3s;
+        text-align: center;
+        border: 1px solid var(--A805DarkGrey);
+    }
 
     .line-claret {
         border: 1px solid var(--A805Claret);
@@ -516,6 +567,14 @@
         background-color: var(--A805White);
     }
 
+    .line-darkgrey {
+        border: 1px solid var(--A805DarkGrey);
+    }
+
+    .line-darkgrey:focus {
+        border: 1px solid var(--A805DarkGrey);
+        outline: none;
+    }
     .checkbox-molecule-style-1 {
         display: flex;
         margin: 0px;
@@ -526,7 +585,7 @@
 
     .checkbox-molecule-style-1 .check-box-style {
         margin: 5px 10px;
-        transform: scale(1.5);
+        transform: scale(2);
     }
 
     .modal-template-style-1 {
@@ -579,5 +638,16 @@
         -moz-appearance: none;
         width: 100%;
         outline: none;
+    }
+
+    .profile-style-1 {
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
+    }
+    .profile-style-1 img {
+        width: 100%;
+        height: 100%;
+        border-radius: 50%;
     }
 }

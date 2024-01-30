@@ -30,6 +30,11 @@ const router = createRouter({
             component: () => import('@/views/BoardView.vue')
         },
         {
+            path: '/chat',
+            name: 'chat',
+            component: () => import('@/views/ChattingView.vue')
+        },
+        {
             path: '/info',
             name: 'info',
             component: () => import('@/views/ServiceView.vue')

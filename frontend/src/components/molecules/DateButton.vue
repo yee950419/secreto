@@ -35,25 +35,37 @@ const buttonClick: Handler = () => {
     <div class="flex flex-col" :class="customClass">
         <label :class="labelClass" :for="customId" v-if="label && !hidden">{{ label }}</label>
         <div class="flex items-center">
-            <input
-                class="rounded-e-none"
-                :id="customId"
-                :type="type"
-                :class="inputClass"
-                :placeholder="placeHolder"
-                :readonly="readonly"
-                :name="name"
-                :min="min"
-                :max="max"
-                :hidden="hidden"
-                @change="handleChange"
-                v-model.lazy="model"
-            />
             <ButtonAtom
-                class="rounded-s-none button-style-6 button-claret pe-[3px]"
+                class="rounded-e-none button-style-7 button-blue text-white"
                 :class="buttonClass"
                 @buttonClick="buttonClick"
-                >{{ buttonLabel }}</ButtonAtom
+                >-</ButtonAtom
+            >
+            <div class="flex justify-center content-center items-center">
+                <div class="w-[50%]">
+                    <input
+                        class="text-right w-[100%]"
+                        :id="customId"
+                        type="number"
+                        :class="inputClass"
+                        :readonly="readonly"
+                        :name="name"
+                        :min="min"
+                        :max="max"
+                        :hidden="hidden"
+                        @change="handleChange"
+                        v-model.lazy="model"
+                    />
+                </div>
+                <div class="w-[50%]">
+                    <p class="text-left">일 마다</p>
+                </div>
+            </div>
+            <ButtonAtom
+                class="rounded-s-none button-style-7 button-blue text-white"
+                :class="buttonClass"
+                @buttonClick="buttonClick"
+                >+</ButtonAtom
             >
         </div>
     </div>

@@ -23,7 +23,7 @@ export default defineConfig({
     },
     build: {
         rollupOptions: {
-            external: ['socket.io-client']
+            external: ['socket.io-client', 'ant-design-vue']
         }
     }
 })

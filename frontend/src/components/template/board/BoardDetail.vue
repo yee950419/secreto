@@ -91,8 +91,10 @@ There are many variations of passages of Lorem Ipsum available, but the majority
 
 <template>
     <div class="md:min-w-[768px] max-w-[1080px] max-md:min-w-0">
-        <BoardDetailTop class="my-4" />
-        <div class="flex flex-col w-full border md:rounded border-A805DarkGrey p-9">
+        <BoardDetailTop class="my-4 max-md:hidden" />
+        <div
+            class="flex flex-col w-full border md:rounded border-A805DarkGrey p-9 max-md:border-x-0"
+        >
             <div class="w-full flex flex-col">
                 <TextAtom class="text-[28px] mb-2">{{ board.title }}</TextAtom>
                 <BoardWriterInformation

@@ -1,12 +1,12 @@
 <script setup lang="ts">
 import type { Handler } from '@/types/common'
-defineProps({
+
+const { imageUrl, customClass } = defineProps({
     customClass: {
         type: String
     },
     imageUrl: {
-        type: String as () => string | null,
-        required: true
+        type: String as () => string | null | undefined
     }
 })
 
@@ -18,7 +18,7 @@ const handleClick: Handler = () => {
 
 <template>
     <div :class="customClass" @click="handleClick">
-        <img :src="imageUrl ? imageUrl : 'src/assets/images/default-avatar.png'" alt="Avatar" />
+        <img :src="imageUrl ? imageUrl : '/src/assets/images/default-avatar.png'" alt="Avatar" />
     </div>
 </template>
 

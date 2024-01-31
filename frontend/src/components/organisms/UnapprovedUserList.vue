@@ -39,9 +39,7 @@ const allUserChecked: Ref<boolean> = ref(true)
 </script>
 
 <template>
-    <div
-        class="flex flex-col bg-A805RealWhite border-2 border-A805DarkGrey overflow-hidden w-[450px]"
-    >
+    <div class="flex flex-col bg-A805RealWhite overflow-hidden border-b-2 border-A805DarkGrey">
         <div>
             <p class="text-[32px] px-6 py-5">대기 유저</p>
         </div>

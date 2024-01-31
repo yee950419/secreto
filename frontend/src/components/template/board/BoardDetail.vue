@@ -10,6 +10,7 @@ import BoardDetailBottom from '@/components/molecules/board/BoardDetailBottom.vu
 import TextAtom from '@/components/atoms/TextAtom.vue'
 import LineAtom from '@/components/atoms/LineAtom.vue'
 import { CommentOutlined } from '@ant-design/icons-vue'
+import type { Handler } from '@/types/common'
 
 const board: Ref<BoardDetailResponseType> = ref({
     boardNo: 0,
@@ -69,7 +70,7 @@ There are many variations of passages of Lorem Ipsum available, but the majority
             registerAt: '2022-03-10T13:22:09',
             parentReplyNo: null,
             tagUserNickname: null,
-            roomUserNo: 0,
+            roomUserNo: 1,
             writer: 'writer',
             writerEmail: 'writer@test.com',
             writerProfileUrl: ''
@@ -87,11 +88,32 @@ There are many variations of passages of Lorem Ipsum available, but the majority
         }
     ]
 })
+
+const writeButtonHandler: Handler = () => {
+    alert('글쓰기 페이지 이동')
+}
+const modifyButtonHandler: Handler = () => {
+    alert('수정 페이지 이동')
+}
+const deleteButtonHandler: Handler = () => {
+    alert('삭제 이벤트 발생')
+}
+const topButtonHandler: Handler = () => {
+    alert('맨 이벤트 발생')
+}
+const listButtonHandler: Handler = () => {
+    alert('목록 페이지 이동')
+}
 </script>
 
 <template>
     <div class="md:min-w-[768px] max-w-[1080px] max-md:min-w-0">
-        <BoardDetailTop class="my-4 max-md:hidden" />
+        <BoardDetailTop
+            class="my-4 max-md:hidden"
+            @modify-button-handle="modifyButtonHandler"
+            @delete-button-handle="deleteButtonHandler"
+            @list-button-handle="listButtonHandler"
+        />
         <div
             class="flex flex-col w-full border md:rounded border-A805DarkGrey p-9 max-md:border-x-0"
         >
@@ -125,11 +147,23 @@ There are many variations of passages of Lorem Ipsum available, but the majority
             <div class="flex flex-col flex-1">
                 <TextAtom custom-class="font-bold text-[20px]">댓글</TextAtom>
                 <!-- api 호출 후 댓글-답글 관계 재구성 과정 필요 -->
-                <ReplyElement v-for="reply in replies" :key="reply.replyNo" :reply="reply" />
+                <ReplyElement
+                    v-for="reply in replies"
+                    :key="reply.replyNo"
+                    :reply="reply"
+                    :board-writer-user-no="board.roomUserNo"
+                />
                 <ReplyWriteForm class="mt-5" />
             </div>
         </div>
-        <BoardDetailBottom class="my-4" />
+        <BoardDetailBottom
+            class="my-4"
+            @write-button-handle="writeButtonHandler"
+            @modify-button-handle="modifyButtonHandler"
+            @delete-button-handle="deleteButtonHandler"
+            @top-button-handle="topButtonHandler"
+            @list-button-handle="listButtonHandler"
+        />
     </div>
 </template>
 

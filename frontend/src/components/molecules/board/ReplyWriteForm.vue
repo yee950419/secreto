@@ -4,6 +4,8 @@ import TextAtom from '@/components/atoms/TextAtom.vue'
 import { ref } from 'vue'
 defineProps(['nested'])
 
+const emit = defineEmits(['submitButtonHandle', 'cancelButtonHandle'])
+
 const textArea = ref<HTMLElement | null>(null)
 const resize = () => {
     if (textArea.value) {
@@ -14,10 +16,7 @@ const resize = () => {
 </script>
 
 <template>
-    <div
-        class="flex flex-col flex-1 border-2 rounded-lg p-3 text-[16px]"
-        :class="nested ? 'ms-[50px]' : ''"
-    >
+    <div class="flex flex-col flex-1 border-2 rounded-lg p-3 text-[16px]">
         <TextAtom custom-class="font-bold"> 유저 닉네임 (이메일) </TextAtom>
         <textarea
             ref="textArea"
@@ -25,9 +24,18 @@ const resize = () => {
             placeholder="댓글을 남겨보세요"
             @input="resize"
         ></textarea>
-        <ButtonAtom custom-class="button-claret rounded-md font-bold"> 등록 </ButtonAtom>
-        <ButtonAtom v-if="nested" custom-class="button-white rounded-md font-bold mt-2">
-            삭제
+        <ButtonAtom
+            custom-class="button-claret rounded-md font-bold"
+            @button-click="() => emit('submitButtonHandle')"
+        >
+            등록
+        </ButtonAtom>
+        <ButtonAtom
+            v-if="nested"
+            custom-class="button-white rounded-md font-bold mt-2"
+            @button-click="() => emit('cancelButtonHandle')"
+        >
+            취소
         </ButtonAtom>
     </div>
 </template>

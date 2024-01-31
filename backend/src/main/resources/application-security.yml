@@ -48,6 +48,3 @@ email:
 
 password:
   expiration: 1800
-
-front-end:
-  port: 80

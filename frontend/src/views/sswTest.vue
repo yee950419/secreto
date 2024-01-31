@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, type Ref, watch } from 'vue'
+import { computed, ref, type Ref, watch } from 'vue'
 import ButtonAtom from '@/components/atoms/ButtonAtom.vue'
 import ModalTemplate from '@/components/template/ModalTemplate.vue'
 import SelectBox from '@/components/molecules/SelectBox.vue'
@@ -11,6 +11,7 @@ import AvatarAtom from '@/components/atoms/AvatarAtom.vue'
 import DateButton from '@/components/molecules/DateButton.vue'
 import ApprovedUserList from '@/components/organisms/ApprovedUserList.vue'
 import MissionList from '@/components/organisms/MissionList.vue'
+import DatePicker from '@/components/molecules/DatePicker.vue'
 import type { DataHandler, Handler } from '@/types/common'
 import type { ProfileInfoType, ProfileInfoCheckBoxType } from '@/types/user'
 import UnapprovedUserList from '@/components/organisms/UnapprovedUserList.vue'
@@ -74,6 +75,9 @@ const clipboardHandler: Handler = () => {
     console.log(roomCode.value)
     alert('복사했습니다.')
 }
+
+const startDateTime = ref(new Date().toISOString().slice(0, 16))
+const endDateTime = ref(new Date(new Date().getMonth() + 1).toISOString().slice(0, 16))
 </script>
 
 <template>
@@ -134,6 +138,11 @@ const clipboardHandler: Handler = () => {
             @button-click="clipboardHandler"
             >qwer1234</ButtonInputBox
         >
+        <DatePicker custom-class="bg-A805RealWhite"></DatePicker>
+        <div class="h-[50px] w-[480px]">
+            <input type="datetime-local" name="12333233" id="12333123" :value="startDateTime" />
+            <input type="datetime-local" name="12333" id="123332" v-model="endDateTime" />
+        </div>
         <ModalTemplate :seen="seen" @modal-close="testhandler">asdf</ModalTemplate>
     </div>
 </template>

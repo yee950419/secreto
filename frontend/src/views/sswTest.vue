@@ -11,11 +11,14 @@ import AvatarAtom from '@/components/atoms/AvatarAtom.vue'
 import DateButton from '@/components/molecules/DateButton.vue'
 import ApprovedUserList from '@/components/organisms/ApprovedUserList.vue'
 import MissionList from '@/components/organisms/MissionList.vue'
-import DatePicker from '@/components/molecules/DatePicker.vue'
+import DatePickerCustom from '@/components/molecules/DatePickerCustom.vue'
 import type { DataHandler, Handler } from '@/types/common'
 import type { ProfileInfoType, ProfileInfoCheckBoxType } from '@/types/user'
 import UnapprovedUserList from '@/components/organisms/UnapprovedUserList.vue'
 import useClipboard from 'vue-clipboard3'
+import moment, { type Moment } from 'moment'
+import { DatePicker } from 'ant-design-vue'
+
 const seen = ref(false)
 const check = ref(false)
 const testhandler = () => {
@@ -76,8 +79,13 @@ const clipboardHandler: Handler = () => {
     alert('복사했습니다.')
 }
 
-const startDateTime = ref(new Date().toISOString().slice(0, 16))
-const endDateTime = ref(new Date(new Date().getMonth() + 1).toISOString().slice(0, 16))
+const date = new Date()
+const now = moment()
+const dateTimeFormat = 'YYYY-MM-DD HH:mm'
+const testValue: Ref<Moment> = ref(now.format(dateTimeFormat))
+const startDateTime = ref(new Date().toISOString())
+const endDateTime = ref(new Date(date.getMonth() + 1).toISOString().slice(0, 16))
+const { RangePicker } = DatePicker
 </script>
 
 <template>
@@ -139,10 +147,14 @@ const endDateTime = ref(new Date(new Date().getMonth() + 1).toISOString().slice(
             >qwer1234</ButtonInputBox
         >
         <DatePicker custom-class="bg-A805RealWhite"></DatePicker>
-        <div class="h-[50px] w-[480px]">
+        <div class="h-[50px] w-[480px] bg-red">
             <input type="datetime-local" name="12333233" id="12333123" :value="startDateTime" />
+            {{ startDateTime }}
             <input type="datetime-local" name="12333" id="123332" v-model="endDateTime" />
+            {{ endDateTime }}
         </div>
+        <RangePicker />
+        <RangePicker disabled />
         <ModalTemplate :seen="seen" @modal-close="testhandler">asdf</ModalTemplate>
     </div>
 </template>

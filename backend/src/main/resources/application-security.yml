@@ -44,7 +44,7 @@ jwt:
 
 
 email:
-  expiration: 240
+  expiration: 180
 
 password:
   expiration: 1800

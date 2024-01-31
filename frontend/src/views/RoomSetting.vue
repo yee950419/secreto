@@ -90,9 +90,12 @@ const ddd = ref([dayjs(dayjs(), dateTimeFormat), dayjs(dayjs().add(1, 'day'), da
 <template>
     <div class="bg-A805RealWhite flex flex-col">
         <HeaderBar />
-        <div class="flex w-full bg-A805Green px-">
-            <div name="main-part" class="flex w-[75%] bg-A805Claret">
-                <div name="main-1" class="flex flex-col w-[50%] px-4 gap-8 bg-A805Red">
+        <div class="flex w-full bg-A805Green max-md:flex-col">
+            <div name="main-part" class="flex w-[75%] bg-A805Claret max-md:flex-col max-md:w-full">
+                <div
+                    name="main-1"
+                    class="flex flex-col w-[50%] px-4 gap-8 bg-A805Red max-md:w-full"
+                >
                     <ButtonInputBox
                         label="방 제목"
                         button-class="button-blue text-white line-darkgrey  border-s-0"
@@ -106,7 +109,10 @@ const ddd = ref([dayjs(dayjs(), dateTimeFormat), dayjs(dayjs().add(1, 'day'), da
                         <CheckBox>방장도 게임 참여</CheckBox>
                     </div>
                 </div>
-                <div name="main-2" class="flex flex-col w-[50%] px-4 gap-[5%] bg-A805Khaki">
+                <div
+                    name="main-2"
+                    class="flex flex-col w-[50%] px-4 gap-[5%] bg-A805Khaki max-md:w-full"
+                >
                     <div name="main-2-1" class="flex w-full justify-between px-[10%]">
                         <DateButton
                             custon-class="w-[50%] h-[45px]"

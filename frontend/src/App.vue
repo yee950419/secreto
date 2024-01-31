@@ -35,7 +35,7 @@ watch(route, () => {
 </script>
 
 <template>
-    <div class="flex flex-1 flex-col w-screen h-screen">
+    <div class="flex flex-1 flex-col w-screen h-screen overflow-x-hidden">
         <HeaderBar v-if="headerSeen" />
         <RouterView />
         <FooterBar v-if="headerSeen" />

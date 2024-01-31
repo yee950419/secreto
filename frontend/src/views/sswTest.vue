@@ -11,11 +11,15 @@ import AvatarAtom from '@/components/atoms/AvatarAtom.vue'
 import DateButton from '@/components/molecules/DateButton.vue'
 import ApprovedUserList from '@/components/organisms/ApprovedUserList.vue'
 import MissionList from '@/components/organisms/MissionList.vue'
-import DatePicker from '@/components/molecules/DatePicker.vue'
 import type { DataHandler, Handler } from '@/types/common'
 import type { ProfileInfoType, ProfileInfoCheckBoxType } from '@/types/user'
 import UnapprovedUserList from '@/components/organisms/UnapprovedUserList.vue'
 import useClipboard from 'vue-clipboard3'
+import moment, { type Moment } from 'moment'
+import { type Dayjs } from 'dayjs'
+import dayjs from 'dayjs'
+import { DatePicker, Calendar } from 'ant-design-vue'
+
 const seen = ref(false)
 const check = ref(false)
 const testhandler = () => {
@@ -76,8 +80,9 @@ const clipboardHandler: Handler = () => {
     alert('복사했습니다.')
 }
 
-const startDateTime = ref(new Date().toISOString().slice(0, 16))
-const endDateTime = ref(new Date(new Date().getMonth() + 1).toISOString().slice(0, 16))
+const { RangePicker } = DatePicker
+const dateTimeFormat = 'YYYY-MM-DD HH:mm'
+const ddd = ref([dayjs(dayjs(), dateTimeFormat), dayjs(dayjs().add(1, 'day'), dateTimeFormat)])
 </script>
 
 <template>
@@ -138,11 +143,15 @@ const endDateTime = ref(new Date(new Date().getMonth() + 1).toISOString().slice(
             @button-click="clipboardHandler"
             >qwer1234</ButtonInputBox
         >
-        <DatePicker custom-class="bg-A805RealWhite"></DatePicker>
-        <div class="h-[50px] w-[480px]">
-            <input type="datetime-local" name="12333233" id="12333123" :value="startDateTime" />
-            <input type="datetime-local" name="12333" id="123332" v-model="endDateTime" />
+        <DatePicker custom-class="bg-A805RealWhite" :format="dateTimeFormat"></DatePicker>
+        <div>
+            <div></div>
+            {{ ddd }}
+            <RangePicker showTime v-model:value="ddd" :format="dateTimeFormat" />
         </div>
+        <RangePicker disabled />
+        <Calendar class="w-[500px]"></Calendar>
+        <!-- <calender></calender> -->
         <ModalTemplate :seen="seen" @modal-close="testhandler">asdf</ModalTemplate>
     </div>
 </template>

@@ -50,6 +50,14 @@ const router = createRouter({
             path: '/info',
             name: 'info',
             component: () => import('@/views/ServiceView.vue')
+        },
+        {
+            path: '/roomsettings',
+            name: 'roomsettings',
+            component: () => import('@/views/RoomSetting.vue'),
+            meta: {
+                hide: true
+            }
         }
     ]
 })

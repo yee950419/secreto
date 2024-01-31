@@ -208,11 +208,10 @@ const current = ref(1)
             </tbody>
         </table>
 
-            <!-- mobile -->
-            <template v-for="(board, i) in boards" :key="board.boardNo">
-                <MobileBoardElement :board="board" :class="i == 0 ? 'border-t' : ''" />
-            </template>
-        </div>
+        <!-- mobile -->
+        <template v-for="(board, i) in boards" :key="board.boardNo">
+            <MobileBoardElement :board="board" :class="i == 0 ? 'border-t' : ''" />
+        </template>
         <Pagination class="my-[30px]" v-model:current="current" :total="50" show-less-items />
     </div>
 </template>

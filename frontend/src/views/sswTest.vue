@@ -4,10 +4,7 @@ import ButtonAtom from '@/components/atoms/ButtonAtom.vue'
 import ModalTemplate from '@/components/template/ModalTemplate.vue'
 import SelectBox from '@/components/molecules/SelectBox.vue'
 import ButtonInputBox from '@/components/molecules/ButtonInputBox.vue'
-import CheckBox from '@/components/molecules/CheckBox.vue'
 import ProfileInfo from '@/components/molecules/ProfileInfo.vue'
-import HeaderProfile from '@/components/molecules/HeaderProfile.vue'
-import AvatarAtom from '@/components/atoms/AvatarAtom.vue'
 import DateButton from '@/components/molecules/DateButton.vue'
 import ApprovedUserList from '@/components/organisms/ApprovedUserList.vue'
 import MissionList from '@/components/organisms/MissionList.vue'
@@ -15,7 +12,6 @@ import type { DataHandler, Handler } from '@/types/common'
 import type { ProfileInfoType, ProfileInfoCheckBoxType } from '@/types/user'
 import UnapprovedUserList from '@/components/organisms/UnapprovedUserList.vue'
 import useClipboard from 'vue-clipboard3'
-import moment, { type Moment } from 'moment'
 import { type Dayjs } from 'dayjs'
 import dayjs from 'dayjs'
 import { DatePicker, Calendar } from 'ant-design-vue'
@@ -147,7 +143,7 @@ const ddd = ref([dayjs(dayjs(), dateTimeFormat), dayjs(dayjs().add(1, 'day'), da
         <div>
             <div></div>
             {{ ddd }}
-            <RangePicker showTime v-model:value="ddd" :format="dateTimeFormat" />
+            <RangePicker showTime :v-model:value="ddd" :format="dateTimeFormat" />
         </div>
         <RangePicker disabled />
         <Calendar class="w-[500px]"></Calendar>

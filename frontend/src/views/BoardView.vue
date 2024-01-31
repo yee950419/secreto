@@ -5,8 +5,8 @@ import BoardDetail from '@/components/template/board/BoardDetail.vue'
 
 <template>
     <div class="flex flex-1 justify-center">
-        <!-- <BoardList /> -->
-        <BoardDetail />
+        <BoardList />
+        <!-- <BoardDetail /> -->
     </div>
 </template>
 

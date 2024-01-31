@@ -122,6 +122,7 @@ There are many variations of passages of Lorem Ipsum available, but the majority
             <LineAtom custom-class="my-4 border-A805LightGrey" />
             <div class="flex flex-col flex-1">
                 <TextAtom custom-class="font-bold text-[20px]">댓글</TextAtom>
+                <!-- api 호출 후 댓글-답글 관계 재구성 과정 필요 -->
                 <ReplyElement v-for="reply in replies" :key="reply.replyNo" :reply="reply" />
                 <ReplyWriteForm class="mt-5" />
             </div>

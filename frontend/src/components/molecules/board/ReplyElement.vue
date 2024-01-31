@@ -4,11 +4,11 @@ import BadgeAtom from '@/components/atoms/BadgeAtom.vue'
 import ButtonAtom from '@/components/atoms/ButtonAtom.vue'
 import TextAtom from '@/components/atoms/TextAtom.vue'
 import { convertStringToRegistrationDateTime } from '@/utils/date'
-defineProps(['reply'])
+defineProps(['reply', 'nested'])
 </script>
 
 <template>
-    <div class="flex border-b py-3">
+    <div class="flex border-b py-3" :class="nested ? 'ms-[50px]' : ''">
         <AvatarAtom
             :image-url="reply.writerImageUrl"
             custom-class="profile w-[40px] h-[40px] me-[10px]"

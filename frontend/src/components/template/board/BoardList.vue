@@ -6,7 +6,8 @@ import BoardSearchBox from '@/components/organisms/board/BoardSearchBox.vue'
 import BoardTableHeader from '@/components/molecules/board/BoardTableHeader.vue'
 import BoardElement from '@/components/molecules/board/BoardElement.vue'
 import MobileBoardElement from '@/components/molecules/board/MobileBoardElement.vue'
-
+import LineAtom from '@/components/atoms/LineAtom.vue'
+import { Pagination } from 'ant-design-vue'
 const boards: Ref<BoardResponseType[]> = ref([])
 getBoard(
     {},
@@ -207,15 +208,12 @@ const current = ref(1)
             </tbody>
         </table>
 
-        <!-- mobile -->
-        <template v-for="(board, i) in boards" :key="board.boardNo">
-            <MobileBoardElement
-                :board="board"
-                :class="i == 0 ? 'border-t' : ''"
-                class="w-full px-[15px]"
-            />
-        </template>
-        <a-pagination class="my-[30px]" v-model:current="current" :total="50" show-less-items />
+            <!-- mobile -->
+            <template v-for="(board, i) in boards" :key="board.boardNo">
+                <MobileBoardElement :board="board" :class="i == 0 ? 'border-t' : ''" />
+            </template>
+        </div>
+        <Pagination class="my-[30px]" v-model:current="current" :total="50" show-less-items />
     </div>
 </template>
 

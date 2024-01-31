@@ -8,8 +8,7 @@ defineProps({
         default: '익명'
     },
     imageUrl: {
-        type: String as () => string | null,
-        required: true
+        type: String as () => string | null
     },
     customClass: {
         type: String

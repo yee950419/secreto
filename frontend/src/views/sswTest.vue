@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, type Ref, watch } from 'vue'
+import { computed, ref, type Ref, watch } from 'vue'
 import ButtonAtom from '@/components/atoms/ButtonAtom.vue'
 import ModalTemplate from '@/components/template/ModalTemplate.vue'
 import SelectBox from '@/components/molecules/SelectBox.vue'
@@ -15,6 +15,11 @@ import type { DataHandler, Handler } from '@/types/common'
 import type { ProfileInfoType, ProfileInfoCheckBoxType } from '@/types/user'
 import UnapprovedUserList from '@/components/organisms/UnapprovedUserList.vue'
 import useClipboard from 'vue-clipboard3'
+import moment, { type Moment } from 'moment'
+import { type Dayjs } from 'dayjs'
+import dayjs from 'dayjs'
+import { DatePicker, Calendar } from 'ant-design-vue'
+
 const seen = ref(false)
 const check = ref(false)
 const testhandler = () => {
@@ -74,6 +79,10 @@ const clipboardHandler: Handler = () => {
     console.log(roomCode.value)
     alert('복사했습니다.')
 }
+
+const { RangePicker } = DatePicker
+const dateTimeFormat = 'YYYY-MM-DD HH:mm'
+const ddd = ref([dayjs(dayjs(), dateTimeFormat), dayjs(dayjs().add(1, 'day'), dateTimeFormat)])
 </script>
 
 <template>
@@ -134,6 +143,15 @@ const clipboardHandler: Handler = () => {
             @button-click="clipboardHandler"
             >qwer1234</ButtonInputBox
         >
+        <DatePicker custom-class="bg-A805RealWhite" :format="dateTimeFormat"></DatePicker>
+        <div>
+            <div></div>
+            {{ ddd }}
+            <RangePicker showTime v-model:value="ddd" :format="dateTimeFormat" />
+        </div>
+        <RangePicker disabled />
+        <Calendar class="w-[500px]"></Calendar>
+        <!-- <calender></calender> -->
         <ModalTemplate :seen="seen" @modal-close="testhandler">asdf</ModalTemplate>
     </div>
 </template>

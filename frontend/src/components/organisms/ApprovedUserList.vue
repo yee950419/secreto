@@ -14,9 +14,7 @@ defineProps({
 </script>
 
 <template>
-    <div
-        class="flex flex-col bg-A805RealWhite border-2 border-A805DarkGrey overflow-hidden w-[450px]"
-    >
+    <div class="flex flex-col bg-A805RealWhite overflow-hidden">
         <div>
             <p class="text-[32px] px-6 py-5">참여 유저</p>
         </div>

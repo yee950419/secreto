@@ -6,9 +6,12 @@ import { MenuOutlined } from '@ant-design/icons-vue'
 import { ref, computed, onMounted, onUnmounted } from 'vue'
 import { useUserStore } from '@/stores/user'
 import { storeToRefs } from 'pinia'
+import { useMenuStore } from '@/stores/menu'
 
 const userStore = useUserStore()
+const menuStore = useMenuStore()
 const { userInfo } = storeToRefs(userStore)
+const { menuSeen } = storeToRefs(menuStore)
 
 const windowWidth = ref(window.innerWidth)
 const isMdOrLarger = computed(() => windowWidth.value >= 768) // 예시에서는 md의 화면 크기가 768px이라고 가정
@@ -19,6 +22,10 @@ const handleResize = () => {
 
 const clickHandler = () => {
     console.log('clickHandler', userInfo.value)
+}
+
+const menuClick = () => {
+    menuSeen.value = !menuSeen.value
 }
 
 onMounted(() => {
@@ -35,7 +42,12 @@ onUnmounted(() => {
     <div
         class="flex md:h-[140px] max-md:min-h-[100px] bg-A805Cream w-full md:justify-between items-center"
     >
-        <MenuOutlined v-if="!isMdOrLarger" style="font-size: 24px" class="ml-[40px]" />
+        <MenuOutlined
+            v-if="!isMdOrLarger"
+            style="font-size: 24px"
+            class="ml-[40px]"
+            @click="menuClick"
+        />
         <HeaderLogo class="md:ml-[20px] max-md:mx-auto" />
         <TextAtom class="text-1" v-if="isMdOrLarger">방제목</TextAtom>
         <HeaderProfile

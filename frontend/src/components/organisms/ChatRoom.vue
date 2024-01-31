@@ -3,8 +3,9 @@ import ButtonAtom from '@/components/atoms/ButtonAtom.vue'
 import ChatProfile from '@/components/molecules/ChatProfile.vue'
 import { CloseOutlined } from '@ant-design/icons-vue'
 import { ref, onMounted, onUnmounted } from 'vue'
-import { socket } from '@/socket'
+import { io } from 'socket.io-client'
 import type { Message } from '@/types/chat'
+import type { Socket } from 'socket.io-client'
 
 const { imageUrl, name } = defineProps({
     imageUrl: {
@@ -17,17 +18,40 @@ const { imageUrl, name } = defineProps({
     }
 })
 const messages = ref<Message[]>([])
+const socket: Socket = io('http://localhost:3000', {
+    reconnectionDelay: 1000, // 1초마다 재시도
+    reconnectionDelayMax: 5000, // 최대 5초까지 재시도 간격 증가
+    reconnectionAttempts: 3 // 최대 5번 재시도
+})
+const attemp = ref(0)
 
-// 서버와 웹소켓을 연결한다
+const textMessage = ref<string>('')
+
+onMounted(() => {
+    handleResize()
+    window.addEventListener('resize', handleResize)
+})
+
 socket.on('connect', () => {
     displayConnect('You are connected!', 'connect')
 })
 
+socket.on('connect_error', () => {
+    if (attemp.value === 3) {
+        displayConnect('서버 에러, 다음에 다시 시도해주세요', 'connect')
+        return
+    }
+    displayConnect(`연결실패, 재시도중... ${++attemp.value}`, 'connect')
+})
+
+// socket.on('reconnect_failed', () => {
+//     console.log('모든 재시도에 실패했습니다')
+//     displayConnect('서버와 연결이 원활하지 않습니다', 'connect')
+// })
+
 socket.emit('join-room', name, (datas: Message[]) => {
     messages.value = datas
 })
-
-const textMessage = ref<string>('')
 
 socket.on('message', ({ content, type }: Message) => {
     console.log(content, type)
@@ -84,12 +108,6 @@ const handleResize = () => {
     }
 }
 
-onMounted(() => {
-    handleResize()
-    window.addEventListener('resize', handleResize)
-    console.log(messages.value)
-})
-
 onUnmounted(() => {
     window.removeEventListener('resize', handleResize)
 })
@@ -97,7 +115,7 @@ onUnmounted(() => {
 
 <template>
     <div
-        class="modal absolute flex flex-col flex-1 overflow-hidden max-md:w-full max-md:min-h-[600px] md:min-h-[600px] md:w-[350px] md:rounded-md md:border-2 md:border-solid md:border-A805Black bg-A805Grey"
+        class="modal md:absolute max-md:relative flex flex-col flex-1 overflow-hidden max-md:w-screen max-md:h-full max-md:min-h-[600px] md:min-h-[600px] md:w-[350px] md:rounded-md md:border-2 md:border-solid md:border-A805Black bg-A805Grey"
         ref="chatRoomRef"
         @mousedown="startDrag"
         @mousemove="drag"

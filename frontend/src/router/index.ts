@@ -22,7 +22,14 @@ const router = createRouter({
         {
             path: '/game',
             name: 'game',
-            component: () => import('@/components/template/TimeLine.vue')
+            component: () => import('@/views/RoomView.vue'),
+            children: [
+                {
+                    path: '/game/board',
+                    name: 'game-board',
+                    component: () => import('@/components/template/board/BoardList.vue')
+                }
+            ]
         },
         {
             path: '/board',

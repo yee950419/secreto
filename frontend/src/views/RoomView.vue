@@ -6,7 +6,6 @@ import type { ChatRoomType } from '@/types/chat'
 const chatRooms = reactive<ChatRoomType[]>([])
 
 const removeChatRoom = (name: string) => {
-    console.log(name, '찾아서 삭제하겠습니다!')
     const index = chatRooms.findIndex((room) => room.name === name)
     if (index !== -1) {
         chatRooms.splice(index, 1)
@@ -17,7 +16,6 @@ const makeRoom = ({ name, imageUrl }: ChatRoomType) => {
     // 이미 만들어진 방인지 체크
     const existingRoom = chatRooms.find((room) => room.name === name)
     if (!existingRoom) {
-        console.log(name, '방을 만들겠습니다!')
         chatRooms.push({
             name: name,
             imageUrl: imageUrl
@@ -27,7 +25,7 @@ const makeRoom = ({ name, imageUrl }: ChatRoomType) => {
 </script>
 
 <template>
-    <div class="flex flex-1 bg-red-300">
+    <div class="flex flex-1 bg-A805White">
         <div v-for="room in chatRooms" :key="room.name">
             <ChatRoom
                 :name="room.name"

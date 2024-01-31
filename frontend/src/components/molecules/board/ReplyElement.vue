@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import AvatarAtom from '@/components/atoms/AvatarAtom.vue'
+import BadgeAtom from '@/components/atoms/BadgeAtom.vue'
 import ButtonAtom from '@/components/atoms/ButtonAtom.vue'
 import TextAtom from '@/components/atoms/TextAtom.vue'
 import { convertStringToRegistrationDateTime } from '@/utils/date'
@@ -9,7 +10,12 @@ import { convertStringToRegistrationDateTime } from '@/utils/date'
     <div class="flex border-b py-3">
         <AvatarAtom :image-url="null" custom-class="profile w-[40px] h-[40px] me-[10px]" />
         <div class="flex flex-col">
-            <TextAtom custom-class="font-bold">닉네임 (이메일)</TextAtom>
+            <div class="flex items-center">
+                <TextAtom custom-class="font-bold">닉네임 (이메일)</TextAtom>
+                <BadgeAtom custom-class="bg-A805Red text-A805RealWhite h-[24px] text-[14px] ms-2"
+                    >작성자</BadgeAtom
+                >
+            </div>
             <TextAtom custom-class="text-[16px]">콘텐츠</TextAtom>
             <div>
                 <TextAtom custom-class="text-[16px] text-A805DarkGrey">{{

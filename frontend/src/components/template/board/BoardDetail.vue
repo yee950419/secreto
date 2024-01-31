@@ -1,14 +1,15 @@
 <script setup lang="ts">
 import { ref, type Ref, onMounted } from 'vue'
-import type { BoardDetailResponseType } from '@/types/board'
+import type { BoardDetailResponseType, ReplyResponseType } from '@/types/board'
 import BoardWriterInformation from '@/components/molecules/board/BoardWriterInformation.vue'
 import ReplyElement from '@/components/molecules/board/ReplyElement.vue'
 import ReplyWriteForm from '@/components/molecules/board/ReplyWriteForm.vue'
 import LikeButton from '@/components/molecules/LikeButton.vue'
+import BoardDetailTop from '@/components/molecules/board/BoardDetailTop.vue'
+import BoardDetailBottom from '@/components/molecules/board/BoardDetailBottom.vue'
 import TextAtom from '@/components/atoms/TextAtom.vue'
 import LineAtom from '@/components/atoms/LineAtom.vue'
-import ButtonAtom from '@/components/atoms/ButtonAtom.vue'
-import { HeartOutlined, CommentOutlined } from '@ant-design/icons-vue'
+import { CommentOutlined } from '@ant-design/icons-vue'
 
 const board: Ref<BoardDetailResponseType> = ref({
     boardNo: 0,
@@ -18,13 +19,16 @@ const board: Ref<BoardDetailResponseType> = ref({
     writerEmail: '',
     writerProfileUrl: null,
     registerAt: '',
+    roomUserNo: 0,
     hit: 0,
     boardCategory: '',
     publicYn: false,
     missionCategory: '',
-    likedCount: 0,
-    replyCount: 0
+    likedCount: 0
 })
+
+const replies: Ref<ReplyResponseType[]> = ref([])
+
 onMounted(() => {
     const dummyData = {
         boardNo: 1,
@@ -45,6 +49,7 @@ The standard chunk of Lorem Ipsum used since the 1500s is reproduced below for t
 Where can I get some?
 There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which don't look even slightly believable. If you are going to use a passage of Lorem Ipsum, you need to be sure there isn't anything embarrassing hidden in the middle of text. All the Lorem Ipsum generators on the Internet tend to repeat predefined chunks as necessary, making this the first true generator on the Internet. It uses a dictionary of over 200 Latin words, combined with a handful of model sentence structures, to generate Lorem Ipsum which looks reasonable. The generated Lorem Ipsum is therefore always free from repetition, injected humour, or non-characteristic words etc.
         `,
+        roomUserNo: 0,
         writer: 'writer1',
         writerEmail: 'writer@naver.com',
         writerProfileUrl: null,
@@ -57,49 +62,71 @@ There are many variations of passages of Lorem Ipsum available, but the majority
         replyCount: 123
     }
     board.value = dummyData
+    replies.value = [
+        {
+            replyNo: 2,
+            content: 'content1',
+            registerAt: '2022-03-10T13:22:09',
+            parentReplyNo: null,
+            tagUserNickname: null,
+            roomUserNo: 0,
+            writer: 'writer',
+            writerEmail: 'writer@test.com',
+            writerProfileUrl: ''
+        },
+        {
+            replyNo: 3,
+            content: 'content1',
+            registerAt: '2022-03-10T13:23:09',
+            parentReplyNo: 2,
+            tagUserNickname: 'test',
+            roomUserNo: 0,
+            writer: 'writer',
+            writerEmail: 'writer@test.com',
+            writerProfileUrl: ''
+        }
+    ]
 })
 </script>
 
 <template>
-    <div
-        class="flex flex-col w-full md:min-w-[768px] max-w-[1080px] max-md:min-w-0 border md:rounded border-A805DarkGrey p-9"
-    >
-        <div class="w-full flex flex-col">
-            <TextAtom class="text-[28px] mb-2">{{ board.title }}</TextAtom>
-            <BoardWriterInformation
-                :writer="board.writer"
-                :writer-email="board.writerEmail"
-                :writer-profile-url="board.writerProfileUrl"
-                :register-at="board.registerAt"
-                :hit="board.hit"
-                :liked-count="board.likedCount"
-                :reply-count="board.replyCount"
-            />
-        </div>
-        <LineAtom custom-class="my-4 border-A805LightGrey" />
-        <div>
-            {{ board.content }}
-        </div>
-        <div class="mt-[60px] flex gap-[20px] text-[16px]">
-            <!-- <ButtonAtom custom-class="flex items-center gap-[6px]"
+    <div class="md:min-w-[768px] max-w-[1080px] max-md:min-w-0">
+        <BoardDetailTop class="my-4" />
+        <div class="flex flex-col w-full border md:rounded border-A805DarkGrey p-9">
+            <div class="w-full flex flex-col">
+                <TextAtom class="text-[28px] mb-2">{{ board.title }}</TextAtom>
+                <BoardWriterInformation
+                    :writer="board.writer"
+                    :writer-email="board.writerEmail"
+                    :writer-profile-url="board.writerProfileUrl"
+                    :register-at="board.registerAt"
+                    :hit="board.hit"
+                    :liked-count="board.likedCount"
+                    :reply-count="replies.length"
+                />
+            </div>
+            <LineAtom custom-class="my-4 border-A805LightGrey" />
+            <div>
+                {{ board.content }}
+            </div>
+            <div class="mt-[60px] flex gap-[20px] text-[16px]">
+                <!-- <ButtonAtom custom-class="flex items-center gap-[6px]"
                 ><HeartOutlined class="text-[24px]" /> 좋아요
                 <b>{{ board.likedCount }}</b></ButtonAtom
             > -->
-            <LikeButton :liked-count="board.likedCount" />
-            <span class="flex items-center gap-[6px]"
-                ><CommentOutlined class="text-[24px]" /> 댓글 <b>{{ board.replyCount }}</b></span
-            >
+                <LikeButton :liked-count="board.likedCount" />
+                <span class="flex items-center gap-[6px]"
+                    ><CommentOutlined class="text-[24px]" /> 댓글 <b>{{ replies.length }}</b></span
+                >
+            </div>
+            <LineAtom custom-class="my-4 border-A805LightGrey" />
+            <div class="flex flex-col flex-1">
+                <TextAtom custom-class="font-bold text-[20px]">댓글</TextAtom>
+                <ReplyElement v-for="reply in replies" :key="reply.replyNo" :reply="reply" />
+                <ReplyWriteForm class="mt-5" />
+            </div>
         </div>
-        <LineAtom custom-class="my-4 border-A805LightGrey" />
-        <div class="flex flex-col flex-1">
-            <TextAtom custom-class="font-bold text-[20px]">댓글</TextAtom>
-            <ReplyElement> ㄴㅇㄹ </ReplyElement>
-            <ReplyElement> ㄴㅇㄹ </ReplyElement>
-            <ReplyElement> ㄴㅇㄹ </ReplyElement>
-            <ReplyElement> ㄴㅇㄹ </ReplyElement>
-            <ReplyElement> ㄴㅇㄹ </ReplyElement>
-            <ReplyWriteForm class="my-5" />
-        </div>
+        <BoardDetailBottom class="my-4" />
     </div>
 </template>
 

@@ -51,7 +51,7 @@ const allChangeHandler: Handler = () => {
 
 <template>
     <div
-        class="flex flex-col relative bg-A805RealWhite border-2 border-A805DarkGrey rounded-md overflow-hidden w-[300px] h-[240px]"
+        class="flex flex-col relative bg-A805RealWhite border-2 border-A805DarkGrey rounded-md overflow-hidden h-[240px]"
     >
         <!-- 전체 선택 -->
         <div class="bg-A805RealWhite border-b-2 border-A805DarkGrey">

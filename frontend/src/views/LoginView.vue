@@ -58,7 +58,6 @@ const template: Ref<WideCardTemplateType> = ref({
 
 // login view
 const loginHandler: DataHandler<LoginRequestType> = (loginRequest: LoginRequestType) => {
-    router.push('/main')
     console.log(JSON.stringify(loginRequest))
 }
 const googleLoginHandler: Handler = () => {

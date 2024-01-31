@@ -6,7 +6,11 @@ import TextAtom from '@/components/atoms/TextAtom.vue'
 import { ref, type Ref } from 'vue'
 import type { Handler, DataHandler } from '@/types/common'
 import type { JoinRequestType } from '@/types/user'
+import { useRouter } from 'vue-router'
+import { signup } from '@/api/user'
+import { httpStatusCode } from '@/utils/http-status'
 
+const router = useRouter()
 const emit = defineEmits(['joinSubmitHandle'])
 const passwordConfirm: Ref<String> = ref('')
 const verificationCode: Ref<String> = ref('')
@@ -24,9 +28,17 @@ const verificationCodeButtonHandler: DataHandler<string> = (data: string) => {
 const joinButtonHandler: Handler = () => {
     if (userData.value.password !== passwordConfirm.value) {
         alert('incorrect password confirm.')
+        return
     }
-    console.log(JSON.stringify(userData.value))
-    emit('joinSubmitHandle')
+    signup(
+        userData.value,
+        (response) => {
+            console.log(response.status, response)
+        },
+        (error) => {
+            alert(error.response.data.message)
+        }
+    )
 }
 </script>
 

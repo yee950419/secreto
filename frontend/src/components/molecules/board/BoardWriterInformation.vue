@@ -14,13 +14,25 @@ defineProps([
 </script>
 
 <template>
-    <div>
-        <AvatarAtom :image-url="writerImageUrl" custom-class="profile w-[60px] h-[60px]" />
-        <TextAtom
-            ><span class="font-bold me-1">{{ writer }}</span>
-            <span>({{ writerEmail }})</span></TextAtom
-        >
-        <span class="text-[14px]">{{ convertStringToRegistrationDateTime(registerAt) }}</span>
+    <div class="flex items-center">
+        <AvatarAtom
+            :image-url="writerImageUrl"
+            custom-class="profile w-[60px] h-[60px] me-[10px]"
+        />
+        <div class="flex flex-col">
+            <TextAtom
+                ><span class="font-bold me-1">{{ writer }}</span>
+                <span>({{ writerEmail }})</span>
+            </TextAtom>
+            <TextAtom class="text-[14px] text-A805Khaki">{{
+                convertStringToRegistrationDateTime(registerAt)
+            }}</TextAtom>
+            <TextAtom class="text-[12px] text-A805Khaki flex gap-[15px]">
+                <span>조회 : {{ hit }}</span>
+                <span>좋아요 : {{ likedCount }}</span>
+                <span>댓글 : {{ replyCount }}</span>
+            </TextAtom>
+        </div>
     </div>
 </template>
 

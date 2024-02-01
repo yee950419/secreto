@@ -22,7 +22,10 @@ const handleItemClick: Handler = () => {
 
 <template>
     <div :class="[customClass, { active: active }]" @click="handleItemClick">
-        <TextAtom :customClass="`${customClass === 'menu-item' ? 'ml-[40px]' : 'ml-[80px]'}`">
+        <TextAtom
+            class="truncate"
+            :customClass="`${customClass === 'menu-item' ? 'ml-[40px]' : 'ml-[80px]'}`"
+        >
             <slot></slot
         ></TextAtom>
     </div>

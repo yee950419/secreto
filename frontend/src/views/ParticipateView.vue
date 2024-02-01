@@ -29,7 +29,7 @@ onMounted(() => getRooms())
 
 <template>
     <div class="flex flex-1 flex-col bg-A805White">
-        <MissionHeader custom-class="flex w-full h-[100px] bg-A805Green" />
+        <MissionHeader custom-class="flex w-full min-h-[100px] p-[20px] shadow-lg" />
         <div class="flex flex-1 items-center justify-center">
             <div class="flex flex-wrap items-center justify-center gap-[45px] m-[80px]">
                 <template v-for="user in userList" :key="user.id">

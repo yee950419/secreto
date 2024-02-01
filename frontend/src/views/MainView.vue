@@ -18,6 +18,7 @@ import RoomDeleteModalContent from '@/components/organisms/RoomDeleteModalConten
 import RoomEnterModalContent from '@/components/organisms/RoomEnterModalContent.vue'
 import type { RoomCreateRequestType } from '@/types/room'
 import MobileMiniHeader from '@/components/molecules/main/MobileMiniHeader.vue'
+import HeaderProfile from '@/components/molecules/HeaderProfile.vue'
 
 const ButtonLabel = Object.freeze({
     START: 'start',

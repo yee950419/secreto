@@ -18,9 +18,10 @@ defineProps({
         <div>
             <p class="text-[32px] px-6 py-5">참여 유저</p>
         </div>
-
-        <div v-for="user in userList" :key="user.id" class="px-4 py-2">
-            <ProfileInfo :name="user.nickname" :image-url="user.profileUrl"></ProfileInfo>
+        <div class="overflow-y-auto">
+            <div v-for="user in userList" :key="user.id" class="px-4 py-2">
+                <ProfileInfo :name="user.nickname" :image-url="user.profileUrl"></ProfileInfo>
+            </div>
         </div>
     </div>
 </template>

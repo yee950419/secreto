@@ -63,7 +63,7 @@ const handleMenuClickAndToggleSubMenu = (index: number, menu: string) => {
 <template>
     <div
         v-if="menuSeen || windowWidth >= 768"
-        class="flex flex-col h-full bg-A805White md:w-[300px] max-md:w-full md:border-solid md:border-2 md:border-A805Cream md:overflow-y-auto"
+        class="flex flex-col h-full bg-A805White md:min-w-[230px] max-md:w-full md:border-solid md:border-2 md:border-A805Cream md:overflow-y-auto"
     >
         <MenuItem
             custom-class="menu-item"

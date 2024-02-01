@@ -9,6 +9,7 @@ const props = defineProps([
     'labelClass',
     'inputClass',
     'buttonClass',
+    'slotClass',
     'customId',
     'defaultValue',
     'placeHolder',
@@ -61,8 +62,8 @@ watch(model, (newPeriod) => {
             <ButtonAtom class="rounded-e-none" :class="buttonClass" @buttonClick="minusNumber"
                 >-</ButtonAtom
             >
-            <div class="flex justify-center content-center items-center px-3 w-[50%]">
-                <div class="w-[40%]">
+            <div class="flex justify-center content-center items-center px-3">
+                <div class="">
                     <input
                         class="text-right w-[100%]"
                         :id="customId"
@@ -74,7 +75,7 @@ watch(model, (newPeriod) => {
                         v-model="model"
                     />
                 </div>
-                <div class="w-[60%]">
+                <div :class="slotClass">
                     <slot class="text-left"></slot>
                 </div>
             </div>

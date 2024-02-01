@@ -21,22 +21,22 @@ const router = createRouter({
             }
         },
         {
-            path: '/game',
+            path: '/game/:roomId',
             name: 'game',
             component: () => import('@/components/pages/RoomView.vue'),
             children: [
                 {
-                    path: '/game/board',
+                    path: 'board',
                     name: 'game-board',
                     component: () => import('@/components/template/board/BoardList.vue')
                 },
                 {
-                    path: '/game/mission',
+                    path: 'mission',
                     name: 'game-mission',
                     component: sswTestVue
                 },
                 {
-                    path: '/game/participate',
+                    path: 'participate',
                     name: 'game-participate',
                     component: () => import('@/components/pages/ParticipateView.vue')
                 }

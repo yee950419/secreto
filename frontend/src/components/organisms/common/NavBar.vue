@@ -72,13 +72,15 @@ const handleMenuClickAndToggleSubMenu = (index: number, menu: string) => {
         <MenuItem
             custom-class="menu-item"
             :active="activeMenu === 3"
-            @menu-click="handleClick(), router.push('/game/participate'), handleMenuClick(3)"
+            @menu-click="
+                handleClick(), router.push({ name: 'game-participate' }), handleMenuClick(3)
+            "
             >참여 인원</MenuItem
         >
         <MenuItem
             custom-class="menu-item"
             :active="activeMenu === 4"
-            @menu-click="handleMenuClick(4), router.push('/game/mission')"
+            @menu-click="handleMenuClick(4), router.push({ name: 'game-mission' })"
             >내 미션</MenuItem
         >
         <MenuItem
@@ -110,17 +112,17 @@ const handleMenuClickAndToggleSubMenu = (index: number, menu: string) => {
         <div v-if="showSubMenu.includes('board')">
             <MenuItem
                 custom-class="sub-menu-item"
-                @menu-click="router.push('/game/board'), handleClick()"
+                @menu-click="router.push({ name: 'game-board' }), handleClick()"
                 >공지 게시판</MenuItem
             >
             <MenuItem
                 custom-class="sub-menu-item"
-                @menu-click="router.push('/game/board'), handleClick()"
+                @menu-click="router.push({ name: 'game-board' }), handleClick()"
                 >인증 게시판</MenuItem
             >
             <MenuItem
                 custom-class="sub-menu-item"
-                @menu-click="router.push('/game/board'), handleClick()"
+                @menu-click="router.push({ name: 'game-board' }), handleClick()"
                 >자랑 게시판</MenuItem
             >
         </div>

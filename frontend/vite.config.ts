@@ -1,5 +1,5 @@
 import { fileURLToPath, URL } from 'node:url'
-import path from 'path'
+
 import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
 import vueJsx from '@vitejs/plugin-vue-jsx'
@@ -16,13 +16,9 @@ export default defineConfig({
         }),
         vueJsx()
     ],
-    server: {
-        port: 8080,
-        host: '0.0.0.0'
-    },
     resolve: {
         alias: {
-            '@': path.resolve(__dirname, './src')
+            '@': fileURLToPath(new URL('./src', import.meta.url))
         }
     },
     build: {

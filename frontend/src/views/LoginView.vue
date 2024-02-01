@@ -4,7 +4,7 @@ import JoinForm from '@/components/organisms/JoinForm.vue'
 import LoginForm from '@/components/organisms/LoginForm.vue'
 import MainCard from '@/components/organisms/MainCard.vue'
 import WideCardTemplate from '@/components/template/WideCardTemplate.vue'
-import TextAtom from '@/components/atoms/TextAtom.vue'
+import ServiceFeature from '@/components/molecules/main/ServiceFeature.vue'
 import type { DataHandler, Handler, WideCardTemplateType } from '@/types/common'
 import type { LoginRequestType, PasswordFindMailRequest } from '@/types/user'
 import type { Ref } from 'vue'
@@ -64,7 +64,7 @@ const findPasswordHandler: Handler = () => {
     buttonLabel.value = ButtonLabel.LOGIN
 }
 const cardCloseHandler: Handler = () => {
-    state.value = State.MAIN
+    viewState.value = ViewState.MAIN
     buttonLabel.value = ButtonLabel.START
 }
 
@@ -103,20 +103,16 @@ const findPasswordPrevPageHandler: Handler = () => {
             class="card-template-container max-md:w-full max-md:h-full max-md:bg-A805Cream max-md:flex-col"
         >
             <MainCard
-                :class="state !== State.MAIN ? 'max-md:hidden' : ''"
-                v-if="state !== State.TEMPLATE"
+                :class="viewState !== ViewState.MAIN ? 'max-md:hidden' : ''"
+                v-if="viewState !== ViewState.TEMPLATE"
                 @button-click="buttonClickHandler"
                 :button-label-ref="buttonLabel"
             >
-                <TextAtom custom-class="text-[16px] ">
-                    Lorem ipsum dolor sit amet consectetur, adipisicing elit. Quasi consequatur iure
-                    quos accusantium corrupti velit officiis dignissimos est porro! Tempore aperiam
-                    quasi saepe, maiores illum aliquam fugit ut consequuntur aut?
-                </TextAtom></MainCard
-            >
+                <ServiceFeature />
+            </MainCard>
             <LoginForm
                 class="max-md:w-full max-md:h-full"
-                v-if="state === State.LOGIN"
+                v-if="viewState === ViewState.LOGIN"
                 @login-handle="loginHandler"
                 @google-login-handle="googleLoginHandler"
                 @kakao-login-handle="kakaoLoginHandler"
@@ -126,14 +122,14 @@ const findPasswordPrevPageHandler: Handler = () => {
             />
             <JoinForm
                 class="max-md:w-full max-md:h-full"
-                v-if="state === State.JOIN"
+                v-if="viewState === ViewState.JOIN"
                 @join-submit-handle="joinHandler"
                 @close-button-handle="cardCloseHandler"
                 @go-login-button-handle="buttonClickHandler"
             />
             <FindPasswordForm
                 class="max-md:w-full max-md:h-full"
-                v-if="state === State.PASSWORD"
+                v-if="viewState === ViewState.PASSWORD"
                 @emailSubmitHandle="findPasswordEmailSubmitHandler"
                 @prev-page-handle="findPasswordPrevPageHandler"
                 @close-button-handle="buttonClickHandler"

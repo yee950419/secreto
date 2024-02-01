@@ -2,11 +2,7 @@
 import { RouterView } from 'vue-router'
 import HeaderBar from '@/components/organisms/HeaderBar.vue'
 import FooterBar from '@/components/organisms/FooterBar.vue'
-<<<<<<< frontend/src/App.vue
 import { ref, watch, onMounted, onUnmounted } from 'vue'
-=======
-import { ref, watch } from 'vue'
->>>>>>> frontend/src/App.vue
 import { useRoute } from 'vue-router'
 import { useMenuStore } from '@/stores/menu'
 // import { storeToRefs } from 'pinia'

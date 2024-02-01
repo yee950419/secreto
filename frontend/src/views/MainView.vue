@@ -20,6 +20,7 @@ import type { RoomCreateRequestType } from '@/types/room'
 import { useUserStore } from '@/stores/user'
 import MobileMiniHeader from '@/components/molecules/main/MobileMiniHeader.vue'
 import HeaderProfile from '@/components/molecules/HeaderProfile.vue'
+import ServiceFeature from '@/components/molecules/main/ServiceFeature.vue'
 
 const userStore = useUserStore()
 
@@ -129,6 +130,7 @@ const profileClickHandler = () => {
                         input-class="text-center text-[24px]"
                         place-holder="초대코드 입력"
                 /></template>
+                <ServiceFeature v-if="state !== State.MAIN_AFTER_LOGIN" />
             </MainCard>
 
             <!-- mobile -->

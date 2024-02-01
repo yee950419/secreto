@@ -60,7 +60,7 @@ onUnmounted(() => {
             @click="clickHandler"
             v-if="isMdOrLarger"
             :imageUrl="userInfo.profileUrl"
-            :name="userInfo.userName"
+            :name="userInfo.nickname"
             class="mr-[40px]"
         />
     </div>

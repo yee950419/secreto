@@ -7,9 +7,9 @@ import { ref, type Ref } from 'vue'
 import type { Handler } from '@/types/common'
 import type { LoginRequestType } from '@/types/user'
 import { useUserStore } from '@/stores/user'
-
 const userStore = useUserStore()
 const { userLogin } = userStore
+
 import CloseButtonAtom from '@/components/atoms/CloseButtonAtom.vue'
 
 const emit = defineEmits([

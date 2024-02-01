@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import ButtonAtom from '@/components/atoms/ButtonAtom.vue'
-import InputBox from '@/components/molecules/InputBox.vue'
-import ButtonInputBox from '@/components/molecules/ButtonInputBox.vue'
+import InputBox from '@/components/molecules/common/InputBox.vue'
+import ButtonInputBox from '@/components/molecules/common/ButtonInputBox.vue'
 import TextAtom from '@/components/atoms/TextAtom.vue'
 import { ref, type Ref } from 'vue'
 import type { Handler, DataHandler } from '@/types/common'

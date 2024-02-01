@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import HeaderLogo from '@/components/molecules/HeaderLogo.vue'
-import HeaderProfile from '@/components/molecules/HeaderProfile.vue'
+import HeaderLogo from '@/components/molecules/common/HeaderLogo.vue'
+import HeaderProfile from '@/components/molecules/common/HeaderProfile.vue'
 import TextAtom from '@/components/atoms/TextAtom.vue'
 import { MenuOutlined } from '@ant-design/icons-vue'
 import { ref, computed, onMounted, onUnmounted } from 'vue'

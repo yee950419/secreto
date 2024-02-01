@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import MainLogo from '@/components/molecules/MainLogo.vue'
+import MainLogo from '@/components/molecules/common/MainLogo.vue'
 import ButtonAtom from '@/components/atoms/ButtonAtom.vue'
 import type { Handler } from '@/types/common'
 

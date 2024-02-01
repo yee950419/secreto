@@ -1,4 +1,4 @@
-import sswTestVue from '@/views/sswTest.vue'
+import sswTestVue from '@/components/pages/sswTest.vue'
 import { createRouter, createWebHistory } from 'vue-router'
 
 const router = createRouter({
@@ -7,7 +7,7 @@ const router = createRouter({
         {
             path: '/',
             name: 'beforeLogin',
-            component: () => import('@/views/LoginView.vue'),
+            component: () => import('@/components/pages/LoginView.vue'),
             meta: {
                 hide: true
             }
@@ -15,7 +15,7 @@ const router = createRouter({
         {
             path: '/main',
             name: 'main',
-            component: () => import('@/views/MainView.vue'),
+            component: () => import('@/components/pages/MainView.vue'),
             meta: {
                 hide: true
             }
@@ -23,7 +23,7 @@ const router = createRouter({
         {
             path: '/game',
             name: 'game',
-            component: () => import('@/views/RoomView.vue'),
+            component: () => import('@/components/pages/RoomView.vue'),
             children: [
                 {
                     path: '/game/board',
@@ -38,29 +38,29 @@ const router = createRouter({
                 {
                     path: '/game/participate',
                     name: 'game-participate',
-                    component: () => import('@/views/ParticipateView.vue')
+                    component: () => import('@/components/pages/ParticipateView.vue')
                 }
             ]
         },
         {
             path: '/board',
             name: 'board',
-            component: () => import('@/views/BoardView.vue')
+            component: () => import('@/components/pages/BoardView.vue')
         },
         {
             path: '/chat',
             name: 'chat',
-            component: () => import('@/views/ChattingView.vue')
+            component: () => import('@/components/pages/ChattingView.vue')
         },
         {
             path: '/info',
             name: 'info',
-            component: () => import('@/views/ServiceView.vue')
+            component: () => import('@/components/pages/ServiceView.vue')
         },
         {
             path: '/roomsettings',
             name: 'roomsettings',
-            component: () => import('@/views/RoomSetting.vue'),
+            component: () => import('@/components/pages/RoomSetting.vue'),
             meta: {
                 hide: true
             }

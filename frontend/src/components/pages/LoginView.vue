@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import FindPasswordForm from '@/components/organisms/FindPasswordForm.vue'
-import JoinForm from '@/components/organisms/JoinForm.vue'
-import LoginForm from '@/components/organisms/LoginForm.vue'
-import MainCard from '@/components/organisms/MainCard.vue'
+import FindPasswordForm from '@/components/organisms/main/FindPasswordForm.vue'
+import JoinForm from '@/components/organisms/main/JoinForm.vue'
+import LoginForm from '@/components/organisms/main/LoginForm.vue'
+import MainCard from '@/components/organisms/main/MainCard.vue'
 import WideCardTemplate from '@/components/template/WideCardTemplate.vue'
 import ServiceFeature from '@/components/molecules/main/ServiceFeature.vue'
 import type { DataHandler, Handler, WideCardTemplateType } from '@/types/common'

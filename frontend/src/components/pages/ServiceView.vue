@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import ContactSection from '@/components/organisms/ContactSection.vue'
-import ServiceGuide from '@/components/organisms/ServiceGuide.vue'
+import ContactSection from '@/components/organisms/common/ContactSection.vue'
+import ServiceGuide from '@/components/organisms/common/ServiceGuide.vue'
 </script>
 
 <template>

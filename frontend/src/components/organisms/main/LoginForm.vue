@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import ButtonAtom from '@/components/atoms/ButtonAtom.vue'
-import InputBox from '@/components/molecules/InputBox.vue'
+import InputBox from '@/components/molecules/common/InputBox.vue'
 import TextAtom from '@/components/atoms/TextAtom.vue'
-import CheckBox from '@/components/molecules/CheckBox.vue'
+import CheckBox from '@/components/molecules/common/CheckBox.vue'
 import { ref, type Ref } from 'vue'
 import type { Handler } from '@/types/common'
 import type { LoginRequestType } from '@/types/user'

@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import NavBar from '@/components/organisms/NavBar.vue'
-import ChatRoom from '@/components/organisms/ChatRoom.vue'
+import NavBar from '@/components/organisms/common/NavBar.vue'
+import ChatRoom from '@/components/organisms/game/ChatRoom.vue'
 import { reactive, onMounted, ref } from 'vue'
 import type { ChatRoomType } from '@/types/chat'
 import { getRoom } from '@/api/room'

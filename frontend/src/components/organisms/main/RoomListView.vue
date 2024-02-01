@@ -2,8 +2,8 @@
 import ButtonAtom from '@/components/atoms/ButtonAtom.vue'
 import { ref, watch, type Ref } from 'vue'
 import type { Handler, DataHandler } from '@/types/common'
-import RoomCard from '@/components/molecules/RoomCard.vue'
-import RoomCreateCard from '@/components/molecules/RoomCreateCard.vue'
+import RoomCard from '@/components/molecules/main/RoomCard.vue'
+import RoomCreateCard from '@/components/molecules/main/RoomCreateCard.vue'
 
 /**
  * dummy data

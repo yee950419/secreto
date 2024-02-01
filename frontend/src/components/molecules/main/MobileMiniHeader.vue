@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import HeaderProfile from '@/components/molecules/HeaderProfile.vue'
-import HeaderLogo from '@/components/molecules/HeaderLogo.vue'
+import HeaderProfile from '@/components/molecules/common/HeaderProfile.vue'
+import HeaderLogo from '@/components/molecules/common/HeaderLogo.vue'
 const emit = defineEmits(['profileClickHandle'])
 </script>
 

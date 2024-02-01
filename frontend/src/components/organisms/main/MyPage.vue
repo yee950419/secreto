@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import ButtonAtom from '@/components/atoms/ButtonAtom.vue'
-import InputBox from '@/components/molecules/InputBox.vue'
+import InputBox from '@/components/molecules/common/InputBox.vue'
 import TextAtom from '@/components/atoms/TextAtom.vue'
 import AvatarAtom from '@/components/atoms/AvatarAtom.vue'
 import { ref, type Ref } from 'vue'

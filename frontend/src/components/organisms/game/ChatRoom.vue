@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import ButtonAtom from '@/components/atoms/ButtonAtom.vue'
-import ChatProfile from '@/components/molecules/ChatProfile.vue'
+import ChatProfile from '@/components/molecules/game/ChatProfile.vue'
 import { CloseOutlined } from '@ant-design/icons-vue'
 import { ref, onMounted, onUnmounted } from 'vue'
 import { io } from 'socket.io-client'

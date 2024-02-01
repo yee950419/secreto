@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import ChatRoom from '@/components/organisms/ChatRoom.vue'
+import ChatRoom from '@/components/organisms/game/ChatRoom.vue'
 import { reactive } from 'vue'
 //const emit = defineEmits(['make-room'])
 

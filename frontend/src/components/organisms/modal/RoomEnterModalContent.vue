@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import ButtonAtom from '@/components/atoms/ButtonAtom.vue'
 import TextAtom from '@/components/atoms/TextAtom.vue'
-import InputBox from '@/components/molecules/InputBox.vue'
+import InputBox from '@/components/molecules/common/InputBox.vue'
 import type { Handler } from '@/types/common'
 import { ref, type Ref } from 'vue'
 import type { RoomCreateRequestType } from '@/types/room'

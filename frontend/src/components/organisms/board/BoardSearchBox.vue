@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { ref, type Ref } from 'vue'
 import type { Handler } from '@/types/common'
-import SelectBox from '@/components/molecules/SelectBox.vue'
-import InputBox from '@/components/molecules/InputBox.vue'
+import SelectBox from '@/components/molecules/common/SelectBox.vue'
+import InputBox from '@/components/molecules/common/InputBox.vue'
 import ButtonAtom from '@/components/atoms/ButtonAtom.vue'
 
 const searchKeyword: Ref<String> = ref('')

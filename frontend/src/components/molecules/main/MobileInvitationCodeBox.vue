@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import InputBox from '@/components/molecules/InputBox.vue'
+import InputBox from '@/components/molecules/common/InputBox.vue'
 import ButtonAtom from '@/components/atoms/ButtonAtom.vue'
 const emit = defineEmits(['submitButtonHandle'])
 </script>

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { RouterView } from 'vue-router'
-import HeaderBar from '@/components/organisms/HeaderBar.vue'
-import FooterBar from '@/components/organisms/FooterBar.vue'
+import HeaderBar from '@/components/organisms/common/HeaderBar.vue'
+import FooterBar from '@/components/organisms/common/FooterBar.vue'
 import { ref, watch, onMounted, onUnmounted } from 'vue'
 import { useRoute } from 'vue-router'
 import { useMenuStore } from '@/stores/menu'

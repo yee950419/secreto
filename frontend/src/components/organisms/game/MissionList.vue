@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import CheckBox from '@/components/molecules/CheckBox.vue'
-import InputBox from '@/components/molecules/InputBox.vue'
+import CheckBox from '@/components/molecules/common/CheckBox.vue'
+import InputBox from '@/components/molecules/common/InputBox.vue'
 import { ref } from 'vue'
 import type { Handler } from '@/types/common'
 import type { Mission } from '@/types/mission'

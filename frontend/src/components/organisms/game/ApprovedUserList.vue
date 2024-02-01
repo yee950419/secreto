@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import CheckBox from '@/components/molecules/CheckBox.vue'
-import InputBox from '@/components/molecules/InputBox.vue'
+import CheckBox from '@/components/molecules/common/CheckBox.vue'
+import InputBox from '@/components/molecules/common/InputBox.vue'
 import { ref, type Ref } from 'vue'
 import type { Handler } from '@/types/common'
 import type { ProfileInfoType } from '@/types/user'
-import ProfileInfo from '@/components/molecules/ProfileInfo.vue'
+import ProfileInfo from '@/components/molecules/game/ProfileInfo.vue'
 
 defineProps({
     userList: {

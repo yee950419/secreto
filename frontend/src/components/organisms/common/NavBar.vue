@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import MenuItem from '@/components/molecules/MenuItem.vue'
+import MenuItem from '@/components/molecules/common/MenuItem.vue'
 import { SettingOutlined } from '@ant-design/icons-vue'
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'

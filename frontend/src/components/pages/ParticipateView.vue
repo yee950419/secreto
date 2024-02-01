@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import MissionHeader from '@/components/organisms/MissionHeader.vue'
-import PaticipateProfile from '@/components/molecules/PaticipateProfile.vue'
+import MissionHeader from '@/components/organisms/game/MissionHeader.vue'
+import PaticipateProfile from '@/components/molecules/game/PaticipateProfile.vue'
 import { onMounted } from 'vue'
 import { ref } from 'vue'
 import { getUserList } from '@/api/room'

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import TextAtom from '@/components/atoms/TextAtom.vue'
-import HeaderLogo from '@/components/molecules/HeaderLogo.vue'
+import HeaderLogo from '@/components/molecules/common/HeaderLogo.vue'
 import CharacterAtom from '@/components/atoms/CharacterAtom.vue'
 import { onMounted } from 'vue'
 import { HomeFilled, UserOutlined, LeftOutlined, RightOutlined } from '@ant-design/icons-vue'

@@ -16,10 +16,13 @@ export default defineConfig({
         }),
         vueJsx()
     ],
+    server: {
+        port: 8080,
+        host: '0.0.0.0'
+    },
     resolve: {
         alias: {
-            '@': fileURLToPath(new URL('./src', import.meta.url)),
-            'ant-design-vue': path.resolve(__dirname, 'node_modules/ant-design-vue')
+            '@': path.resolve(__dirname, './src')
         }
     },
     build: {

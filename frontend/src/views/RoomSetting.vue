@@ -14,7 +14,10 @@ import UnapprovedUserList from '@/components/organisms/UnapprovedUserList.vue'
 import useClipboard from 'vue-clipboard3'
 import { type Dayjs } from 'dayjs'
 import dayjs from 'dayjs'
+
+import { getSystemMission } from '@/api/mission'
 import { DatePicker, Calendar } from 'ant-design-vue'
+import { getRoom } from '@/api/room'
 
 const dummyList = ref([
     {
@@ -100,6 +103,28 @@ const gameStartHandler: Handler = () => {
     console.log('missionInterval:', missionInterval.value)
     console.log('roomCode:', roomCode.value)
     console.log('gamePeriod:', gamePeriod.value[0].toString(), gamePeriod.value[1].toString())
+}
+
+const missionGet: Handler = () => {
+    getSystemMission(
+        (res) => {
+            console.log('1', res)
+        },
+        () => {
+            console.log('2')
+        }
+    )
+}
+const roomInfoGet: Handler = () => {
+    getRoom(
+        1,
+        (res) => {
+            console.log('1', res)
+        },
+        () => {
+            console.log('2')
+        }
+    )
 }
 </script>
 

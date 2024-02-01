@@ -42,7 +42,7 @@ const allUserChecked: Ref<boolean> = ref(true)
     <div>
         <div class="flex flex-col bg-A805RealWhite overflow-hidden border-b-2 border-A805DarkGrey">
             <div>
-                <p class="text-[32px] px-6 py-5">대기 유저</p>
+                <p class="text-[32px] px-6 py-2">대기 유저</p>
             </div>
             <div
                 class="flex items-center justify-between px-4 py-2 bg-A805RealWhite border-b-2 border-A805DarkGrey"
@@ -54,8 +54,10 @@ const allUserChecked: Ref<boolean> = ref(true)
                     >전체 선택</CheckBox
                 >
                 <div class="flex justify-between gap-3">
-                    <p class="text-A805Blue" @click="usersApproveHandler">선택 승인</p>
-                    <p @click="usersDeniedHandler">선택 거절</p>
+                    <p class="text-A805Blue cursor-pointer" @click="usersApproveHandler">
+                        선택 승인
+                    </p>
+                    <p class="cursor-pointer" @click="usersDeniedHandler">선택 거절</p>
                 </div>
             </div>
             <div class="overflow-y-auto">

@@ -6,8 +6,14 @@ import TextAtom from '@/components/atoms/TextAtom.vue'
 import { ref, type Ref } from 'vue'
 import type { Handler, DataHandler } from '@/types/common'
 import type { JoinRequestType } from '@/types/user'
-import CloseButtonAtom from '../atoms/CloseButtonAtom.vue'
+import { signup } from '@/api/user'
+import { useUserStore, ViewState } from '@/stores/user'
+import { storeToRefs } from 'pinia'
 
+const userStore = useUserStore()
+const { viewState } = storeToRefs(userStore)
+
+import CloseButtonAtom from '@/components/atoms/CloseButtonAtom.vue'
 const emit = defineEmits(['joinSubmitHandle', 'closeButtonHandle', 'goLoginButtonHandle'])
 const passwordConfirm: Ref<String> = ref('')
 const verificationCode: Ref<String> = ref('')
@@ -25,9 +31,18 @@ const verificationCodeButtonHandler: DataHandler<string> = (data: string) => {
 const joinButtonHandler: Handler = () => {
     if (userData.value.password !== passwordConfirm.value) {
         alert('incorrect password confirm.')
+        return
     }
-    console.log(JSON.stringify(userData.value))
-    emit('joinSubmitHandle')
+    signup(
+        userData.value,
+        (response) => {
+            console.log(response.data.message)
+            viewState.value = ViewState.LOGIN
+        },
+        (error) => {
+            alert(error.response.data.message)
+        }
+    )
 }
 </script>
 

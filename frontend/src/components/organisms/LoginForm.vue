@@ -6,10 +6,14 @@ import CheckBox from '@/components/molecules/CheckBox.vue'
 import { ref, type Ref } from 'vue'
 import type { Handler } from '@/types/common'
 import type { LoginRequestType } from '@/types/user'
+import { useUserStore } from '@/stores/user'
+
+const userStore = useUserStore()
+const { userLogin } = userStore
 import CloseButtonAtom from '@/components/atoms/CloseButtonAtom.vue'
 
 const emit = defineEmits([
-    'loginHandle',
+    'afterLoginHandle',
     'kakaoLoginHandle',
     'googleLoginHandle',
     'findPasswordHandle',
@@ -21,7 +25,7 @@ const loginRequest: Ref<LoginRequestType> = ref({
     password: ''
 })
 const loginButtonHandler: Handler = () => {
-    emit('loginHandle', loginRequest.value)
+    userLogin(loginRequest.value)
 }
 const kakaoLoginButtonHandler: Handler = () => {
     emit('kakaoLoginHandle')

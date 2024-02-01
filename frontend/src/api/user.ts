@@ -8,12 +8,7 @@ async function login(
     success: (response: AxiosResponse) => void,
     fail: (error: any) => void
 ) {
-    userInstance
-        .get(`/users/log-in`, {
-            params: param
-        })
-        .then(success)
-        .catch(fail)
+    userInstance.post(`/users/log-in`, JSON.stringify(param)).then(success).catch(fail)
 }
 
 async function logout(

@@ -32,8 +32,8 @@ function localAxios() {
             const userStore = useUserStore()
             const { accessToken, refreshToken } = storeToRefs(userStore)
 
-            config.headers['AccessToken'] = 'Bearer ' + accessToken.value
-            config.headers['RefreshToken'] = refreshToken.value
+            config.headers['AccessToken'] = 'bearer ' + accessToken.value
+            config.headers['RefreshToken'] = 'bearer ' + refreshToken.value
             return config
         },
 

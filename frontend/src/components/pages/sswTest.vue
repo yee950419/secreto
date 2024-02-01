@@ -2,7 +2,7 @@
 import { ref, type Ref } from 'vue'
 import type { UserMission, RoomMission } from '@/types/mission'
 import ButtonAtom from '@/components/atoms/ButtonAtom.vue'
-import { Card } from 'ant-design-vue'
+import { Card } from 'ant-design-vue/es/index'
 
 const missions = ref<Array<UserMission>>([
     {

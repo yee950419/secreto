@@ -18,10 +18,7 @@ export default defineConfig({
     ],
     resolve: {
         alias: {
-            '@': fileURLToPath(new URL('./src', import.meta.url)),
-            'ant-design-vue': fileURLToPath(
-                new URL('./node_modules/ant-design-vue/es/index.js', import.meta.url)
-            )
+            '@': fileURLToPath(new URL('./src', import.meta.url))
         }
     },
     build: {

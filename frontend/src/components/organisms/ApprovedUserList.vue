@@ -14,15 +14,14 @@ defineProps({
 </script>
 
 <template>
-    <div
-        class="flex flex-col bg-A805RealWhite border-2 border-A805DarkGrey overflow-hidden w-[450px]"
-    >
+    <div class="flex flex-col bg-A805RealWhite overflow-hidden">
         <div>
             <p class="text-[32px] px-6 py-5">참여 유저</p>
         </div>
-
-        <div v-for="user in userList" :key="user.id" class="px-4 py-2">
-            <ProfileInfo :name="user.nickname" :image-url="user.profileUrl"></ProfileInfo>
+        <div class="overflow-y-auto">
+            <div v-for="user in userList" :key="user.id" class="px-4 py-2">
+                <ProfileInfo :name="user.nickname" :image-url="user.profileUrl"></ProfileInfo>
+            </div>
         </div>
     </div>
 </template>

@@ -6,8 +6,9 @@ import TextAtom from '@/components/atoms/TextAtom.vue'
 import { ref, type Ref } from 'vue'
 import type { Handler, DataHandler } from '@/types/common'
 import type { JoinRequestType } from '@/types/user'
+import CloseButtonAtom from '../atoms/CloseButtonAtom.vue'
 
-const emit = defineEmits(['joinSubmitHandle'])
+const emit = defineEmits(['joinSubmitHandle', 'closeButtonHandle', 'goLoginButtonHandle'])
 const passwordConfirm: Ref<String> = ref('')
 const verificationCode: Ref<String> = ref('')
 const userData: Ref<JoinRequestType> = ref({
@@ -31,7 +32,8 @@ const joinButtonHandler: Handler = () => {
 </script>
 
 <template>
-    <div class="card-container scroll-container">
+    <div class="card-container scroll-container max-md:justify-center max-md:items-center">
+        <CloseButtonAtom class="absolute top-2 right-2" @click="() => emit('closeButtonHandle')" />
         <TextAtom custom-class="text-[48px] font-Iceland">Join</TextAtom>
         <div class="w-full mb-[20px]">
             <ButtonInputBox
@@ -92,6 +94,11 @@ const joinButtonHandler: Handler = () => {
                 custom-class="button-style-2 w-full button-shadow button-cream mt-[15px]"
                 @button-click="joinButtonHandler"
                 >회원가입</ButtonAtom
+            >
+            <ButtonAtom
+                custom-class="text-A805Blue md:hidden w-full mt-4"
+                @button-click="() => emit('goLoginButtonHandle')"
+                >로그인하러가기</ButtonAtom
             >
         </div>
     </div>

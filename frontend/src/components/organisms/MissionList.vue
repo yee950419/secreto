@@ -11,8 +11,7 @@ const myMissionChecked = ref(true)
 const allMissionChecked = ref(false)
 const missionInputVisibility = ref(false)
 // 데이터 바뀌면 v-model로 바꿀 예정
-
-const dummyList = ref([
+const missionList = ref([
     {
         id: 1,
         name: 'test1',
@@ -35,15 +34,15 @@ const addInputBox: Handler = () => {
     }
 }
 const addMission: Handler = () => {
-    dummyList.value.push({
-        id: dummyList.value.length + 1,
+    missionList.value.push({
+        id: missionList.value.length + 1,
         name: myMisssionName.value,
         checked: myMissionChecked.value
     })
     myMisssionName.value = ''
 }
 const allChangeHandler: Handler = () => {
-    dummyList.value.forEach((mission: Mission) => {
+    missionList.value.forEach((mission: Mission) => {
         mission.checked = allMissionChecked.value
     })
 }
@@ -51,7 +50,7 @@ const allChangeHandler: Handler = () => {
 
 <template>
     <div
-        class="flex flex-col relative bg-A805RealWhite border-2 border-A805DarkGrey rounded-md overflow-hidden w-[300px] h-[240px]"
+        class="flex flex-col relative bg-A805RealWhite border-2 border-A805DarkGrey rounded-md overflow-hidden h-[240px]"
     >
         <!-- 전체 선택 -->
         <div class="bg-A805RealWhite border-b-2 border-A805DarkGrey">
@@ -66,7 +65,7 @@ const allChangeHandler: Handler = () => {
         <!-- 목록 -->
         <div class="flex flex-col overflow-y-auto scroll-container">
             <CheckBox
-                v-for="mission in dummyList"
+                v-for="mission in missionList"
                 :key="mission.id"
                 custom-class="checkbox-molecule-style-1"
                 :custom-id="mission.id"

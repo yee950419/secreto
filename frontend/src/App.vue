@@ -2,7 +2,11 @@
 import { RouterView } from 'vue-router'
 import HeaderBar from '@/components/organisms/HeaderBar.vue'
 import FooterBar from '@/components/organisms/FooterBar.vue'
+<<<<<<< frontend/src/App.vue
 import { ref, watch, onMounted, onUnmounted } from 'vue'
+=======
+import { ref, watch } from 'vue'
+>>>>>>> frontend/src/App.vue
 import { useRoute } from 'vue-router'
 import { useMenuStore } from '@/stores/menu'
 // import { storeToRefs } from 'pinia'
@@ -36,7 +40,7 @@ watch(route, () => {
 </script>
 
 <template>
-    <div class="flex flex-1 flex-col w-screen h-screen">
+    <div class="flex flex-1 flex-col w-screen h-screen overflow-x-hidden">
         <HeaderBar v-if="headerSeen" @updateRoomName="updateRoomName" :room-name="roomName" />
         <RouterView @update-name="updateRoomName" />
         <FooterBar v-if="headerSeen" />

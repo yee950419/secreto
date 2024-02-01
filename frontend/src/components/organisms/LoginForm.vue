@@ -6,12 +6,15 @@ import CheckBox from '@/components/molecules/CheckBox.vue'
 import { ref, type Ref } from 'vue'
 import type { Handler } from '@/types/common'
 import type { LoginRequestType } from '@/types/user'
+import CloseButtonAtom from '@/components/atoms/CloseButtonAtom.vue'
 
 const emit = defineEmits([
     'loginHandle',
     'kakaoLoginHandle',
     'googleLoginHandle',
-    'findPasswordHandle'
+    'findPasswordHandle',
+    'closeButtonHandle',
+    'goRegisterButtonHandle'
 ])
 const loginRequest: Ref<LoginRequestType> = ref({
     email: '',
@@ -32,9 +35,9 @@ const findPasswordButtonHandler: Handler = () => {
 </script>
 
 <template>
-    <div class="card-container">
+    <div class="card-container max-md:justify-center max-md:items-center">
+        <CloseButtonAtom class="absolute top-2 right-2" @click="() => emit('closeButtonHandle')" />
         <TextAtom custom-class="text-[48px] font-Iceland">Login</TextAtom>
-
         <div class="w-full flex flex-col justify-between h-[200px]">
             <InputBox
                 label="이메일"
@@ -71,6 +74,11 @@ const findPasswordButtonHandler: Handler = () => {
             custom-class="button-style-2 w-full button-shadow button-cream mt-[20px] mb-[10px]"
             @button-click="loginButtonHandler"
             >로그인</ButtonAtom
+        >
+        <ButtonAtom
+            custom-class="text-A805Blue md:hidden my-2"
+            @button-click="() => emit('goRegisterButtonHandle')"
+            >회원가입 하러가기</ButtonAtom
         >
         <div class="flex justify-center w-full h-[60px]">
             <ButtonAtom @button-click="googleLoginButtonHandler">

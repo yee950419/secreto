@@ -4,7 +4,7 @@
     "exclude": ["src/**/__tests__/*"],
     "compilerOptions": {
         "moduleResolution": "Node",
-        "types": ["@ant-design/icons-vue"],
+        "types": ["@ant-design/icons-vue", "ant-design-vue"],
         "composite": true,
         "noEmit": true,
         "baseUrl": ".",

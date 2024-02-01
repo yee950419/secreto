@@ -2,7 +2,6 @@
 import { getBoard } from '@/api/board'
 import { ref, type Ref, onMounted } from 'vue'
 import type { BoardResponseType } from '@/types/board'
-import BoardHeader from '@/components/molecules/board/BoardHeader.vue'
 import BoardSearchBox from '@/components/organisms/board/BoardSearchBox.vue'
 import BoardTableHeader from '@/components/molecules/board/BoardTableHeader.vue'
 import BoardElement from '@/components/molecules/board/BoardElement.vue'
@@ -198,27 +197,21 @@ const current = ref(1)
 </script>
 
 <template>
-    <div class="bg-A805RealWhite flex flex-col flex-1 max-md:w-full items-center">
-        <BoardHeader
-            class="w-full min-w-[768px] max-w-[1080px] max-md:min-w-0 max-md:hidden py-[20px] ps-[10px]"
-        />
-        <LineAtom class="mb-[30px]" />
-        <div class="flex flex-col w-full md:min-w-[768px] max-w-[1080px] max-md:min-w-0">
-            <BoardSearchBox class="max-md:px-[20px] mb-[30px]" />
+    <div class="flex flex-col w-full md:min-w-[768px] max-w-[1080px] max-md:min-w-0 items-center">
+        <BoardSearchBox class="max-md:px-[20px] mb-[30px]" />
 
-            <!-- pc -->
-            <table class="table-auto text-center max-md:hidden">
-                <BoardTableHeader class="max-md:hidden" />
-                <tbody>
-                    <BoardElement v-for="board in boards" :key="board.boardNo" :board="board" />
-                </tbody>
-            </table>
+        <!-- pc -->
+        <table class="table-auto text-center max-md:hidden w-full">
+            <BoardTableHeader class="max-md:hidden" />
+            <tbody>
+                <BoardElement v-for="board in boards" :key="board.boardNo" :board="board" />
+            </tbody>
+        </table>
 
-            <!-- mobile -->
-            <template v-for="(board, i) in boards" :key="board.boardNo">
-                <MobileBoardElement :board="board" :class="i == 0 ? 'border-t' : ''" />
-            </template>
-        </div>
+        <!-- mobile -->
+        <template v-for="(board, i) in boards" :key="board.boardNo">
+            <MobileBoardElement :board="board" :class="i == 0 ? 'border-t' : ''" />
+        </template>
         <Pagination class="my-[30px]" v-model:current="current" :total="50" show-less-items />
     </div>
 </template>

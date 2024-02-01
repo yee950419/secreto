@@ -9,7 +9,7 @@ import DeleteModalContent2 from '@/components/organisms/DeleteModalContent2.vue'
 import DeleteModalContent3 from '@/components/organisms/DeleteModalContent3.vue'
 import ModalTemplate from '@/components/template/ModalTemplate.vue'
 import RoomListView from '@/components/organisms/RoomListView.vue'
-import HeaderProfile from '@/components/molecules/HeaderProfile.vue'
+import MobileInvitationCodeBox from '@/components/molecules/main/MobileInvitationCodeBox.vue'
 import InputBox from '@/components/molecules/InputBox.vue'
 import MyPage from '@/components/organisms/MyPage.vue'
 import ChangePasswordForm from '@/components/organisms/ChangePasswordForm.vue'
@@ -17,6 +17,8 @@ import RoomCreateModalContent from '@/components/organisms/RoomCreateModalConten
 import RoomDeleteModalContent from '@/components/organisms/RoomDeleteModalContent.vue'
 import RoomEnterModalContent from '@/components/organisms/RoomEnterModalContent.vue'
 import type { RoomCreateRequestType } from '@/types/room'
+import MobileMiniHeader from '@/components/molecules/main/MobileMiniHeader.vue'
+import HeaderProfile from '@/components/molecules/HeaderProfile.vue'
 
 const ButtonLabel = Object.freeze({
     START: 'start',
@@ -103,8 +105,12 @@ const profileClickHandler = () => {
 
 <template>
     <div class="bg-A805White h-full w-full flex justify-center items-center">
-        <div class="card-template-container">
+        <div
+            class="card-template-container max-md:w-full max-md:h-full max-md:bg-A805Cream max-md:flex-col"
+        >
+            <!-- pc -->
             <MainCard
+                class="max-md:hidden"
                 v-if="state !== State.TEMPLATE"
                 @button-click="buttonClickHandler"
                 :button-label-ref="buttonLabel"
@@ -117,12 +123,26 @@ const profileClickHandler = () => {
                         @click="profileClickHandler" />
                     <InputBox
                         custom-class="input-box-style-2 mt-[10px] bg-A805White w-[200px] h-[50px]"
-                        input-class="text-center  text-[24px]"
+                        input-class="text-center text-[24px]"
                         place-holder="초대코드 입력"
                 /></template>
             </MainCard>
-            <RoomListView v-if="state === State.MAIN_AFTER_LOGIN" />
+
+            <!-- mobile -->
+            <div class="w-full md:hidden">
+                <MobileMiniHeader class="my-2" @profile-click-handle="profileClickHandler" />
+                <MobileInvitationCodeBox
+                    v-show="state === State.MAIN_AFTER_LOGIN"
+                    @submit-button-handle="buttonClickHandler"
+                />
+            </div>
+
+            <RoomListView
+                class="max-md:h-full max-md:w-full"
+                v-if="state === State.MAIN_AFTER_LOGIN"
+            />
             <MyPage
+                class="max-md:h-full max-md:w-full"
                 v-if="state === State.MY_PAGE"
                 @password-change-handle="() => (state = State.CHANGE_PWD)"
                 @withdrawal-handle="
@@ -131,10 +151,13 @@ const profileClickHandler = () => {
                         modalState = ModalState.WITHDRAW
                     }
                 "
+                @close-button-handle="buttonClickHandler"
             />
             <ChangePasswordForm
+                class="max-md:h-full max-md:w-full"
                 v-if="state === State.CHANGE_PWD"
                 @prev-button-handle="() => (state = State.MY_PAGE)"
+                @close-button-handle="() => (state = State.MY_PAGE)"
             />
             <WideCardTemplate
                 v-if="state === State.TEMPLATE"
@@ -142,6 +165,7 @@ const profileClickHandler = () => {
                 :content-messages="template.contentMessages"
                 :button-label="template.buttonLabel"
                 @button-click="template.buttonClickHandler"
+                @close-button-handle="template.buttonClickHandler"
             />
         </div>
     </div>

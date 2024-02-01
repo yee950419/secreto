@@ -1,3 +1,4 @@
+import sswTestVue from '@/views/sswTest.vue'
 import { createRouter, createWebHistory } from 'vue-router'
 
 const router = createRouter({
@@ -30,6 +31,11 @@ const router = createRouter({
                     component: () => import('@/components/template/board/BoardList.vue')
                 },
                 {
+                    path: '/game/mission',
+                    name: 'game-mission',
+                    component: sswTestVue
+                },
+                {
                     path: '/game/participate',
                     name: 'game-participate',
                     component: () => import('@/views/ParticipateView.vue')
@@ -50,6 +56,14 @@ const router = createRouter({
             path: '/info',
             name: 'info',
             component: () => import('@/views/ServiceView.vue')
+        },
+        {
+            path: '/roomsettings',
+            name: 'roomsettings',
+            component: () => import('@/views/RoomSetting.vue'),
+            meta: {
+                hide: true
+            }
         }
     ]
 })

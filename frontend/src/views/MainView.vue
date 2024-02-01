@@ -17,6 +17,9 @@ import RoomCreateModalContent from '@/components/organisms/RoomCreateModalConten
 import RoomDeleteModalContent from '@/components/organisms/RoomDeleteModalContent.vue'
 import RoomEnterModalContent from '@/components/organisms/RoomEnterModalContent.vue'
 import type { RoomCreateRequestType } from '@/types/room'
+import { useUserStore } from '@/stores/user'
+
+const userStore = useUserStore()
 
 const ButtonLabel = Object.freeze({
     START: 'start',
@@ -111,8 +114,8 @@ const profileClickHandler = () => {
             >
                 <template v-if="state === State.MAIN_AFTER_LOGIN">
                     <HeaderProfile
-                        name="sdf"
-                        :image-url="null"
+                        :name="userStore.userInfo.nickname"
+                        :image-url="userStore.userInfo.profileUrl"
                         custom-class="cursor-pointer"
                         @click="profileClickHandler" />
                     <InputBox

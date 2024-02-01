@@ -6,12 +6,13 @@ import TextAtom from '@/components/atoms/TextAtom.vue'
 import { ref, type Ref } from 'vue'
 import type { Handler, DataHandler } from '@/types/common'
 import type { JoinRequestType } from '@/types/user'
-import { useRouter } from 'vue-router'
 import { signup } from '@/api/user'
-import { httpStatusCode } from '@/utils/http-status'
+import { useUserStore, ViewState } from '@/stores/user'
+import { storeToRefs } from 'pinia'
 
-const router = useRouter()
-const emit = defineEmits(['joinSubmitHandle'])
+const userStore = useUserStore()
+const { viewState } = storeToRefs(userStore)
+
 const passwordConfirm: Ref<String> = ref('')
 const verificationCode: Ref<String> = ref('')
 const userData: Ref<JoinRequestType> = ref({
@@ -33,7 +34,8 @@ const joinButtonHandler: Handler = () => {
     signup(
         userData.value,
         (response) => {
-            console.log(response.status, response)
+            console.log(response.data.message)
+            viewState.value = ViewState.LOGIN
         },
         (error) => {
             alert(error.response.data.message)

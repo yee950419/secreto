@@ -9,6 +9,7 @@ import type { LoginRequestType } from '@/types/user'
 import { useUserStore } from '@/stores/user'
 
 const userStore = useUserStore()
+const { userLogin } = userStore
 
 const emit = defineEmits([
     'afterLoginHandle',
@@ -21,7 +22,7 @@ const loginRequest: Ref<LoginRequestType> = ref({
     password: ''
 })
 const loginButtonHandler: Handler = () => {
-    userStore.userLogin(loginRequest.value)
+    userLogin(loginRequest.value)
 }
 const kakaoLoginButtonHandler: Handler = () => {
     emit('kakaoLoginHandle')

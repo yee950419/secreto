@@ -9,9 +9,11 @@ import type { DataHandler, Handler, WideCardTemplateType } from '@/types/common'
 import type { LoginRequestType, PasswordFindMailRequest } from '@/types/user'
 import type { Ref } from 'vue'
 import { ref } from 'vue'
-import { useRouter } from 'vue-router'
-const router = useRouter()
+import { ViewState, useUserStore } from '@/stores/user'
+import { storeToRefs } from 'pinia'
 
+const userStore = useUserStore()
+const { viewState } = storeToRefs(userStore)
 const ButtonLabel = Object.freeze({
     START: 'start',
     JOIN: 'join',
@@ -19,30 +21,21 @@ const ButtonLabel = Object.freeze({
     GAME: 'game',
     ENTER: 'enter'
 })
-const State = Object.freeze({
-    MAIN: 'main',
-    LOGIN: 'login',
-    JOIN: 'join',
-    PASSWORD: 'find_password',
-    TEMPLATE: 'template'
-})
-
 const buttonLabel: Ref<string> = ref(ButtonLabel.START)
-const state: Ref<string> = ref(State.MAIN)
 
 const buttonClickHandler: Handler = () => {
-    switch (state.value) {
-        case State.MAIN:
-            state.value = State.LOGIN
+    switch (viewState.value) {
+        case ViewState.MAIN:
+            viewState.value = ViewState.LOGIN
             buttonLabel.value = ButtonLabel.JOIN
             break
-        case State.LOGIN:
-            state.value = State.JOIN
+        case ViewState.LOGIN:
+            viewState.value = ViewState.JOIN
             buttonLabel.value = ButtonLabel.LOGIN
             break
-        case State.JOIN:
-        case State.PASSWORD:
-            state.value = State.LOGIN
+        case ViewState.JOIN:
+        case ViewState.PASSWORD:
+            viewState.value = ViewState.LOGIN
             buttonLabel.value = ButtonLabel.JOIN
             break
     }
@@ -67,7 +60,7 @@ const kakaoLoginHandler: Handler = () => {
     alert('kakao login')
 }
 const findPasswordHandler: Handler = () => {
-    state.value = State.PASSWORD
+    viewState.value = ViewState.PASSWORD
     buttonLabel.value = ButtonLabel.LOGIN
 }
 
@@ -89,13 +82,13 @@ const findPasswordEmailSubmitHandler: DataHandler<PasswordFindMailRequest> = (
     ]
     template.value.buttonLabel = '로그인 페이지 이동'
     template.value.buttonClickHandler = () => {
-        state.value = State.LOGIN
+        viewState.value = ViewState.LOGIN
         buttonLabel.value = ButtonLabel.JOIN
     }
-    state.value = State.TEMPLATE
+    viewState.value = ViewState.TEMPLATE
 }
 const findPasswordPrevPageHandler: Handler = () => {
-    state.value = State.LOGIN
+    viewState.value = ViewState.LOGIN
     buttonLabel.value = ButtonLabel.JOIN
 }
 </script>
@@ -104,7 +97,7 @@ const findPasswordPrevPageHandler: Handler = () => {
     <div class="bg-A805White h-full w-full flex justify-center items-center">
         <div class="card-template-container">
             <MainCard
-                v-if="state !== State.TEMPLATE"
+                v-if="viewState !== ViewState.TEMPLATE"
                 @button-click="buttonClickHandler"
                 :button-label-ref="buttonLabel"
             >
@@ -115,20 +108,20 @@ const findPasswordPrevPageHandler: Handler = () => {
                 </TextAtom></MainCard
             >
             <LoginForm
-                v-if="state === State.LOGIN"
+                v-if="viewState === ViewState.LOGIN"
                 @login-handle="loginHandler"
                 @google-login-handle="googleLoginHandler"
                 @kakao-login-handle="kakaoLoginHandler"
                 @find-password-handle="findPasswordHandler"
             />
-            <JoinForm v-if="state === State.JOIN" @join-submit-handle="joinHandler" />
+            <JoinForm v-if="viewState === ViewState.JOIN" @join-submit-handle="joinHandler" />
             <FindPasswordForm
-                v-if="state === State.PASSWORD"
+                v-if="viewState === ViewState.PASSWORD"
                 @emailSubmitHandle="findPasswordEmailSubmitHandler"
                 @prev-page-handle="findPasswordPrevPageHandler"
             />
             <WideCardTemplate
-                v-if="state === State.TEMPLATE"
+                v-if="viewState === ViewState.TEMPLATE"
                 :title="template.title"
                 :content-messages="template.contentMessages"
                 :button-label="template.buttonLabel"

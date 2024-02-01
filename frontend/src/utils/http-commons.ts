@@ -17,7 +17,7 @@ function localAxios() {
     })
 
     // 모든 요청에 대해 기본 헤더 속성 설정
-    instance.defaults.headers.common['Type'] = 'Bearer'
+    instance.defaults.headers.common['Type'] = 'bearer'
     instance.defaults.headers.common['Content-Type'] = 'application/json;charset=utf-8'
     instance.defaults.headers.common['AccessToken'] = ''
     instance.defaults.headers.common['RefreshToken'] = ''

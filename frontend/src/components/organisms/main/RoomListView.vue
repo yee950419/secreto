@@ -2,13 +2,14 @@
 import ButtonAtom from '@/components/atoms/ButtonAtom.vue'
 import { ref, watch, type Ref } from 'vue'
 import type { Handler, DataHandler } from '@/types/common'
+import type { RoomInfoTypeTest } from '@/types/room'
 import RoomCard from '@/components/molecules/main/RoomCard.vue'
 import RoomCreateCard from '@/components/molecules/main/RoomCreateCard.vue'
 
 /**
  * dummy data
  */
-const roomInfoList = ref([
+const roomInfoList = ref<Array<RoomInfoTypeTest>>([
     {
         roomNo: 1,
         title: 'SSAFY 10기 1반',
@@ -109,8 +110,20 @@ const roomEnterHandler: DataHandler<number> = (roomNo: number) => {
 const roomFavoriteHandler: DataHandler<number> = (roomNo: number) => {
     alert(roomNo + '번 방 즐겨찾기 추가 이벤트')
 }
+const roomFavoriteHandlerTest: DataHandler<RoomInfoTypeTest> = (roomInfo: RoomInfoTypeTest) => {
+    roomInfo.like = !roomInfo.like
+}
 const roomLeaveHandler: DataHandler<number> = (roomNo: number) => {
     alert(roomNo + '번 방 삭제 이벤트')
+}
+const roomLeaveHandlerTest: DataHandler<number> = (roomNo: number) => {
+    alert(roomNo + '번 방 삭제 이벤트')
+    roomInfoList.value = roomInfoList.value.filter((room: RoomInfoTypeTest) => {
+        if (room['roomNo'] !== roomNo) {
+            return room
+        }
+    })
+    console.log(roomInfoList.value)
 }
 const roomCreateHandler: Handler = () => {
     alert('새로운 방 만들기 이벤트')
@@ -164,8 +177,8 @@ const roomCreateHandler: Handler = () => {
                 :key="roomInfo.roomNo"
                 :room-info="roomInfo"
                 @click="() => roomEnterHandler(roomInfo.roomNo)"
-                @favorite-handle="() => roomFavoriteHandler(roomInfo.roomNo)"
-                @delete-handle="() => roomLeaveHandler(roomInfo.roomNo)"
+                @favorite-handle="() => roomFavoriteHandlerTest(roomInfo)"
+                @delete-handle="() => roomLeaveHandlerTest(roomInfo.roomNo)"
             />
             <RoomCreateCard @click="roomCreateHandler" />
         </div>

@@ -17,6 +17,7 @@
         "@types/socket.io-client": "^3.0.0",
         "ant-design-vue": "^4.0.0-rc.6",
         "axios": "^1.6.5",
+        "indexof": "^0.0.1",
         "pinia": "^2.1.7",
         "pinia-plugin-persistedstate": "^3.2.1",
         "socket.io": "^4.7.4",

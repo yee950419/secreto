@@ -12,6 +12,12 @@ const userStore = useUserStore()
 const menuStore = useMenuStore()
 const { userInfo } = storeToRefs(userStore)
 const { menuSeen } = storeToRefs(menuStore)
+defineProps({
+    roomName: {
+        type: String as () => string | null,
+        default: '방 제목'
+    }
+})
 
 const windowWidth = ref(window.innerWidth)
 const isMdOrLarger = computed(() => windowWidth.value >= 768) // 예시에서는 md의 화면 크기가 768px이라고 가정
@@ -40,7 +46,7 @@ onUnmounted(() => {
 
 <template>
     <div
-        class="flex md:h-[140px] max-md:min-h-[100px] bg-A805Cream w-full md:justify-between items-center"
+        class="relative flex md:min-h-[140px] max-md:min-h-[100px] bg-A805Cream w-full md:justify-between items-center shadow-lg"
     >
         <MenuOutlined
             v-if="!isMdOrLarger"
@@ -49,7 +55,7 @@ onUnmounted(() => {
             @click="menuClick"
         />
         <HeaderLogo class="md:ml-[20px] max-md:mx-auto" />
-        <TextAtom class="text-1" v-if="isMdOrLarger">방제목</TextAtom>
+        <TextAtom class="text-2 truncate max-w-[20%]" v-if="isMdOrLarger">{{ roomName }}</TextAtom>
         <HeaderProfile
             @click="clickHandler"
             v-if="isMdOrLarger"

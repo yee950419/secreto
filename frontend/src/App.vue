@@ -2,10 +2,29 @@
 import { RouterView } from 'vue-router'
 import HeaderBar from '@/components/organisms/HeaderBar.vue'
 import FooterBar from '@/components/organisms/FooterBar.vue'
-import { ref, watch, onMounted } from 'vue'
+import { ref, watch, onMounted, onUnmounted } from 'vue'
 import { useRoute } from 'vue-router'
+import { useMenuStore } from '@/stores/menu'
+// import { storeToRefs } from 'pinia'
+const menuStore = useMenuStore()
+// const { menuSeen } = storeToRefs(menuStore)
+const { handleResize } = menuStore
+
 const headerSeen = ref(false)
 const route = useRoute()
+
+onMounted(() => {
+    window.addEventListener('resize', handleResize)
+})
+
+onUnmounted(() => {
+    window.removeEventListener('resize', handleResize)
+})
+
+const roomName = ref<string | undefined>()
+const updateRoomName = (name: string | undefined) => {
+    roomName.value = name
+}
 
 watch(route, () => {
     if (route.meta.hide === true) {
@@ -14,30 +33,12 @@ watch(route, () => {
         headerSeen.value = true
     }
 })
-
-// const handleServerSentEvent = () => {
-//     const eventSource = new EventSource(import.meta.env.VITE_API_BASE_URL + '/alarm') // 서버 엔드포인트를 적절히 설정해야 합니다.
-
-//     eventSource.addEventListener('message', (event) => {
-//         console.log('Server Sent Event received:', event.data)
-//         // 여기에서 서버에서 전송된 이벤트를 처리합니다.
-//     })
-
-//     eventSource.addEventListener('error', (event) => {
-//         console.error('Server Sent Event error:', event)
-//         // 여기에서 오류 처리를 수행합니다.
-//     })
-// }
-
-// onMounted(() => {
-//     handleServerSentEvent()
-// })
 </script>
 
 <template>
     <div class="flex flex-1 flex-col w-screen h-screen">
-        <HeaderBar v-if="headerSeen" />
-        <RouterView />
+        <HeaderBar v-if="headerSeen" @updateRoomName="updateRoomName" :room-name="roomName" />
+        <RouterView @update-name="updateRoomName" />
         <FooterBar v-if="headerSeen" />
     </div>
 </template>

@@ -9,7 +9,7 @@ import DeleteModalContent2 from '@/components/organisms/DeleteModalContent2.vue'
 import DeleteModalContent3 from '@/components/organisms/DeleteModalContent3.vue'
 import ModalTemplate from '@/components/template/ModalTemplate.vue'
 import RoomListView from '@/components/organisms/RoomListView.vue'
-import HeaderProfile from '@/components/molecules/HeaderProfile.vue'
+import MobileInvitationCodeBox from '@/components/molecules/main/MobileInvitationCodeBox.vue'
 import InputBox from '@/components/molecules/InputBox.vue'
 import MyPage from '@/components/organisms/MyPage.vue'
 import ChangePasswordForm from '@/components/organisms/ChangePasswordForm.vue'
@@ -17,8 +17,7 @@ import RoomCreateModalContent from '@/components/organisms/RoomCreateModalConten
 import RoomDeleteModalContent from '@/components/organisms/RoomDeleteModalContent.vue'
 import RoomEnterModalContent from '@/components/organisms/RoomEnterModalContent.vue'
 import type { RoomCreateRequestType } from '@/types/room'
-import HeaderLogo from '@/components/molecules/HeaderLogo.vue'
-import ButtonAtom from '@/components/atoms/ButtonAtom.vue'
+import MobileMiniHeader from '@/components/molecules/main/MobileMiniHeader.vue'
 
 const ButtonLabel = Object.freeze({
     START: 'start',
@@ -129,32 +128,12 @@ const profileClickHandler = () => {
             </MainCard>
 
             <!-- mobile -->
-            <div class="md:hidden my-2 px-5 flex items-center w-full justify-between">
-                <HeaderLogo />
-                <HeaderProfile
-                    name="sdf"
-                    :image-url="null"
-                    custom-class="cursor-pointer"
-                    @click="profileClickHandler"
+            <div class="w-full md:hidden">
+                <MobileMiniHeader class="my-2" @profile-click-handle="profileClickHandler" />
+                <MobileInvitationCodeBox
+                    v-show="state === State.MAIN_AFTER_LOGIN"
+                    @submit-button-handle="buttonClickHandler"
                 />
-            </div>
-
-            <!-- mobile invitation coe-->
-            <div
-                class="md:hidden bg-A805RealWhite flex flex-col w-full p-5 gap-[10px]"
-                v-if="state === State.MAIN_AFTER_LOGIN"
-            >
-                <InputBox
-                    custom-class="input-box-style-2 bg-A805White w-full h-[50px]"
-                    input-class="text-center text-[24px]"
-                    place-holder="초대코드 입력"
-                />
-                <ButtonAtom
-                    class="button-style-4 w-full button-claret"
-                    @button-click="buttonClickHandler"
-                >
-                    입장
-                </ButtonAtom>
             </div>
 
             <RoomListView

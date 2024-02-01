@@ -63,6 +63,10 @@ const findPasswordHandler: Handler = () => {
     viewState.value = ViewState.PASSWORD
     buttonLabel.value = ButtonLabel.LOGIN
 }
+const cardCloseHandler: Handler = () => {
+    state.value = State.MAIN
+    buttonLabel.value = ButtonLabel.START
+}
 
 // join view
 const joinHandler: Handler = () => {
@@ -95,30 +99,44 @@ const findPasswordPrevPageHandler: Handler = () => {
 
 <template>
     <div class="bg-A805White h-full w-full flex justify-center items-center">
-        <div class="card-template-container">
+        <div
+            class="card-template-container max-md:w-full max-md:h-full max-md:bg-A805Cream max-md:flex-col"
+        >
             <MainCard
-                v-if="viewState !== ViewState.TEMPLATE"
+                :class="state !== State.MAIN ? 'max-md:hidden' : ''"
+                v-if="state !== State.TEMPLATE"
                 @button-click="buttonClickHandler"
                 :button-label-ref="buttonLabel"
             >
-                <TextAtom custom-class="text-[16px]">
+                <TextAtom custom-class="text-[16px] ">
                     Lorem ipsum dolor sit amet consectetur, adipisicing elit. Quasi consequatur iure
                     quos accusantium corrupti velit officiis dignissimos est porro! Tempore aperiam
                     quasi saepe, maiores illum aliquam fugit ut consequuntur aut?
                 </TextAtom></MainCard
             >
             <LoginForm
-                v-if="viewState === ViewState.LOGIN"
+                class="max-md:w-full max-md:h-full"
+                v-if="state === State.LOGIN"
                 @login-handle="loginHandler"
                 @google-login-handle="googleLoginHandler"
                 @kakao-login-handle="kakaoLoginHandler"
                 @find-password-handle="findPasswordHandler"
+                @close-button-handle="cardCloseHandler"
+                @go-register-button-handle="buttonClickHandler"
             />
-            <JoinForm v-if="viewState === ViewState.JOIN" @join-submit-handle="joinHandler" />
+            <JoinForm
+                class="max-md:w-full max-md:h-full"
+                v-if="state === State.JOIN"
+                @join-submit-handle="joinHandler"
+                @close-button-handle="cardCloseHandler"
+                @go-login-button-handle="buttonClickHandler"
+            />
             <FindPasswordForm
-                v-if="viewState === ViewState.PASSWORD"
+                class="max-md:w-full max-md:h-full"
+                v-if="state === State.PASSWORD"
                 @emailSubmitHandle="findPasswordEmailSubmitHandler"
                 @prev-page-handle="findPasswordPrevPageHandler"
+                @close-button-handle="buttonClickHandler"
             />
             <WideCardTemplate
                 v-if="viewState === ViewState.TEMPLATE"
@@ -126,6 +144,7 @@ const findPasswordPrevPageHandler: Handler = () => {
                 :content-messages="template.contentMessages"
                 :button-label="template.buttonLabel"
                 @button-click="template.buttonClickHandler"
+                @close-button-handle="template.buttonClickHandler"
             />
         </div>
     </div>

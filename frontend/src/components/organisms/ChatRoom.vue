@@ -15,6 +15,10 @@ const { imageUrl, name } = defineProps({
     name: {
         type: String,
         default: ''
+    },
+    customClass: {
+        type: String as () => string,
+        default: ''
     }
 })
 const messages = ref<Message[]>([])
@@ -115,7 +119,7 @@ onUnmounted(() => {
 
 <template>
     <div
-        class="modal md:absolute max-md:relative flex flex-col flex-1 overflow-hidden max-md:w-screen max-md:h-full max-md:min-h-[600px] md:min-h-[600px] md:w-[350px] md:rounded-md md:border-2 md:border-solid md:border-A805Black bg-A805Grey"
+        class="modal md:absolute z-[1] max-md:relative flex flex-col flex-1 overflow-hidden max-md:w-screen max-md:h-full max-md:min-h-[600px] md:min-h-[600px] md:w-[350px] md:rounded-md md:border-2 md:border-solid md:border-A805Black bg-A805Grey md:left-[50%] md:top-[20%] cursor-pointer"
         ref="chatRoomRef"
         @mousedown="startDrag"
         @mousemove="drag"

@@ -1,31 +1,17 @@
 <script setup lang="ts">
 import MenuItem from '@/components/molecules/MenuItem.vue'
 import { SettingOutlined } from '@ant-design/icons-vue'
-import { ref, onMounted, onUnmounted } from 'vue'
+import { ref } from 'vue'
 import { useRouter } from 'vue-router'
-import { storeToRefs } from 'pinia'
 import { useMenuStore } from '@/stores/menu'
-
 const menuStore = useMenuStore()
-const { menuSeen } = storeToRefs(menuStore)
+const { handleClick } = menuStore
 
-const windowWidth = ref(window.innerWidth)
-
-const handleResize = () => {
-    windowWidth.value = window.innerWidth
-}
-
-// const clickHandler = () => {
-//     console.log('clickHandler', userInfo.value)
-// }
-
-onMounted(() => {
-    handleResize()
-    window.addEventListener('resize', handleResize)
-})
-
-onUnmounted(() => {
-    window.removeEventListener('resize', handleResize)
+defineProps({
+    roomName: {
+        type: String as () => String,
+        default: '방 제목'
+    }
 })
 
 const showSubMenu = ref<string[]>([])
@@ -62,8 +48,7 @@ const handleMenuClickAndToggleSubMenu = (index: number, menu: string) => {
 
 <template>
     <div
-        v-if="menuSeen || windowWidth >= 768"
-        class="flex flex-col h-full bg-A805White md:w-[300px] max-md:w-full md:border-solid md:border-2 md:border-A805Cream md:overflow-y-auto"
+        class="flex flex-col h-full bg-A805White md:w-[230px] max-md:w-full md:border-solid md:border-2 md:border-A805Cream md:overflow-y-auto"
     >
         <MenuItem
             custom-class="menu-item"
@@ -71,7 +56,7 @@ const handleMenuClickAndToggleSubMenu = (index: number, menu: string) => {
             @menu-click="handleMenuClick(0)"
             ><div class="flex w-full items-center gap-[20px]">방 설정 <SettingOutlined /></div
         ></MenuItem>
-        <MenuItem custom-class="menu-item">A805 마니또</MenuItem>
+        <MenuItem custom-class="menu-item">{{ roomName }}</MenuItem>
         <MenuItem
             custom-class="menu-item"
             :active="activeMenu === 1"
@@ -81,13 +66,13 @@ const handleMenuClickAndToggleSubMenu = (index: number, menu: string) => {
         <MenuItem
             custom-class="menu-item"
             :active="activeMenu === 2"
-            @menu-click="handleMenuClick(2)"
+            @menu-click="handleMenuClick(2), router.push('/main')"
             >메인 화면</MenuItem
         >
         <MenuItem
             custom-class="menu-item"
             :active="activeMenu === 3"
-            @menu-click="router.push('/game/participate'), handleMenuClick(3)"
+            @menu-click="handleClick(), router.push('/game/participate'), handleMenuClick(3)"
             >참여 인원</MenuItem
         >
         <MenuItem
@@ -103,13 +88,15 @@ const handleMenuClickAndToggleSubMenu = (index: number, menu: string) => {
             >채팅</MenuItem
         >
         <div v-if="showSubMenu.includes('chat')">
-            <MenuItem custom-class="sub-menu-item" @menu-click="makeRoom('마니또')"
+            <MenuItem custom-class="sub-menu-item" @menu-click="makeRoom('마니또'), handleClick()"
                 >마니또와의 채팅</MenuItem
             >
-            <MenuItem custom-class="sub-menu-item" @menu-click="makeRoom('마니띠')"
+            <MenuItem custom-class="sub-menu-item" @menu-click="makeRoom('마니띠'), handleClick()"
                 >마니띠와의 채팅</MenuItem
             >
-            <MenuItem custom-class="sub-menu-item" @menu-click="makeRoom('단체 채팅')"
+            <MenuItem
+                custom-class="sub-menu-item"
+                @menu-click="makeRoom('단체 채팅'), handleClick()"
                 >단체 채팅</MenuItem
             >
         </div>
@@ -121,13 +108,19 @@ const handleMenuClickAndToggleSubMenu = (index: number, menu: string) => {
             >게시판</MenuItem
         >
         <div v-if="showSubMenu.includes('board')">
-            <MenuItem custom-class="sub-menu-item" @menu-click="router.push('/game/board')"
+            <MenuItem
+                custom-class="sub-menu-item"
+                @menu-click="router.push('/game/board'), handleClick()"
                 >공지 게시판</MenuItem
             >
-            <MenuItem custom-class="sub-menu-item" @menu-click="router.push('/game/board')"
+            <MenuItem
+                custom-class="sub-menu-item"
+                @menu-click="router.push('/game/board'), handleClick()"
                 >인증 게시판</MenuItem
             >
-            <MenuItem custom-class="sub-menu-item" @menu-click="router.push('/game/board')"
+            <MenuItem
+                custom-class="sub-menu-item"
+                @menu-click="router.push('/game/board'), handleClick()"
                 >자랑 게시판</MenuItem
             >
         </div>

@@ -2,7 +2,7 @@
 import { ref, type Ref } from 'vue'
 import type { UserMission, RoomMission } from '@/types/mission'
 import ButtonAtom from '@/components/atoms/ButtonAtom.vue'
-import { Card } from 'ant-design-vue'
+// import { Card } from 'ant-design-vue'
 
 const missions = ref<Array<UserMission>>([
     {
@@ -70,38 +70,38 @@ const roomMissions = ref<Array<RoomMission>>([
         <div class="flex max-md:flex-col text-[20pt]">
             <div name="user-mission-list" class="w-full max-md:w-full overflow-auto">
                 <!-- 마니또 변경 기능을 위한 v-for 추가 필요 -->
-                <Card class="p-4">
-                    <div
-                        v-for="(mission, missionIndex) in missions"
-                        :key="missionIndex"
-                        class="flex gap-7 content-center items-center"
-                    >
-                        <div class="text-[14pt]">
-                            {{ mission.missionReceivedAt }} {{ mission.content }}
-                            <ButtonAtom
-                                :class="{
-                                    'bg-A805Blue': mission.missionType === 'common',
-                                    'bg-A805Green': mission.missionType === 'individual',
-                                    'text-white': true,
-                                    'button-style-mission-type': true
-                                }"
-                                >{{
-                                    mission.missionType === 'common' ? '공통 미션' : '개별 미션'
-                                }}</ButtonAtom
-                            >
-                        </div>
+                <!-- <Card class="p-4"> -->
+                <div
+                    v-for="(mission, missionIndex) in missions"
+                    :key="missionIndex"
+                    class="flex gap-7 content-center items-center"
+                >
+                    <div class="text-[14pt]">
+                        {{ mission.missionReceivedAt }} {{ mission.content }}
                         <ButtonAtom
-                            v-if="!mission.missionCertifyYn"
-                            class="button-claret button-style-certification"
-                            >인증하기</ButtonAtom
-                        >
-                        <ButtonAtom
-                            v-if="mission.missionCertifyYn"
-                            class="bg-A805LightGrey button-style-certification"
-                            >인증완료</ButtonAtom
+                            :class="{
+                                'bg-A805Blue': mission.missionType === 'common',
+                                'bg-A805Green': mission.missionType === 'individual',
+                                'text-white': true,
+                                'button-style-mission-type': true
+                            }"
+                            >{{
+                                mission.missionType === 'common' ? '공통 미션' : '개별 미션'
+                            }}</ButtonAtom
                         >
                     </div>
-                </Card>
+                    <ButtonAtom
+                        v-if="!mission.missionCertifyYn"
+                        class="button-claret button-style-certification"
+                        >인증하기</ButtonAtom
+                    >
+                    <ButtonAtom
+                        v-if="mission.missionCertifyYn"
+                        class="bg-A805LightGrey button-style-certification"
+                        >인증완료</ButtonAtom
+                    >
+                </div>
+                <!-- </Card> -->
             </div>
         </div>
     </div>

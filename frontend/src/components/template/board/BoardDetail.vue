@@ -9,6 +9,8 @@ import BoardDetailTop from '@/components/molecules/board/BoardDetailTop.vue'
 import BoardDetailBottom from '@/components/molecules/board/BoardDetailBottom.vue'
 import TextAtom from '@/components/atoms/TextAtom.vue'
 import LineAtom from '@/components/atoms/LineAtom.vue'
+import ModalTemplate from '@/components/template/ModalTemplate.vue'
+import PostDeleteModalContent from '@/components/organisms/modal/PostDeleteModalContent.vue'
 import { CommentOutlined } from '@ant-design/icons-vue'
 import type { Handler } from '@/types/common'
 
@@ -95,14 +97,20 @@ const writeButtonHandler: Handler = () => {
 const modifyButtonHandler: Handler = () => {
     alert('수정 페이지 이동')
 }
-const deleteButtonHandler: Handler = () => {
-    alert('삭제 이벤트 발생')
-}
 const topButtonHandler: Handler = () => {
     alert('맨 이벤트 발생')
 }
 const listButtonHandler: Handler = () => {
     alert('목록 페이지 이동')
+}
+
+// modal
+const deleteModalSeen: Ref<boolean> = ref(false)
+const deleteModalToggle: Handler = () => {
+    deleteModalSeen.value = !deleteModalSeen.value
+}
+const postDeleteHandler: Handler = () => {
+    alert('게시글 삭제 이벤트')
 }
 </script>
 
@@ -111,7 +119,7 @@ const listButtonHandler: Handler = () => {
         <BoardDetailTop
             class="my-4 max-md:hidden"
             @modify-button-handle="modifyButtonHandler"
-            @delete-button-handle="deleteButtonHandler"
+            @delete-button-handle="deleteModalToggle"
             @list-button-handle="listButtonHandler"
         />
         <div
@@ -160,10 +168,24 @@ const listButtonHandler: Handler = () => {
             class="my-4"
             @write-button-handle="writeButtonHandler"
             @modify-button-handle="modifyButtonHandler"
-            @delete-button-handle="deleteButtonHandler"
+            @delete-button-handle="deleteModalToggle"
             @top-button-handle="topButtonHandler"
             @list-button-handle="listButtonHandler"
         />
+
+        <!-- Delete Model -->
+        <ModalTemplate
+            custom-id="modal"
+            custom-class="modal-template-style-1 w-[350px]"
+            :seen="deleteModalSeen"
+            v-if="deleteModalSeen"
+            @modal-close="deleteModalToggle"
+        >
+            <PostDeleteModalContent
+                @yes-button-handle="postDeleteHandler"
+                @no-button-handle="deleteModalToggle"
+            />
+        </ModalTemplate>
     </div>
 </template>
 

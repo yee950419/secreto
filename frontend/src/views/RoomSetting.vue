@@ -132,9 +132,9 @@ const roomInfoGet: Handler = () => {
     <div class="w-full">
         <div class="bg-A805RealWhite flex flex-col">
             <HeaderBar />
-            <div class="flex w-full justify-between max-md:flex-col gap-4">
+            <div class="flex justify-center max-md:flex-col gap-3 m-[3%]">
                 <!-- <div name="main-part" class="flex selection:max-md:flex-col max-md:w-full"> -->
-                <div name="main-1" class="flex flex-col w-[600px] px-4 gap-8 max-md:w-full">
+                <div name="main-1" class="flex flex-col w-[500px] px-4 gap-8 max-md:w-full">
                     <ButtonInputBox
                         label="방 제목"
                         button-class="button-blue text-white line-darkgrey  border-s-0"
@@ -148,7 +148,7 @@ const roomInfoGet: Handler = () => {
                         <CheckBox v-model="hostInGame">방장도 게임 참여</CheckBox>
                     </div>
                 </div>
-                <div name="main-2" class="flex flex-col w-[600px] px-4 gap-[5%] max-md:w-full">
+                <div name="main-2" class="flex flex-col w-[500px] px-4 gap-[5%] max-md:w-full">
                     <div name="main-2-1" class="flex justify-between">
                         <DateButton
                             class=""

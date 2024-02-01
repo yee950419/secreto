@@ -1,156 +1,114 @@
 <script setup lang="ts">
-import { computed, ref, type Ref, watch } from 'vue'
+import { ref, type Ref } from 'vue'
+import type { UserMission, RoomMission } from '@/types/mission'
 import ButtonAtom from '@/components/atoms/ButtonAtom.vue'
-import ModalTemplate from '@/components/template/ModalTemplate.vue'
-import SelectBox from '@/components/molecules/SelectBox.vue'
-import ButtonInputBox from '@/components/molecules/ButtonInputBox.vue'
-import CheckBox from '@/components/molecules/CheckBox.vue'
-import ProfileInfo from '@/components/molecules/ProfileInfo.vue'
-import HeaderProfile from '@/components/molecules/HeaderProfile.vue'
-import AvatarAtom from '@/components/atoms/AvatarAtom.vue'
-import DateButton from '@/components/molecules/DateButton.vue'
-import ApprovedUserList from '@/components/organisms/ApprovedUserList.vue'
-import MissionList from '@/components/organisms/MissionList.vue'
-import type { DataHandler, Handler } from '@/types/common'
-import type { ProfileInfoType, ProfileInfoCheckBoxType } from '@/types/user'
-import UnapprovedUserList from '@/components/organisms/UnapprovedUserList.vue'
-import useClipboard from 'vue-clipboard3'
-import { type Dayjs } from 'dayjs'
-import dayjs from 'dayjs'
-import { DatePicker, Calendar } from 'ant-design-vue'
+import { Card } from 'ant-design-vue'
 
-const seen = ref(false)
-const check = ref(false)
-const testhandler = () => {
-    seen.value = !seen.value
-}
-const roomName = ref('당신만의 수호천사 Screto')
-
-const dummyUserList: Ref<ProfileInfoType[]> = ref([
+const missions = ref<Array<UserMission>>([
     {
-        id: 1,
-        nickname: 'test1',
-        profileUrl: 'src/assets/images/member/member1.png',
-        email: 'test1@test.com'
+        content: 'MBTI 물어보기',
+        missionReceivedAt: '2024/01/19',
+        missionType: 'individual',
+        missionRerollCount: 2,
+        missionCertifyYn: false
     },
     {
-        id: 2,
-        nickname: 'test2',
-        profileUrl: 'src/assets/images/member/member2.png',
-        email: 'test2@test.com'
+        content: '자그마한 선물 주기',
+        missionReceivedAt: '2024/01/17',
+        missionType: 'common',
+        missionRerollCount: 2,
+        missionCertifyYn: true
     },
     {
-        id: 3,
-        nickname: 'test3',
-        profileUrl: 'src/assets/images/member/member3.png',
-        email: 'test3@test.com'
+        content: '칭찬 3개 해주기',
+        missionReceivedAt: '2024/01/15',
+        missionType: 'individual',
+        missionRerollCount: 2,
+        missionCertifyYn: true
     }
 ])
-const dummyWaitingUserList: Ref<ProfileInfoType[]> = ref([
+
+const roomMissions = ref<Array<RoomMission>>([
     {
-        id: 4,
-        nickname: 'test4',
-        profileUrl: 'src/assets/images/member/member4.png',
-        email: 'test1@test.com'
+        content: '미션1'
     },
     {
-        id: 5,
-        nickname: 'test5',
-        profileUrl: 'src/assets/images/member/member5.png',
-        email: 'test2@test.com'
+        content: '미션2'
     },
     {
-        id: 6,
-        nickname: 'test6',
-        profileUrl: 'src/assets/images/member/member6.png',
-        email: 'test6@test.com'
+        content: '미션3'
     }
 ])
-const period = ref<number>(7)
-// const testChange: DataHandler<number> = (newPeriod: number) => {
-//     period.value = newPeriod > 1000 ? 1000 : newPeriod < 1 ? 1 : newPeriod
-// }
-
-const roomCode = ref('qwe123rt')
-const { toClipboard } = useClipboard()
-const clipboardHandler: Handler = () => {
-    toClipboard(roomCode.value)
-    console.log(roomCode.value)
-    alert('복사했습니다.')
-}
-
-const { RangePicker } = DatePicker
-const dateTimeFormat = 'YYYY-MM-DD HH:mm'
-const ddd = ref([dayjs(dayjs(), dateTimeFormat), dayjs(dayjs().add(1, 'day'), dateTimeFormat)])
 </script>
 
 <template>
-    <div class="bg-A805White">
-        {{ seen }}
-        <ButtonAtom
-            @button-click="testhandler"
-            custom-class="button-style-1 button-border-violet button-claret"
-            >aqwe</ButtonAtom
+    <div class="flex flex-col w-full bg-A805RealWhite">
+        <div
+            name="mission-header"
+            class="flex justify-between items-center p-5 w-full md:min-w-[980px] overflow-x-auto"
         >
-        <ButtonAtom custom-class="button-style-2" />
-        <ModalTemplate v-if="seen" custom-class="modal-template-style-1" @modal-close="testhandler">
-            qwerasdf
-        </ModalTemplate>
+            <div class="flex items-center gap-5">
+                <div>
+                    <h1 class="flex text-[24pt] max-md:text-[10pt]">
+                        <p class="mx-3">진행 중인 미션:</p>
+                        <p>
+                            {{ missions[0].content }}
+                        </p>
+                    </h1>
+                </div>
 
-        <SelectBox custom-class="select-box-style-1"></SelectBox>
-        <SelectBox custom-class="select-box-style-2"></SelectBox>
-        {{ check }}
-        <!-- <CheckBox
-            custom-class="check-box-style-1"
-            custom-id="first-id"
-            @check-box-change="checkBoxStateHandler"
-            >label</CheckBox
-        > -->
-        <ButtonInputBox custom-class="button-input-box-style-1"></ButtonInputBox>
-        <MissionList></MissionList>
-        <ButtonInputBox
-            label="방 제목"
-            button-class="button-blue text-white line-darkgrey  border-s-0"
-            input-class="input-box-style-3 text-center line-darkgrey bg-white"
-            v-model="roomName"
-            button-label="수정"
-        />
-        <ProfileInfo name="test" image-url="src/assets/images/member/member1.png"></ProfileInfo>
-
-        <hr />
-        <UnapprovedUserList :user-list="dummyWaitingUserList"></UnapprovedUserList>
-        <hr />
-        <ApprovedUserList :user-list="dummyUserList"></ApprovedUserList>
-        <DateButton
-            custon-class=""
-            button-class="button-style-7 button-blue text-white"
-            input-class="input-box-style-4"
-            type="number"
-            label="미션 주기"
-            v-model="period"
-            >일 마다</DateButton
-        >
-
-        <ButtonInputBox
-            :readonly="true"
-            label="초대 코드"
-            button-label="복사"
-            v-model="roomCode"
-            custom-class="w-[200px]"
-            input-class="text-center w-[70%]"
-            button-class="button-blue button-style-7 text-white w-[30%] text-[20pt]"
-            @button-click="clipboardHandler"
-            >qwer1234</ButtonInputBox
-        >
-        <DatePicker custom-class="bg-A805RealWhite" :format="dateTimeFormat"></DatePicker>
-        <div>
-            <div></div>
-            {{ ddd }}
-            <RangePicker showTime v-model:value="ddd" :format="dateTimeFormat" />
+                <div>
+                    <p class="text-[20pt]">{{ missions[0].missionRerollCount }}</p>
+                </div>
+            </div>
+            <ButtonAtom
+                class="button-cream text-A805DarkGrey max-md:w-[120px] w-[210px] button-style-2 max-md:text-[10pt]"
+                >전체 미션 보기</ButtonAtom
+            >
         </div>
-        <RangePicker disabled />
-        <Calendar class="w-[500px]"></Calendar>
-        <!-- <calender></calender> -->
-        <ModalTemplate :seen="seen" @modal-close="testhandler">asdf</ModalTemplate>
+        <hr />
+        <div class="flex max-md:flex-col text-[20pt]">
+            <div name="user-mission-list" class="w-full max-md:w-full overflow-auto">
+                <!-- 마니또 변경 기능을 위한 v-for 추가 필요 -->
+                <Card class="p-4">
+                    <div
+                        v-for="(mission, missionIndex) in missions"
+                        :key="missionIndex"
+                        class="flex gap-7 content-center items-center"
+                    >
+                        <div class="text-[14pt]">
+                            {{ mission.missionReceivedAt }} {{ mission.content }}
+                            <ButtonAtom
+                                :class="{
+                                    'bg-A805Blue': mission.missionType === 'common',
+                                    'bg-A805Green': mission.missionType === 'individual',
+                                    'text-white': true,
+                                    'button-style-mission-type': true
+                                }"
+                                >{{
+                                    mission.missionType === 'common' ? '공통 미션' : '개별 미션'
+                                }}</ButtonAtom
+                            >
+                        </div>
+                        <ButtonAtom
+                            v-if="!mission.missionCertifyYn"
+                            class="button-claret button-style-certification"
+                            >인증하기</ButtonAtom
+                        >
+                        <ButtonAtom
+                            v-if="mission.missionCertifyYn"
+                            class="bg-A805LightGrey button-style-certification"
+                            >인증완료</ButtonAtom
+                        >
+                    </div>
+                </Card>
+            </div>
+        </div>
     </div>
+    <!-- <div name="mission-list" class="w-[30%] max-md:w-full min-w-[170px] bg-red">
+        <h2>미션 목록</h2>
+        <div v-for="(mission, missionIndex) in roomMissions" :key="missionIndex">
+            {{ mission.content }}
+        </div>
+    </div> -->
 </template>

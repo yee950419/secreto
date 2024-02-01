@@ -420,6 +420,22 @@
         text-align: center;
     }
 
+    .button-style-certification {
+        font-size: 20px;
+        width: 90px;
+        height: 40px;
+        border-radius: 100px;
+        transition: 0.3s;
+    }
+
+    .button-style-mission-type {
+        font-size: 12px;
+        width: 60px;
+        height: 20px;
+        border-radius: 100px;
+        transition: 0.3s;
+    }
+
     .button-border-violet {
         border: 1px solid var(--A805Violet);
     }

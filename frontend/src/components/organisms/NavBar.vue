@@ -87,13 +87,13 @@ const handleMenuClickAndToggleSubMenu = (index: number, menu: string) => {
         <MenuItem
             custom-class="menu-item"
             :active="activeMenu === 3"
-            @menu-click="handleMenuClick(3)"
+            @menu-click="router.push('/game/participate'), handleMenuClick(3)"
             >참여 인원</MenuItem
         >
         <MenuItem
             custom-class="menu-item"
             :active="activeMenu === 4"
-            @menu-click="handleMenuClick(4)"
+            @menu-click="handleMenuClick(4), router.push('/game/mission')"
             >내 미션</MenuItem
         >
         <MenuItem

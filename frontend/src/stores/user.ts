@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
-import { getUser } from '@/api/user'
-
+import { getUser, login } from '@/api/user'
+import type { LoginRequestType } from '@/types/user'
 type UserInterface = {
     email: string
     userName: string
@@ -23,6 +23,14 @@ export const useUserStore = defineStore(
         const accessToken = ref('asdada') // 사용자의 엑세스토큰 저장
         const refreshToken = ref('asdasd') // 사용자의 리프레시 토큰 저장
 
+        const userLogin = async (loginRequest: LoginRequestType) => {
+            await login(
+                loginRequest,
+                () => getUserInfo(loginRequest.email),
+                (error) => console.log(error)
+            )
+        }
+
         const getUserInfo = async (email: string) => {
             await getUser(
                 email,
@@ -32,7 +40,7 @@ export const useUserStore = defineStore(
                 (error) => console.log(error)
             )
         }
-        return { isLogin, userInfo, accessToken, refreshToken, getUserInfo }
+        return { isLogin, userInfo, accessToken, refreshToken, getUserInfo, userLogin }
     },
     { persist: true }
 )

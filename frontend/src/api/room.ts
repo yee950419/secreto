@@ -26,4 +26,16 @@ async function changeRoomName(
     roomInstance.put(`/room/`, JSON.stringify(param)).then(success).catch(fail)
 }
 
-export { createRoom, getRoom, changeRoomName }
+async function getRoomList(success: (response: AxiosResponse) => void, fail: (error: any) => void) {
+    roomInstance.get(`/room/user_room`).then(success).catch(fail)
+}
+
+async function getUserList(
+    param: number,
+    success: (response: AxiosResponse) => void,
+    fail: (error: any) => void
+) {
+    roomInstance.get(`/room/user/${param}`).then(success).catch(fail)
+}
+
+export { createRoom, getRoom, changeRoomName, getUserList, getRoomList }

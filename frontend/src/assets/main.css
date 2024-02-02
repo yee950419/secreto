@@ -218,6 +218,10 @@
         -moz-box-shadow: 3px 3px 10px 0px rgba(0, 0, 0, 0.2);
     }
 
+    .animation {
+        transition: all 0.5s ease;
+    }
+
     .card-template-container {
         display: flex;
         justify-content: center;
@@ -228,6 +232,7 @@
     }
 
     .card-container {
+        position: relative;
         /* bg-A805RealWhite flex flex-col justify-between items-center h-[500px] w-[400px] py-[20px] px-[40px] */
         background-color: var(--A805RealWhite);
         display: flex;
@@ -419,11 +424,27 @@
 
     .button-style-7 {
         font-size: 30px;
-        width: 40px;
-        height: auto;
+        width: 60px;
+        height: 45px;
         border-radius: 100px;
         transition: 0.3s;
         text-align: center;
+    }
+
+    .button-style-certification {
+        font-size: 20px;
+        width: 90px;
+        height: 40px;
+        border-radius: 100px;
+        transition: 0.3s;
+    }
+
+    .button-style-mission-type {
+        font-size: 12px;
+        width: 60px;
+        height: 20px;
+        border-radius: 100px;
+        transition: 0.3s;
     }
 
     .button-border-violet {

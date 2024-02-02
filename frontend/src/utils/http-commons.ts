@@ -17,7 +17,7 @@ function localAxios() {
     })
 
     // 모든 요청에 대해 기본 헤더 속성 설정
-    instance.defaults.headers.common['Type'] = 'Bearer'
+    instance.defaults.headers.common['Type'] = 'bearer'
     instance.defaults.headers.common['Content-Type'] = 'application/json;charset=utf-8'
     instance.defaults.headers.common['AccessToken'] = ''
     instance.defaults.headers.common['RefreshToken'] = ''
@@ -32,8 +32,8 @@ function localAxios() {
             const userStore = useUserStore()
             const { accessToken, refreshToken } = storeToRefs(userStore)
 
-            config.headers['AccessToken'] = 'Bearer ' + accessToken.value
-            config.headers['RefreshToken'] = refreshToken.value
+            config.headers['AccessToken'] = 'bearer ' + accessToken.value
+            config.headers['RefreshToken'] = 'bearer ' + refreshToken.value
             return config
         },
 

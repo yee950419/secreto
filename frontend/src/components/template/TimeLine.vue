@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import NavBar from '@/components/organisms/NavBar.vue'
-import HistoryCard from '@/components/organisms/HistoryCard.vue'
+import NavBar from '@/components/organisms/common/NavBar.vue'
 import { ref, watch, onMounted } from 'vue'
 import TextAtom from '@/components/atoms/TextAtom.vue'
-import PredictCard from '@/components/organisms/PredictCard.vue'
+import HistoryCard from '@/components/organisms/game/HistoryCard.vue'
+import PredictCard from '@/components/organisms/game/PredictCard.vue'
 import type { HistoryType } from '@/types/history'
 
 //TODO: HistoryData API 연동 필요

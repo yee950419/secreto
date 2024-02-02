@@ -10,4 +10,5 @@ export type RoomInfoTypeTest = {
     like: boolean
     roomStartAt: string
     roomEndAt: string
+    roomStatus?: string
 }

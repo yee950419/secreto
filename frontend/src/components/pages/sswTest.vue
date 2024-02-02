@@ -45,9 +45,9 @@ const roomMissions = ref<Array<RoomMission>>([
     <div class="flex flex-col w-full bg-A805RealWhite">
         <div
             name="mission-header"
-            class="flex justify-between items-center p-5 w-full md:min-w-[980px] overflow-x-auto"
+            class="flex justify-between items-center p-5 max-md:p-2 w-full md:min-w-[980px] overflow-x-auto"
         >
-            <div class="flex items-center gap-5">
+            <div class="flex items-center gap-5 max-md:gap-3">
                 <div>
                     <h1 class="flex text-[24pt] max-md:text-[10pt]">
                         <p class="mx-3">진행 중인 미션:</p>
@@ -58,11 +58,13 @@ const roomMissions = ref<Array<RoomMission>>([
                 </div>
 
                 <div>
-                    <p class="text-[20pt]">{{ missions[0].missionRerollCount }}</p>
+                    <p class="text-[20pt] max-md:text-[10pt]">
+                        {{ missions[0].missionRerollCount }}
+                    </p>
                 </div>
             </div>
             <ButtonAtom
-                class="button-cream text-A805DarkGrey max-md:w-[120px] w-[210px] button-style-2 max-md:text-[10pt]"
+                class="button-cream text-A805DarkGrey max-md:w-[110px] w-[210px] button-style-2 max-md:text-[10pt]"
                 >전체 미션 보기</ButtonAtom
             >
         </div>
@@ -70,36 +72,46 @@ const roomMissions = ref<Array<RoomMission>>([
         <div class="flex max-md:flex-col text-[20pt]">
             <div name="user-mission-list" class="w-full max-md:w-full overflow-auto">
                 <!-- 마니또 변경 기능을 위한 v-for 추가 필요 -->
-                <Card class="p-4">
+                <Card class="md:p-4">
                     <div
                         v-for="(mission, missionIndex) in missions"
                         :key="missionIndex"
-                        class="flex gap-7 content-center items-center"
+                        class="flex gap-7 content-center items-center mb-3 max-md:justify-between"
                     >
-                        <div class="text-[14pt]">
-                            {{ mission.missionReceivedAt }} {{ mission.content }}
+                        <div class="flex max-md:flex-col">
+                            <div class="flex content-center items-center gap-5 me-5">
+                                <ButtonAtom
+                                    :class="{
+                                        'bg-A805Blue': mission.missionType === 'common',
+                                        'bg-A805Green': mission.missionType === 'individual',
+                                        'text-white': true,
+                                        'button-style-mission-type': true
+                                    }"
+                                    class="max-md:text-[10pt] max-md:h-[20px]"
+                                    >{{
+                                        mission.missionType === 'common' ? '공통 미션' : '개별 미션'
+                                    }}</ButtonAtom
+                                >
+                                <div class="text-[18pt]">
+                                    <p>{{ mission.missionReceivedAt }}</p>
+                                </div>
+                            </div>
+                            <div class="text-[20pt] max-md:text-[10pt]">
+                                {{ mission.content }}
+                            </div>
+                        </div>
+                        <div>
                             <ButtonAtom
-                                :class="{
-                                    'bg-A805Blue': mission.missionType === 'common',
-                                    'bg-A805Green': mission.missionType === 'individual',
-                                    'text-white': true,
-                                    'button-style-mission-type': true
-                                }"
-                                >{{
-                                    mission.missionType === 'common' ? '공통 미션' : '개별 미션'
-                                }}</ButtonAtom
+                                v-if="!mission.missionCertifyYn"
+                                class="button-claret button-style-certification max-md:text-[12pt]"
+                                >인증하기</ButtonAtom
+                            >
+                            <ButtonAtom
+                                v-if="mission.missionCertifyYn"
+                                class="bg-A805LightGrey button-style-certification max-md:text-[12pt]"
+                                >인증완료</ButtonAtom
                             >
                         </div>
-                        <ButtonAtom
-                            v-if="!mission.missionCertifyYn"
-                            class="button-claret button-style-certification"
-                            >인증하기</ButtonAtom
-                        >
-                        <ButtonAtom
-                            v-if="mission.missionCertifyYn"
-                            class="bg-A805LightGrey button-style-certification"
-                            >인증완료</ButtonAtom
-                        >
                     </div>
                 </Card>
             </div>

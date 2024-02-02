@@ -1,8 +1,9 @@
-import axios from 'axios'
+import axios, { type AxiosInterceptorOptions } from 'axios'
 import { storeToRefs } from 'pinia'
 import { useUserStore } from '@/stores/user'
 import { httpStatusCode } from './http-status'
-
+import { regenerateToken } from '@/api/user'
+import type { ConfigEnv } from 'vite'
 const { VITE_API_BASE_URL } = import.meta.env
 
 /**
@@ -10,6 +11,8 @@ const { VITE_API_BASE_URL } = import.meta.env
  * @author 지인성
  *
  */
+
+const whiteList = ['/users/log-in', '/users/sign-up']
 
 function localAxios() {
     const instance = axios.create({
@@ -32,8 +35,11 @@ function localAxios() {
             const userStore = useUserStore()
             const { accessToken, refreshToken } = storeToRefs(userStore)
 
-            config.headers['AccessToken'] = 'bearer ' + accessToken.value
-            config.headers['RefreshToken'] = 'bearer ' + refreshToken.value
+            if (!whiteList.includes(String(config.url))) {
+                config.headers['AccessToken'] = 'bearer ' + accessToken.value
+                config.headers['RefreshToken'] = 'bearer ' + refreshToken.value
+            }
+
             return config
         },
 
@@ -42,12 +48,31 @@ function localAxios() {
         }
     )
 
+    // 토큰 갱신하는 함수
+    const refreshing = async () => {
+        console.log('토큰 만료.... 재갱신 요청 합니다.')
+        const userStore = useUserStore()
+        const { accessToken, refreshToken } = storeToRefs(userStore)
+
+        await regenerateToken(
+            ({ data }) => {
+                console.log('토큰을 재갱신 완료했습니다.')
+                accessToken.value = data.result.accessToken
+                refreshToken.value = data.result.refreshToken
+            },
+            (error) => {
+                console.error(error)
+            }
+        )
+    }
+
     // 토큰의 리프레쉬 여부를 감지하는 변수
     let isRefreshing = false
 
     // 응답 데이터를 인터셉터하여 처리해주는 부분
     instance.interceptors.response.use(
         // 성공한 데이터는 그대로 반환
+
         function (response) {
             return response
         },
@@ -63,16 +88,24 @@ function localAxios() {
                 const originalRequest = config
 
                 if (!isRefreshing) {
+                    const userStore = useUserStore()
+                    const { accessToken, refreshToken } = storeToRefs(userStore)
                     isRefreshing = true
 
+                    await refreshing()
                     // 리프레쉬 토큰을 이용해 엑세스 토큰을 갱신, 갱신 성공시 피니아에 최신 데이터 반영,
                     // isRefreshing을 false로 변경하고 요청을 재시도 하는 코드 추가 필요 (api 구현되면 추가 예정)
+                    originalRequest.headers['AccessToken'] = 'bearer ' + accessToken.value
+                    originalRequest.headers['RefreshToken'] = 'bearer ' + refreshToken.value
 
+                    console.log('토큰 갱신후 기존 api요청 재 전송')
+                    isRefreshing = false
                     return instance(originalRequest)
                 }
             } else if (status == httpStatusCode.FORBIDDEN) {
                 alert(error.response.data.message)
             }
+
             return Promise.reject(error)
         }
     )

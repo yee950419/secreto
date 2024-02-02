@@ -43,12 +43,15 @@ const roomMissions = ref<Array<RoomMission>>([
         content: '미션3'
     }
 ])
-
+const roomMissionsModalOpen = ref<boolean>(false)
 const rerollHandler: Handler = () => {
     console.log('reroll')
 }
 const goToMissionCertificationPage: DataHandler<UserMission> = (mission) => {
     console.log(mission)
+}
+const modalOpenHandler: Handler = () => {
+    roomMissionsModalOpen.value = true
 }
 </script>
 
@@ -78,6 +81,7 @@ const goToMissionCertificationPage: DataHandler<UserMission> = (mission) => {
             </div>
             <ButtonAtom
                 class="button-cream text-A805DarkGrey max-md:w-[90px] w-[210px] max-md:h-[20px] button-style-2 transition-none max-md:text-[8pt]"
+                @button-click="modalOpenHandler"
                 >전체 미션 보기</ButtonAtom
             >
         </div>

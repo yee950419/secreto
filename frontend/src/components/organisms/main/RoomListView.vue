@@ -18,7 +18,8 @@ const roomInfoList = ref<Array<RoomInfoTypeTest>>([
         peopleNumber: 60,
         like: true,
         roomStartAt: '2024/01/15 00:00:00',
-        roomEndAt: '2024/01/30 00:00:00'
+        roomEndAt: '2024/01/30 00:00:00',
+        roomStatus: '참여중'
     },
     {
         roomNo: 2,
@@ -27,7 +28,8 @@ const roomInfoList = ref<Array<RoomInfoTypeTest>>([
         peopleNumber: 60,
         like: false,
         roomStartAt: '2024/01/15 00:00:00',
-        roomEndAt: '2024/01/25 00:00:00'
+        roomEndAt: '2024/01/25 00:00:00',
+        roomStatus: '종료'
     },
     {
         roomNo: 3,
@@ -36,7 +38,8 @@ const roomInfoList = ref<Array<RoomInfoTypeTest>>([
         peopleNumber: 60,
         like: false,
         roomStartAt: '2024/01/14 00:00:00',
-        roomEndAt: '2024/01/25 00:00:00'
+        roomEndAt: '2024/01/25 00:00:00',
+        roomStatus: '참여중'
     },
     {
         roomNo: 4,
@@ -45,7 +48,8 @@ const roomInfoList = ref<Array<RoomInfoTypeTest>>([
         peopleNumber: 60,
         like: false,
         roomStartAt: '2024/01/14 00:00:00',
-        roomEndAt: '2024/01/25 00:00:00'
+        roomEndAt: '2024/01/25 00:00:00',
+        roomStatus: '참여중'
     },
     {
         roomNo: 5,
@@ -54,7 +58,8 @@ const roomInfoList = ref<Array<RoomInfoTypeTest>>([
         peopleNumber: 60,
         like: true,
         roomStartAt: '2024/01/15 00:00:00',
-        roomEndAt: '2024/03/15 00:00:00'
+        roomEndAt: '2024/03/15 00:00:00',
+        roomStatus: '종료'
     },
     {
         roomNo: 6,
@@ -63,7 +68,8 @@ const roomInfoList = ref<Array<RoomInfoTypeTest>>([
         peopleNumber: 60,
         like: true,
         roomStartAt: '2024/01/15 00:00:00',
-        roomEndAt: '2024/03/15 00:00:00'
+        roomEndAt: '2024/03/15 00:00:00',
+        roomStatus: '종료'
     },
     {
         roomNo: 7,
@@ -72,7 +78,8 @@ const roomInfoList = ref<Array<RoomInfoTypeTest>>([
         peopleNumber: 60,
         like: false,
         roomStartAt: '2024/01/10 00:00:00',
-        roomEndAt: '2024/01/15 00:00:00'
+        roomEndAt: '2024/01/15 00:00:00',
+        roomStatus: '종료'
     },
     {
         roomNo: 8,
@@ -81,7 +88,8 @@ const roomInfoList = ref<Array<RoomInfoTypeTest>>([
         peopleNumber: 60,
         like: true,
         roomStartAt: '2024/01/15 00:00:00',
-        roomEndAt: '2024/03/15 00:00:00'
+        roomEndAt: '2024/03/15 00:00:00',
+        roomStatus: '종료'
     },
     {
         roomNo: 9,
@@ -90,7 +98,8 @@ const roomInfoList = ref<Array<RoomInfoTypeTest>>([
         peopleNumber: 5,
         like: false,
         roomStartAt: '2024/01/15 00:00:00',
-        roomEndAt: '2024/03/15 00:00:00'
+        roomEndAt: '2024/03/15 00:00:00',
+        roomStatus: '종료'
     }
 ])
 const SelectState = {
@@ -104,7 +113,29 @@ const selectState: Ref<string> = ref(SelectState.ALL)
 watch(selectState, () => {
     alert('방 불러오기 이벤트 발생!!!')
 })
-
+const filteredRoomList = ref({
+    all: roomInfoList.value,
+    waiting: roomInfoList.value.filter((room: RoomInfoTypeTest) => {
+        if (room['roomStatus'] === 'waiting') {
+            return room
+        }
+    }),
+    in_progress: roomInfoList.value.filter((room: RoomInfoTypeTest) => {
+        if (room['roomStatus'] === '참여중') {
+            return room
+        }
+    }),
+    terminated: roomInfoList.value.filter((room: RoomInfoTypeTest) => {
+        if (room['roomStatus'] === '종료') {
+            return room
+        }
+    }),
+    favorites: roomInfoList.value.filter((room: RoomInfoTypeTest) => {
+        if (room['like']) {
+            return room
+        }
+    })
+})
 const roomEnterHandler: DataHandler<number> = (roomNo: number) => {
     // alert(roomNo + '번 방 입장 이벤트')
     router.push('/game/' + 1)

@@ -1,6 +1,8 @@
 import { fileURLToPath, URL } from 'node:url'
 
 import { defineConfig } from 'vite'
+import tsconfigPaths from 'vite-tsconfig-paths'
+
 import vue from '@vitejs/plugin-vue'
 import vueJsx from '@vitejs/plugin-vue-jsx'
 
@@ -8,6 +10,7 @@ import vueJsx from '@vitejs/plugin-vue-jsx'
 export default defineConfig({
     base: './',
     plugins: [
+        tsconfigPaths(),
         vue({
             script: {
                 defineModel: true,
@@ -18,7 +21,7 @@ export default defineConfig({
     ],
     resolve: {
         alias: {
-            '@': fileURLToPath(new URL('./src', import.meta.url))
+            '@/': new URL('./src/', import.meta.url).pathname
         }
     },
     build: {

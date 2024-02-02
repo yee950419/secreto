@@ -10,7 +10,7 @@ import vueJsx from '@vitejs/plugin-vue-jsx'
 export default defineConfig({
     base: './',
     plugins: [
-        // tsconfigPaths(),
+        tsconfigPaths(),
         vue({
             script: {
                 defineModel: true,

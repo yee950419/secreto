@@ -85,11 +85,10 @@ async function resetPassword(
 }
 
 async function regenerateToken(
-    param: object,
     success: (response: AxiosResponse) => void,
     fail: (error: any) => void
 ) {
-    userInstance.get(`/users/token/regenerate`).then(success).catch(fail)
+    await userInstance.get(`/users/refreshAccess`).then(success).catch(fail)
 }
 
 export {

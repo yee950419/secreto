@@ -35,7 +35,7 @@ function localAxios() {
             const userStore = useUserStore()
             const { accessToken, refreshToken } = storeToRefs(userStore)
 
-            if (!whiteList.includes(config.url)) {
+            if (!whiteList.includes(String(config.url))) {
                 config.headers['AccessToken'] = 'bearer ' + accessToken.value
                 config.headers['RefreshToken'] = 'bearer ' + refreshToken.value
             }

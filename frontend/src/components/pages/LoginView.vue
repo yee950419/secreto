@@ -100,9 +100,7 @@ const findPasswordPrevPageHandler: Handler = () => {
 
 <template>
     <div class="bg-A805White h-full w-full flex justify-center items-center">
-        <div
-            class="card-template-container max-md:w-full max-md:h-full max-md:bg-A805Cream max-md:flex-col"
-        >
+        <div class="card-template-container w-full h-full max-md:bg-A805Cream max-md:flex-col">
             <MainCard
                 :class="viewState !== ViewState.MAIN ? 'max-md:hidden' : ''"
                 v-if="viewState !== ViewState.TEMPLATE"

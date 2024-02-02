@@ -12,9 +12,9 @@ const buttonClickHandler: Handler = () => {
 
 <template>
     <div
-        class="bg-A805Cream flex flex-col justify-between items-center h-[500px] w-[400px] p-[20px]"
+        class="bg-A805Cream flex flex-col justify-between items-center h-full aspect-[4/5] p-[20px]"
     >
-        <MainLogo size="200"></MainLogo>
+        <MainLogo />
         <slot></slot>
         <ButtonAtom
             custom-class="button-style-1 button-claret button-shadow m-[20px]"

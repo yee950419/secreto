@@ -10,7 +10,7 @@ import BoardDetailBottom from '@/components/molecules/board/BoardDetailBottom.vu
 import TextAtom from '@/components/atoms/TextAtom.vue'
 import LineAtom from '@/components/atoms/LineAtom.vue'
 import ModalTemplate from '@/components/template/ModalTemplate.vue'
-import PostDeleteModalContent from '@/components/organisms/modal/PostDeleteModalContent.vue'
+import PostDeleteModalContent from '@/components/organisms/modal/BoardDeleteModalContent.vue'
 import { CommentOutlined } from '@ant-design/icons-vue'
 import type { Handler } from '@/types/common'
 

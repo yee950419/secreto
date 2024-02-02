@@ -20,7 +20,7 @@
     --A805Violet: #ac87c5;
     --A805Green: #01d04c;
     --A805Khaki: #3d4a3d;
-    --A805Grey: #a0afa0;
+    --A805Grey: #bbbbbb;
     --A805Blue: #0085ff;
     --A805LightBlue: #00b8ff;
     --A805DarkGrey: #858585;
@@ -433,10 +433,9 @@
 
     .button-style-certification {
         font-size: 20px;
-        width: 90px;
-        height: 30px;
+        width: 100px;
+        height: 40px;
         border-radius: 100px;
-        transition: 0.3s;
     }
 
     .button-style-mission-type {
@@ -444,7 +443,6 @@
         width: 90px;
         height: 30px;
         border-radius: 100px;
-        transition: 0.3s;
     }
 
     .button-border-violet {

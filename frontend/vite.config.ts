@@ -10,7 +10,7 @@ import vueJsx from '@vitejs/plugin-vue-jsx'
 export default defineConfig({
     base: './',
     plugins: [
-        tsconfigPaths(),
+        // tsconfigPaths(),
         vue({
             script: {
                 defineModel: true,
@@ -26,7 +26,7 @@ export default defineConfig({
     },
     build: {
         rollupOptions: {
-            external: ['socket.io-client', 'ant-design-vue', 'vue-clipboard3', 'dayjs']
+            external: ['ant-design-vue', 'vue-clipboard3', 'dayjs']
         }
     }
 })

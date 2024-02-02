@@ -3,13 +3,16 @@ import NavBar from '@/components/organisms/common/NavBar.vue'
 import ChatRoom from '@/components/organisms/game/ChatRoom.vue'
 import { reactive, onMounted, ref } from 'vue'
 import type { ChatRoomType } from '@/types/chat'
-import { getRoom } from '@/api/room'
+import { getRoom, getRoomList } from '@/api/room'
 // import { useRoute } from 'vue-router'
 import { useMenuStore } from '@/stores/menu'
+import { useUserStore } from '@/stores/user'
 import { storeToRefs } from 'pinia'
 const menuStore = useMenuStore()
 const { menuSeen, isMobile } = storeToRefs(menuStore)
 const emit = defineEmits(['update-name'])
+const userStore = useUserStore()
+const { userLogin } = userStore
 
 const chatRooms = reactive<ChatRoomType[]>([])
 //라우터로 부터 방번호를 받아온다
@@ -20,11 +23,12 @@ const roomNo = ref(1)
 const roomName = ref<string | undefined>()
 
 const updateRoomName = (name: string | undefined) => {
-    roomName.value = name
+    roomName.value = name ? name : '방 제목'
     emit('update-name', roomName.value)
 }
 
 const getRoomData = () => {
+    console.log('방정보 호출')
     getRoom(
         roomNo.value,
         ({ data }) => {
@@ -38,8 +42,15 @@ const getRoomData = () => {
 }
 // 방정보를 가져와서 방제목 매핑해주자
 onMounted(() => {
-    getRoomData
-    updateRoomName(roomName.value)
+    getRoomList(
+        ({ data }) => {
+            console.log(data)
+        },
+        (error) => {
+            console.error('error', error)
+        }
+    )
+    getRoomData()
 })
 
 const removeChatRoom = (name: string) => {

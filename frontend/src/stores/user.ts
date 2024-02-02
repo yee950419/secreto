@@ -37,8 +37,8 @@ export const useUserStore = defineStore(
         const viewState = ref<string>(ViewState.MAIN)
         const router = useRouter()
 
-        const userLogin = async (loginRequest: LoginRequestType) => {
-            await login(
+        const userLogin = (loginRequest: LoginRequestType) => {
+            login(
                 loginRequest,
                 (response) => {
                     const data = response.data.result

@@ -51,6 +51,7 @@ const template: Ref<WideCardTemplateType> = ref({
 
 // login view
 const loginHandler: DataHandler<LoginRequestType> = (loginRequest: LoginRequestType) => {
+    console.log('여기서 처리 가능?')
     console.log(JSON.stringify(loginRequest))
 }
 const googleLoginHandler: Handler = () => {

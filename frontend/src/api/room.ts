@@ -27,7 +27,7 @@ async function changeRoomName(
 }
 
 async function getRoomList(success: (response: AxiosResponse) => void, fail: (error: any) => void) {
-    roomInstance.get(`/room/user_room`).then(success).catch(fail)
+    roomInstance.get(`/room/user/user_room`).then(success).catch(fail)
 }
 
 async function getUserList(

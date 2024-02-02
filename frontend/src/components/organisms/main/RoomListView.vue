@@ -5,7 +5,8 @@ import type { Handler, DataHandler } from '@/types/common'
 import type { RoomInfoTypeTest } from '@/types/room'
 import RoomCard from '@/components/molecules/main/RoomCard.vue'
 import RoomCreateCard from '@/components/molecules/main/RoomCreateCard.vue'
-
+import { useRouter } from 'vue-router'
+const router = useRouter()
 /**
  * dummy data
  */
@@ -136,7 +137,8 @@ const filteredRoomList = ref({
     })
 })
 const roomEnterHandler: DataHandler<number> = (roomNo: number) => {
-    alert(roomNo + '번 방 입장 이벤트')
+    // alert(roomNo + '번 방 입장 이벤트')
+    router.push('/game/' + 1)
 }
 const roomFavoriteHandler: DataHandler<number> = (roomNo: number) => {
     alert(roomNo + '번 방 즐겨찾기 추가 이벤트')

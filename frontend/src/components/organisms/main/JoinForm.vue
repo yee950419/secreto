@@ -36,11 +36,11 @@ const joinButtonHandler: Handler = () => {
     signup(
         userData.value,
         (response) => {
-            console.log(response.data.message)
+            console.log(response)
             viewState.value = ViewState.LOGIN
         },
         (error) => {
-            alert(error.response.data.message)
+            console.log(error)
         }
     )
 }
@@ -120,3 +120,4 @@ const joinButtonHandler: Handler = () => {
 </template>
 
 <style scoped></style>
+@/api/user

@@ -7,7 +7,7 @@ import { convertStringToRegistrationDateTime } from '@/utils/date'
 import ReplyWriteForm from './ReplyWriteForm.vue'
 import { ref, type Ref } from 'vue'
 import type { Handler } from '@/types/common'
-defineProps(['reply', 'nested', 'boardWriterUserNo'])
+defineProps(['reply', 'nested', 'postWriterUserNo'])
 
 const seenReplyWriteForm: Ref<boolean> = ref(false)
 const modifyButtonHandler: Handler = () => {
@@ -35,7 +35,7 @@ const writeButtonHandler: Handler = () => {
                     >
                     <BadgeAtom
                         custom-class="bg-A805Red text-A805RealWhite h-[24px] text-[14px] ms-2"
-                        v-if="reply.roomUserNo === boardWriterUserNo"
+                        v-if="reply.roomUserNo === postWriterUserNo"
                         >작성자</BadgeAtom
                     >
                 </div>

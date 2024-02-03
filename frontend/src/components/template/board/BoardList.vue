@@ -8,6 +8,7 @@ import BoardElement from '@/components/molecules/board/BoardElement.vue'
 import MobileBoardElement from '@/components/molecules/board/MobileBoardElement.vue'
 import { Pagination } from 'ant-design-vue'
 import { useRoute } from 'vue-router'
+import router from '@/router'
 const route = useRoute()
 const props = defineProps(['roomNo'])
 const boards: Ref<BoardResponseType[]> = ref([])
@@ -45,6 +46,14 @@ const loadBoardData = () => {
     )
 }
 
+const boardDetail = (boardNo: number): void => {
+    router.push({
+        name: 'game-board-post',
+        query: { postId: boardNo }
+    })
+    alert(boardNo)
+}
+
 watch(current, () => {
     loadBoardData()
 })
@@ -62,7 +71,12 @@ watch(boardCategory, () => {
         <table class="table-auto text-center max-md:hidden w-full">
             <BoardTableHeader class="max-md:hidden" />
             <tbody>
-                <BoardElement v-for="board in boards" :key="board.boardNo" :board="board" />
+                <BoardElement
+                    v-for="board in boards"
+                    :key="board.boardNo"
+                    :board="board"
+                    @click="() => boardDetail(board.boardNo)"
+                />
             </tbody>
         </table>
 

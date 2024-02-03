@@ -13,7 +13,7 @@ const handleClick: Handler = () => {
 </script>
 
 <template>
-    <div class="card-container w-[800px] max-md:w-full max-md:h-full max-md:justify-center">
+    <div class="wide-card-container max-md:justify-center">
         <CloseButtonAtom class="absolute top-2 right-2" @click="() => emit('closeButtonHandle')" />
         <div class="flex flex-col items-center justify-between h-full w-full max-md:h-[500px]">
             <TextAtom custom-class="text-[48px] font-Iceland" :class="titleClass">{{

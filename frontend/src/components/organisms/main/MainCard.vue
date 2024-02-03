@@ -11,10 +11,8 @@ const buttonClickHandler: Handler = () => {
 </script>
 
 <template>
-    <div
-        class="bg-A805Cream flex flex-col justify-between items-center h-[500px] w-[400px] p-[20px]"
-    >
-        <MainLogo size="200"></MainLogo>
+    <div class="card-container bg-A805Cream md:shadow-rb">
+        <MainLogo />
         <slot></slot>
         <ButtonAtom
             custom-class="button-style-1 button-claret button-shadow m-[20px]"

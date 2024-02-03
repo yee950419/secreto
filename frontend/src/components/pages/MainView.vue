@@ -143,7 +143,7 @@ const profileClickHandler = () => {
             </div>
 
             <RoomListView
-                class="max-md:h-full max-md:w-full"
+                class="max-md:max-w-full max-md:max-h-full max-md:h-full max-md:w-full"
                 v-if="state === State.MAIN_AFTER_LOGIN"
             />
             <MyPage
@@ -159,7 +159,7 @@ const profileClickHandler = () => {
                 @close-button-handle="buttonClickHandler"
             />
             <ChangePasswordForm
-                class="max-md:h-full max-md:w-full"
+                class="max-md:max-w-full max-md:max-h-full max-md:h-full max-md:w-full"
                 v-if="state === State.CHANGE_PWD"
                 @prev-button-handle="() => (state = State.MY_PAGE)"
                 @close-button-handle="() => (state = State.MY_PAGE)"

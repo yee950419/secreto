@@ -51,7 +51,6 @@ const boardDetail = (boardNo: number): void => {
         name: 'game-board-post',
         query: { postId: boardNo }
     })
-    alert(boardNo)
 }
 
 onMounted(() => {
@@ -85,7 +84,11 @@ watch(boardCategory, () => {
 
         <!-- mobile -->
         <template v-for="(board, i) in boards" :key="board.boardNo">
-            <MobileBoardElement :board="board" :class="i == 0 ? 'border-t' : ''" />
+            <MobileBoardElement
+                :board="board"
+                :class="i == 0 ? 'border-t' : ''"
+                @click="() => boardDetail(board.boardNo)"
+            />
         </template>
         <Pagination
             class="my-[30px]"

@@ -7,21 +7,46 @@ import { convertStringToRegistrationDateTime } from '@/utils/date'
 import ReplyWriteForm from './ReplyWriteForm.vue'
 import { ref, type Ref } from 'vue'
 import type { Handler } from '@/types/common'
-defineProps(['reply', 'nested', 'postWriterUserNo'])
+import ModalTemplate from '@/components/template/ModalTemplate.vue'
+import YesNoModalContent from '@/components/organisms/modal/YesNoModalContent.vue'
+import { deleteReply } from '@/api/board'
+const props = defineProps(['reply', 'nested', 'postWriterUserNo'])
+const emit = defineEmits(['deleteSuccessHandle'])
 
 const seenReplyWriteForm: Ref<boolean> = ref(false)
 const modifyButtonHandler: Handler = () => {
     alert('댓글 수정 이벤트')
 }
 const deleteButtonHandler: Handler = () => {
-    alert('댓글 삭제 이벤트')
+    deleteReply(
+        props.reply.replyNo,
+        (response) => {
+            console.log(response.data.message)
+            deleteModalToggle()
+            emit('deleteSuccessHandle')
+        },
+        (error) => alert(error.message)
+    )
 }
-const writeButtonHandler: Handler = () => {
-    alert('댓글 작성 이벤트')
-}
+const deleteModalSeen: Ref<boolean> = ref(false)
+const deleteModalToggle = () => (deleteModalSeen.value = !deleteModalSeen.value)
 </script>
 
 <template>
+    <!-- Delete Model -->
+    <ModalTemplate
+        custom-id="modal"
+        custom-class="modal-template-style-1 w-[350px]"
+        :seen="deleteModalSeen"
+        v-if="deleteModalSeen"
+        @modal-close="deleteModalToggle"
+    >
+        <YesNoModalContent
+            @yes-button-handle="deleteButtonHandler"
+            @no-button-handle="deleteModalToggle"
+            content-message="댓글을 삭제하시겠습니까?"
+        />
+    </ModalTemplate>
     <div class="flex flex-col border-b py-3" :class="nested ? 'ms-[50px]' : ''">
         <div class="flex">
             <AvatarAtom
@@ -56,7 +81,7 @@ const writeButtonHandler: Handler = () => {
                     >
                     <ButtonAtom
                         custom-class="text-[16px] text-A805DarkGrey hover:text-A805Blue ms-5"
-                        @button-click="deleteButtonHandler"
+                        @button-click="deleteModalToggle"
                         >삭제</ButtonAtom
                     >
                 </div>
@@ -66,7 +91,6 @@ const writeButtonHandler: Handler = () => {
             class="mt-5"
             nested="true"
             v-if="seenReplyWriteForm"
-            @submit-button-handle="writeButtonHandler"
             @cancel-button-handle="() => (seenReplyWriteForm = false)"
         />
     </div>

@@ -51,3 +51,11 @@ export type ReplyResponseType = {
     writerProfileUrl: string | null
     children?: ReplyResponseType[] | undefined
 }
+
+export type ReplyWriteRequestType = {
+    postNo: number
+    roomUserNo: number
+    content: string
+    parentReplyNo?: number
+    tagUserNo?: number
+}

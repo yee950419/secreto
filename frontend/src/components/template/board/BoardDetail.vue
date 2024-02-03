@@ -10,11 +10,12 @@ import BoardDetailBottom from '@/components/molecules/board/BoardDetailBottom.vu
 import TextAtom from '@/components/atoms/TextAtom.vue'
 import LineAtom from '@/components/atoms/LineAtom.vue'
 import ModalTemplate from '@/components/template/ModalTemplate.vue'
-import PostDeleteModalContent from '@/components/organisms/modal/BoardDeleteModalContent.vue'
+import YesNoModalContent from '@/components/organisms/modal/YesNoModalContent.vue'
 import { CommentOutlined } from '@ant-design/icons-vue'
 import type { Handler } from '@/types/common'
 import { getPost, getReplies } from '@/api/board'
 import { useRoute } from 'vue-router'
+import YesModalContent from '@/components/organisms/modal/YesModalContent.vue'
 
 const route = useRoute()
 const postId = computed(() => {
@@ -62,20 +63,7 @@ const constructParentChildRelation = (replies: ReplyResponseType[]): ReplyRespon
     return constructed
 }
 
-onMounted(() => {
-    getPost(
-        postId.value,
-        (response) => {
-            const data = response.data
-            if (data.status === 'OK') {
-                console.log('========== 게시글 상세 ==========')
-                console.log(data.message)
-                console.log(data.result)
-                post.value = data.result
-            }
-        },
-        (error) => alert('게시글 조회 실패')
-    )
+const loadReplies = () => {
     getReplies(
         postId.value,
         (response) => {
@@ -90,6 +78,23 @@ onMounted(() => {
         },
         (error) => alert('댓글 목록 조회 실패')
     )
+}
+
+onMounted(() => {
+    getPost(
+        postId.value,
+        (response) => {
+            const data = response.data
+            if (data.status === 'OK') {
+                console.log('========== 게시글 상세 ==========')
+                console.log(data.message)
+                console.log(data.result)
+                post.value = data.result
+            }
+        },
+        (error) => alert('게시글 조회 실패')
+    )
+    loadReplies()
 })
 
 const writeButtonHandler: Handler = () => {
@@ -113,6 +118,10 @@ const deleteModalToggle: Handler = () => {
 const postDeleteHandler: Handler = () => {
     alert('게시글 삭제 이벤트')
 }
+
+const replyDeleteSuccessModalSeen: Ref<boolean> = ref(false)
+const replyDeleteSuccessModalToggle = () =>
+    (replyDeleteSuccessModalSeen.value = !replyDeleteSuccessModalSeen.value)
 </script>
 
 <template>
@@ -163,9 +172,15 @@ const postDeleteHandler: Handler = () => {
                         :key="child.replyNo"
                         :post-writer-user-no="post.roomUserNo"
                         :nested="true"
+                        @delete-success-handle="
+                            () => {
+                                loadReplies()
+                                replyDeleteSuccessModalToggle()
+                            }
+                        "
                     />
                 </template>
-                <ReplyWriteForm class="mt-5" />
+                <ReplyWriteForm class="mt-5" :postNo="post.boardNo" />
             </div>
         </div>
         <BoardDetailBottom
@@ -177,7 +192,7 @@ const postDeleteHandler: Handler = () => {
             @list-button-handle="listButtonHandler"
         />
 
-        <!-- Delete Model -->
+        <!-- Delete Modal -->
         <ModalTemplate
             custom-id="modal"
             custom-class="modal-template-style-1 w-[350px]"
@@ -185,9 +200,24 @@ const postDeleteHandler: Handler = () => {
             v-if="deleteModalSeen"
             @modal-close="deleteModalToggle"
         >
-            <PostDeleteModalContent
+            <YesNoModalContent
                 @yes-button-handle="postDeleteHandler"
                 @no-button-handle="deleteModalToggle"
+                content-message="게시글을 삭제하시겠습니까?"
+            />
+        </ModalTemplate>
+
+        <!-- Post Delete Success Modal -->
+        <ModalTemplate
+            custom-id="modal"
+            custom-class="modal-template-style-1 w-[350px]"
+            :seen="replyDeleteSuccessModalSeen"
+            v-if="replyDeleteSuccessModalSeen"
+            @modal-close="replyDeleteSuccessModalToggle"
+        >
+            <YesModalContent
+                @yes-button-handle="replyDeleteSuccessModalToggle"
+                content-message="댓글이 삭제되었습니다!"
             />
         </ModalTemplate>
     </div>

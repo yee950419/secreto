@@ -1,3 +1,13 @@
+export type BoardRequestType = {
+    roomNo: number
+    boardCategory: string
+    title: string | null
+    content: string | null
+    writer: string | null
+    page: number
+    size: number
+}
+
 export type BoardResponseType = {
     boardNo: number
     title: string
@@ -39,4 +49,13 @@ export type ReplyResponseType = {
     writer: string
     writerEmail: string
     writerProfileUrl: string | null
+    children?: ReplyResponseType[] | undefined
+}
+
+export type ReplyWriteRequestType = {
+    postNo: number
+    roomUserNo: number
+    content: string
+    parentReplyNo?: number
+    tagUserNo?: number
 }

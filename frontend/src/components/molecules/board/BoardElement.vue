@@ -7,13 +7,13 @@ defineProps(['board'])
 <template>
     <tr class="cursor-pointer border-b h-[40px] hover:bg-A805LightGrey max-md:hidden">
         <td>{{ board.boardNo }}</td>
-        <td class="text-left flex justify-center items-center leading-[40px]">
-            <TextAtom custom-class="truncate w-[400px]">
-                {{
-                    board.title
-                }}sdfsdfsdfsdfsdfsdsdfsdfsdfsdfsdfsdsdfsdfsdfsdfsdfsdsdfsdfsdfsdfsdfsdsdfsdfsdfsdfsdfsdsdfsdfsdfsdfsdfsd
+        <td class="text-left flex justify-left items-center leading-[40px]">
+            <TextAtom custom-class="truncate max-w-[400px]">
+                {{ board.title }}
             </TextAtom>
-            <TextAtom custom-class="text-A805Red font-bold"> [{{ board.replyCount }}]</TextAtom>
+            <TextAtom custom-class="text-A805Red font-bold ms-1">
+                [{{ board.replyCount }}]</TextAtom
+            >
         </td>
         <td>{{ board.writer }}</td>
         <td>{{ convertStringToRegistrationDate(board.registerAt) }}</td>

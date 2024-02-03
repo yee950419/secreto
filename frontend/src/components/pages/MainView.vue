@@ -183,17 +183,17 @@ const profileClickHandler = () => {
         v-if="modalSeen"
         @modal-close="modalToggle"
     >
-        <DeleteModalContent1
+        <AccountDeleteModalContent1
             v-if="modalState === ModalState.WITHDRAW && deleteModalStep === 0"
             @yes-button-handle="() => ++deleteModalStep"
             @no-button-handle="modalToggle"
         />
-        <DeleteModalContent2
+        <AccountDeleteModalContent2
             v-if="modalState === ModalState.WITHDRAW && deleteModalStep === 1"
             @yes-button-handle="() => ++deleteModalStep"
             @no-button-handle="modalToggle"
         />
-        <DeleteModalContent3
+        <AccountDeleteModalContent3
             v-if="modalState === ModalState.WITHDRAW && deleteModalStep === 2"
             @submit-button-handle="withdrawSubmitButtonHandle"
         />

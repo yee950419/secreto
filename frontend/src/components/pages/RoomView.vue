@@ -73,7 +73,7 @@ const makeRoom = ({ name, imageUrl }: ChatRoomType) => {
 </script>
 
 <template>
-    <div class="flex flex-1 bg-A805White">
+    <div class="flex flex-1 bg-A805RealWhite">
         <div v-for="room in chatRooms" :key="room.name">
             <ChatRoom
                 :name="room.name"

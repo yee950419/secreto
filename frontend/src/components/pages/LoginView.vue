@@ -96,14 +96,16 @@ const findPasswordPrevPageHandler: Handler = () => {
     viewState.value = ViewState.LOGIN
     buttonLabel.value = ButtonLabel.JOIN
 }
+const mainCard = ref<HTMLElement | null>(null)
+console.log(mainCard.value)
 </script>
 
 <template>
     <div class="bg-A805White h-full w-full flex justify-center items-center">
-        <div
-            class="card-template-container max-md:w-full max-md:h-full max-md:bg-A805Cream max-md:flex-col"
-        >
+        <div class="card-template-container max-md:bg-A805Cream max-md:flex-col">
             <MainCard
+                class="max-md:max-w-full max-md:h-full"
+                ref="mainCard"
                 :class="viewState !== ViewState.MAIN ? 'max-md:hidden' : ''"
                 v-if="viewState !== ViewState.TEMPLATE"
                 @button-click="buttonClickHandler"
@@ -112,7 +114,7 @@ const findPasswordPrevPageHandler: Handler = () => {
                 <ServiceFeature />
             </MainCard>
             <LoginForm
-                class="max-md:w-full max-md:h-full"
+                class="max-md:max-w-full max-md:max-h-full max-md:h-full max-md:w-full"
                 v-if="viewState === ViewState.LOGIN"
                 @login-handle="loginHandler"
                 @google-login-handle="googleLoginHandler"
@@ -122,20 +124,21 @@ const findPasswordPrevPageHandler: Handler = () => {
                 @go-register-button-handle="buttonClickHandler"
             />
             <JoinForm
-                class="max-md:w-full max-md:h-full"
+                class="max-md:max-w-full max-md:max-h-full max-md:h-full max-md:w-full"
                 v-if="viewState === ViewState.JOIN"
                 @join-submit-handle="joinHandler"
                 @close-button-handle="cardCloseHandler"
                 @go-login-button-handle="buttonClickHandler"
             />
             <FindPasswordForm
-                class="max-md:w-full max-md:h-full"
+                class="max-md:max-w-full max-md:max-h-full max-md:h-full max-md:w-full"
                 v-if="viewState === ViewState.PASSWORD"
                 @emailSubmitHandle="findPasswordEmailSubmitHandler"
                 @prev-page-handle="findPasswordPrevPageHandler"
                 @close-button-handle="buttonClickHandler"
             />
             <WideCardTemplate
+                class="max-md:max-w-full max-md:max-h-full max-md:h-full max-md:w-full"
                 v-if="viewState === ViewState.TEMPLATE"
                 :title="template.title"
                 :content-messages="template.contentMessages"

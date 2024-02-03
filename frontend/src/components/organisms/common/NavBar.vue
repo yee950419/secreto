@@ -112,17 +112,29 @@ const handleMenuClickAndToggleSubMenu = (index: number, menu: string) => {
         <div v-if="showSubMenu.includes('board')">
             <MenuItem
                 custom-class="sub-menu-item"
-                @menu-click="router.push({ name: 'game-board' }), handleClick()"
+                @menu-click="
+                    router.push({
+                        name: 'game-board',
+                        query: { boardCategory: 'NOTICE' }
+                    }),
+                        handleClick()
+                "
                 >공지 게시판</MenuItem
             >
             <MenuItem
                 custom-class="sub-menu-item"
-                @menu-click="router.push({ name: 'game-board' }), handleClick()"
+                @menu-click="
+                    router.push({ name: 'game-board', query: { boardCategory: 'CERTIFICATE' } }),
+                        handleClick()
+                "
                 >인증 게시판</MenuItem
             >
             <MenuItem
                 custom-class="sub-menu-item"
-                @menu-click="router.push({ name: 'game-board' }), handleClick()"
+                @menu-click="
+                    router.push({ name: 'game-board', query: { boardCategory: 'BOAST' } }),
+                        handleClick()
+                "
                 >자랑 게시판</MenuItem
             >
         </div>

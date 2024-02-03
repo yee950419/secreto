@@ -35,19 +35,26 @@ const router = createRouter({
             }
         },
         {
-            path: '/game/:roomId',
+            path: '/game/:roomNo',
             name: 'game',
             component: RoomView,
             children: [
                 {
                     path: 'board',
                     name: 'game-board',
-                    component: () => import('@/components/template/board/BoardList.vue')
+                    component: () => import('@/components/template/board/BoardList.vue'),
+                    props: true
+                },
+                {
+                    path: 'post',
+                    name: 'game-board-post',
+                    component: () => import('@/components/template/board/BoardDetail.vue'),
+                    props: true
                 },
                 {
                     path: 'mission',
                     name: 'game-mission',
-                    component: () => import('@/components/pages/UserMission.vue')
+                    component: sswTestVue
                 },
                 {
                     path: 'participate',

@@ -160,7 +160,7 @@ const profileClickHandler = () => {
             </div>
 
             <RoomListView
-                class="max-md:h-full max-md:w-full"
+                class="max-md:max-w-full max-md:max-h-full max-md:h-full max-md:w-full"
                 v-if="state === State.MAIN_AFTER_LOGIN"
                 @submit-button-handle="buttonClickHandler"
             />
@@ -177,7 +177,7 @@ const profileClickHandler = () => {
                 @close-button-handle="buttonClickHandler"
             />
             <ChangePasswordForm
-                class="max-md:h-full max-md:w-full"
+                class="max-md:max-w-full max-md:max-h-full max-md:h-full max-md:w-full"
                 v-if="state === State.CHANGE_PWD"
                 @prev-button-handle="() => (state = State.MY_PAGE)"
                 @close-button-handle="() => (state = State.MY_PAGE)"
@@ -201,17 +201,17 @@ const profileClickHandler = () => {
         v-if="modalSeen"
         @modal-close="modalToggle"
     >
-        <DeleteModalContent1
+        <AccountDeleteModalContent1
             v-if="modalState === ModalState.WITHDRAW && deleteModalStep === 0"
             @yes-button-handle="() => ++deleteModalStep"
             @no-button-handle="modalToggle"
         />
-        <DeleteModalContent2
+        <AccountDeleteModalContent2
             v-if="modalState === ModalState.WITHDRAW && deleteModalStep === 1"
             @yes-button-handle="() => ++deleteModalStep"
             @no-button-handle="modalToggle"
         />
-        <DeleteModalContent3
+        <AccountDeleteModalContent3
             v-if="modalState === ModalState.WITHDRAW && deleteModalStep === 2"
             @submit-button-handle="withdrawSubmitButtonHandle"
         />

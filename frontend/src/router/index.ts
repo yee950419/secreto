@@ -1,6 +1,8 @@
 import sswTestVue from '@/components/pages/sswTest.vue'
 import { createRouter, createWebHistory } from 'vue-router'
-
+import { useUserStore } from '@/stores/user'
+import { storeToRefs } from 'pinia'
+import RoomView from '@/components/pages/RoomView.vue'
 const router = createRouter({
     history: createWebHistory(),
     routes: [
@@ -10,6 +12,18 @@ const router = createRouter({
             component: () => import('@/components/pages/LoginView.vue'),
             meta: {
                 hide: true
+            },
+            // 로그인이 된 상태라면 메인으로 이동
+            beforeEnter(to, from, next) {
+                const userStore = useUserStore()
+                const { accessToken, refreshToken } = storeToRefs(userStore)
+
+                // 토큰이 있으면 로그인 상태로 간주 한다
+                if (accessToken.value && refreshToken.value) {
+                    next('/main')
+                } else {
+                    next()
+                }
             }
         },
         {
@@ -23,7 +37,7 @@ const router = createRouter({
         {
             path: '/game/:roomId',
             name: 'game',
-            component: () => import('@/components/pages/RoomView.vue'),
+            component: RoomView,
             children: [
                 {
                     path: 'board',
@@ -38,7 +52,22 @@ const router = createRouter({
                 {
                     path: 'participate',
                     name: 'game-participate',
-                    component: () => import('@/components/pages/ParticipateView.vue')
+                    component: () => import('@/components/pages/ParticipatePage.vue')
+                },
+                {
+                    path: 'timeline',
+                    name: 'game-timeline',
+                    component: () => import('@/components/pages/TimeLinePage.vue')
+                },
+                {
+                    path: 'review',
+                    name: 'game-review',
+                    component: () => import('@/components/pages/ReviewPage.vue')
+                },
+                {
+                    path: 'statistic',
+                    name: 'game-statistic',
+                    component: () => import('@/components/pages/StatisticPage.vue')
                 }
             ]
         },

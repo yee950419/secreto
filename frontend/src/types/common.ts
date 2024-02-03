@@ -1,4 +1,4 @@
-export type Handler = () => void
+export type Handler = (data?: string) => void
 export type DataHandler<T> = (data: T) => void
 
 export type WideCardTemplateType = {

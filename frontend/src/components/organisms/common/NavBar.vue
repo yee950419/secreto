@@ -53,7 +53,7 @@ const handleMenuClickAndToggleSubMenu = (index: number, menu: string) => {
         <MenuItem
             custom-class="menu-item"
             :active="activeMenu === 0"
-            @menu-click="handleMenuClick(0)"
+            @menu-click="handleMenuClick(0), handleClick(), router.push({ name: 'roomsettings' })"
             ><div class="flex w-full items-center gap-[20px]">방 설정 <SettingOutlined /></div
         ></MenuItem>
         <MenuItem custom-class="menu-item">{{ roomName }}</MenuItem>
@@ -80,7 +80,7 @@ const handleMenuClickAndToggleSubMenu = (index: number, menu: string) => {
         <MenuItem
             custom-class="menu-item"
             :active="activeMenu === 4"
-            @menu-click="handleMenuClick(4), router.push({ name: 'game-mission' })"
+            @menu-click="handleMenuClick(4), router.push({ name: 'game-mission' }), handleClick()"
             >내 미션</MenuItem
         >
         <MenuItem
@@ -141,19 +141,19 @@ const handleMenuClickAndToggleSubMenu = (index: number, menu: string) => {
         <MenuItem
             custom-class="menu-item"
             :active="activeMenu === 7"
-            @menu-click="handleMenuClick(7)"
+            @menu-click="handleMenuClick(7), handleClick(), router.push({ name: 'game-statistic' })"
             >게임 통계</MenuItem
         >
         <MenuItem
             custom-class="menu-item"
             :active="activeMenu === 8"
-            @menu-click="handleMenuClick(8)"
+            @menu-click="handleMenuClick(8), handleClick(), router.push({ name: 'game-timeline' })"
             >나의 히스토리</MenuItem
         >
         <MenuItem
             custom-class="menu-item"
             :active="activeMenu === 9"
-            @menu-click="handleMenuClick(9)"
+            @menu-click="handleMenuClick(9), handleClick(), router.push({ name: 'game-review' })"
             >후기</MenuItem
         >
     </div>

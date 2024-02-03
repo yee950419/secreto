@@ -8,12 +8,13 @@ import { useMenuStore } from '@/stores/menu'
 // import { storeToRefs } from 'pinia'
 const menuStore = useMenuStore()
 // const { menuSeen } = storeToRefs(menuStore)
-const { handleResize } = menuStore
+const { handleResize, setHeight } = menuStore
 
 const headerSeen = ref(false)
 const route = useRoute()
 
 onMounted(() => {
+    setHeight()
     window.addEventListener('resize', handleResize)
 })
 
@@ -36,7 +37,7 @@ watch(route, () => {
 </script>
 
 <template>
-    <div class="flex flex-1 flex-col w-screen h-screen overflow-x-hidden">
+    <div class="flex flex-1 flex-col min-w-[360px] w-screen h-real-screen overflow-x-hidden">
         <HeaderBar v-if="headerSeen" @updateRoomName="updateRoomName" :room-name="roomName" />
         <RouterView @update-name="updateRoomName" />
         <FooterBar v-if="headerSeen" />

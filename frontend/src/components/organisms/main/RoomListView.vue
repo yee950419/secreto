@@ -1,106 +1,111 @@
 <script setup lang="ts">
+import { getRoomList } from '@/api/room'
 import ButtonAtom from '@/components/atoms/ButtonAtom.vue'
-import { ref, watch, type Ref } from 'vue'
+import { ref, watch, type Ref, onMounted } from 'vue'
 import type { Handler, DataHandler } from '@/types/common'
 import type { RoomInfoTypeTest } from '@/types/room'
 import RoomCard from '@/components/molecules/main/RoomCard.vue'
 import RoomCreateCard from '@/components/molecules/main/RoomCreateCard.vue'
 import { useRouter } from 'vue-router'
+
 const router = useRouter()
+
+const emit = defineEmits(['submit-button-handle'])
+
 /**
  * dummy data
  */
 const roomInfoList = ref<Array<RoomInfoTypeTest>>([
-    {
-        roomNo: 1,
-        title: 'SSAFY 10기 1반',
-        nickname: '고구마',
-        peopleNumber: 60,
-        like: true,
-        roomStartAt: '2024/01/15 00:00:00',
-        roomEndAt: '2024/01/30 00:00:00',
-        roomStatus: '참여중'
-    },
-    {
-        roomNo: 2,
-        title: 'SSAFY 10기 2반',
-        nickname: '고구마',
-        peopleNumber: 60,
-        like: false,
-        roomStartAt: '2024/01/15 00:00:00',
-        roomEndAt: '2024/01/25 00:00:00',
-        roomStatus: '종료'
-    },
-    {
-        roomNo: 3,
-        title: 'SSAFY 10기 3반',
-        nickname: '고구마',
-        peopleNumber: 60,
-        like: false,
-        roomStartAt: '2024/01/14 00:00:00',
-        roomEndAt: '2024/01/25 00:00:00',
-        roomStatus: '참여중'
-    },
-    {
-        roomNo: 4,
-        title: 'SSAFY 10기 4반',
-        nickname: '고구마',
-        peopleNumber: 60,
-        like: false,
-        roomStartAt: '2024/01/14 00:00:00',
-        roomEndAt: '2024/01/25 00:00:00',
-        roomStatus: '참여중'
-    },
-    {
-        roomNo: 5,
-        title: 'SSAFY 10기 5반',
-        nickname: '고구마',
-        peopleNumber: 60,
-        like: true,
-        roomStartAt: '2024/01/15 00:00:00',
-        roomEndAt: '2024/03/15 00:00:00',
-        roomStatus: '종료'
-    },
-    {
-        roomNo: 6,
-        title: 'SSAFY 10기 6반',
-        nickname: '고구마',
-        peopleNumber: 60,
-        like: true,
-        roomStartAt: '2024/01/15 00:00:00',
-        roomEndAt: '2024/03/15 00:00:00',
-        roomStatus: '종료'
-    },
-    {
-        roomNo: 7,
-        title: 'SSAFY 10기 7반',
-        nickname: '고구마',
-        peopleNumber: 60,
-        like: false,
-        roomStartAt: '2024/01/10 00:00:00',
-        roomEndAt: '2024/01/15 00:00:00',
-        roomStatus: '종료'
-    },
-    {
-        roomNo: 8,
-        title: 'SSAFY 10기 8반',
-        nickname: '고구마',
-        peopleNumber: 60,
-        like: true,
-        roomStartAt: '2024/01/15 00:00:00',
-        roomEndAt: '2024/03/15 00:00:00',
-        roomStatus: '종료'
-    },
-    {
-        roomNo: 9,
-        title: '방 이름이 아주 길다면 어떻게 될까요',
-        nickname: '닉네임도 길수도 있겠지요',
-        peopleNumber: 5,
-        like: false,
-        roomStartAt: '2024/01/15 00:00:00',
-        roomEndAt: '2024/03/15 00:00:00',
-        roomStatus: '종료'
-    }
+    // {
+    //     roomNo: 1,
+    //     title: 'SSAFY 10기 1반',
+    //     nickname: '고구마',
+    //     peopleNumber: 60,
+    //     like: true,
+    //     roomStartAt: '2024/01/15 00:00:00',
+    //     roomEndAt: '2024/01/30 00:00:00',
+    //     roomStatus: '참여중'
+    // },
+    // {
+    //     roomNo: 2,
+    //     title: 'SSAFY 10기 2반',
+    //     nickname: '고구마',
+    //     peopleNumber: 60,
+    //     like: false,
+    //     roomStartAt: '2024/01/15 00:00:00',
+    //     roomEndAt: '2024/01/25 00:00:00',
+    //     roomStatus: '종료'
+    // },
+    // {
+    //     roomNo: 3,
+    //     title: 'SSAFY 10기 3반',
+    //     nickname: '고구마',
+    //     peopleNumber: 60,
+    //     like: false,
+    //     roomStartAt: '2024/01/14 00:00:00',
+    //     roomEndAt: '2024/01/25 00:00:00',
+    //     roomStatus: '참여중'
+    // },
+    // {
+    //     roomNo: 4,
+    //     title: 'SSAFY 10기 4반',
+    //     nickname: '고구마',
+    //     peopleNumber: 60,
+    //     like: false,
+    //     roomStartAt: '2024/01/14 00:00:00',
+    //     roomEndAt: '2024/01/25 00:00:00',
+    //     roomStatus: '참여중'
+    // },
+    // {
+    //     roomNo: 5,
+    //     title: 'SSAFY 10기 5반',
+    //     nickname: '고구마',
+    //     peopleNumber: 60,
+    //     like: true,
+    //     roomStartAt: '2024/01/15 00:00:00',
+    //     roomEndAt: '2024/03/15 00:00:00',
+    //     roomStatus: '종료'
+    // },
+    // {
+    //     roomNo: 6,
+    //     title: 'SSAFY 10기 6반',
+    //     nickname: '고구마',
+    //     peopleNumber: 60,
+    //     like: true,
+    //     roomStartAt: '2024/01/15 00:00:00',
+    //     roomEndAt: '2024/03/15 00:00:00',
+    //     roomStatus: '종료'
+    // },
+    // {
+    //     roomNo: 7,
+    //     title: 'SSAFY 10기 7반',
+    //     nickname: '고구마',
+    //     peopleNumber: 60,
+    //     like: false,
+    //     roomStartAt: '2024/01/10 00:00:00',
+    //     roomEndAt: '2024/01/15 00:00:00',
+    //     roomStatus: '종료'
+    // },
+    // {
+    //     roomNo: 8,
+    //     title: 'SSAFY 10기 8반',
+    //     nickname: '고구마',
+    //     peopleNumber: 60,
+    //     like: true,
+    //     roomStartAt: '2024/01/15 00:00:00',
+    //     roomEndAt: '2024/03/15 00:00:00',
+    //     roomStatus: '종료'
+    // },
+    // {
+    //     roomNo: 9,
+    //     title: '방 이름이 아주 길다면 어떻게 될까요',
+    //     nickname: '닉네임도 길수도 있겠지요',
+    //     peopleNumber: 5,
+    //     like: false,
+    //     roomStartAt: '2024/01/15 00:00:00',
+    //     roomEndAt: '2024/03/15 00:00:00',
+    //     roomStatus: '종료'
+    // }
 ])
 const SelectState = {
     ALL: 'all',
@@ -138,7 +143,7 @@ const filteredRoomList = ref({
 })
 const roomEnterHandler: DataHandler<number> = (roomNo: number) => {
     // alert(roomNo + '번 방 입장 이벤트')
-    router.push('/game/' + 1)
+    router.push('/game/' + roomNo)
 }
 const roomFavoriteHandler: DataHandler<number> = (roomNo: number) => {
     alert(roomNo + '번 방 즐겨찾기 추가 이벤트')
@@ -159,8 +164,21 @@ const roomLeaveHandlerTest: DataHandler<number> = (roomNo: number) => {
     console.log(roomInfoList.value)
 }
 const roomCreateHandler: Handler = () => {
-    alert('새로운 방 만들기 이벤트')
+    emit('submit-button-handle', 'roomCreate')
 }
+
+// 방 리스트 정보 불러오기
+onMounted(() => {
+    getRoomList(
+        ({ data }) => {
+            roomInfoList.value = data.result
+            console.log(data.result)
+        },
+        (error) => {
+            console.error('error', error)
+        }
+    )
+})
 </script>
 
 <template>

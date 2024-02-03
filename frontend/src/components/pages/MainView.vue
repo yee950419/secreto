@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import WideCardTemplate from '@/components/template/WideCardTemplate.vue'
+import { createRoom } from '@/api/room'
 import type { DataHandler, Handler, WideCardTemplateType } from '@/types/common'
 import type { Ref } from 'vue'
 import { ref } from 'vue'
@@ -21,6 +22,8 @@ import MobileMiniHeader from '@/components/molecules/main/MobileMiniHeader.vue'
 import InputBox from '@/components/molecules/common/InputBox.vue'
 import HeaderProfile from '@/components/molecules/common/HeaderProfile.vue'
 import ServiceFeature from '@/components/molecules/main/ServiceFeature.vue'
+import { useRouter } from 'vue-router'
+const router = useRouter()
 
 const userStore = useUserStore()
 
@@ -52,13 +55,18 @@ const ModalState = Object.freeze({
 const buttonLabel: Ref<string> = ref(ButtonLabel.ENTER)
 const state: Ref<string> = ref(State.MAIN_AFTER_LOGIN)
 
-const buttonClickHandler: Handler = () => {
+const buttonClickHandler: Handler = (data) => {
     switch (state.value) {
         case State.MAIN_AFTER_LOGIN:
             modalToggle()
-            modalState.value = ModalState.ROOM_ENTER
+            if (data === 'roomCreate') {
+                modalState.value = ModalState.ROOM_CREATE
+            } else {
+                modalState.value = ModalState.ROOM_ENTER
+            }
             break
         case State.CHANGE_PWD:
+            break
         case State.MY_PAGE:
             state.value = State.MAIN_AFTER_LOGIN
             buttonLabel.value = ButtonLabel.ENTER
@@ -91,7 +99,16 @@ const withdrawSubmitButtonHandle: DataHandler<string> = (password: string) => {
 
 // room
 const roomCreateHandler: DataHandler<RoomCreateRequestType> = (request: RoomCreateRequestType) => {
-    alert('방 생성 ' + JSON.stringify(request))
+    // alert('방 생성 ' + JSON.stringify(request))
+    createRoom(
+        request,
+        ({ data }) => {
+            console.log(data)
+        },
+        (error) => {
+            console.error('error', error)
+        }
+    )
 }
 const roomLeaveHandler: DataHandler<number> = (roomNo: number) => {
     alert('방 나가기 ' + roomNo)
@@ -145,6 +162,7 @@ const profileClickHandler = () => {
             <RoomListView
                 class="max-md:max-w-full max-md:max-h-full max-md:h-full max-md:w-full"
                 v-if="state === State.MAIN_AFTER_LOGIN"
+                @submit-button-handle="buttonClickHandler"
             />
             <MyPage
                 class="max-md:h-full max-md:w-full"

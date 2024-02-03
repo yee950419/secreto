@@ -15,7 +15,13 @@ export const useMenuStore = defineStore('menuStore', () => {
         menuSeen.value = !menuSeen.value
     }
 
+    const setHeight = () => {
+        const vh = window.innerHeight * 0.01
+        document.documentElement.style.setProperty('--vh', `${vh}px`)
+    }
+
     const handleResize = () => {
+        setHeight()
         windowWidth.value = window.innerWidth
         // pc -> 모바일로 된 경우
         if (!isMobile.value && window.innerWidth <= 768) {
@@ -31,5 +37,5 @@ export const useMenuStore = defineStore('menuStore', () => {
 
     watch(windowWidth, () => handleResize)
 
-    return { menuSeen, isMobile, windowWidth, handleResize, handleClick }
+    return { menuSeen, isMobile, windowWidth, handleResize, handleClick, setHeight }
 })

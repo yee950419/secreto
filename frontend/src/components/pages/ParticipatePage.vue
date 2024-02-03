@@ -17,7 +17,7 @@ interface userType {
 
 const getRooms = () => {
     getUserList(
-        Number(route.params.roomId), // 방번호
+        Number(route.params.roomNo), // 방번호
         ({ data }) => {
             // console.log(response)
             console.log(data)

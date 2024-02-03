@@ -55,7 +55,7 @@ const ModalState = Object.freeze({
 const buttonLabel: Ref<string> = ref(ButtonLabel.ENTER)
 const state: Ref<string> = ref(State.MAIN_AFTER_LOGIN)
 
-const buttonClickHandler: Handler = (data) => {
+const buttonClickHandler: DataHandler<string> = (data) => {
     switch (state.value) {
         case State.MAIN_AFTER_LOGIN:
             modalToggle()

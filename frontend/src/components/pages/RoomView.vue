@@ -16,7 +16,7 @@ const emit = defineEmits(['update-name'])
 const chatRooms = reactive<ChatRoomType[]>([])
 //라우터로 부터 방번호를 받아온다
 const route = useRoute()
-const roomNo = ref<number>(Number(route.params.roomId))
+const roomNo = ref<number>(Number(route.params.roomNo))
 const roomName = ref<string | undefined>()
 const roomUserNo = ref<number>(0)
 const updateRoomName = (name: string | undefined) => {
@@ -66,7 +66,7 @@ onMounted(() => {
 </script>
 
 <template>
-    <div class="flex flex-1 md:overflow-y-hidden bg-A805White">
+    <div class="flex flex-1 bg-A805RealWhite">
         <div v-for="room in chatRooms" :key="room.name">
             <ChatRoom
                 :name="room.name"
@@ -78,10 +78,7 @@ onMounted(() => {
         <NavBar @make-room="makeRoom" :room-name="roomName" v-if="!isMobile || menuSeen" />
 
         <!-- pc버전이거나, 모바일 버전 + 메뉴가 닫힌 상태일때만 이 영역 이 보인다. -->
-        <RouterView
-            v-if="!isMobile || !menuSeen"
-            class="flex flex-1 md:overflow-y-auto no-scrollbar"
-        />
+        <RouterView v-if="!isMobile || !menuSeen" />
     </div>
 </template>
 

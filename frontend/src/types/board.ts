@@ -1,3 +1,13 @@
+export type BoardRequestType = {
+    roomNo: number
+    boardCategory: string
+    title: string | null
+    content: string | null
+    writer: string | null
+    page: number
+    size: number
+}
+
 export type BoardResponseType = {
     boardNo: number
     title: string

@@ -15,6 +15,7 @@ import { CommentOutlined } from '@ant-design/icons-vue'
 import type { Handler } from '@/types/common'
 import { getPost, getReplies } from '@/api/board'
 import { useRoute } from 'vue-router'
+
 const route = useRoute()
 const postId = computed(() => {
     return Number(route.query.postId)
@@ -35,6 +36,31 @@ const post: Ref<BoardDetailResponseType> = ref({
     likedCount: 0
 })
 const replies: Ref<ReplyResponseType[]> = ref([])
+const replyCount: Ref<number> = ref(0)
+
+const constructParentChildRelation = (replies: ReplyResponseType[]): ReplyResponseType[] => {
+    const parentIndexer: Map<number, number> = new Map()
+    const constructed: ReplyResponseType[] = []
+    const children: ReplyResponseType[] = []
+    let parentMapSize: number = 0
+    for (const reply of replies) {
+        if (reply.parentReplyNo === null) {
+            constructed.push(reply)
+            parentIndexer.set(reply.replyNo, parentMapSize++)
+            reply['children'] = []
+        } else {
+            children.push(reply)
+        }
+    }
+    children.forEach((child) => {
+        if (child.parentReplyNo === null) return
+        const index = parentIndexer.get(child.parentReplyNo)
+        if (index !== undefined) {
+            index != constructed[index]['children']?.push(child)
+        }
+    })
+    return constructed
+}
 
 onMounted(() => {
     getPost(
@@ -42,6 +68,7 @@ onMounted(() => {
         (response) => {
             const data = response.data
             if (data.status === 'OK') {
+                console.log('========== 게시글 상세 ==========')
                 console.log(data.message)
                 console.log(data.result)
                 post.value = data.result
@@ -54,13 +81,15 @@ onMounted(() => {
         (response) => {
             const data = response.data
             if (data.status === 'OK') {
+                console.log('========== 댓글 목록 ==========')
                 console.log(data.message)
                 console.log(data.result)
+                replyCount.value = data.result.length
+                replies.value = constructParentChildRelation(data.result)
             }
         },
         (error) => alert('댓글 목록 조회 실패')
     )
-    replies.value = []
 })
 
 const writeButtonHandler: Handler = () => {
@@ -106,7 +135,7 @@ const postDeleteHandler: Handler = () => {
                     :register-at="post.registerAt"
                     :hit="post.hit"
                     :liked-count="post.likedCount"
-                    :reply-count="replies.length"
+                    :reply-count="replyCount"
                 />
             </div>
             <LineAtom custom-class="my-4 border-A805LightGrey" />
@@ -120,19 +149,22 @@ const postDeleteHandler: Handler = () => {
             > -->
                 <LikeButton :liked-count="post.likedCount" />
                 <span class="flex items-center gap-[6px]"
-                    ><CommentOutlined class="text-[24px]" /> 댓글 <b>{{ replies.length }}</b></span
+                    ><CommentOutlined class="text-[24px]" /> 댓글 <b>{{ replyCount }}</b></span
                 >
             </div>
             <LineAtom custom-class="my-4 border-A805LightGrey" />
             <div class="flex flex-col flex-1">
                 <TextAtom custom-class="font-bold text-[20px]">댓글</TextAtom>
-                <!-- api 호출 후 댓글-답글 관계 재구성 과정 필요 -->
-                <ReplyElement
-                    v-for="reply in replies"
-                    :key="reply.replyNo"
-                    :reply="reply"
-                    :post-writer-user-no="post.roomUserNo"
-                />
+                <template v-for="reply in replies" :key="reply.replyNo">
+                    <ReplyElement :reply="reply" :post-writer-user-no="post.roomUserNo" />
+                    <ReplyElement
+                        v-for="child in reply.children"
+                        :reply="child"
+                        :key="child.replyNo"
+                        :post-writer-user-no="post.roomUserNo"
+                        :nested="true"
+                    />
+                </template>
                 <ReplyWriteForm class="mt-5" />
             </div>
         </div>

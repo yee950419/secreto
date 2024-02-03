@@ -49,4 +49,5 @@ export type ReplyResponseType = {
     writer: string
     writerEmail: string
     writerProfileUrl: string | null
+    children?: ReplyResponseType[] | undefined
 }

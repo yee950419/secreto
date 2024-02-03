@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { getBoard } from '@/api/board'
-import { watch, ref, type Ref, computed } from 'vue'
+import { watch, ref, type Ref, computed, onMounted } from 'vue'
 import type { BoardRequestType, BoardResponseType } from '@/types/board'
 import BoardSearchBox from '@/components/organisms/board/BoardSearchBox.vue'
 import BoardTableHeader from '@/components/molecules/board/BoardTableHeader.vue'
@@ -54,6 +54,9 @@ const boardDetail = (boardNo: number): void => {
     alert(boardNo)
 }
 
+onMounted(() => {
+    loadBoardData()
+})
 watch(current, () => {
     loadBoardData()
 })

@@ -5,6 +5,7 @@ import ButtonAtom from '@/components/atoms/ButtonAtom.vue'
 import TextAtom from '@/components/atoms/TextAtom.vue'
 import { convertStringToRegistrationDateTime } from '@/utils/date'
 import ReplyWriteForm from './ReplyWriteForm.vue'
+import ReplyModifyForm from './ReplyModifyForm.vue'
 import { ref, type Ref } from 'vue'
 import type { Handler } from '@/types/common'
 import ModalTemplate from '@/components/template/ModalTemplate.vue'
@@ -14,9 +15,7 @@ const props = defineProps(['reply', 'nested', 'postWriterUserNo'])
 const emit = defineEmits(['deleteSuccessHandle'])
 
 const seenReplyWriteForm: Ref<boolean> = ref(false)
-const modifyButtonHandler: Handler = () => {
-    alert('댓글 수정 이벤트')
-}
+const seenReplyModifyForm: Ref<boolean> = ref(false)
 const deleteButtonHandler: Handler = () => {
     deleteReply(
         props.reply.replyNo,
@@ -48,7 +47,7 @@ const deleteModalToggle = () => (deleteModalSeen.value = !deleteModalSeen.value)
         />
     </ModalTemplate>
     <div class="flex flex-col border-b py-3" :class="nested ? 'ms-[50px]' : ''">
-        <div class="flex">
+        <div class="flex" v-show="!seenReplyModifyForm">
             <AvatarAtom
                 :image-url="reply.writerImageUrl"
                 custom-class="profile w-[40px] h-[40px] me-[10px]"
@@ -67,16 +66,26 @@ const deleteModalToggle = () => (deleteModalSeen.value = !deleteModalSeen.value)
                 <TextAtom custom-class="text-[16px]">{{ reply.content }}</TextAtom>
                 <div>
                     <TextAtom custom-class="text-[16px] text-A805DarkGrey">{{
-                        convertStringToRegistrationDateTime('2022-03-10T13:22:09')
+                        convertStringToRegistrationDateTime(reply.registerAt)
                     }}</TextAtom>
                     <ButtonAtom
                         custom-class="text-[16px] text-A805DarkGrey hover:text-A805Blue ms-5"
-                        @button-click="() => (seenReplyWriteForm = true)"
+                        @button-click="
+                            () => {
+                                seenReplyWriteForm = true
+                                seenReplyModifyForm = false
+                            }
+                        "
                         >답글쓰기</ButtonAtom
                     >
                     <ButtonAtom
                         custom-class="text-[16px] text-A805DarkGrey hover:text-A805Blue ms-5"
-                        @button-click="modifyButtonHandler"
+                        @button-click="
+                            () => {
+                                seenReplyWriteForm = false
+                                seenReplyModifyForm = true
+                            }
+                        "
                         >수정</ButtonAtom
                     >
                     <ButtonAtom
@@ -87,6 +96,12 @@ const deleteModalToggle = () => (deleteModalSeen.value = !deleteModalSeen.value)
                 </div>
             </div>
         </div>
+        <ReplyModifyForm
+            nested="true"
+            v-show="seenReplyModifyForm"
+            :default-value="reply.content"
+            @cancel-button-handle="() => (seenReplyModifyForm = false)"
+        />
         <ReplyWriteForm
             class="mt-5"
             nested="true"

@@ -97,6 +97,11 @@ onMounted(() => {
     loadReplies()
 })
 
+const replyDeleteSuccessHandler = () => {
+    loadReplies()
+    replyDeleteSuccessModalToggle()
+}
+
 const writeButtonHandler: Handler = () => {
     alert('글쓰기 페이지 이동')
 }
@@ -165,19 +170,18 @@ const replyDeleteSuccessModalToggle = () =>
             <div class="flex flex-col flex-1">
                 <TextAtom custom-class="font-bold text-[20px]">댓글</TextAtom>
                 <template v-for="reply in replies" :key="reply.replyNo">
-                    <ReplyElement :reply="reply" :post-writer-user-no="post.roomUserNo" />
+                    <ReplyElement
+                        :reply="reply"
+                        :post-writer-user-no="post.roomUserNo"
+                        @delete-success-handle="replyDeleteSuccessHandler"
+                    />
                     <ReplyElement
                         v-for="child in reply.children"
                         :reply="child"
                         :key="child.replyNo"
                         :post-writer-user-no="post.roomUserNo"
                         :nested="true"
-                        @delete-success-handle="
-                            () => {
-                                loadReplies()
-                                replyDeleteSuccessModalToggle()
-                            }
-                        "
+                        @delete-success-handle="replyDeleteSuccessHandler"
                     />
                 </template>
                 <ReplyWriteForm class="mt-5" :postNo="post.boardNo" />

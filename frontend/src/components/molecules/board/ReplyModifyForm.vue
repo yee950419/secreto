@@ -1,11 +1,9 @@
 <script setup lang="ts">
-import { postReply } from '@/api/board'
 import ButtonAtom from '@/components/atoms/ButtonAtom.vue'
 import TextAtom from '@/components/atoms/TextAtom.vue'
 import { useUserStore } from '@/stores/user'
 import { ref } from 'vue'
-import type { ReplyWriteRequestType } from '@/types/board'
-const props = defineProps(['nested', 'postNo'])
+const props = defineProps(['nested', 'postNo', 'defaultValue'])
 
 const userStore = useUserStore()
 const emit = defineEmits(['submitButtonHandle', 'cancelButtonHandle'])
@@ -18,25 +16,9 @@ const resize = () => {
     }
 }
 
-const replyWriteHandler = () => {
-    const replyRequest: ReplyWriteRequestType = {
-        postNo: 0,
-        roomUserNo: 1,
-        content: ''
-    }
-    if (textArea.value) {
-        replyRequest.postNo = props.postNo
-        replyRequest.content = textArea.value.value
-    }
-    console.log(replyRequest)
-    postReply(
-        props.postNo,
-        replyRequest,
-        (response) => {
-            console.log(response)
-        },
-        (error) => alert(error.message)
-    )
+const replyModifyHandler = () => {
+    alert('댓글 수정 API 연동')
+    console.log(textArea.value?.value)
     emit('submitButtonHandle')
 }
 </script>
@@ -50,13 +32,14 @@ const replyWriteHandler = () => {
             ref="textArea"
             class="min-h-[40px] resize-none focus:outline-none my-2"
             placeholder="댓글을 남겨보세요"
+            :value="defaultValue"
             @input="resize"
         ></textarea>
         <ButtonAtom
             custom-class="button-claret rounded-md font-bold"
-            @button-click="replyWriteHandler"
+            @button-click="replyModifyHandler"
         >
-            등록
+            수정
         </ButtonAtom>
         <ButtonAtom
             v-if="nested"

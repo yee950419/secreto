@@ -61,7 +61,6 @@ const withdrawSubmitButtonHandle = (password: string) => {
 
 onMounted(() => {
     getUser(
-        userNo,
         (response) => {
             const data = response.data
             console.log('유저 정보 조회:', data.message)
@@ -70,7 +69,9 @@ onMounted(() => {
             userInfo.value.nickname = data.result.nickname
             userInfo.value.profileUrl = data.result.profileUrl
         },
-        (error) => {}
+        (error) => {
+            console.error(error)
+        }
     )
 })
 </script>

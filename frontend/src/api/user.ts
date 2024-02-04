@@ -27,12 +27,8 @@ async function signup(
     userInstance.post(`/users/sign-up`, param).then(success).catch(fail)
 }
 
-async function getUser(
-    userNo: number,
-    success: (response: AxiosResponse) => void,
-    fail: (error: any) => void
-) {
-    userInstance.get(`/users/${userNo}`).then(success).catch(fail)
+async function getUser(success: (response: AxiosResponse) => void, fail: (error: any) => void) {
+    userInstance.get(`/users`).then(success).catch(fail)
 }
 
 async function withdraw(
@@ -64,7 +60,7 @@ async function changePassword(
     success: (response: AxiosResponse) => void,
     fail: (error: any) => void
 ) {
-    userInstance.put(`/users/password`, param).then(success).catch(fail)
+    userInstance.put(`/users/change/password`, param).then(success).catch(fail)
 }
 
 async function findPasswordMailSend(

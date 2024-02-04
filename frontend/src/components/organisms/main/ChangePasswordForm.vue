@@ -8,7 +8,12 @@ import type { PasswordChangeRequest } from '@/types/user'
 import CloseButtonAtom from '@/components/atoms/CloseButtonAtom.vue'
 import { changePassword } from '@/api/user'
 
-const emit = defineEmits(['prevButtonHandle', 'closeButtonHandle'])
+const emit = defineEmits([
+    'prevButtonHandle',
+    'closeButtonHandle',
+    'changePasswordSuccessHandle',
+    'changePasswordFailHandle'
+])
 const passwordChangeRequest: Ref<PasswordChangeRequest> = ref({
     oldPassword: '',
     newPassword: ''
@@ -17,15 +22,21 @@ const newPasswordConfirm: Ref<string> = ref('')
 const changePasswordButtonHandler: Handler = () => {
     console.log(passwordChangeRequest.value.newPassword, newPasswordConfirm.value)
     if (passwordChangeRequest.value.newPassword !== newPasswordConfirm.value) {
-        alert('wrong new password confirm')
+        emit('changePasswordFailHandle', '비밀번호 확인이 일치하지 않습니다.')
         return
     }
     changePassword(
-        passwordChangeRequest,
-        (response) => {},
-        (error) => {}
+        passwordChangeRequest.value,
+        (response) => {
+            console.log(response)
+            emit('changePasswordSuccessHandle')
+        },
+        (error) => {
+            // alert(error.response.data.message)
+            console.error(error)
+            emit('changePasswordFailHandle', error.response.data.message)
+        }
     )
-    alert('change password' + JSON.stringify(passwordChangeRequest.value))
 }
 const myPageButtonHandler: Handler = () => {
     emit('prevButtonHandle')

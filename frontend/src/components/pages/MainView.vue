@@ -20,6 +20,7 @@ import InputBox from '@/components/molecules/common/InputBox.vue'
 import HeaderProfile from '@/components/molecules/common/HeaderProfile.vue'
 import ServiceFeature from '@/components/molecules/main/ServiceFeature.vue'
 import { useRouter } from 'vue-router'
+import YesModalContent from '../organisms/modal/YesModalContent.vue'
 const router = useRouter()
 
 const userStore = useUserStore()
@@ -84,6 +85,27 @@ const template: Ref<WideCardTemplateType> = ref({
 // modal
 const modalSeen: Ref<boolean> = ref(false)
 const modalState: Ref<string> = ref(ModalState.NONE)
+
+const yesModalSeen: Ref<boolean> = ref(false)
+const yesModalTitle: Ref<string> = ref('')
+const yesModalContent: Ref<string> = ref('')
+
+const changePasswordSuccessHandler = () => {
+    yesModalOpen('Success', '비밀번호 변경에 성공하였습니다.')
+    state.value = State.MY_PAGE
+}
+
+const yesModalOpen = (title: string, content: string) => {
+    yesModalTitle.value = title
+    yesModalContent.value = content
+    yesModalSeen.value = true
+}
+
+const yesModalClose = () => {
+    yesModalTitle.value = ''
+    yesModalContent.value = ''
+    yesModalSeen.value = false
+}
 
 // delete Modal
 const deleteModalStep: Ref<number> = ref(0)
@@ -171,6 +193,8 @@ const profileClickHandler = () => {
                 v-if="state === State.CHANGE_PWD"
                 @prev-button-handle="() => (state = State.MY_PAGE)"
                 @close-button-handle="() => (state = State.MY_PAGE)"
+                @change-password-success-handle="changePasswordSuccessHandler"
+                @change-password-fail-handle="(message: string) => yesModalOpen('Fail', message)"
             />
             <WideCardTemplate
                 v-if="state === State.TEMPLATE"
@@ -204,6 +228,20 @@ const profileClickHandler = () => {
             v-if="modalState === ModalState.ROOM_ENTER"
             @yes-button-handle="roomEnterHandler"
             @no-button-handle="modalToggle"
+        />
+    </ModalTemplate>
+
+    <ModalTemplate
+        custom-id="yesModal"
+        custom-class="modal-template-style-1 w-[350px]"
+        :seen="yesModalSeen"
+        v-if="yesModalSeen"
+        @modal-close="modalToggle"
+    >
+        <YesModalContent
+            @yes-button-handle="yesModalClose"
+            :content-title="yesModalTitle"
+            :content-message="yesModalContent"
         />
     </ModalTemplate>
 </template>

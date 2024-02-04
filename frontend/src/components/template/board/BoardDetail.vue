@@ -16,12 +16,15 @@ import type { Handler } from '@/types/common'
 import { getPost, getReplies } from '@/api/board'
 import { useRoute } from 'vue-router'
 import YesModalContent from '@/components/organisms/modal/YesModalContent.vue'
+import { provide, readonly } from 'vue'
 
-const roomUserNo: Ref<number> = inject('roomUserNo', ref(0))
+const roomUserNo: Ref<number> = inject('roomUserNo', ref(-1))
 const route = useRoute()
-const postId = computed(() => {
-    return Number(route.query.postId)
+const postNo = computed(() => {
+    return Number(route.query.postNo)
 })
+provide('postNo', readonly(postNo))
+
 const post: Ref<BoardDetailResponseType> = ref({
     boardNo: 0,
     boardCategory: '',
@@ -66,7 +69,7 @@ const constructParentChildRelation = (replies: ReplyResponseType[]): ReplyRespon
 
 const loadReplies = () => {
     getReplies(
-        postId.value,
+        postNo.value,
         (response) => {
             const data = response.data
             if (data.status === 'OK') {
@@ -83,7 +86,7 @@ const loadReplies = () => {
 
 onMounted(() => {
     getPost(
-        postId.value,
+        postNo.value,
         (response) => {
             const data = response.data
             if (data.status === 'OK') {
@@ -98,11 +101,12 @@ onMounted(() => {
     loadReplies()
 })
 
-const replyDeleteSuccessHandler = () => {
+const okModalContent: Ref<string> = ref('')
+const loadRepliesAndShowModal = (content: string) => {
+    okModalContent.value = content
     loadReplies()
     replyDeleteSuccessModalToggle()
 }
-
 const writeButtonHandler: Handler = () => {
     alert('글쓰기 페이지 이동')
 }
@@ -132,8 +136,6 @@ const replyDeleteSuccessModalToggle = () =>
 
 <template>
     <div class="w-full md:min-w-[768px] max-w-[1080px] max-md:min-w-0">
-        {{ post.roomUserNo }}
-        {{ roomUserNo }}
         <BoardDetailTop
             class="my-4 max-md:hidden"
             @modify-button-handle="modifyButtonHandler"
@@ -177,7 +179,12 @@ const replyDeleteSuccessModalToggle = () =>
                     <ReplyElement
                         :reply="reply"
                         :post-writer-user-no="post.roomUserNo"
-                        @delete-success-handle="replyDeleteSuccessHandler"
+                        @submit-reply-success-handle="
+                            () => loadRepliesAndShowModal('댓글을 작성하였습니다.')
+                        "
+                        @delete-success-handle="
+                            () => loadRepliesAndShowModal('댓글이 삭제되었습니다.')
+                        "
                     />
                     <ReplyElement
                         v-for="child in reply.children"
@@ -185,10 +192,21 @@ const replyDeleteSuccessModalToggle = () =>
                         :key="child.replyNo"
                         :post-writer-user-no="post.roomUserNo"
                         :nested="true"
-                        @delete-success-handle="replyDeleteSuccessHandler"
+                        @submit-reply-success-handle="
+                            () => loadRepliesAndShowModal('댓글을 작성하였습니다.')
+                        "
+                        @delete-success-handle="
+                            () => loadRepliesAndShowModal('댓글이 삭제되었습니다.')
+                        "
                     />
                 </template>
-                <ReplyWriteForm class="mt-5" :postNo="post.boardNo" />
+                <ReplyWriteForm
+                    class="mt-5"
+                    :postNo="post.boardNo"
+                    @submit-reply-success-handle="
+                        () => loadRepliesAndShowModal('댓글을 작성하였습니다.')
+                    "
+                />
             </div>
         </div>
         <BoardDetailBottom
@@ -216,7 +234,7 @@ const replyDeleteSuccessModalToggle = () =>
             />
         </ModalTemplate>
 
-        <!-- Post Delete Success Modal -->
+        <!-- Ok Modal -->
         <ModalTemplate
             custom-id="modal"
             custom-class="modal-template-style-1 w-[350px]"
@@ -226,7 +244,7 @@ const replyDeleteSuccessModalToggle = () =>
         >
             <YesModalContent
                 @yes-button-handle="replyDeleteSuccessModalToggle"
-                content-message="댓글이 삭제되었습니다!"
+                :content-message="okModalContent"
             />
         </ModalTemplate>
     </div>

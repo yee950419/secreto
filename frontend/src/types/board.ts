@@ -53,9 +53,10 @@ export type ReplyResponseType = {
 }
 
 export type ReplyWriteRequestType = {
-    postNo: number
+    boardNo: number // boardNo?? postNo
     roomUserNo: number
-    content: string
+    contnet: string // api에서 오타 수정 후 원복
     parentReplyNo?: number
     tagUserNo?: number
+    annonymityYn?: boolean
 }

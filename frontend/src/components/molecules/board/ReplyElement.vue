@@ -4,7 +4,7 @@ import BadgeAtom from '@/components/atoms/BadgeAtom.vue'
 import ButtonAtom from '@/components/atoms/ButtonAtom.vue'
 import TextAtom from '@/components/atoms/TextAtom.vue'
 import { convertStringToRegistrationDateTime } from '@/utils/date'
-import ReplyWriteForm from './ReplyWriteForm.vue'
+import NestedReplyWriteForm from '@/components/molecules/board/NestedReplyWriteForm.vue'
 import ReplyModifyForm from './ReplyModifyForm.vue'
 import { inject, ref, type Ref } from 'vue'
 import type { Handler } from '@/types/common'
@@ -12,9 +12,9 @@ import ModalTemplate from '@/components/template/ModalTemplate.vue'
 import YesNoModalContent from '@/components/organisms/modal/YesNoModalContent.vue'
 import { deleteReply } from '@/api/board'
 const props = defineProps(['reply', 'nested', 'postWriterUserNo'])
-const emit = defineEmits(['deleteSuccessHandle'])
+const emit = defineEmits(['deleteSuccessHandle', 'submitReplySuccessHandle'])
 
-const roomUserNo: Ref<number> = inject('roomUserNo', ref(0))
+const roomUserNo: Ref<number> = inject('roomUserNo', ref(-1))
 const seenReplyWriteForm: Ref<boolean> = ref(false)
 const seenReplyModifyForm: Ref<boolean> = ref(false)
 const deleteButtonHandler: Handler = () => {
@@ -105,10 +105,17 @@ const deleteModalToggle = () => (deleteModalSeen.value = !deleteModalSeen.value)
             :default-value="reply.content"
             @cancel-button-handle="() => (seenReplyModifyForm = false)"
         />
-        <ReplyWriteForm
+        <NestedReplyWriteForm
             class="mt-5"
-            nested="true"
             v-if="seenReplyWriteForm"
+            :parent-reply-no="reply.replyNo"
+            :tag-user-no="reply.roomUserNo"
+            @submit-reply-success-handle="
+                () => {
+                    emit('submitReplySuccessHandle')
+                    seenReplyWriteForm = false
+                }
+            "
             @cancel-button-handle="() => (seenReplyWriteForm = false)"
         />
     </div>

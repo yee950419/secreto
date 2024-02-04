@@ -6,10 +6,11 @@ import { ref, type Ref } from 'vue'
 import type { Handler } from '@/types/common'
 import type { PasswordChangeRequest } from '@/types/user'
 import CloseButtonAtom from '@/components/atoms/CloseButtonAtom.vue'
+import { changePassword } from '@/api/user'
 
 const emit = defineEmits(['prevButtonHandle', 'closeButtonHandle'])
 const passwordChangeRequest: Ref<PasswordChangeRequest> = ref({
-    currentPassword: '',
+    oldPassword: '',
     newPassword: ''
 })
 const newPasswordConfirm: Ref<string> = ref('')
@@ -19,6 +20,11 @@ const changePasswordButtonHandler: Handler = () => {
         alert('wrong new password confirm')
         return
     }
+    changePassword(
+        passwordChangeRequest,
+        (response) => {},
+        (error) => {}
+    )
     alert('change password' + JSON.stringify(passwordChangeRequest.value))
 }
 const myPageButtonHandler: Handler = () => {
@@ -41,7 +47,7 @@ const myPageButtonHandler: Handler = () => {
                     custom-class="w-full my-[20px]"
                     custom-id="password"
                     place-holder="현재 비밀번호를 입력해주세요"
-                    v-model="passwordChangeRequest.currentPassword"
+                    v-model="passwordChangeRequest.oldPassword"
                 ></InputBox>
                 <InputBox
                     label="새 비밀번호"

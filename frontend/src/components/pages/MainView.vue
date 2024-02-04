@@ -10,9 +10,6 @@ import MainCard from '@/components/organisms/main/MainCard.vue'
 import RoomListView from '@/components/organisms/main/RoomListView.vue'
 import MyPage from '@/components/organisms/main/MyPage.vue'
 import ChangePasswordForm from '@/components/organisms/main/ChangePasswordForm.vue'
-import AccountDeleteModalContent1 from '@/components/organisms/modal/AccountDeleteModalContent1.vue'
-import AccountDeleteModalContent2 from '@/components/organisms/modal/AccountDeleteModalContent2.vue'
-import AccountDeleteModalContent3 from '@/components/organisms/modal/AccountDeleteModalContent3.vue'
 import RoomCreateModalContent from '@/components/organisms/modal/RoomCreateModalContent.vue'
 import RoomDeleteModalContent from '@/components/organisms/modal/RoomDeleteModalContent.vue'
 import RoomEnterModalContent from '@/components/organisms/modal/RoomEnterModalContent.vue'
@@ -26,7 +23,6 @@ import { useRouter } from 'vue-router'
 const router = useRouter()
 
 const userStore = useUserStore()
-
 const ButtonLabel = Object.freeze({
     START: 'start',
     JOIN: 'join',
@@ -46,7 +42,6 @@ const State = Object.freeze({
 })
 const ModalState = Object.freeze({
     NONE: 'none',
-    WITHDRAW: 'withdraw',
     ROOM_CREATE: 'room_create',
     ROOM_ENTER: 'room_enter',
     ROOM_LEAVE: 'room_leave'
@@ -74,6 +69,10 @@ const buttonClickHandler: DataHandler<string> = (data) => {
     }
 }
 
+const withdrawalSuccessHandler = () => {
+    alert('회원정보 삭제 완료/로그인 창으로 이동')
+}
+
 // template
 const template: Ref<WideCardTemplateType> = ref({
     title: '',
@@ -91,10 +90,6 @@ const deleteModalStep: Ref<number> = ref(0)
 const modalToggle: Handler = () => {
     if (deleteModalStep.value > 0) deleteModalStep.value = 0
     modalSeen.value = !modalSeen.value
-}
-const withdrawSubmitButtonHandle: DataHandler<string> = (password: string) => {
-    alert(password)
-    modalToggle()
 }
 
 // room
@@ -168,13 +163,8 @@ const profileClickHandler = () => {
                 class="max-md:h-full max-md:w-full"
                 v-if="state === State.MY_PAGE"
                 @password-change-handle="() => (state = State.CHANGE_PWD)"
-                @withdrawal-handle="
-                    () => {
-                        modalSeen = true
-                        modalState = ModalState.WITHDRAW
-                    }
-                "
                 @close-button-handle="buttonClickHandler"
+                @withdrawal-success-handle="withdrawalSuccessHandler"
             />
             <ChangePasswordForm
                 class="max-md:max-w-full max-md:max-h-full max-md:h-full max-md:w-full"
@@ -193,7 +183,6 @@ const profileClickHandler = () => {
         </div>
     </div>
 
-    <!-- 회원 탈퇴 모달창 -->
     <ModalTemplate
         custom-id="modal"
         custom-class="modal-template-style-1 w-[350px]"
@@ -201,20 +190,6 @@ const profileClickHandler = () => {
         v-if="modalSeen"
         @modal-close="modalToggle"
     >
-        <AccountDeleteModalContent1
-            v-if="modalState === ModalState.WITHDRAW && deleteModalStep === 0"
-            @yes-button-handle="() => ++deleteModalStep"
-            @no-button-handle="modalToggle"
-        />
-        <AccountDeleteModalContent2
-            v-if="modalState === ModalState.WITHDRAW && deleteModalStep === 1"
-            @yes-button-handle="() => ++deleteModalStep"
-            @no-button-handle="modalToggle"
-        />
-        <AccountDeleteModalContent3
-            v-if="modalState === ModalState.WITHDRAW && deleteModalStep === 2"
-            @submit-button-handle="withdrawSubmitButtonHandle"
-        />
         <RoomCreateModalContent
             v-if="modalState === ModalState.ROOM_CREATE"
             @yes-button-handle="roomCreateHandler"

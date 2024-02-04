@@ -17,7 +17,7 @@ import CloseButtonAtom from '@/components/atoms/CloseButtonAtom.vue'
 const emit = defineEmits(['joinSubmitHandle', 'closeButtonHandle', 'goLoginButtonHandle'])
 const passwordConfirm: Ref<String> = ref('')
 const verificationCode: Ref<String> = ref('')
-const userData: Ref<JoinRequestType> = ref({
+const joinRequest: Ref<JoinRequestType> = ref({
     email: '',
     password: '',
     nickname: ''
@@ -29,12 +29,12 @@ const verificationCodeButtonHandler: DataHandler<string> = (data: string) => {
     alert(`verification code : ${data}`)
 }
 const joinButtonHandler: Handler = () => {
-    if (userData.value.password !== passwordConfirm.value) {
+    if (joinRequest.value.password !== passwordConfirm.value) {
         alert('incorrect password confirm.')
         return
     }
     signup(
-        userData.value,
+        joinRequest.value,
         (response) => {
             console.log(response)
             viewState.value = ViewState.LOGIN
@@ -59,7 +59,7 @@ const joinButtonHandler: Handler = () => {
                 custom-class="w-full my-[30px]"
                 custom-id="email"
                 place-holder="example@secreto.com"
-                v-model="userData.email"
+                v-model="joinRequest.email"
                 button-label="인증"
                 @button-click="emailVerificationButtonHandler"
             ></ButtonInputBox>
@@ -83,7 +83,7 @@ const joinButtonHandler: Handler = () => {
                 custom-class="w-full my-[30px]"
                 custom-id="password"
                 place-holder="비밀번호를 입력해주세요"
-                v-model="userData.password"
+                v-model="joinRequest.password"
             ></InputBox>
             <InputBox
                 label="비밀번호 확인"
@@ -103,7 +103,7 @@ const joinButtonHandler: Handler = () => {
                 custom-class="w-full my-[30px]"
                 custom-id="nickname"
                 place-holder="닉네임을 입력해주세요"
-                v-model="userData.nickname"
+                v-model="joinRequest.nickname"
             ></InputBox>
             <ButtonAtom
                 custom-class="button-style-2 w-full button-shadow button-cream mt-[15px]"

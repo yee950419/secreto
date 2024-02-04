@@ -16,7 +16,7 @@ export type JoinRequestType = {
 }
 
 export type PasswordChangeRequest = {
-    currentPassword: string
+    oldPassword: string
     newPassword: string
 }
 

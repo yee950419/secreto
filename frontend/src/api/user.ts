@@ -16,7 +16,7 @@ async function logout(
     success: (response: AxiosResponse) => void,
     fail: (error: any) => void
 ) {
-    userInstance.post(`/users/log-out`, JSON.stringify(param)).then(success).catch(fail)
+    userInstance.post(`/users/log-out`, param).then(success).catch(fail)
 }
 
 async function signup(
@@ -24,7 +24,7 @@ async function signup(
     success: (response: AxiosResponse) => void,
     fail: (error: any) => void
 ) {
-    userInstance.post(`/users/sign-up`, JSON.stringify(param)).then(success).catch(fail)
+    userInstance.post(`/users/sign-up`, param).then(success).catch(fail)
 }
 
 async function getUser(
@@ -40,7 +40,7 @@ async function withdraw(
     success: (response: AxiosResponse) => void,
     fail: (error: any) => void
 ) {
-    userInstance.put(`/users/delete`, JSON.stringify(param)).then(success).catch(fail)
+    userInstance.put(`/users/delete`, param).then(success).catch(fail)
 }
 
 async function modify(
@@ -48,7 +48,7 @@ async function modify(
     success: (response: AxiosResponse) => void,
     fail: (error: any) => void
 ) {
-    userInstance.put(`/users/modify`, JSON.stringify(param)).then(success).catch(fail)
+    userInstance.put(`/users/modify`, param).then(success).catch(fail)
 }
 
 async function userDetail(
@@ -64,7 +64,15 @@ async function changePassword(
     success: (response: AxiosResponse) => void,
     fail: (error: any) => void
 ) {
-    userInstance.post(`/users/password/request`, JSON.stringify(param)).then(success).catch(fail)
+    userInstance.put(`/users/password`, param).then(success).catch(fail)
+}
+
+async function findPasswordMailSend(
+    param: object,
+    success: (response: AxiosResponse) => void,
+    fail: (error: any) => void
+) {
+    userInstance.post(`/users/password/request`, param).then(success).catch(fail)
 }
 
 async function changePasswordConfirm(
@@ -99,6 +107,7 @@ export {
     withdraw,
     modify,
     changePassword,
+    findPasswordMailSend,
     userDetail,
     changePasswordConfirm,
     resetPassword,

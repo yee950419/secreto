@@ -75,7 +75,7 @@ const joinHandler: Handler = () => {
 }
 
 // find password view
-const findPasswordEmailSubmitHandler: DataHandler<PasswordFindMailRequest> = (
+const findPasswordEmailSendSuccessHandler: DataHandler<PasswordFindMailRequest> = (
     findRequest: PasswordFindMailRequest
 ) => {
     alert('send email')
@@ -133,7 +133,7 @@ console.log(mainCard.value)
             <FindPasswordForm
                 class="max-md:max-w-full max-md:max-h-full max-md:h-full max-md:w-full"
                 v-if="viewState === ViewState.PASSWORD"
-                @emailSubmitHandle="findPasswordEmailSubmitHandler"
+                @email-send-success-handle="findPasswordEmailSendSuccessHandler"
                 @prev-page-handle="findPasswordPrevPageHandler"
                 @close-button-handle="buttonClickHandler"
             />

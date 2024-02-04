@@ -32,7 +32,7 @@ async function postReply(
     success: (response: AxiosResponse) => void,
     fail: (error: any) => void
 ) {
-    boardInstance.post(`/reply/${postNo}`, { params: param }).then(success).catch(fail)
+    boardInstance.post(`/reply/${postNo}`, param).then(success).catch(fail)
 }
 
 async function deleteReply(

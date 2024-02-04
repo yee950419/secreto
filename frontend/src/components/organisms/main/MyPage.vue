@@ -7,12 +7,16 @@ import { onMounted, ref, type Ref } from 'vue'
 import type { Handler } from '@/types/common'
 import type { MyPageUserDataType } from '@/types/user'
 import CloseButtonAtom from '@/components/atoms/CloseButtonAtom.vue'
-import { getUser } from '@/api/user'
+import { getUser, withdraw } from '@/api/user'
 import { useUserStore } from '@/stores/user'
+import ModalTemplate from '@/components/template/ModalTemplate.vue'
+import AccountDeleteModalContent1 from '@/components/organisms/modal/AccountDeleteModalContent1.vue'
+import AccountDeleteModalContent2 from '@/components/organisms/modal/AccountDeleteModalContent2.vue'
+import AccountDeleteModalContent3 from '@/components/organisms/modal/AccountDeleteModalContent3.vue'
 
 const userStore = useUserStore()
 const userNo: number = userStore.userInfo.id
-const emit = defineEmits(['passwordChangeHandle', 'withdrawalHandle', 'closeButtonHandle'])
+const emit = defineEmits(['passwordChangeHandle', 'withdrawalSuccessHandle', 'closeButtonHandle'])
 const userInfo: Ref<MyPageUserDataType> = ref({
     email: '',
     nickname: '',
@@ -33,7 +37,26 @@ const changePasswordButtonHandler: Handler = () => {
     emit('passwordChangeHandle')
 }
 const withdrawalButtonHandler: Handler = () => {
-    emit('withdrawalHandle')
+    withdrawModalSeen.value = true
+}
+
+// delete Modal
+const withdrawModalSeen: Ref<boolean> = ref(false)
+const withdrawModalStep: Ref<number> = ref(0)
+const modalToggle: Handler = () => {
+    if (withdrawModalStep.value > 0) withdrawModalStep.value = 0
+    withdrawModalSeen.value = !withdrawModalSeen.value
+}
+
+const withdrawSubmitButtonHandle = (password: string) => {
+    withdraw(
+        { password: password },
+        (response) => {
+            emit('withdrawalSuccessHandle')
+            modalToggle()
+        },
+        (error) => {}
+    )
 }
 
 onMounted(() => {
@@ -114,6 +137,29 @@ onMounted(() => {
             </div>
         </div>
     </div>
+
+    <ModalTemplate
+        custom-id="modal"
+        custom-class="modal-template-style-1 w-[350px]"
+        :seen="withdrawModalSeen"
+        v-if="withdrawModalSeen"
+        @modal-close="modalToggle"
+    >
+        <AccountDeleteModalContent1
+            v-if="withdrawModalStep === 0"
+            @yes-button-handle="() => ++withdrawModalStep"
+            @no-button-handle="modalToggle"
+        />
+        <AccountDeleteModalContent2
+            v-if="withdrawModalStep === 1"
+            @yes-button-handle="() => ++withdrawModalStep"
+            @no-button-handle="modalToggle"
+        />
+        <AccountDeleteModalContent3
+            v-if="withdrawModalStep === 2"
+            @submit-button-handle="withdrawSubmitButtonHandle"
+        />
+    </ModalTemplate>
 </template>
 
 <style scoped></style>

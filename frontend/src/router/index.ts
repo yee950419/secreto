@@ -20,6 +20,7 @@ const router = createRouter({
 
                 // 토큰이 있으면 로그인 상태로 간주 한다
                 if (accessToken.value && refreshToken.value) {
+                    console.log('로그인이 되어있어서 메인으로 이동합니다.')
                     next('/main')
                 } else {
                     next()
@@ -32,6 +33,16 @@ const router = createRouter({
             component: () => import('@/components/pages/MainView.vue'),
             meta: {
                 hide: true
+            },
+            beforeEnter(to, from, next) {
+                const userStore = useUserStore()
+                const { accessToken, refreshToken } = storeToRefs(userStore)
+
+                if (accessToken.value && refreshToken.value) {
+                    next()
+                } else {
+                    next('/')
+                }
             }
         },
         {
@@ -76,7 +87,17 @@ const router = createRouter({
                     name: 'game-statistic',
                     component: () => import('@/components/pages/StatisticPage.vue')
                 }
-            ]
+            ],
+            beforeEnter(to, from, next) {
+                const userStore = useUserStore()
+                const { accessToken, refreshToken } = storeToRefs(userStore)
+
+                if (accessToken.value && refreshToken.value) {
+                    next()
+                } else {
+                    next('/')
+                }
+            }
         },
         {
             path: '/board',

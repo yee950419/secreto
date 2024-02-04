@@ -24,6 +24,7 @@ const roomUserInfo = ref<RoomUserInfoType>({
     roomNickname: '',
     profileUrl: ''
 })
+const roomUserNo = ref<number>(-1)
 
 const updateRoomName = (name: string | undefined) => {
     roomUserInfo.value.roomName = name ? name : '방 제목'
@@ -31,6 +32,7 @@ const updateRoomName = (name: string | undefined) => {
 }
 
 provide('roomUserInfo', readonly(roomUserInfo))
+provide('roomUserNo', readonly(roomUserNo))
 
 const removeChatRoom = (name: string) => {
     const index = chatRooms.findIndex((room) => room.name === name)
@@ -59,6 +61,7 @@ const getRoomData = async () => {
             roomUserInfo.value.roomNickname = data.result.userInfo.nickname
             roomUserInfo.value.roomUserNo = data.result.userInfo.roomUserNo
             roomUserInfo.value.roomName = data.result.roomName
+            roomUserNo.value = data.result.userInfo.roomUserNo
             updateRoomName(data.result.roomName)
         },
         (error) => {

@@ -49,7 +49,7 @@ const loadBoardData = () => {
 const boardDetail = (boardNo: number): void => {
     router.push({
         name: 'game-board-post',
-        query: { postId: boardNo }
+        query: { postNo: boardNo }
     })
 }
 

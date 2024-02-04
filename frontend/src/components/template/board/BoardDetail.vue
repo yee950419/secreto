@@ -1,12 +1,12 @@
 <script setup lang="ts">
-import { ref, type Ref, onMounted, computed } from 'vue'
+import { ref, type Ref, onMounted, computed, inject, readonly, provide } from 'vue'
 import type { BoardDetailResponseType, ReplyResponseType } from '@/types/board'
 import BoardWriterInformation from '@/components/molecules/board/BoardWriterInformation.vue'
-import ReplyElement from '@/components/molecules/board/ReplyElement.vue'
 import ReplyWriteForm from '@/components/molecules/board/ReplyWriteForm.vue'
 import LikeButton from '@/components/molecules/board/LikeButton.vue'
 import BoardDetailTop from '@/components/molecules/board/BoardDetailTop.vue'
 import BoardDetailBottom from '@/components/molecules/board/BoardDetailBottom.vue'
+import ReplyElement from '@/components/organisms/board/ReplyElement.vue'
 import TextAtom from '@/components/atoms/TextAtom.vue'
 import LineAtom from '@/components/atoms/LineAtom.vue'
 import ModalTemplate from '@/components/template/ModalTemplate.vue'
@@ -18,9 +18,12 @@ import { useRoute } from 'vue-router'
 import YesModalContent from '@/components/organisms/modal/YesModalContent.vue'
 
 const route = useRoute()
-const postId = computed(() => {
-    return Number(route.query.postId)
+const postNo = computed(() => {
+    return Number(route.query.postNo)
 })
+const roomUserNo = inject<Ref<number>>('roomUserInfo', ref(-1))
+provide('postNo', readonly(postNo))
+
 const post: Ref<BoardDetailResponseType> = ref({
     boardNo: 0,
     boardCategory: '',
@@ -30,7 +33,7 @@ const post: Ref<BoardDetailResponseType> = ref({
     writerEmail: '',
     writerProfileUrl: null,
     registerAt: '',
-    roomUserNo: 0,
+    roomUserNo: -1,
     hit: 0,
     publicYn: false,
     missionCategory: '',
@@ -65,7 +68,7 @@ const constructParentChildRelation = (replies: ReplyResponseType[]): ReplyRespon
 
 const loadReplies = () => {
     getReplies(
-        postId.value,
+        postNo.value,
         (response) => {
             const data = response.data
             if (data.status === 'OK') {
@@ -82,7 +85,7 @@ const loadReplies = () => {
 
 onMounted(() => {
     getPost(
-        postId.value,
+        postNo.value,
         (response) => {
             const data = response.data
             if (data.status === 'OK') {
@@ -97,11 +100,12 @@ onMounted(() => {
     loadReplies()
 })
 
-const replyDeleteSuccessHandler = () => {
+const okModalContent: Ref<string> = ref('')
+const loadRepliesAndShowModal = (content: string) => {
+    okModalContent.value = content
     loadReplies()
     replyDeleteSuccessModalToggle()
 }
-
 const writeButtonHandler: Handler = () => {
     alert('글쓰기 페이지 이동')
 }
@@ -130,12 +134,13 @@ const replyDeleteSuccessModalToggle = () =>
 </script>
 
 <template>
-    <div class="w-full md:min-w-[768px] max-w-[1080px] max-md:min-w-0 bg-A805Rea">
+    <div class="w-full md:min-w-[768px] max-w-[1080px] max-md:min-w-0">
         <BoardDetailTop
             class="my-4 max-md:hidden"
             @modify-button-handle="modifyButtonHandler"
             @delete-button-handle="deleteModalToggle"
             @list-button-handle="listButtonHandler"
+            :is-post-writer="roomUserNo === post.roomUserNo"
         />
         <div
             class="flex flex-col w-full border md:rounded border-A805DarkGrey p-9 max-md:border-x-0"
@@ -173,7 +178,12 @@ const replyDeleteSuccessModalToggle = () =>
                     <ReplyElement
                         :reply="reply"
                         :post-writer-user-no="post.roomUserNo"
-                        @delete-success-handle="replyDeleteSuccessHandler"
+                        @submit-reply-success-handle="
+                            () => loadRepliesAndShowModal('댓글을 작성하였습니다.')
+                        "
+                        @delete-success-handle="
+                            () => loadRepliesAndShowModal('댓글이 삭제되었습니다.')
+                        "
                     />
                     <ReplyElement
                         v-for="child in reply.children"
@@ -181,10 +191,21 @@ const replyDeleteSuccessModalToggle = () =>
                         :key="child.replyNo"
                         :post-writer-user-no="post.roomUserNo"
                         :nested="true"
-                        @delete-success-handle="replyDeleteSuccessHandler"
+                        @submit-reply-success-handle="
+                            () => loadRepliesAndShowModal('댓글을 작성하였습니다.')
+                        "
+                        @delete-success-handle="
+                            () => loadRepliesAndShowModal('댓글이 삭제되었습니다.')
+                        "
                     />
                 </template>
-                <ReplyWriteForm class="mt-5" :postNo="post.boardNo" />
+                <ReplyWriteForm
+                    class="mt-5"
+                    :postNo="post.boardNo"
+                    @submit-reply-success-handle="
+                        () => loadRepliesAndShowModal('댓글을 작성하였습니다.')
+                    "
+                />
             </div>
         </div>
         <BoardDetailBottom
@@ -194,6 +215,7 @@ const replyDeleteSuccessModalToggle = () =>
             @delete-button-handle="deleteModalToggle"
             @top-button-handle="topButtonHandler"
             @list-button-handle="listButtonHandler"
+            :is-post-writer="roomUserNo === post.roomUserNo"
         />
 
         <!-- Delete Modal -->
@@ -211,7 +233,7 @@ const replyDeleteSuccessModalToggle = () =>
             />
         </ModalTemplate>
 
-        <!-- Post Delete Success Modal -->
+        <!-- Ok Modal -->
         <ModalTemplate
             custom-id="modal"
             custom-class="modal-template-style-1 w-[350px]"
@@ -221,7 +243,7 @@ const replyDeleteSuccessModalToggle = () =>
         >
             <YesModalContent
                 @yes-button-handle="replyDeleteSuccessModalToggle"
-                content-message="댓글이 삭제되었습니다!"
+                :content-message="okModalContent"
             />
         </ModalTemplate>
     </div>

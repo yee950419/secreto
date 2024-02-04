@@ -102,9 +102,9 @@ const modalOpenHandler: Handler = () => {
                                         'bg-A805Blue': mission.missionType === 'common',
                                         'bg-A805Green': mission.missionType === 'individual',
                                         'text-white': true,
-                                        'button-style-mission-type': true
+                                        'badge-style-mission-type': true
                                     }"
-                                    class="max-md:text-[10pt] max-md:h-[20px] rounded-[100px]"
+                                    class="max-md:text-[10pt] max-md:h-[20px] rounded-[200px]"
                                     >{{
                                         mission.missionType === 'common' ? '공통 미션' : '개별 미션'
                                     }}</BadgeAtom

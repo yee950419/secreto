@@ -5,15 +5,23 @@ import TextAtom from '@/components/atoms/TextAtom.vue'
 import { ref, type Ref } from 'vue'
 import type { Handler } from '@/types/common'
 import type { PasswordFindMailRequest } from '@/types/user'
+import { findPasswordMailSend } from '@/api/user'
 import CloseButtonAtom from '@/components/atoms/CloseButtonAtom.vue'
 
-const emit = defineEmits(['emailSubmitHandle', 'prevPageHandle', 'closeButtonHandle'])
+const emit = defineEmits(['emailSendSuccessHandle', 'prevPageHandle', 'closeButtonHandle'])
 const passwordFindMailRequest: Ref<PasswordFindMailRequest> = ref({
     email: ''
 })
-const findPasswordButtonHandler: Handler = () => {
-    emit('emailSubmitHandle', passwordFindMailRequest.value)
+const findPasswordButtonHandler = () => {
+    findPasswordMailSend(
+        passwordFindMailRequest,
+        (response) => {
+            emit('emailSendSuccessHandle')
+        },
+        (error) => {}
+    )
 }
+
 const prevPageButtonHandler: Handler = () => {
     emit('prevPageHandle')
 }

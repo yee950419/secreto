@@ -6,20 +6,32 @@ import { ref, type Ref } from 'vue'
 import type { Handler } from '@/types/common'
 import type { PasswordChangeRequest } from '@/types/user'
 import CloseButtonAtom from '@/components/atoms/CloseButtonAtom.vue'
+import { changePassword } from '@/api/user'
 
-const emit = defineEmits(['prevButtonHandle', 'closeButtonHandle'])
+const emit = defineEmits(['prevButtonHandle', 'closeButtonHandle', 'successHandle', 'failHandle'])
 const passwordChangeRequest: Ref<PasswordChangeRequest> = ref({
-    currentPassword: '',
+    oldPassword: '',
     newPassword: ''
 })
 const newPasswordConfirm: Ref<string> = ref('')
 const changePasswordButtonHandler: Handler = () => {
     console.log(passwordChangeRequest.value.newPassword, newPasswordConfirm.value)
     if (passwordChangeRequest.value.newPassword !== newPasswordConfirm.value) {
-        alert('wrong new password confirm')
+        emit('failHandle', '비밀번호 확인이 일치하지 않습니다.')
         return
     }
-    alert('change password' + JSON.stringify(passwordChangeRequest.value))
+    changePassword(
+        passwordChangeRequest.value,
+        (response) => {
+            console.log(response)
+            emit('successHandle')
+        },
+        (error) => {
+            // alert(error.response.data.message)
+            console.error(error)
+            emit('failHandle', error.response.data.message)
+        }
+    )
 }
 const myPageButtonHandler: Handler = () => {
     emit('prevButtonHandle')
@@ -41,7 +53,7 @@ const myPageButtonHandler: Handler = () => {
                     custom-class="w-full my-[20px]"
                     custom-id="password"
                     place-holder="현재 비밀번호를 입력해주세요"
-                    v-model="passwordChangeRequest.currentPassword"
+                    v-model="passwordChangeRequest.oldPassword"
                 ></InputBox>
                 <InputBox
                     label="새 비밀번호"

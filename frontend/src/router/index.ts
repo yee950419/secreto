@@ -3,6 +3,7 @@ import { createRouter, createWebHistory, createWebHashHistory } from 'vue-router
 import { useUserStore } from '@/stores/user'
 import { storeToRefs } from 'pinia'
 import RoomView from '@/components/pages/RoomView.vue'
+import WithdrawalSuccessPage from '@/components/pages/WithdrawalSuccessPage.vue'
 const router = createRouter({
     history: createWebHashHistory(),
     routes: [
@@ -43,6 +44,14 @@ const router = createRouter({
                 } else {
                     next('/')
                 }
+            }
+        },
+        {
+            path: '/withdrawal',
+            name: 'withdrawal',
+            component: WithdrawalSuccessPage,
+            meta: {
+                hide: true
             }
         },
         {

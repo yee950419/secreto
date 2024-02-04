@@ -1,12 +1,11 @@
-export type MyPageUserDataType = {
-    email: string
-    nickname: string
-    profileUrl: string | null
-}
-
 export type LoginRequestType = {
     email: string
     password: string
+}
+
+export type LogoutRequestType = {
+    email: string
+    provider: string
 }
 
 export type JoinRequestType = {
@@ -15,8 +14,13 @@ export type JoinRequestType = {
     nickname: string
 }
 
+export type ModifyRequestType = {
+    nickname: string
+    profileUrl: string | null
+}
+
 export type PasswordChangeRequest = {
-    currentPassword: string
+    oldPassword: string
     newPassword: string
 }
 

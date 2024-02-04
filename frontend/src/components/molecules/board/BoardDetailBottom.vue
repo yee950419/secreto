@@ -2,6 +2,7 @@
 import ButtonAtom from '@/components/atoms/ButtonAtom.vue'
 import type { Handler } from '@/types/common'
 import { EditOutlined, CaretUpOutlined } from '@ant-design/icons-vue'
+defineProps(['isPostWriter'])
 const emit = defineEmits([
     'writeButtonHandle',
     'modifyButtonHandle',
@@ -25,11 +26,13 @@ const writeButtonClick: Handler = () => {
             <ButtonAtom
                 custom-class="button-style-4 button-lightGrey text-[18px] w-[70px] font-bold max-md:w-full"
                 @button-click="() => emit('modifyButtonHandle')"
+                v-if="isPostWriter"
                 >수정</ButtonAtom
             >
             <ButtonAtom
                 custom-class="button-style-4 button-lightGrey text-[18px] w-[70px] font-bold  max-md:w-full"
                 @button-click="() => emit('deleteButtonHandle')"
+                v-if="isPostWriter"
                 >삭제</ButtonAtom
             >
         </div>

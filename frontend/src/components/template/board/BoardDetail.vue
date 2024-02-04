@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, type Ref, onMounted, computed } from 'vue'
+import { ref, type Ref, onMounted, computed, inject } from 'vue'
 import type { BoardDetailResponseType, ReplyResponseType } from '@/types/board'
 import BoardWriterInformation from '@/components/molecules/board/BoardWriterInformation.vue'
 import ReplyElement from '@/components/molecules/board/ReplyElement.vue'
@@ -17,6 +17,7 @@ import { getPost, getReplies } from '@/api/board'
 import { useRoute } from 'vue-router'
 import YesModalContent from '@/components/organisms/modal/YesModalContent.vue'
 
+const roomUserNo: Ref<number> = inject('roomUserNo', ref(0))
 const route = useRoute()
 const postId = computed(() => {
     return Number(route.query.postId)
@@ -130,12 +131,15 @@ const replyDeleteSuccessModalToggle = () =>
 </script>
 
 <template>
-    <div class="w-full md:min-w-[768px] max-w-[1080px] max-md:min-w-0 bg-A805Rea">
+    <div class="w-full md:min-w-[768px] max-w-[1080px] max-md:min-w-0">
+        {{ post.roomUserNo }}
+        {{ roomUserNo }}
         <BoardDetailTop
             class="my-4 max-md:hidden"
             @modify-button-handle="modifyButtonHandler"
             @delete-button-handle="deleteModalToggle"
             @list-button-handle="listButtonHandler"
+            :is-post-writer="roomUserNo === post.roomUserNo"
         />
         <div
             class="flex flex-col w-full border md:rounded border-A805DarkGrey p-9 max-md:border-x-0"
@@ -194,6 +198,7 @@ const replyDeleteSuccessModalToggle = () =>
             @delete-button-handle="deleteModalToggle"
             @top-button-handle="topButtonHandler"
             @list-button-handle="listButtonHandler"
+            :is-post-writer="roomUserNo === post.roomUserNo"
         />
 
         <!-- Delete Modal -->

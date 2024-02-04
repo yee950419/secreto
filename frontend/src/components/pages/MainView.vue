@@ -186,15 +186,16 @@ const profileClickHandler = () => {
                 v-if="state === State.MY_PAGE"
                 @password-change-handle="() => (state = State.CHANGE_PWD)"
                 @close-button-handle="buttonClickHandler"
-                @withdrawal-success-handle="withdrawalSuccessHandler"
+                @success-handle="(message: string) => yesModalOpen('Success', message)"
+                @fail-handle="(message: string) => yesModalOpen('Fail', message)"
             />
             <ChangePasswordForm
                 class="max-md:max-w-full max-md:max-h-full max-md:h-full max-md:w-full"
                 v-if="state === State.CHANGE_PWD"
                 @prev-button-handle="() => (state = State.MY_PAGE)"
                 @close-button-handle="() => (state = State.MY_PAGE)"
-                @change-password-success-handle="changePasswordSuccessHandler"
-                @change-password-fail-handle="(message: string) => yesModalOpen('Fail', message)"
+                @success-handle="changePasswordSuccessHandler"
+                @fail-handle="(message: string) => yesModalOpen('Fail', message)"
             />
             <WideCardTemplate
                 v-if="state === State.TEMPLATE"

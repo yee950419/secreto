@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
-import { login } from '@/api/user'
+import { login, getUser } from '@/api/user'
 import type { LoginRequestType } from '@/types/user'
 import { useRouter } from 'vue-router'
 
@@ -55,7 +55,31 @@ export const useUserStore = defineStore(
                 }
             )
         }
-        return { isLogin, userInfo, accessToken, refreshToken, viewState, userLogin }
+        const getUserToStore = () => {
+            getUser(
+                (response) => {
+                    const data = response.data
+                    console.log(response)
+                    if (data.status === 'OK') {
+                        isLogin.value = true
+                        userInfo.value = data.result
+                    }
+                },
+                (error) => {
+                    console.log(error)
+                    alert(error.response.data.message)
+                }
+            )
+        }
+        return {
+            isLogin,
+            userInfo,
+            accessToken,
+            refreshToken,
+            viewState,
+            userLogin,
+            getUserToStore
+        }
     },
     { persist: true }
 )

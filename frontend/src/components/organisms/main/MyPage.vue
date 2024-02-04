@@ -5,20 +5,26 @@ import TextAtom from '@/components/atoms/TextAtom.vue'
 import AvatarAtom from '@/components/atoms/AvatarAtom.vue'
 import { onMounted, ref, type Ref } from 'vue'
 import type { Handler } from '@/types/common'
-import type { MyPageUserDataType } from '@/types/user'
+import type { ModifyRequestType } from '@/types/user'
 import CloseButtonAtom from '@/components/atoms/CloseButtonAtom.vue'
-import { getUser, withdraw } from '@/api/user'
-import { useUserStore } from '@/stores/user'
+import { getUser, withdraw, modify } from '@/api/user'
 import ModalTemplate from '@/components/template/ModalTemplate.vue'
 import AccountDeleteModalContent1 from '@/components/organisms/modal/AccountDeleteModalContent1.vue'
 import AccountDeleteModalContent2 from '@/components/organisms/modal/AccountDeleteModalContent2.vue'
 import AccountDeleteModalContent3 from '@/components/organisms/modal/AccountDeleteModalContent3.vue'
+import { useUserStore } from '@/stores/user'
 
 const userStore = useUserStore()
-const userNo: number = userStore.userInfo.id
-const emit = defineEmits(['passwordChangeHandle', 'withdrawalSuccessHandle', 'closeButtonHandle'])
-const userInfo: Ref<MyPageUserDataType> = ref({
-    email: '',
+const { getUserToStore } = userStore
+
+const emit = defineEmits([
+    'passwordChangeHandle',
+    'closeButtonHandle',
+    'successHandle',
+    'failHandle'
+])
+const email: Ref<string> = ref('')
+const userInfoModifyRequest: Ref<ModifyRequestType> = ref({
     nickname: '',
     profileUrl: null
 })
@@ -26,8 +32,20 @@ const profileImageChangeHandler: Handler = () => {
     alert('profile image change')
 }
 const modifyButtonHandler: Handler = () => {
-    console.log(JSON.stringify(userInfo.value))
-    alert('Modify')
+    modify(
+        userInfoModifyRequest.value,
+        (response) => {
+            const data = response.data
+            if (data.status === 'OK') {
+                getUserToStore()
+                emit('successHandle', '정보를 수정하였습니다.')
+            }
+        },
+        (error) => {
+            console.error(error)
+            emit('failHandle', error.response.data.message)
+        }
+    )
 }
 const profileImageDeleteButtonHandler: Handler = () => {
     alert('profile image delete')
@@ -52,7 +70,7 @@ const withdrawSubmitButtonHandle = (password: string) => {
     withdraw(
         { password: password },
         (response) => {
-            emit('withdrawalSuccessHandle')
+            emit('successHandle', '계정을 삭제하였습니다.')
             modalToggle()
         },
         (error) => {}
@@ -65,9 +83,9 @@ onMounted(() => {
             const data = response.data
             console.log('유저 정보 조회:', data.message)
             console.log(data.result)
-            userInfo.value.email = data.result.email
-            userInfo.value.nickname = data.result.nickname
-            userInfo.value.profileUrl = data.result.profileUrl
+            email.value = data.result.email
+            userInfoModifyRequest.value.nickname = data.result.nickname
+            userInfoModifyRequest.value.profileUrl = data.result.profileUrl
         },
         (error) => {
             console.error(error)
@@ -89,7 +107,7 @@ onMounted(() => {
                     input-class="input-box-style-1 line-claret"
                     custom-class="w-full"
                     custom-id="email"
-                    v-model="userInfo.email"
+                    v-model="email"
                     readonly
                 ></InputBox
                 ><InputBox
@@ -99,12 +117,12 @@ onMounted(() => {
                     input-class="input-box-style-1 line-claret"
                     custom-class="w-full"
                     custom-id="email"
-                    v-model="userInfo.nickname"
+                    v-model="userInfoModifyRequest.nickname"
                 ></InputBox>
                 <div class="w-full flex justify-left ps-[20px] items-center">
                     <AvatarAtom
                         custom-class="my-page-profile h-[100px] cursor-pointer"
-                        :image-url="userInfo.profileUrl"
+                        :image-url="userInfoModifyRequest.profileUrl"
                         @image-click="profileImageChangeHandler"
                     ></AvatarAtom>
                     <div class="flex flex-col text-[12px] text-A805DarkGrey ms-[14px]">

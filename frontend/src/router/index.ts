@@ -86,6 +86,16 @@ const router = createRouter({
                     path: 'statistic',
                     name: 'game-statistic',
                     component: () => import('@/components/pages/StatisticPage.vue')
+                },
+                {
+                    path: 'roomsettings',
+                    name: 'game-roomsettings',
+                    component: () => import('@/components/pages/RoomSetting.vue')
+                },
+                {
+                    path: 'wordcloud',
+                    name: 'game-wordcloud',
+                    component: () => import('@/components/pages/ReviewPage.vue')
                 }
             ],
             beforeEnter(to, from, next) {

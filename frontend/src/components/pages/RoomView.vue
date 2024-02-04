@@ -10,22 +10,27 @@ import { storeToRefs } from 'pinia'
 const menuStore = useMenuStore()
 const { menuSeen, isMobile } = storeToRefs(menuStore)
 import { provide, readonly } from 'vue'
-
+import type { RoomUserInfoType } from '@/types/room'
 const emit = defineEmits(['update-name'])
 
 const chatRooms = reactive<ChatRoomType[]>([])
 //라우터로 부터 방번호를 받아온다
 const route = useRoute()
-const roomNo = ref<number>(Number(route.params.roomNo))
-const roomName = ref<string | undefined>()
-const roomUserNo = ref<number>(0)
+
+const roomUserInfo = ref<RoomUserInfoType>({
+    roomNo: Number(route.params.roomNo),
+    roomUserNo: 0,
+    roomName: '',
+    roomNickName: '',
+    profileUrl: ''
+})
+
 const updateRoomName = (name: string | undefined) => {
-    roomName.value = name ? name : '방 제목'
-    emit('update-name', roomName.value)
+    roomUserInfo.value.roomName = name ? name : '방 제목'
+    emit('update-name', roomUserInfo.value.roomName)
 }
 
-provide('roomUserNo', readonly(roomUserNo))
-provide('roomNo', readonly(roomNo))
+provide('roomUserInfo', readonly(roomUserInfo))
 
 const removeChatRoom = (name: string) => {
     const index = chatRooms.findIndex((room) => room.name === name)
@@ -48,10 +53,10 @@ const makeRoom = ({ name, imageUrl }: ChatRoomType) => {
 const getRoomData = async () => {
     console.log('방정보 호출')
     await getRoom(
-        roomNo.value,
+        roomUserInfo.value.roomNo,
         ({ data }) => {
             console.log(data)
-            roomUserNo.value = data.result.roomUserNo
+            roomUserInfo.value = data.result.userInfo
             updateRoomName(data.result.roomName)
         },
         (error) => {
@@ -75,7 +80,11 @@ onMounted(() => {
             />
         </div>
         <!-- pc버전이거나, 모바일 버전 + 메뉴가 체크된 상태일때만 nav가 보인다. -->
-        <NavBar @make-room="makeRoom" :room-name="roomName" v-if="!isMobile || menuSeen" />
+        <NavBar
+            @make-room="makeRoom"
+            :room-name="roomUserInfo.roomName"
+            v-if="!isMobile || menuSeen"
+        />
 
         <!-- pc버전이거나, 모바일 버전 + 메뉴가 닫힌 상태일때만 이 영역 이 보인다. -->
         <RouterView v-if="!isMobile || !menuSeen" />

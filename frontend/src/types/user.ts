@@ -3,6 +3,11 @@ export type LoginRequestType = {
     password: string
 }
 
+export type LogoutRequestType = {
+    email: string
+    provider: string
+}
+
 export type JoinRequestType = {
     email: string
     password: string

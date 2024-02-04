@@ -20,10 +20,12 @@ import InputBox from '@/components/molecules/common/InputBox.vue'
 import HeaderProfile from '@/components/molecules/common/HeaderProfile.vue'
 import ServiceFeature from '@/components/molecules/main/ServiceFeature.vue'
 import { useRouter } from 'vue-router'
-import YesModalContent from '../organisms/modal/YesModalContent.vue'
-const router = useRouter()
+import YesModalContent from '@/components/organisms/modal/YesModalContent.vue'
+import ButtonAtom from '@/components/atoms/ButtonAtom.vue'
 
+const router = useRouter()
 const userStore = useUserStore()
+const { userLogout } = userStore
 const ButtonLabel = Object.freeze({
     START: 'start',
     JOIN: 'join',
@@ -68,10 +70,6 @@ const buttonClickHandler: DataHandler<string> = (data) => {
             buttonLabel.value = ButtonLabel.ENTER
             break
     }
-}
-
-const withdrawalSuccessHandler = () => {
-    alert('회원정보 삭제 완료/로그인 창으로 이동')
 }
 
 // template
@@ -158,12 +156,17 @@ const profileClickHandler = () => {
                         :name="userStore.userInfo.nickname"
                         :image-url="userStore.userInfo.profileUrl"
                         custom-class="cursor-pointer"
-                        @click="profileClickHandler" />
+                        @click="profileClickHandler"
+                    />
+                    <div>
+                        <ButtonAtom @button-click="userLogout">로그아웃</ButtonAtom>
+                    </div>
                     <InputBox
                         custom-class="input-box-style-2 mt-[10px] bg-A805White w-[200px] h-[50px]"
                         input-class="text-center text-[24px]"
                         place-holder="초대코드 입력"
-                /></template>
+                    />
+                </template>
                 <ServiceFeature v-if="state !== State.MAIN_AFTER_LOGIN" />
             </MainCard>
 
@@ -187,7 +190,7 @@ const profileClickHandler = () => {
                 @password-change-handle="() => (state = State.CHANGE_PWD)"
                 @close-button-handle="buttonClickHandler"
                 @success-handle="(message: string) => yesModalOpen('Success', message)"
-                @fail-handle="(message: string) => yesModalOpen('Fail', message)"
+                @fail-handle="(message: string) => yesModalOpen('Success', message)"
             />
             <ChangePasswordForm
                 class="max-md:max-w-full max-md:max-h-full max-md:h-full max-md:w-full"

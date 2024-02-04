@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
-import { login, getUser } from '@/api/user'
-import type { LoginRequestType } from '@/types/user'
+import { login, getUser, logout } from '@/api/user'
+import type { LoginRequestType, LogoutRequestType } from '@/types/user'
 import { useRouter } from 'vue-router'
 
 type UserInterface = {
@@ -55,6 +55,19 @@ export const useUserStore = defineStore(
                 }
             )
         }
+
+        const clearUserStore = () => {
+            isLogin.value = false
+            userInfo.value.id = -1
+            userInfo.value.email = ''
+            userInfo.value.nickname = ''
+            userInfo.value.profileUrl = ''
+            userInfo.value.provider = ''
+            accessToken.value = ''
+            refreshToken.value = ''
+            viewState.value = ViewState.MAIN
+        }
+
         const getUserToStore = () => {
             getUser(
                 (response) => {
@@ -72,17 +85,24 @@ export const useUserStore = defineStore(
             )
         }
 
-        const clearUserStore = () => {
-            isLogin.value = false
-            userInfo.value.id = -1
-            userInfo.value.email = ''
-            userInfo.value.nickname = ''
-            userInfo.value.profileUrl = ''
-            userInfo.value.provider = ''
-            accessToken.value = ''
-            refreshToken.value = ''
-            viewState.value = ViewState.MAIN
+        const userLogout = () => {
+            logout(
+                { email: userInfo.value.email, provider: userInfo.value.provider },
+                (response) => {
+                    const data = response.data
+                    console.log(response)
+                    if (data.status === 'OK') {
+                        clearUserStore()
+                        router.push({ name: 'beforeLogin' })
+                    }
+                },
+                (error) => {
+                    console.log(error)
+                    alert(error.response.data.message)
+                }
+            )
         }
+
         return {
             isLogin,
             userInfo,
@@ -91,7 +111,8 @@ export const useUserStore = defineStore(
             viewState,
             userLogin,
             getUserToStore,
-            clearUserStore
+            clearUserStore,
+            userLogout
         }
     },
     { persist: true }

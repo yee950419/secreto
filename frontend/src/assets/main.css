@@ -646,6 +646,16 @@
         border: 1px solid var(--A805DarkGrey);
         outline: none;
     }
+
+    .line-lightGrey {
+        border: 1px solid var(--A805LightGrey);
+    }
+
+    .line-lightGrey:focus {
+        border: 1px solid var(--A805LightGrey);
+        outline: none;
+    }
+
     .checkbox-molecule-style-1 {
         display: flex;
         margin: 0px;

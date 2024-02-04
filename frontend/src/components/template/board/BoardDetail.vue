@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, type Ref, onMounted, computed, inject } from 'vue'
+import { ref, type Ref, onMounted, computed, inject, readonly, provide } from 'vue'
 import type { BoardDetailResponseType, ReplyResponseType } from '@/types/board'
 import BoardWriterInformation from '@/components/molecules/board/BoardWriterInformation.vue'
 import ReplyWriteForm from '@/components/molecules/board/ReplyWriteForm.vue'
@@ -16,13 +16,12 @@ import type { Handler } from '@/types/common'
 import { getPost, getReplies } from '@/api/board'
 import { useRoute } from 'vue-router'
 import YesModalContent from '@/components/organisms/modal/YesModalContent.vue'
-import { provide, readonly } from 'vue'
 
-const roomUserNo: Ref<number> = inject('roomUserNo', ref(-1))
 const route = useRoute()
 const postNo = computed(() => {
     return Number(route.query.postNo)
 })
+const roomUserNo = inject<Ref<number>>('roomUserInfo', ref(-1))
 provide('postNo', readonly(postNo))
 
 const post: Ref<BoardDetailResponseType> = ref({
@@ -34,7 +33,7 @@ const post: Ref<BoardDetailResponseType> = ref({
     writerEmail: '',
     writerProfileUrl: null,
     registerAt: '',
-    roomUserNo: 0,
+    roomUserNo: -1,
     hit: 0,
     publicYn: false,
     missionCategory: '',

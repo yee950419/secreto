@@ -35,6 +35,7 @@ const replyWriteHandler = () => {
         replyRequest.roomUserNo = roomUserNo.value
         replyRequest.contnet = textArea.value.value
     }
+    console.log(replyRequest)
     postReply(
         postNo.value,
         replyRequest,

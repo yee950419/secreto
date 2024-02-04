@@ -49,7 +49,7 @@ const deleteModalToggle = () => (deleteModalSeen.value = !deleteModalSeen.value)
     <div class="flex flex-col border-b py-3" :class="nested ? 'ms-[50px]' : ''">
         <div class="flex" v-show="!seenReplyModifyForm">
             <AvatarAtom
-                :image-url="reply.writerImageUrl"
+                :image-url="reply.writerProfileUrl"
                 custom-class="profile w-[40px] h-[40px] me-[10px]"
             />
             <div class="flex flex-col w-full">

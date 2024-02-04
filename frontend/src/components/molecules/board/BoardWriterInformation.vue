@@ -5,7 +5,7 @@ import { convertStringToRegistrationDateTime } from '@/utils/date'
 defineProps([
     'writer',
     'writerEmail',
-    'writerImageUrl',
+    'writerProfileUrl',
     'registerAt',
     'hit',
     'likedCount',
@@ -16,7 +16,7 @@ defineProps([
 <template>
     <div class="flex items-center">
         <AvatarAtom
-            :image-url="writerImageUrl"
+            :image-url="writerProfileUrl"
             custom-class="profile w-[60px] h-[60px] me-[10px]"
         />
         <div class="flex flex-col">

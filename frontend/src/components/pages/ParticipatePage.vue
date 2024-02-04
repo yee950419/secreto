@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import MissionHeader from '@/components/organisms/game/MissionHeader.vue'
 import PaticipateProfile from '@/components/molecules/game/PaticipateProfile.vue'
-import { onMounted } from 'vue'
+import { onMounted, watch } from 'vue'
 import { ref, type Ref } from 'vue'
 import { getUserList } from '@/api/room'
 import { inject } from 'vue'
@@ -29,7 +29,7 @@ const roomUserInfo = inject<Ref<RoomUserInfoType>>(
         roomNo: Number(route.params.roomNo),
         roomUserNo: 0,
         roomName: '',
-        roomNickName: '',
+        roomNickname: '',
         profileUrl: ''
     })
 )

@@ -49,13 +49,11 @@ onMounted(() => {
                         :nick-name="user.nickname"
                         :image-url="''"
                         v-if="user.roomUserNo !== roomUserInfo.roomUserNo"
-                        custom-class="hover: bg-black"
                     />
                     <PaticipateProfile
                         :nick-name="user.nickname + ' (나)'"
                         :image-url="''"
-                        class="border-black border-2 border-solid hover:scale-150"
-                        custom-class="hover:bg-black"
+                        class="border-black border-2 border-solid"
                         v-else
                     />
                 </template>

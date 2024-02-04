@@ -21,7 +21,7 @@ const roomUserInfo = ref<RoomUserInfoType>({
     roomNo: Number(route.params.roomNo),
     roomUserNo: 0,
     roomName: '',
-    roomNickName: '',
+    roomNickname: '',
     profileUrl: ''
 })
 
@@ -55,8 +55,10 @@ const getRoomData = async () => {
     await getRoom(
         roomUserInfo.value.roomNo,
         ({ data }) => {
-            console.log(data)
-            roomUserInfo.value = data.result.userInfo
+            roomUserInfo.value.profileUrl = data.result.userInfo.profileUrl
+            roomUserInfo.value.roomNickname = data.result.userInfo.nickname
+            roomUserInfo.value.roomUserNo = data.result.userInfo.roomUserNo
+            roomUserInfo.value.roomName = data.result.roomName
             updateRoomName(data.result.roomName)
         },
         (error) => {

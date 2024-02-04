@@ -34,7 +34,7 @@ export type RoomUserInfoType = {
     roomNo: number
     roomUserNo: number
     roomName: string
-    roomNickName: string
+    roomNickname: string
     profileUrl: string
 }
 

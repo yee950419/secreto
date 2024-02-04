@@ -26,7 +26,7 @@ export const useUserStore = defineStore(
         // 전역 관리가 필요한 데이터에 대한 정의
         const isLogin = ref<boolean>(false) // 로그인 여부 검증
         const userInfo = ref<UserInterface>({
-            id: 0,
+            id: -1,
             email: '',
             nickname: '',
             profileUrl: '',
@@ -71,6 +71,18 @@ export const useUserStore = defineStore(
                 }
             )
         }
+
+        const clearUserStore = () => {
+            isLogin.value = false
+            userInfo.value.id = -1
+            userInfo.value.email = ''
+            userInfo.value.nickname = ''
+            userInfo.value.profileUrl = ''
+            userInfo.value.provider = ''
+            accessToken.value = ''
+            refreshToken.value = ''
+            viewState.value = ViewState.MAIN
+        }
         return {
             isLogin,
             userInfo,
@@ -78,7 +90,8 @@ export const useUserStore = defineStore(
             refreshToken,
             viewState,
             userLogin,
-            getUserToStore
+            getUserToStore,
+            clearUserStore
         }
     },
     { persist: true }

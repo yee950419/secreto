@@ -13,10 +13,11 @@ import AccountDeleteModalContent1 from '@/components/organisms/modal/AccountDele
 import AccountDeleteModalContent2 from '@/components/organisms/modal/AccountDeleteModalContent2.vue'
 import AccountDeleteModalContent3 from '@/components/organisms/modal/AccountDeleteModalContent3.vue'
 import { useUserStore } from '@/stores/user'
+import { useRouter } from 'vue-router'
 
+const router = useRouter()
 const userStore = useUserStore()
-const { getUserToStore } = userStore
-
+const { getUserToStore, clearUserStore } = userStore
 const emit = defineEmits([
     'passwordChangeHandle',
     'closeButtonHandle',
@@ -37,8 +38,9 @@ const modifyButtonHandler: Handler = () => {
         (response) => {
             const data = response.data
             if (data.status === 'OK') {
+                console.log(response.data)
                 getUserToStore()
-                emit('successHandle', '정보를 수정하였습니다.')
+                emit('successHandle', data.message)
             }
         },
         (error) => {
@@ -70,10 +72,18 @@ const withdrawSubmitButtonHandle = (password: string) => {
     withdraw(
         { password: password },
         (response) => {
-            emit('successHandle', '계정을 삭제하였습니다.')
+            const data = response.data
+            if (data.status === 'OK') {
+                console.log(response.data)
+                clearUserStore()
+                router.push({ name: 'withdrawal' })
+            }
             modalToggle()
         },
-        (error) => {}
+        (error) => {
+            console.error(error)
+            emit('failHandle', error.response.data.message)
+        }
     )
 }
 

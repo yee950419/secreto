@@ -97,8 +97,19 @@ const startDrag = (e: MouseEvent) => {
 
 const drag = (e: MouseEvent) => {
     if (!dragging.value || !chatRoomRef.value) return
-    chatRoomRef.value.style.left = e.clientX - offsetX.value + 'px'
-    chatRoomRef.value.style.top = e.clientY - offsetY.value + 'px'
+
+    const maxX = window.innerWidth - chatRoomRef.value.clientWidth - 10
+    const maxY = window.innerHeight - chatRoomRef.value.clientHeight - 10
+
+    let newLeft = e.clientX - offsetX.value
+    let newTop = e.clientY - offsetY.value
+
+    // Ensure the modal stays within the boundaries
+    newLeft = Math.max(0, Math.min(newLeft, maxX))
+    newTop = Math.max(0, Math.min(newTop, maxY))
+
+    chatRoomRef.value.style.left = newLeft + 'px'
+    chatRoomRef.value.style.top = newTop + 'px'
 }
 
 const stopDrag = () => {

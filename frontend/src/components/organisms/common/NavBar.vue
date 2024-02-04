@@ -48,12 +48,14 @@ const handleMenuClickAndToggleSubMenu = (index: number, menu: string) => {
 
 <template>
     <div
-        class="flex flex-col h-full bg-A805White md:w-[230px] max-md:w-full md:border-solid md:border-2 md:border-A805Cream md:overflow-y-auto"
+        class="flex flex-col h-full bg-A805White md:min-w-[230px] max-md:w-full md:border-solid md:border-2 md:border-A805Cream md:overflow-y-auto"
     >
         <MenuItem
             custom-class="menu-item"
             :active="activeMenu === 0"
-            @menu-click="handleMenuClick(0)"
+            @menu-click="
+                handleMenuClick(0), handleClick(), router.push({ name: 'game-roomsettings' })
+            "
             ><div class="flex w-full items-center gap-[20px]">방 설정 <SettingOutlined /></div
         ></MenuItem>
         <MenuItem custom-class="menu-item">{{ roomName }}</MenuItem>
@@ -80,7 +82,7 @@ const handleMenuClickAndToggleSubMenu = (index: number, menu: string) => {
         <MenuItem
             custom-class="menu-item"
             :active="activeMenu === 4"
-            @menu-click="handleMenuClick(4), router.push({ name: 'game-mission' })"
+            @menu-click="handleMenuClick(4), router.push({ name: 'game-mission' }), handleClick()"
             >내 미션</MenuItem
         >
         <MenuItem
@@ -112,36 +114,48 @@ const handleMenuClickAndToggleSubMenu = (index: number, menu: string) => {
         <div v-if="showSubMenu.includes('board')">
             <MenuItem
                 custom-class="sub-menu-item"
-                @menu-click="router.push({ name: 'game-board' }), handleClick()"
+                @menu-click="
+                    router.push({
+                        name: 'game-board',
+                        query: { boardCategory: 'NOTICE' }
+                    }),
+                        handleClick()
+                "
                 >공지 게시판</MenuItem
             >
             <MenuItem
                 custom-class="sub-menu-item"
-                @menu-click="router.push({ name: 'game-board' }), handleClick()"
+                @menu-click="
+                    router.push({ name: 'game-board', query: { boardCategory: 'CERTIFICATE' } }),
+                        handleClick()
+                "
                 >인증 게시판</MenuItem
             >
             <MenuItem
                 custom-class="sub-menu-item"
-                @menu-click="router.push({ name: 'game-board' }), handleClick()"
+                @menu-click="
+                    router.push({ name: 'game-board', query: { boardCategory: 'BOAST' } }),
+                        handleClick()
+                "
                 >자랑 게시판</MenuItem
             >
         </div>
         <MenuItem
             custom-class="menu-item"
             :active="activeMenu === 7"
-            @menu-click="handleMenuClick(7)"
+            @menu-click="handleMenuClick(7), handleClick(), router.push({ name: 'game-statistic' })"
             >게임 통계</MenuItem
         >
         <MenuItem
             custom-class="menu-item"
             :active="activeMenu === 8"
-            @menu-click="handleMenuClick(8)"
+            @menu-click="handleMenuClick(8), handleClick(), router.push({ name: 'game-timeline' })"
             >나의 히스토리</MenuItem
         >
         <MenuItem
             custom-class="menu-item"
             :active="activeMenu === 9"
-            @menu-click="handleMenuClick(9)"
+            @menu-click="handleMenuClick(9), handleClick(), router.push({ name: 'game-wordcloud' })"
             >후기</MenuItem
         >
     </div>

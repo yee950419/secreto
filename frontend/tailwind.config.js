@@ -3,6 +3,9 @@ export default {
     content: ['./index.html', './src/**/*.{vue,js,ts,jsx,tsx}'],
     theme: {
         extend: {
+            height: {
+                'real-screen': 'calc(var(--vh) * 100)'
+            },
             colors: {
                 A805Black: '#292929',
                 A805White: '#F7F7F7',
@@ -21,6 +24,9 @@ export default {
                 A805RealWhite: '#FFFFFF',
                 A805Neutral: '#EAEEF3'
             }
+        },
+        minHeight: {
+            'real-screen': 'calc(var(--vh) * 100)'
         },
         fontFamily: {
             Iceland: ['Iceland'],

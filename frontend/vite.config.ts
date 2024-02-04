@@ -26,7 +26,7 @@ export default defineConfig({
     },
     build: {
         rollupOptions: {
-            external: ['ant-design-vue', 'vue-clipboard3', 'dayjs']
+            external: ['vue-clipboard3', 'dayjs']
         }
     }
 })

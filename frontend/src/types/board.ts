@@ -1,3 +1,13 @@
+export type BoardRequestType = {
+    roomNo: number
+    boardCategory: string
+    title: string | null
+    content: string | null
+    writer: string | null
+    page: number
+    size: number
+}
+
 export type BoardResponseType = {
     boardNo: number
     title: string
@@ -39,4 +49,14 @@ export type ReplyResponseType = {
     writer: string
     writerEmail: string
     writerProfileUrl: string | null
+    children?: ReplyResponseType[] | undefined
+}
+
+export type ReplyWriteRequestType = {
+    boardNo: number // boardNo?? postNo
+    roomUserNo: number
+    contnet: string // api에서 오타 수정 후 원복
+    parentReplyNo?: number
+    tagUserNo?: number
+    annonymityYn?: boolean
 }

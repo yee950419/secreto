@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
-import { login } from '@/api/user'
-import type { LoginRequestType } from '@/types/user'
+import { login, getUser, logout } from '@/api/user'
+import type { LoginRequestType, LogoutRequestType } from '@/types/user'
 import { useRouter } from 'vue-router'
 
 type UserInterface = {
@@ -26,7 +26,7 @@ export const useUserStore = defineStore(
         // 전역 관리가 필요한 데이터에 대한 정의
         const isLogin = ref<boolean>(false) // 로그인 여부 검증
         const userInfo = ref<UserInterface>({
-            id: 0,
+            id: -1,
             email: '',
             nickname: '',
             profileUrl: '',
@@ -55,7 +55,65 @@ export const useUserStore = defineStore(
                 }
             )
         }
-        return { isLogin, userInfo, accessToken, refreshToken, viewState, userLogin }
+
+        const clearUserStore = () => {
+            isLogin.value = false
+            userInfo.value.id = -1
+            userInfo.value.email = ''
+            userInfo.value.nickname = ''
+            userInfo.value.profileUrl = ''
+            userInfo.value.provider = ''
+            accessToken.value = ''
+            refreshToken.value = ''
+            viewState.value = ViewState.MAIN
+        }
+
+        const getUserToStore = () => {
+            getUser(
+                (response) => {
+                    const data = response.data
+                    console.log(response)
+                    if (data.status === 'OK') {
+                        isLogin.value = true
+                        userInfo.value = data.result
+                    }
+                },
+                (error) => {
+                    console.log(error)
+                    alert(error.response.data.message)
+                }
+            )
+        }
+
+        const userLogout = () => {
+            logout(
+                { email: userInfo.value.email, provider: userInfo.value.provider },
+                (response) => {
+                    const data = response.data
+                    console.log(response)
+                    if (data.status === 'OK') {
+                        clearUserStore()
+                        router.push({ name: 'beforeLogin' })
+                    }
+                },
+                (error) => {
+                    console.log(error)
+                    alert(error.response.data.message)
+                }
+            )
+        }
+
+        return {
+            isLogin,
+            userInfo,
+            accessToken,
+            refreshToken,
+            viewState,
+            userLogin,
+            getUserToStore,
+            clearUserStore,
+            userLogout
+        }
     },
     { persist: true }
 )

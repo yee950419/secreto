@@ -10,4 +10,40 @@ async function getBoard(
     boardInstance.get(`/board`, { params: param }).then(success).catch(fail)
 }
 
-export { getBoard }
+async function getPost(
+    postNo: number,
+    success: (response: AxiosResponse) => void,
+    fail: (error: any) => void
+) {
+    boardInstance.get(`/post/${postNo}`).then(success).catch(fail)
+}
+
+async function getReplies(
+    postNo: number,
+    success: (response: AxiosResponse) => void,
+    fail: (error: any) => void
+) {
+    boardInstance.get(`/reply/${postNo}`).then(success).catch(fail)
+}
+
+async function postReply(
+    postNo: number,
+    param: object,
+    success: (response: AxiosResponse) => void,
+    fail: (error: any) => void
+) {
+    boardInstance.post(`/reply/${postNo}`, param).then(success).catch(fail)
+}
+
+async function deleteReply(
+    replyNo: number,
+    success: (response: AxiosResponse) => void,
+    fail: (error: any) => void
+) {
+    boardInstance
+        .delete(`/reply/${replyNo}`, { params: { replyNo: replyNo } })
+        .then(success)
+        .catch(fail)
+}
+
+export { getBoard, getPost, getReplies, postReply, deleteReply }

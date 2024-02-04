@@ -35,22 +35,22 @@ const deleteButtonClick: Handler = () => {
                 v-else
                 >종료</BadgeAtom
             >
-            <TextAtom custom-class="text-[11px]">{{ $props.roomInfo.peopleNumber }}명</TextAtom>
+            <TextAtom custom-class="text-[11px]">{{ $props.roomInfo.participantCnt }}명</TextAtom>
         </div>
         <div class="flex flex-col justify-center items-center h-full pt-[20px] text-center">
             <TextAtom custom-class="text-[18px] font-bold truncate w-full px-[15px]">{{
-                props.roomInfo.title
+                props.roomInfo.roomName
             }}</TextAtom>
-            <TextAtom custom-class="text-[14px] truncate w-full px-[30px]">{{
-                props.roomInfo.nickname
-            }}</TextAtom>
+            <TextAtom custom-class="text-[14px] truncate w-full px-[30px]">
+                {{ props.roomInfo.nickname }}
+            </TextAtom>
         </div>
         <ButtonAtom
             class="absolute bottom-0 right-2 text-[20px] hover:scale-[125%] transition ease-in-out"
             @click.stop="likeButtonClick"
         >
-            <TextAtom class="text-A805Black" v-show="!roomInfo.like">♡</TextAtom>
-            <TextAtom class="text-A805Red" v-show="roomInfo.like">♥</TextAtom></ButtonAtom
+            <TextAtom class="text-A805Black" v-show="!roomInfo.bookmarkYn">♡</TextAtom>
+            <TextAtom class="text-A805Red" v-show="roomInfo.bookmarkYn">♥</TextAtom></ButtonAtom
         >
         <ButtonAtom
             class="absolute top-[-10px] right-[-3px] font-bold text-[16px] hover:scale-[125%] hover:text-A805Red transition ease-in-out"

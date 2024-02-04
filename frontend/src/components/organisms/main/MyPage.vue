@@ -3,23 +3,51 @@ import ButtonAtom from '@/components/atoms/ButtonAtom.vue'
 import InputBox from '@/components/molecules/common/InputBox.vue'
 import TextAtom from '@/components/atoms/TextAtom.vue'
 import AvatarAtom from '@/components/atoms/AvatarAtom.vue'
-import { ref, type Ref } from 'vue'
+import { onMounted, ref, type Ref } from 'vue'
 import type { Handler } from '@/types/common'
-import type { MyPageUserDataType } from '@/types/user'
+import type { ModifyRequestType } from '@/types/user'
 import CloseButtonAtom from '@/components/atoms/CloseButtonAtom.vue'
+import { getUser, withdraw, modify } from '@/api/user'
+import ModalTemplate from '@/components/template/ModalTemplate.vue'
+import AccountDeleteModalContent1 from '@/components/organisms/modal/AccountDeleteModalContent1.vue'
+import AccountDeleteModalContent2 from '@/components/organisms/modal/AccountDeleteModalContent2.vue'
+import AccountDeleteModalContent3 from '@/components/organisms/modal/AccountDeleteModalContent3.vue'
+import { useUserStore } from '@/stores/user'
+import { useRouter } from 'vue-router'
 
-const emit = defineEmits(['passwordChangeHandle', 'withdrawalHandle', 'closeButtonHandle'])
-const userInfo: Ref<MyPageUserDataType> = ref({
-    email: 'test@secreto.com',
-    nickname: '테스트유저',
+const router = useRouter()
+const userStore = useUserStore()
+const { getUserToStore, clearUserStore } = userStore
+const emit = defineEmits([
+    'passwordChangeHandle',
+    'closeButtonHandle',
+    'successHandle',
+    'failHandle'
+])
+const email: Ref<string> = ref('')
+const userInfoModifyRequest: Ref<ModifyRequestType> = ref({
+    nickname: '',
     profileUrl: null
 })
 const profileImageChangeHandler: Handler = () => {
     alert('profile image change')
 }
 const modifyButtonHandler: Handler = () => {
-    console.log(JSON.stringify(userInfo.value))
-    alert('Modify')
+    modify(
+        userInfoModifyRequest.value,
+        (response) => {
+            const data = response.data
+            if (data.status === 'OK') {
+                console.log(response.data)
+                getUserToStore()
+                emit('successHandle', data.message)
+            }
+        },
+        (error) => {
+            console.error(error)
+            emit('failHandle', error.response.data.message)
+        }
+    )
 }
 const profileImageDeleteButtonHandler: Handler = () => {
     alert('profile image delete')
@@ -29,8 +57,51 @@ const changePasswordButtonHandler: Handler = () => {
     emit('passwordChangeHandle')
 }
 const withdrawalButtonHandler: Handler = () => {
-    emit('withdrawalHandle')
+    withdrawModalSeen.value = true
 }
+
+// delete Modal
+const withdrawModalSeen: Ref<boolean> = ref(false)
+const withdrawModalStep: Ref<number> = ref(0)
+const modalToggle: Handler = () => {
+    if (withdrawModalStep.value > 0) withdrawModalStep.value = 0
+    withdrawModalSeen.value = !withdrawModalSeen.value
+}
+
+const withdrawSubmitButtonHandle = (password: string) => {
+    withdraw(
+        { password: password },
+        (response) => {
+            const data = response.data
+            if (data.status === 'OK') {
+                console.log(response.data)
+                clearUserStore()
+                router.push({ name: 'withdrawal' })
+            }
+            modalToggle()
+        },
+        (error) => {
+            console.error(error)
+            emit('failHandle', error.response.data.message)
+        }
+    )
+}
+
+onMounted(() => {
+    getUser(
+        (response) => {
+            const data = response.data
+            console.log('유저 정보 조회:', data.message)
+            console.log(data.result)
+            email.value = data.result.email
+            userInfoModifyRequest.value.nickname = data.result.nickname
+            userInfoModifyRequest.value.profileUrl = data.result.profileUrl
+        },
+        (error) => {
+            console.error(error)
+        }
+    )
+})
 </script>
 
 <template>
@@ -46,7 +117,7 @@ const withdrawalButtonHandler: Handler = () => {
                     input-class="input-box-style-1 line-claret"
                     custom-class="w-full"
                     custom-id="email"
-                    v-model="userInfo.email"
+                    v-model="email"
                     readonly
                 ></InputBox
                 ><InputBox
@@ -56,12 +127,12 @@ const withdrawalButtonHandler: Handler = () => {
                     input-class="input-box-style-1 line-claret"
                     custom-class="w-full"
                     custom-id="email"
-                    v-model="userInfo.nickname"
+                    v-model="userInfoModifyRequest.nickname"
                 ></InputBox>
                 <div class="w-full flex justify-left ps-[20px] items-center">
                     <AvatarAtom
                         custom-class="my-page-profile h-[100px] cursor-pointer"
-                        :image-url="userInfo.profileUrl"
+                        :image-url="userInfoModifyRequest.profileUrl"
                         @image-click="profileImageChangeHandler"
                     ></AvatarAtom>
                     <div class="flex flex-col text-[12px] text-A805DarkGrey ms-[14px]">
@@ -95,6 +166,29 @@ const withdrawalButtonHandler: Handler = () => {
             </div>
         </div>
     </div>
+
+    <ModalTemplate
+        custom-id="modal"
+        custom-class="modal-template-style-1 w-[350px]"
+        :seen="withdrawModalSeen"
+        v-if="withdrawModalSeen"
+        @modal-close="modalToggle"
+    >
+        <AccountDeleteModalContent1
+            v-if="withdrawModalStep === 0"
+            @yes-button-handle="() => ++withdrawModalStep"
+            @no-button-handle="modalToggle"
+        />
+        <AccountDeleteModalContent2
+            v-if="withdrawModalStep === 1"
+            @yes-button-handle="() => ++withdrawModalStep"
+            @no-button-handle="modalToggle"
+        />
+        <AccountDeleteModalContent3
+            v-if="withdrawModalStep === 2"
+            @submit-button-handle="withdrawSubmitButtonHandle"
+        />
+    </ModalTemplate>
 </template>
 
 <style scoped></style>

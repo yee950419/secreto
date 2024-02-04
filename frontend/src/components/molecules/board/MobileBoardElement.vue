@@ -6,7 +6,7 @@ defineProps(['board'])
 
 <template>
     <div
-        class="flex flex-1 flex-col cursor-pointer md:hidden text-left border-b mx-[20px] py-[20px] border-A805Grey"
+        class="flex flex-1 flex-col cursor-pointer md:hidden text-left border-b mx-[20px] py-[20px] border-A805Grey w-[90%]"
     >
         <div class="flex flex-col"></div>
         <TextAtom custom-class="truncate text-[16px] text-A805Black">

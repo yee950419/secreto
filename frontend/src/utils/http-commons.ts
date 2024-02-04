@@ -1,10 +1,10 @@
-import axios, { type AxiosInterceptorOptions } from 'axios'
+import axios from 'axios'
 import { storeToRefs } from 'pinia'
 import { useUserStore } from '@/stores/user'
 import { httpStatusCode } from './http-status'
 import { regenerateToken } from '@/api/user'
-import type { ConfigEnv } from 'vite'
 const { VITE_API_BASE_URL } = import.meta.env
+import { useRouter } from 'vue-router'
 
 /**
  * 헤더 동적 셋팅을 적용한 axios 인스턴스 생성부
@@ -18,6 +18,7 @@ function localAxios() {
     const instance = axios.create({
         baseURL: VITE_API_BASE_URL
     })
+    const router = useRouter()
 
     // 모든 요청에 대해 기본 헤더 속성 설정
     instance.defaults.headers.common['Type'] = 'bearer'
@@ -61,6 +62,11 @@ function localAxios() {
                 refreshToken.value = data.result.refreshToken
             },
             (error) => {
+                console.log('토큰 갱신이 실패 하였습니다.')
+                // 토근 정보 초기화
+                accessToken.value = ''
+                refreshToken.value = ''
+                router.push({ path: '/' })
                 console.error(error)
             }
         )
@@ -93,6 +99,7 @@ function localAxios() {
                     isRefreshing = true
 
                     await refreshing()
+
                     // 리프레쉬 토큰을 이용해 엑세스 토큰을 갱신, 갱신 성공시 피니아에 최신 데이터 반영,
                     // isRefreshing을 false로 변경하고 요청을 재시도 하는 코드 추가 필요 (api 구현되면 추가 예정)
                     originalRequest.headers['AccessToken'] = 'bearer ' + accessToken.value
@@ -105,7 +112,6 @@ function localAxios() {
             } else if (status == httpStatusCode.FORBIDDEN) {
                 alert(error.response.data.message)
             }
-
             return Promise.reject(error)
         }
     )

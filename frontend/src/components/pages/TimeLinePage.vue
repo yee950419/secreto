@@ -64,7 +64,6 @@ onMounted(() => {
 
 <template>
     <div class="flex flex-1 bg-A805Neutral">
-        <NavBar />
         <div class="flex flex-1 flex-col">
             <div class="flex flex-col md:ml-[30px] max-md:mx-auto gap-[10px] mt-[30px]">
                 <TextAtom custom-class="text-2">마니또 타임라인</TextAtom>
@@ -98,7 +97,7 @@ onMounted(() => {
             </div>
 
             <div class="timeline relative mx-auto">
-                <div class="container">
+                <div class="container left">
                     <div class="predict">
                         <PredictCard />
                     </div>

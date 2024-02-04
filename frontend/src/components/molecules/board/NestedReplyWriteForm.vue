@@ -7,8 +7,9 @@ import { inject, ref, type Ref } from 'vue'
 import type { ReplyWriteRequestType } from '@/types/board'
 
 const postNo: Ref<number> = inject('postNo', ref(-1))
+const props = defineProps(['parentReplyNo', 'tagUserNo'])
 const userStore = useUserStore()
-const emit = defineEmits(['submitReplySuccessHandle'])
+const emit = defineEmits(['submitReplySuccessHandle', 'cancelButtonHandle'])
 
 const roomUserNo: Ref<number> = inject('roomUserNo', ref(-1))
 const textArea = ref<HTMLInputElement | null>(null)
@@ -24,6 +25,8 @@ const replyWriteHandler = () => {
         boardNo: -1,
         roomUserNo: -1,
         contnet: '',
+        parentReplyNo: props.parentReplyNo,
+        tagUserNo: props.tagUserNo,
         annonymityYn: false
     }
     if (textArea.value) {
@@ -35,7 +38,6 @@ const replyWriteHandler = () => {
         replyRequest.roomUserNo = roomUserNo.value
         replyRequest.contnet = textArea.value.value
     }
-    console.log(replyRequest)
     postReply(
         postNo.value,
         replyRequest,
@@ -70,6 +72,12 @@ const replyWriteHandler = () => {
             @button-click="replyWriteHandler"
         >
             등록
+        </ButtonAtom>
+        <ButtonAtom
+            custom-class="button-white rounded-md font-bold mt-2"
+            @button-click="() => emit('cancelButtonHandle')"
+        >
+            취소
         </ButtonAtom>
     </div>
 </template>

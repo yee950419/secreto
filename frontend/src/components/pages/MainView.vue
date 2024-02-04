@@ -104,6 +104,7 @@ const roomCreateHandler: DataHandler<RoomCreateRequestType> = (request: RoomCrea
         request,
         ({ data }) => {
             console.log(data)
+            router.go(0)
         },
         (error) => {
             console.error('error', error)

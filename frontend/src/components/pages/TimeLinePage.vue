@@ -97,7 +97,7 @@ onMounted(() => {
             </div>
 
             <div class="timeline relative mx-auto">
-                <div class="container">
+                <div class="container left">
                     <div class="predict">
                         <PredictCard />
                     </div>

@@ -112,7 +112,6 @@ function localAxios() {
             } else if (status == httpStatusCode.FORBIDDEN) {
                 alert(error.response.data.message)
             }
-            // router.push('/')
             return Promise.reject(error)
         }
     )

@@ -131,7 +131,6 @@ const roomInfoGet: Handler = () => {
 <template>
     <div class="w-full">
         <div class="bg-A805RealWhite flex flex-col">
-            <HeaderBar />
             <div class="flex justify-center max-md:flex-col gap-3 m-[3%]">
                 <!-- <div name="main-part" class="flex selection:max-md:flex-col max-md:w-full"> -->
                 <div name="main-1" class="flex flex-col w-[500px] px-4 gap-8 max-md:w-full">
@@ -203,9 +202,6 @@ const roomInfoGet: Handler = () => {
                     <hr />
                     <ApprovedUserList :user-list="dummyUserList" class="h-[50%]"></ApprovedUserList>
                 </div>
-            </div>
-            <div>
-                <FooterBar />
             </div>
         </div>
     </div>

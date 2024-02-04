@@ -48,12 +48,14 @@ const handleMenuClickAndToggleSubMenu = (index: number, menu: string) => {
 
 <template>
     <div
-        class="flex flex-col h-full bg-A805White md:w-[230px] max-md:w-full md:border-solid md:border-2 md:border-A805Cream md:overflow-y-auto"
+        class="flex flex-col h-full bg-A805White md:min-w-[230px] max-md:w-full md:border-solid md:border-2 md:border-A805Cream md:overflow-y-auto"
     >
         <MenuItem
             custom-class="menu-item"
             :active="activeMenu === 0"
-            @menu-click="handleMenuClick(0), handleClick(), router.push({ name: 'roomsettings' })"
+            @menu-click="
+                handleMenuClick(0), handleClick(), router.push({ name: 'game-roomsettings' })
+            "
             ><div class="flex w-full items-center gap-[20px]">방 설정 <SettingOutlined /></div
         ></MenuItem>
         <MenuItem custom-class="menu-item">{{ roomName }}</MenuItem>
@@ -153,7 +155,7 @@ const handleMenuClickAndToggleSubMenu = (index: number, menu: string) => {
         <MenuItem
             custom-class="menu-item"
             :active="activeMenu === 9"
-            @menu-click="handleMenuClick(9), handleClick(), router.push({ name: 'game-review' })"
+            @menu-click="handleMenuClick(9), handleClick(), router.push({ name: 'game-wordcloud' })"
             >후기</MenuItem
         >
     </div>

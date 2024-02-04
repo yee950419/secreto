@@ -1,10 +1,10 @@
 import sswTestVue from '@/components/pages/sswTest.vue'
-import { createRouter, createWebHistory } from 'vue-router'
+import { createRouter, createWebHistory, createWebHashHistory } from 'vue-router'
 import { useUserStore } from '@/stores/user'
 import { storeToRefs } from 'pinia'
 import RoomView from '@/components/pages/RoomView.vue'
 const router = createRouter({
-    history: createWebHistory(),
+    history: createWebHashHistory(),
     routes: [
         {
             path: '/',
@@ -86,6 +86,16 @@ const router = createRouter({
                     path: 'statistic',
                     name: 'game-statistic',
                     component: () => import('@/components/pages/StatisticPage.vue')
+                },
+                {
+                    path: 'roomsettings',
+                    name: 'game-roomsettings',
+                    component: () => import('@/components/pages/RoomSetting.vue')
+                },
+                {
+                    path: 'wordcloud',
+                    name: 'game-wordcloud',
+                    component: () => import('@/components/pages/ReviewPage.vue')
                 }
             ],
             beforeEnter(to, from, next) {

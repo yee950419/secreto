@@ -9,7 +9,7 @@ import type { RoomCreateRequestType } from '@/types/room'
 const emit = defineEmits(['yesButtonHandle', 'noButtonHandle'])
 const roomCreateRequest: Ref<RoomCreateRequestType> = ref({
     roomName: '',
-    nickname: 'default-name'
+    hostNickname: 'default-name'
 })
 const yesButtonClick: Handler = () => {
     emit('yesButtonHandle', roomCreateRequest.value)
@@ -35,7 +35,7 @@ const noButtonClick: Handler = () => {
                 label="닉네임"
                 type="text"
                 label-class="ps-[3px]"
-                v-model="roomCreateRequest.nickname"
+                v-model="roomCreateRequest.hostNickname"
                 input-class="input-box-style-2 bg-A805White line-claret w-[250px] h-[40px]"
                 place-holder="닉네임을 입력해주세요"
             />

@@ -3,7 +3,7 @@ import { getRoomList } from '@/api/room'
 import ButtonAtom from '@/components/atoms/ButtonAtom.vue'
 import { ref, watch, type Ref, onMounted } from 'vue'
 import type { Handler, DataHandler } from '@/types/common'
-import type { RoomInfoTypeTest } from '@/types/room'
+import type { RoomInfoType } from '@/types/room'
 import RoomCard from '@/components/molecules/main/RoomCard.vue'
 import RoomCreateCard from '@/components/molecules/main/RoomCreateCard.vue'
 import { useRouter } from 'vue-router'
@@ -15,98 +15,7 @@ const emit = defineEmits(['submit-button-handle'])
 /**
  * dummy data
  */
-const roomInfoList = ref<Array<RoomInfoTypeTest>>([
-    // {
-    //     roomNo: 1,
-    //     title: 'SSAFY 10기 1반',
-    //     nickname: '고구마',
-    //     peopleNumber: 60,
-    //     like: true,
-    //     roomStartAt: '2024/01/15 00:00:00',
-    //     roomEndAt: '2024/01/30 00:00:00',
-    //     roomStatus: '참여중'
-    // },
-    // {
-    //     roomNo: 2,
-    //     title: 'SSAFY 10기 2반',
-    //     nickname: '고구마',
-    //     peopleNumber: 60,
-    //     like: false,
-    //     roomStartAt: '2024/01/15 00:00:00',
-    //     roomEndAt: '2024/01/25 00:00:00',
-    //     roomStatus: '종료'
-    // },
-    // {
-    //     roomNo: 3,
-    //     title: 'SSAFY 10기 3반',
-    //     nickname: '고구마',
-    //     peopleNumber: 60,
-    //     like: false,
-    //     roomStartAt: '2024/01/14 00:00:00',
-    //     roomEndAt: '2024/01/25 00:00:00',
-    //     roomStatus: '참여중'
-    // },
-    // {
-    //     roomNo: 4,
-    //     title: 'SSAFY 10기 4반',
-    //     nickname: '고구마',
-    //     peopleNumber: 60,
-    //     like: false,
-    //     roomStartAt: '2024/01/14 00:00:00',
-    //     roomEndAt: '2024/01/25 00:00:00',
-    //     roomStatus: '참여중'
-    // },
-    // {
-    //     roomNo: 5,
-    //     title: 'SSAFY 10기 5반',
-    //     nickname: '고구마',
-    //     peopleNumber: 60,
-    //     like: true,
-    //     roomStartAt: '2024/01/15 00:00:00',
-    //     roomEndAt: '2024/03/15 00:00:00',
-    //     roomStatus: '종료'
-    // },
-    // {
-    //     roomNo: 6,
-    //     title: 'SSAFY 10기 6반',
-    //     nickname: '고구마',
-    //     peopleNumber: 60,
-    //     like: true,
-    //     roomStartAt: '2024/01/15 00:00:00',
-    //     roomEndAt: '2024/03/15 00:00:00',
-    //     roomStatus: '종료'
-    // },
-    // {
-    //     roomNo: 7,
-    //     title: 'SSAFY 10기 7반',
-    //     nickname: '고구마',
-    //     peopleNumber: 60,
-    //     like: false,
-    //     roomStartAt: '2024/01/10 00:00:00',
-    //     roomEndAt: '2024/01/15 00:00:00',
-    //     roomStatus: '종료'
-    // },
-    // {
-    //     roomNo: 8,
-    //     title: 'SSAFY 10기 8반',
-    //     nickname: '고구마',
-    //     peopleNumber: 60,
-    //     like: true,
-    //     roomStartAt: '2024/01/15 00:00:00',
-    //     roomEndAt: '2024/03/15 00:00:00',
-    //     roomStatus: '종료'
-    // },
-    // {
-    //     roomNo: 9,
-    //     title: '방 이름이 아주 길다면 어떻게 될까요',
-    //     nickname: '닉네임도 길수도 있겠지요',
-    //     peopleNumber: 5,
-    //     like: false,
-    //     roomStartAt: '2024/01/15 00:00:00',
-    //     roomEndAt: '2024/03/15 00:00:00',
-    //     roomStatus: '종료'
-    // }
-])
+const roomInfoList = ref<Array<RoomInfoType>>([])
 const SelectState = {
     ALL: 'all',
     WAITING: 'waiting',
@@ -118,29 +27,29 @@ const selectState: Ref<string> = ref(SelectState.ALL)
 watch(selectState, () => {
     alert('방 불러오기 이벤트 발생!!!')
 })
-const filteredRoomList = ref({
-    all: roomInfoList.value,
-    waiting: roomInfoList.value.filter((room: RoomInfoTypeTest) => {
-        if (room['roomStatus'] === 'waiting') {
-            return room
-        }
-    }),
-    in_progress: roomInfoList.value.filter((room: RoomInfoTypeTest) => {
-        if (room['roomStatus'] === '참여중') {
-            return room
-        }
-    }),
-    terminated: roomInfoList.value.filter((room: RoomInfoTypeTest) => {
-        if (room['roomStatus'] === '종료') {
-            return room
-        }
-    }),
-    favorites: roomInfoList.value.filter((room: RoomInfoTypeTest) => {
-        if (room['like']) {
-            return room
-        }
-    })
-})
+// const filteredRoomList = ref({
+//     all: roomInfoList.value,
+//     waiting: roomInfoList.value.filter((room: RoomInfoType) => {
+//         if (room['roomStatus'] === 'waiting') {
+//             return room
+//         }
+//     }),
+//     in_progress: roomInfoList.value.filter((room: RoomInfoType) => {
+//         if (room['roomStatus'] === '참여중') {
+//             return room
+//         }
+//     }),
+//     terminated: roomInfoList.value.filter((room: RoomInfoType) => {
+//         if (room['roomStatus'] === '종료') {
+//             return room
+//         }
+//     }),
+//     favorites: roomInfoList.value.filter((room: RoomInfoType) => {
+//         if (room['like']) {
+//             return room
+//         }
+//     })
+// })
 const roomEnterHandler: DataHandler<number> = (roomNo: number) => {
     // alert(roomNo + '번 방 입장 이벤트')
     router.push('/game/' + roomNo)
@@ -148,15 +57,15 @@ const roomEnterHandler: DataHandler<number> = (roomNo: number) => {
 const roomFavoriteHandler: DataHandler<number> = (roomNo: number) => {
     alert(roomNo + '번 방 즐겨찾기 추가 이벤트')
 }
-const roomFavoriteHandlerTest: DataHandler<RoomInfoTypeTest> = (roomInfo: RoomInfoTypeTest) => {
-    roomInfo.like = !roomInfo.like
+const roomFavoriteHandlerTest: DataHandler<RoomInfoType> = (roomInfo: RoomInfoType) => {
+    roomInfo.bookmarkYn = !roomInfo.bookmarkYn
 }
 const roomLeaveHandler: DataHandler<number> = (roomNo: number) => {
     alert(roomNo + '번 방 삭제 이벤트')
 }
 const roomLeaveHandlerTest: DataHandler<number> = (roomNo: number) => {
     alert(roomNo + '번 방 삭제 이벤트')
-    roomInfoList.value = roomInfoList.value.filter((room: RoomInfoTypeTest) => {
+    roomInfoList.value = roomInfoList.value.filter((room: RoomInfoType) => {
         if (room['roomNo'] !== roomNo) {
             return room
         }

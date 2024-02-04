@@ -48,7 +48,7 @@
 }
 
 @layer utilities {
-    .no-scrollbar::-webkit-scrollbar {
+    .no-scrollbar {
         display: none;
         -ms-overflow-style: none; /* IE and Edge */
         scrollbar-width: none; /* Firefox */
@@ -105,9 +105,9 @@
         width: 0;
         z-index: 1;
         right: 30px;
-        border: medium solid white;
+        border: medium solid inherit;
         border-width: 10px 0 10px 10px;
-        border-color: transparent transparent transparent white;
+        border-color: transparent transparent transparent inherit;
     }
 
     /* Add arrows to the right container (pointing left) */
@@ -186,6 +186,16 @@
         margin: 0;
         padding: 0;
         box-sizing: border-box;
+        -webkit-user-select: none;
+        -khtml-user-select: none;
+        -moz-user-select: none;
+        -o-user-select: none;
+        user-select: none;
+        -webkit-user-drag: none;
+        -khtml-user-drag: none;
+        -moz-user-drag: none;
+        -o-user-drag: none;
+        user-drag: none;
     }
 
     button {

@@ -28,11 +28,11 @@ async function signup(
 }
 
 async function getUser(
-    param: string,
+    userNo: number,
     success: (response: AxiosResponse) => void,
     fail: (error: any) => void
 ) {
-    userInstance.get(`/users/${param}`).then(success).catch(fail)
+    userInstance.get(`/users/${userNo}`).then(success).catch(fail)
 }
 
 async function withdraw(

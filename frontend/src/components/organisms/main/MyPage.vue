@@ -3,15 +3,19 @@ import ButtonAtom from '@/components/atoms/ButtonAtom.vue'
 import InputBox from '@/components/molecules/common/InputBox.vue'
 import TextAtom from '@/components/atoms/TextAtom.vue'
 import AvatarAtom from '@/components/atoms/AvatarAtom.vue'
-import { ref, type Ref } from 'vue'
+import { onMounted, ref, type Ref } from 'vue'
 import type { Handler } from '@/types/common'
 import type { MyPageUserDataType } from '@/types/user'
 import CloseButtonAtom from '@/components/atoms/CloseButtonAtom.vue'
+import { getUser } from '@/api/user'
+import { useUserStore } from '@/stores/user'
 
+const userStore = useUserStore()
+const userNo: number = userStore.userInfo.id
 const emit = defineEmits(['passwordChangeHandle', 'withdrawalHandle', 'closeButtonHandle'])
 const userInfo: Ref<MyPageUserDataType> = ref({
-    email: 'test@secreto.com',
-    nickname: '테스트유저',
+    email: '',
+    nickname: '',
     profileUrl: null
 })
 const profileImageChangeHandler: Handler = () => {
@@ -31,6 +35,21 @@ const changePasswordButtonHandler: Handler = () => {
 const withdrawalButtonHandler: Handler = () => {
     emit('withdrawalHandle')
 }
+
+onMounted(() => {
+    getUser(
+        userNo,
+        (response) => {
+            const data = response.data
+            console.log('유저 정보 조회:', data.message)
+            console.log(data.result)
+            userInfo.value.email = data.result.email
+            userInfo.value.nickname = data.result.nickname
+            userInfo.value.profileUrl = data.result.profileUrl
+        },
+        (error) => {}
+    )
+})
 </script>
 
 <template>

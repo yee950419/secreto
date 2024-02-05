@@ -5,8 +5,9 @@ import { storeToRefs } from 'pinia'
 import RoomView from '@/components/pages/RoomView.vue'
 import WithdrawalSuccessPage from '@/components/pages/WithdrawalSuccessPage.vue'
 import ResetPasswordPage from '@/components/pages/ResetPasswordPage.vue'
+
 const router = createRouter({
-    history: createWebHashHistory(),
+    history: createWebHistory(),
     routes: [
         {
             path: '/',
@@ -59,6 +60,7 @@ const router = createRouter({
             path: '/find_password',
             name: 'find_password',
             component: ResetPasswordPage,
+
             meta: {
                 hide: true
             }
@@ -83,7 +85,7 @@ const router = createRouter({
                 {
                     path: 'mission',
                     name: 'game-mission',
-                    component: () => import('@/components/pages/UserMission.vue')
+                    component: sswTestVue
                 },
                 {
                     path: 'participate',
@@ -146,14 +148,6 @@ const router = createRouter({
             path: '/roomsettings',
             name: 'roomsettings',
             component: () => import('@/components/pages/RoomSetting.vue'),
-            meta: {
-                hide: true
-            }
-        },
-        {
-            path: '/test',
-            name: 'test',
-            component: sswTestVue,
             meta: {
                 hide: true
             }

@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import NavBar from '@/components/organisms/common/NavBar.vue'
 import { ref, watch, onMounted } from 'vue'
 import TextAtom from '@/components/atoms/TextAtom.vue'
 import HistoryCard from '@/components/organisms/game/HistoryCard.vue'

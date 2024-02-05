@@ -5,6 +5,8 @@ import ButtonAtom from '@/components/atoms/ButtonAtom.vue'
 import BadgeAtom from '@/components/atoms/BadgeAtom.vue'
 import { ReloadOutlined } from '@ant-design/icons-vue'
 import type { DataHandler, Handler } from '@/types/common'
+import ModalTemplate from '@/components/template/ModalTemplate.vue'
+import RoomMissionModalContent from '@/components/organisms/modal/RoomMissionModalContent.vue'
 // import { Card } from 'ant-design-vue'
 
 const missions = ref<Array<UserMission>>([
@@ -41,6 +43,13 @@ const roomMissions = ref<Array<RoomMission>>([
     },
     {
         content: '미션3'
+    },
+    {
+        content: '미션4'
+    },
+    {
+        content:
+            'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc ut blandit massa. Suspendisse urna turpis, tempus eget tempus et, viverra at mauris. Fusce vitae nulla viverra, eleifend nulla eget, convallis lorem. Mauris condimentum tincidunt urna nec gravida. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Maecenas placerat et mauris vitae imperdiet. Proin auctor nunc quis finibus elementum. Fusce fringilla porttitor iaculis. Donec finibus sem ac ex euismod mattis. Etiam porta ultrices viverra. Nulla facilisi. Morbi rhoncus, mi vel scelerisque porta, mi nibh facilisis mauris, vitae efficitur justo purus a ante.'
     }
 ])
 const roomMissionsModalOpen = ref<boolean>(false)
@@ -53,16 +62,19 @@ const goToMissionCertificationPage: DataHandler<UserMission> = (mission) => {
 const modalOpenHandler: Handler = () => {
     roomMissionsModalOpen.value = true
 }
+const modalCloseHandler: Handler = () => {
+    roomMissionsModalOpen.value = false
+}
 </script>
 
 <template>
-    <div class="flex flex-col w-full bg-A805RealWhite">
+    <div name="header" class="flex flex-col w-full bg-A805RealWhite">
         <div
             name="mission-header"
             class="flex justify-between items-center md:px-5 md:py-6 px-3 py-5 w-full md:min-w-[980px] overflow-x-auto"
         >
             <div class="flex items-center gap-5 md:gap-10">
-                <div>
+                <div name="now-mission">
                     <h1 class="flex text-[24pt] max-md:text-[12pt]">
                         <p class="me-3">진행 중인 미션:</p>
                         <p>
@@ -86,11 +98,12 @@ const modalOpenHandler: Handler = () => {
             >
         </div>
         <hr />
-        <div class="flex max-md:flex-col text-[20pt]">
+        <div name="content" class="flex max-md:flex-col text-[20pt]">
             <div name="user-mission-list" class="w-full max-md:w-full overflow-auto">
                 <!-- 마니또 변경 기능을 위한 v-for 추가 필요 -->
-                <div class="md:p-4">
+                <div name="multiple-manito" class="md:p-4">
                     <div
+                        name="person`s missions"
                         v-for="(mission, missionIndex) in missions"
                         :key="missionIndex"
                         class="flex gap-7 content-center items-start mb-3 p-3 max-md:justify-between"
@@ -135,5 +148,12 @@ const modalOpenHandler: Handler = () => {
                 </div>
             </div>
         </div>
+        <ModalTemplate
+            custom-id="modal"
+            custom-class="modal-template-style-1 w-[350px]"
+            :seen="roomMissionsModalOpen"
+            @modal-close="modalCloseHandler"
+            ><RoomMissionModalContent :missions="roomMissions"
+        /></ModalTemplate>
     </div>
 </template>

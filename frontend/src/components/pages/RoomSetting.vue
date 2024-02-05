@@ -18,7 +18,7 @@ import dayjs from 'dayjs'
 import { getSystemMission } from '@/api/mission'
 import { DatePicker, Calendar } from 'ant-design-vue'
 import { getRoom } from '@/api/room'
-
+import defaultImage from '@/assets/images/default-avatar.png'
 const dummyList = ref([
     {
         id: 1,

@@ -96,12 +96,11 @@ async function changePasswordConfirm(
 }
 
 async function resetPassword(
-    password: string,
-    userId: string,
+    param: object,
     success: (response: AxiosResponse) => void,
     fail: (error: any) => void
 ) {
-    userInstance.post(`/users/change/reset/${userId}`, password).then(success).catch(fail)
+    userInstance.put(`/users/password/reset`, param).then(success).catch(fail)
 }
 
 async function regenerateToken(

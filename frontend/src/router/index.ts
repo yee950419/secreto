@@ -4,6 +4,7 @@ import { useUserStore } from '@/stores/user'
 import { storeToRefs } from 'pinia'
 import RoomView from '@/components/pages/RoomView.vue'
 import WithdrawalSuccessPage from '@/components/pages/WithdrawalSuccessPage.vue'
+import ResetPasswordPage from '@/components/pages/ResetPasswordPage.vue'
 const router = createRouter({
     history: createWebHashHistory(),
     routes: [
@@ -50,6 +51,14 @@ const router = createRouter({
             path: '/withdrawal',
             name: 'withdrawal',
             component: WithdrawalSuccessPage,
+            meta: {
+                hide: true
+            }
+        },
+        {
+            path: '/find_password',
+            name: 'find_password',
+            component: ResetPasswordPage,
             meta: {
                 hide: true
             }

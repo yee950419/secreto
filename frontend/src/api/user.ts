@@ -27,6 +27,22 @@ async function signup(
     userInstance.post(`/users/sign-up`, param).then(success).catch(fail)
 }
 
+async function signUpEmailVerificaionMailSend(
+    email: string,
+    success: (response: AxiosResponse) => void,
+    fail: (error: any) => void
+) {
+    userInstance.get(`/cert/${email}`).then(success).catch(fail)
+}
+
+async function signUpEmailVerify(
+    param: object,
+    success: (response: AxiosResponse) => void,
+    fail: (error: any) => void
+) {
+    userInstance.post(`/cert`, param).then(success).catch(fail)
+}
+
 async function getUser(success: (response: AxiosResponse) => void, fail: (error: any) => void) {
     userInstance.get(`/users`).then(success).catch(fail)
 }
@@ -100,6 +116,8 @@ export {
     login,
     logout,
     signup,
+    signUpEmailVerificaionMailSend,
+    signUpEmailVerify,
     withdraw,
     modify,
     changePassword,

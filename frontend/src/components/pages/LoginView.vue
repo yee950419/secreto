@@ -6,11 +6,13 @@ import MainCard from '@/components/organisms/main/MainCard.vue'
 import WideCardTemplate from '@/components/template/WideCardTemplate.vue'
 import ServiceFeature from '@/components/molecules/main/ServiceFeature.vue'
 import type { DataHandler, Handler, WideCardTemplateType } from '@/types/common'
-import type { LoginRequestType, PasswordFindMailRequest } from '@/types/user'
+import type { PasswordFindMailRequest } from '@/types/user'
 import type { Ref } from 'vue'
 import { ref } from 'vue'
 import { ViewState, useUserStore } from '@/stores/user'
 import { storeToRefs } from 'pinia'
+import ModalTemplate from '../template/ModalTemplate.vue'
+import YesModalContent from '../organisms/modal/YesModalContent.vue'
 
 const userStore = useUserStore()
 const { viewState } = storeToRefs(userStore)
@@ -50,10 +52,6 @@ const template: Ref<WideCardTemplateType> = ref({
 })
 
 // login view
-const loginHandler: DataHandler<LoginRequestType> = (loginRequest: LoginRequestType) => {
-    console.log('여기서 처리 가능?')
-    console.log(JSON.stringify(loginRequest))
-}
 const googleLoginHandler: Handler = () => {
     alert('google login')
 }
@@ -69,16 +67,10 @@ const cardCloseHandler: Handler = () => {
     buttonLabel.value = ButtonLabel.START
 }
 
-// join view
-const joinHandler: Handler = () => {
-    console.log('join handler')
-}
-
 // find password view
 const findPasswordEmailSendSuccessHandler: DataHandler<PasswordFindMailRequest> = (
     findRequest: PasswordFindMailRequest
 ) => {
-    alert('send email')
     console.log(JSON.stringify(findRequest))
     template.value.title = 'Verify Please'
     template.value.contentMessages = [
@@ -96,8 +88,24 @@ const findPasswordPrevPageHandler: Handler = () => {
     viewState.value = ViewState.LOGIN
     buttonLabel.value = ButtonLabel.JOIN
 }
-const mainCard = ref<HTMLElement | null>(null)
-console.log(mainCard.value)
+
+// modal
+const yesModalSeen: Ref<boolean> = ref(false)
+const yesModalTitle: Ref<string> = ref('')
+const yesModalContent: Ref<string> = ref('')
+const yesModalClose = () => {
+    yesModalTitle.value = ''
+    yesModalContent.value = ''
+    yesModalSeen.value = false
+}
+const yesModalButtonHandler: Ref<(() => void) | undefined> = ref(yesModalClose)
+const yesModalOpen = (title: string, content: string, buttonHandler?: () => void) => {
+    yesModalTitle.value = title
+    yesModalContent.value = content
+    yesModalSeen.value = true
+    if (buttonHandler) yesModalButtonHandler.value = buttonHandler
+    else yesModalButtonHandler.value = yesModalClose
+}
 </script>
 
 <template>
@@ -105,7 +113,6 @@ console.log(mainCard.value)
         <div class="card-template-container max-md:bg-A805Cream max-md:flex-col">
             <MainCard
                 class="max-md:max-w-full max-md:h-full"
-                ref="mainCard"
                 :class="viewState !== ViewState.MAIN ? 'max-md:hidden' : ''"
                 v-if="viewState !== ViewState.TEMPLATE"
                 @button-click="buttonClickHandler"
@@ -116,7 +123,6 @@ console.log(mainCard.value)
             <LoginForm
                 class="max-md:max-w-full max-md:max-h-full max-md:h-full max-md:w-full"
                 v-if="viewState === ViewState.LOGIN"
-                @login-handle="loginHandler"
                 @google-login-handle="googleLoginHandler"
                 @kakao-login-handle="kakaoLoginHandler"
                 @find-password-handle="findPasswordHandler"
@@ -126,9 +132,18 @@ console.log(mainCard.value)
             <JoinForm
                 class="max-md:max-w-full max-md:max-h-full max-md:h-full max-md:w-full"
                 v-if="viewState === ViewState.JOIN"
-                @join-submit-handle="joinHandler"
                 @close-button-handle="cardCloseHandler"
                 @go-login-button-handle="buttonClickHandler"
+                @join-success-handle="
+                    (message: string) => {
+                        yesModalOpen('Success', message, () => {
+                            buttonClickHandler()
+                            yesModalClose()
+                        })
+                    }
+                "
+                @success-handle="(message: string) => yesModalOpen('Success', message)"
+                @fail-handle="(message: string) => yesModalOpen('Fail', message)"
             />
             <FindPasswordForm
                 class="max-md:max-w-full max-md:max-h-full max-md:h-full max-md:w-full"
@@ -136,6 +151,8 @@ console.log(mainCard.value)
                 @email-send-success-handle="findPasswordEmailSendSuccessHandler"
                 @prev-page-handle="findPasswordPrevPageHandler"
                 @close-button-handle="buttonClickHandler"
+                @success-handle="(message: string) => yesModalOpen('Success', message)"
+                @fail-handle="(message: string) => yesModalOpen('Fail', message)"
             />
             <WideCardTemplate
                 class="max-md:max-w-full max-md:max-h-full max-md:h-full max-md:w-full"
@@ -147,5 +164,19 @@ console.log(mainCard.value)
                 @close-button-handle="template.buttonClickHandler"
             />
         </div>
+
+        <ModalTemplate
+            custom-id="yesModal"
+            custom-class="modal-template-style-1 w-[350px]"
+            :seen="yesModalSeen"
+            v-if="yesModalSeen"
+            @modal-close="yesModalClose"
+        >
+            <YesModalContent
+                @yes-button-handle="yesModalButtonHandler"
+                :content-title="yesModalTitle"
+                :content-message="yesModalContent"
+            />
+        </ModalTemplate>
     </div>
 </template>

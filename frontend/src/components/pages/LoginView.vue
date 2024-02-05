@@ -8,7 +8,7 @@ import ServiceFeature from '@/components/molecules/main/ServiceFeature.vue'
 import type { DataHandler, Handler, WideCardTemplateType } from '@/types/common'
 import type { PasswordFindMailRequest } from '@/types/user'
 import type { Ref } from 'vue'
-import { ref } from 'vue'
+import { onMounted, ref } from 'vue'
 import { ViewState, useUserStore } from '@/stores/user'
 import { storeToRefs } from 'pinia'
 import ModalTemplate from '../template/ModalTemplate.vue'
@@ -24,7 +24,6 @@ const ButtonLabel = Object.freeze({
     ENTER: 'enter'
 })
 const buttonLabel: Ref<string> = ref(ButtonLabel.START)
-
 const buttonClickHandler: Handler = () => {
     switch (viewState.value) {
         case ViewState.MAIN:
@@ -106,10 +105,16 @@ const yesModalOpen = (title: string, content: string, buttonHandler?: () => void
     if (buttonHandler) yesModalButtonHandler.value = buttonHandler
     else yesModalButtonHandler.value = yesModalClose
 }
+
+onMounted(() => {
+    if (viewState.value === ViewState.TEMPLATE) {
+        viewState.value = ViewState.MAIN
+    }
+})
 </script>
 
 <template>
-    <div class="bg-A805White h-full w-full flex justify-center items-center">
+    <div class="bg-A805White h-full w-full flex justify-center items-center min-h-[500px]">
         <div class="card-template-container max-md:bg-A805Cream max-md:flex-col">
             <MainCard
                 class="max-md:max-w-full max-md:h-full"

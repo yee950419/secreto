@@ -21,6 +21,7 @@
     --A805Green: #01d04c;
     --A805Khaki: #3d4a3d;
     --A805Grey: #bbbbbb;
+    --A805Navy: #01539f;
     --A805Blue: #0085ff;
     --A805LightBlue: #00b8ff;
     --A805DarkGrey: #858585;
@@ -255,12 +256,11 @@
         align-items: center;
         max-height: 90%;
         max-width: 45%;
+        min-height: 500px;
+        min-width: 400px;
         width: 70vh;
         aspect-ratio: 4/5;
         padding: 20px;
-        box-shadow: 3px 3px 10px 0px rgba(0, 0, 0, 0.2);
-        -webkit-box-shadow: 3px 3px 10px 0px rgba(0, 0, 0, 0.2);
-        -moz-box-shadow: 3px 3px 10px 0px rgba(0, 0, 0, 0.2);
     }
 
     .wide-card-container {
@@ -274,6 +274,8 @@
         max-width: 90%;
         width: 140vh;
         aspect-ratio: 8/5;
+        min-height: 500px;
+        min-width: 800px;
         padding: 20px;
         box-shadow: 3px 3px 10px 0px rgba(0, 0, 0, 0.2);
         -webkit-box-shadow: 3px 3px 10px 0px rgba(0, 0, 0, 0.2);
@@ -558,6 +560,15 @@
 
     .button-blue:hover {
         background-color: var(--A805Blue);
+    }
+
+    .button-navy {
+        background-color: var(--A805Blue);
+    }
+
+    .button-navy:hover {
+        background-color: var(--A805Navy);
+        color: var(--A805RealWhite);
     }
 
     .border-khaki {

@@ -116,7 +116,7 @@ onUnmounted(() => {
 </script>
 
 <template>
-    <div class="flex flex-1 bg-A805RealWhite">
+    <div class="flex flex-1 bg-A805RealWhite scroll-smooth z-10">
         <div v-for="room in chatRooms" :key="room.name">
             <ChatRoom
                 :name="room.name"

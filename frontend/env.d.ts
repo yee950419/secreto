@@ -6,3 +6,4 @@ declare namespace NodeJS {
     }
 }
 declare module 'vuewordcloud'
+declare module 'event-source-polyfill'

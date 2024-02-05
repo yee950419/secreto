@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import ButtonAtom from '@/components/atoms/ButtonAtom.vue'
-import BoardWriteEditor from '@/components/molecules/board/BoardWriteEditor.vue'
+import { QuillEditor } from '@vueup/vue-quill'
+import '@vueup/vue-quill/dist/vue-quill.snow.css'
 import CheckBox from '@/components/molecules/common/CheckBox.vue'
 import InputBox from '@/components/molecules/common/InputBox.vue'
 import SelectBox from '@/components/molecules/common/SelectBox.vue'
@@ -16,10 +17,6 @@ const boardWriteRequest: Ref<BoardWriteRequestType> = ref({
     publicYn: true,
     missionCategory: ''
 })
-
-const setContent = (data: string) => {
-    boardWriteRequest.value.content = data
-}
 const submitButtonHandle = () => {
     alert(boardWriteRequest.value.title)
     alert(boardWriteRequest.value.content)
@@ -34,7 +31,7 @@ const submitButtonHandle = () => {
             <div class="flex flex-col gap-[15px] border border-A805LightGrey p-5 rounded-sm">
                 <div class="flex justify-between h-[30px]">
                     <SelectBox
-                        class="w-[70%]"
+                        class="w-[80%]"
                         :options="[{ label: '미션을 선택해 주세요.', value: 0 }]"
                     />
                     <CheckBox class="w-[20%] gap-[10px] justify-end" custom-id="publicYn"
@@ -51,7 +48,14 @@ const submitButtonHandle = () => {
                     v-model="boardWriteRequest.title"
                 ></InputBox>
             </div>
-            <BoardWriteEditor :data="boardWriteRequest.content" @setContent="setContent" />
+            <div class="w-full h-[400px] mb-16">
+                <QuillEditor
+                    theme="snow"
+                    toolbar="full"
+                    v-model:content="boardWriteRequest.content"
+                    content-type="html"
+                />
+            </div>
             <div class="flex justify-end">
                 <ButtonAtom
                     custom-class="button-style-4 button-claret text-[18px] font-bold flex justify-center items-center gap-[5px] max-md:w-full"

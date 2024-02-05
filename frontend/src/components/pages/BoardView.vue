@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import BoardList from '@/components/template/board/BoardList.vue'
-import BoardDetail from '@/components/template/board/BoardDetail.vue'
-import BoardWrite from '../template/board/BoardWrite.vue'
+import BoardList from '@/components/pages/board/BoardListPage.vue'
+import BoardDetail from '@/components/pages/board/BoardDetailPage.vue'
+import BoardWrite from '@/components/pages/board/BoardWritePage.vue'
 </script>
 
 <template>

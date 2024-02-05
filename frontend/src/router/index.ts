@@ -73,13 +73,13 @@ const router = createRouter({
                 {
                     path: 'board',
                     name: 'game-board',
-                    component: () => import('@/components/template/board/BoardList.vue'),
+                    component: () => import('@/components/pages/board/BoardListPage.vue'),
                     props: true
                 },
                 {
                     path: 'post',
                     name: 'game-board-post',
-                    component: () => import('@/components/template/board/BoardDetail.vue'),
+                    component: () => import('@/components/pages/board/BoardDetailPage.vue'),
                     props: true
                 },
                 {

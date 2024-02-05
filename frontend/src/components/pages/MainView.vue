@@ -17,11 +17,10 @@ import type { RoomCreateRequestType } from '@/types/room'
 import { useUserStore } from '@/stores/user'
 import MobileMiniHeader from '@/components/molecules/main/MobileMiniHeader.vue'
 import InputBox from '@/components/molecules/common/InputBox.vue'
-import HeaderProfile from '@/components/molecules/common/HeaderProfile.vue'
 import ServiceFeature from '@/components/molecules/main/ServiceFeature.vue'
 import { useRouter } from 'vue-router'
 import YesModalContent from '@/components/organisms/modal/YesModalContent.vue'
-import ButtonAtom from '@/components/atoms/ButtonAtom.vue'
+import MainCardProfile from '../molecules/main/MainCardProfile.vue'
 
 const router = useRouter()
 const userStore = useUserStore()
@@ -141,52 +140,55 @@ const profileClickHandler = () => {
 </script>
 
 <template>
-    <div class="bg-A805White h-full w-full flex justify-center items-center">
+    <div class="bg-A805White h-full w-full flex justify-center items-center min-h-[500px]">
         <div
             class="card-template-container max-md:w-full max-md:h-full max-md:bg-A805Cream max-md:flex-col"
         >
             <!-- pc -->
             <MainCard
-                class="max-md:hidden"
+                class="max-md:hidden shadow-rb"
                 v-if="state !== State.TEMPLATE"
                 @button-click="buttonClickHandler"
                 :button-label-ref="buttonLabel"
             >
-                <template v-if="state === State.MAIN_AFTER_LOGIN">
-                    <HeaderProfile
-                        :name="userStore.userInfo.nickname"
-                        :image-url="userStore.userInfo.profileUrl"
-                        custom-class="cursor-pointer"
+                <div
+                    v-if="state === State.MAIN_AFTER_LOGIN"
+                    class="flex flex-col justify-around items-center h-full pt-6"
+                >
+                    <MainCardProfile
+                        @my-page-handle="profileClickHandler"
+                        @logout-handle="userLogout"
                         @click="profileClickHandler"
                     />
-                    <div>
-                        <ButtonAtom @button-click="userLogout">로그아웃</ButtonAtom>
-                    </div>
                     <InputBox
                         custom-class="input-box-style-2 mt-[10px] bg-A805White w-[200px] h-[50px]"
                         input-class="text-center text-[24px]"
                         place-holder="초대코드 입력"
                     />
-                </template>
+                </div>
                 <ServiceFeature v-if="state !== State.MAIN_AFTER_LOGIN" />
             </MainCard>
 
-            <!-- mobile -->
-            <div class="w-full md:hidden">
-                <MobileMiniHeader class="my-2" @profile-click-handle="profileClickHandler" />
-                <MobileInvitationCodeBox
-                    v-show="state === State.MAIN_AFTER_LOGIN"
+            <div
+                class="card-container max-md:max-w-full max-md:max-h-full max-md:h-full max-md:w-full md:shadow-r p-0"
+                v-if="state === State.MAIN_AFTER_LOGIN"
+            >
+                <!-- mobile -->
+                <div class="w-full md:hidden bg-A805Cream">
+                    <MobileMiniHeader
+                        class="my-2"
+                        @my-page-handle="profileClickHandler"
+                        @logout-handle="userLogout"
+                    />
+                    <MobileInvitationCodeBox @submit-button-handle="buttonClickHandler" />
+                </div>
+                <RoomListView
+                    class="max-w-full w-full h-full max-h-full md:shadow-rb"
                     @submit-button-handle="buttonClickHandler"
                 />
             </div>
-
-            <RoomListView
-                class="max-md:max-w-full max-md:max-h-full max-md:h-full max-md:w-full"
-                v-if="state === State.MAIN_AFTER_LOGIN"
-                @submit-button-handle="buttonClickHandler"
-            />
             <MyPage
-                class="max-md:h-full max-md:w-full"
+                class="max-md:max-w-full max-md:max-h-full max-md:h-full max-md:w-full"
                 v-if="state === State.MY_PAGE"
                 @password-change-handle="() => (state = State.CHANGE_PWD)"
                 @close-button-handle="buttonClickHandler"
@@ -194,7 +196,7 @@ const profileClickHandler = () => {
                 @fail-handle="(message: string) => yesModalOpen('Fail', message)"
             />
             <ChangePasswordForm
-                class="max-md:max-w-full max-md:max-h-full max-md:h-full max-md:w-full"
+                class="max-md:max-w-full max-md:max-h-full max-md:h-full max-md:w-full md:shadow-rb"
                 v-if="state === State.CHANGE_PWD"
                 @prev-button-handle="() => (state = State.MY_PAGE)"
                 @close-button-handle="() => (state = State.MY_PAGE)"

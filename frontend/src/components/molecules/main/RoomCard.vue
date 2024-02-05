@@ -22,26 +22,26 @@ const deleteButtonClick: Handler = () => {
 
 <template>
     <div
-        class="bg-A805Cream w-[160px] h-[100px] rounded-lg shadow-rb cursor-pointer relative hover:scale-[102%] transition ease-in-out"
+        class="bg-A805Cream w-[45%] h-[8rem] max-md:max-w-[200px] rounded-lg shadow-rb cursor-pointer relative hover:scale-[102%] transition ease-in-out"
     >
         <div class="absolute top-[2px] left-[2px] flex gap-[5px] items-center">
             <BadgeAtom
-                custom-class="text-[12px] bg-A805Red text-A805White m-1 py-[1px] w-[45px] text-center"
+                custom-class="text-[1rem] bg-A805Red text-A805White m-1 py-[1px] w-[45px] text-center"
                 v-if="new Date(roomInfo.roomEndAt) > new Date()"
                 >참여중</BadgeAtom
             >
             <BadgeAtom
-                custom-class="text-[12px] bg-A805DarkGrey text-A805White m-1 py-[1px] w-[45px] text-center"
+                custom-class="text-[1rem] bg-A805DarkGrey text-A805White m-1 py-[1px] w-[45px] text-center"
                 v-else
                 >종료</BadgeAtom
             >
-            <TextAtom custom-class="text-[11px]">{{ $props.roomInfo.participantCnt }}명</TextAtom>
+            <TextAtom custom-class="text-[1.2rem]">{{ $props.roomInfo.participantCnt }}명</TextAtom>
         </div>
         <div class="flex flex-col justify-center items-center h-full pt-[20px] text-center">
-            <TextAtom custom-class="text-[18px] font-bold truncate w-full px-[15px]">{{
+            <TextAtom custom-class="text-[1.4rem] font-bold truncate w-full px-[15px]">{{
                 props.roomInfo.roomName
             }}</TextAtom>
-            <TextAtom custom-class="text-[14px] truncate w-full px-[30px]">
+            <TextAtom custom-class="text-[1.1rem] truncate w-full px-[30px]">
                 {{ props.roomInfo.nickname }}
             </TextAtom>
         </div>

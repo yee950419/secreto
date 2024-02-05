@@ -84,7 +84,9 @@ const joinButtonHandler: Handler = () => {
 </script>
 
 <template>
-    <div class="card-container scroll-container max-md:justify-center max-md:items-center">
+    <div
+        class="card-container scroll-container max-md:justify-center max-md:items-center md:shadow-rb"
+    >
         <CloseButtonAtom class="absolute top-2 right-2" @click="() => emit('closeButtonHandle')" />
         <TextAtom custom-class="text-[48px] font-Iceland">Join</TextAtom>
         <div class="w-full mb-[20px]">

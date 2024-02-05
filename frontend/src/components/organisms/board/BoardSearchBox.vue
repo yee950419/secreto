@@ -12,11 +12,9 @@ const searchButtonHandler: Handler = () => {
 </script>
 
 <template>
-    <div
-        class="flex justify-end gap-[10px] w-full max-md:flex-col max-md:px-[20px] mb-[20px] md:h-[35px]"
-    >
+    <div class="flex max-md:flex-col md:h-[35px] max-md:w-full">
         <SelectBox
-            custom-class="w-[120px] max-md:w-full h-[35px]"
+            custom-class="w-[120px] max-md:w-full h-[35px] me-2 rounded-none !border-A805LightGrey max-md:mb-2"
             button-class="!bg-A805Claret !text-A805Khaki text-[20px]"
             :options="[
                 { label: '글 제목', value: 'title' },
@@ -24,15 +22,18 @@ const searchButtonHandler: Handler = () => {
                 { label: '작성자명', value: 'writer' }
             ]"
         />
-        <InputBox
-            custom-class="input-box-style-2 line-khaki text-A805Black w-[390px] max-md:w-full md:h-full "
-            v-model="searchKeyword"
-        />
-        <ButtonAtom
-            custom-class="button-style-4 button-claret border-khaki text-A805Khaki w-[80px] max-md:w-full text-[18px] md:h-full "
-            @click="searchButtonHandler"
-            >검색</ButtonAtom
-        >
+        <div class="flex">
+            <InputBox
+                custom-class="line-lightGrey text-A805Black w-[390px] max-md:w-full md:h-full px-3 bg-A805RealWhite max-md:h-8"
+                v-model="searchKeyword"
+                place-holder="검색어를 입력해주세요"
+            />
+            <ButtonAtom
+                custom-class="button-claret text-A805Khaki w-[80px] text-[18px] md:h-full max-md:h-8"
+                @click="searchButtonHandler"
+                >검색</ButtonAtom
+            >
+        </div>
     </div>
 </template>
 

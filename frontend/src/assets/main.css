@@ -575,6 +575,10 @@
         border: 1px solid var(--A805Khaki);
     }
 
+    .border-darkGrey {
+        border: 1px solid var(--A805Khaki);
+    }
+
     .input-box-style-1 {
         border-radius: 30px;
         width: 100%;

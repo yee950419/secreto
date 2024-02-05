@@ -3,6 +3,7 @@ import { ref, type Ref } from 'vue'
 import type { UserMission, RoomMission } from '@/types/mission'
 import ButtonAtom from '@/components/atoms/ButtonAtom.vue'
 import BadgeAtom from '@/components/atoms/BadgeAtom.vue'
+import ModalTemplate from '@/components/template/ModalTemplate.vue'
 import { ReloadOutlined } from '@ant-design/icons-vue'
 import type { DataHandler, Handler } from '@/types/common'
 // import { Card } from 'ant-design-vue'
@@ -131,5 +132,11 @@ const goToMissionCertificationPage: DataHandler<UserMission> = (mission) => {
                 </div>
             </div>
         </div>
+        <ModalTemplate
+            custom-id="modal"
+            custom-class="modal-template-style-1 w-[350px]"
+            :seen="true"
+            ><input type="text"
+        /></ModalTemplate>
     </div>
 </template>

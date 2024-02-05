@@ -8,17 +8,32 @@ import type { PasswordFindMailRequest } from '@/types/user'
 import { findPasswordMailSend } from '@/api/user'
 import CloseButtonAtom from '@/components/atoms/CloseButtonAtom.vue'
 
-const emit = defineEmits(['emailSendSuccessHandle', 'prevPageHandle', 'closeButtonHandle'])
+const emit = defineEmits([
+    'emailSendSuccessHandle',
+    'prevPageHandle',
+    'closeButtonHandle',
+    'failHandle',
+    'successHandle'
+])
+
 const passwordFindMailRequest: Ref<PasswordFindMailRequest> = ref({
     email: ''
 })
 const findPasswordButtonHandler = () => {
+    console.log(passwordFindMailRequest.value)
     findPasswordMailSend(
-        passwordFindMailRequest,
+        passwordFindMailRequest.value,
         (response) => {
-            emit('emailSendSuccessHandle')
+            const data = response.data
+            if (data.status === 'OK') {
+                console.log(response.data)
+                emit('emailSendSuccessHandle', data.message)
+            }
         },
-        (error) => {}
+        (error) => {
+            console.error(error)
+            emit('failHandle', error.response.data.message)
+        }
     )
 }
 

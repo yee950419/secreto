@@ -13,7 +13,6 @@ const { userLogin } = userStore
 import CloseButtonAtom from '@/components/atoms/CloseButtonAtom.vue'
 
 const emit = defineEmits([
-    'afterLoginHandle',
     'kakaoLoginHandle',
     'googleLoginHandle',
     'findPasswordHandle',

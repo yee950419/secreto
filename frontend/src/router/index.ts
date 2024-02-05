@@ -149,6 +149,14 @@ const router = createRouter({
             meta: {
                 hide: true
             }
+        },
+        {
+            path: '/test',
+            name: 'test',
+            component: sswTestVue,
+            meta: {
+                hide: true
+            }
         }
     ]
 })

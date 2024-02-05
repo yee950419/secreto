@@ -2,7 +2,7 @@ import sswTestVue from '@/components/pages/sswTest.vue'
 import { createRouter, createWebHistory, createWebHashHistory } from 'vue-router'
 import { useUserStore } from '@/stores/user'
 import { storeToRefs } from 'pinia'
-import RoomView from '@/components/pages/RoomView.vue'
+import RoomPage from '@/components/pages/RoomPage.vue'
 import WithdrawalSuccessPage from '@/components/pages/WithdrawalSuccessPage.vue'
 import ResetPasswordPage from '@/components/pages/ResetPasswordPage.vue'
 
@@ -68,7 +68,7 @@ const router = createRouter({
         {
             path: '/game/:roomNo',
             name: 'game',
-            component: RoomView,
+            component: RoomPage,
             children: [
                 {
                     path: 'board',

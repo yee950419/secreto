@@ -10,6 +10,25 @@ async function createRoom(
     roomInstance.post(`/room`, JSON.stringify(param)).then(success).catch(fail)
 }
 
+// 초대코드로 룸 검증 
+async function checkRoom(
+    param : string,
+    success: (response: AxiosResponse) => void,
+    fail: (error: any) => void
+)
+{
+    roomInstance.get(`/room/enter?entryCode=${param}`, ).then(success).catch(fail)
+}
+
+async function enterRoom(
+    param: object,
+    success: (response: AxiosResponse) => void,
+    fail: (error: any) => void
+)
+{
+    roomInstance.post(`/room/enter`, JSON.stringify(param)).then(success).catch(fail)
+}
+
 async function getRoom(
     param: number,
     success: (response: AxiosResponse) => void,
@@ -38,4 +57,4 @@ async function getUserList(
     roomInstance.get(`/room/user/${param}`).then(success).catch(fail)
 }
 
-export { createRoom, getRoom, changeRoomName, getUserList, getRoomList }
+export { createRoom, getRoom, changeRoomName, getUserList, getRoomList, checkRoom, enterRoom }

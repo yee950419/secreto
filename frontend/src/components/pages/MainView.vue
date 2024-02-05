@@ -21,7 +21,7 @@ import ServiceFeature from '@/components/molecules/main/ServiceFeature.vue'
 import { useRouter } from 'vue-router'
 import YesModalContent from '@/components/organisms/modal/YesModalContent.vue'
 import MainCardProfile from '../molecules/main/MainCardProfile.vue'
-
+import { checkRoom, enterRoom } from '@/api/room'
 const router = useRouter()
 const userStore = useUserStore()
 const { userLogout } = userStore
@@ -79,6 +79,8 @@ const template: Ref<WideCardTemplateType> = ref({
     buttonClickHandler: null
 })
 
+const entryCode = ref('')
+
 // modal
 const modalSeen: Ref<boolean> = ref(false)
 const modalState: Ref<string> = ref(ModalState.NONE)
@@ -129,7 +131,26 @@ const roomLeaveHandler: DataHandler<number> = (roomNo: number) => {
     alert('방 나가기 ' + roomNo)
 }
 const roomEnterHandler: DataHandler<string> = (nickname: string) => {
-    alert('방 입장 ' + nickname)
+    // 방 입장 api
+    enterRoom({entryCode, nickname}, ({ data }) => {
+        console.log(entryCode, nickname)
+    }, (error) => {
+        console.error('error', error)
+    })
+    alert('방 입장 ' + nickname + entryCode.value)
+}
+
+const invitationCodeCheck = () => {
+    console.log('초대코드 검증!', entryCode.value)
+    checkRoom(entryCode.value, ({ data }) => {
+        buttonClickHandler('roomEnter')
+        console.log(data)
+    }, (error) => {
+        buttonClickHandler('roomEnter')
+        console.error('error', error)
+    })
+    // alert('초대코드 확인 ' + entryCode.value)
+
 }
 
 // main
@@ -146,9 +167,9 @@ const profileClickHandler = () => {
         >
             <!-- pc -->
             <MainCard
-                class="max-md:hidden shadow-rb"
+                class="max-md:hidden shadow-rb "
                 v-if="state !== State.TEMPLATE"
-                @button-click="buttonClickHandler"
+                @button-click="invitationCodeCheck"
                 :button-label-ref="buttonLabel"
             >
                 <div
@@ -163,6 +184,7 @@ const profileClickHandler = () => {
                         custom-class="input-box-style-2 mt-[10px] bg-A805White w-[200px] h-[50px]"
                         input-class="text-center text-[24px]"
                         place-holder="초대코드 입력"
+                        v-model="entryCode"
                     />
                 </div>
                 <ServiceFeature v-if="state !== State.MAIN_AFTER_LOGIN" />

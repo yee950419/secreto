@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { getRoomList } from '@/api/room'
 import ButtonAtom from '@/components/atoms/ButtonAtom.vue'
-import { ref, watch, type Ref, onMounted } from 'vue'
+import { ref, watch, type Ref, onMounted, onUnmounted } from 'vue'
 import type { Handler, DataHandler } from '@/types/common'
 import type { RoomInfoType } from '@/types/room'
 import RoomCard from '@/components/molecules/main/RoomCard.vue'

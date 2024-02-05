@@ -14,9 +14,19 @@ export type JoinRequestType = {
     nickname: string
 }
 
+export type JoinEmailVerificationRequestType = {
+    email: string
+    validateCode: string
+}
+
 export type ModifyRequestType = {
     nickname: string
     profileUrl: string | null
+}
+
+export type PasswordResetRequestType = {
+    password: string
+    validationCode: string
 }
 
 export type PasswordChangeRequest = {

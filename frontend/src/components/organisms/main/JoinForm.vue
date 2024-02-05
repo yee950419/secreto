@@ -4,43 +4,80 @@ import InputBox from '@/components/molecules/common/InputBox.vue'
 import ButtonInputBox from '@/components/molecules/common/ButtonInputBox.vue'
 import TextAtom from '@/components/atoms/TextAtom.vue'
 import { ref, type Ref } from 'vue'
-import type { Handler, DataHandler } from '@/types/common'
-import type { JoinRequestType } from '@/types/user'
-import { signup } from '@/api/user'
-import { useUserStore, ViewState } from '@/stores/user'
-import { storeToRefs } from 'pinia'
-
-const userStore = useUserStore()
-const { viewState } = storeToRefs(userStore)
-
+import type { Handler } from '@/types/common'
+import type { JoinRequestType, JoinEmailVerificationRequestType } from '@/types/user'
+import { signup, signUpEmailVerificaionMailSend, signUpEmailVerify } from '@/api/user'
 import CloseButtonAtom from '@/components/atoms/CloseButtonAtom.vue'
-const emit = defineEmits(['joinSubmitHandle', 'closeButtonHandle', 'goLoginButtonHandle'])
-const passwordConfirm: Ref<String> = ref('')
-const verificationCode: Ref<String> = ref('')
+
+const emit = defineEmits([
+    'closeButtonHandle',
+    'goLoginButtonHandle',
+    'failHandle',
+    'successHandle',
+    'joinSuccessHandle'
+])
+const passwordConfirm: Ref<string> = ref('')
+const verificationCode: Ref<string> = ref('')
 const joinRequest: Ref<JoinRequestType> = ref({
     email: '',
     password: '',
     nickname: ''
 })
-const emailVerificationButtonHandler: DataHandler<string> = (data: string) => {
-    alert(`send to : ${data}`)
+const emailVerificationButtonHandler = () => {
+    signUpEmailVerificaionMailSend(
+        joinRequest.value.email,
+        (response) => {
+            const data = response.data
+            if (data.status === 'OK') {
+                console.log(response.data)
+                emit('successHandle', data.message)
+            }
+        },
+        (error) => {
+            console.error(error)
+            emit('failHandle', error.response.data.message)
+        }
+    )
 }
-const verificationCodeButtonHandler: DataHandler<string> = (data: string) => {
-    alert(`verification code : ${data}`)
+const verificationCodeButtonHandler = () => {
+    const verificationRequest: JoinEmailVerificationRequestType = {
+        email: joinRequest.value.email,
+        validateCode: verificationCode.value
+    }
+
+    signUpEmailVerify(
+        verificationRequest,
+        (response) => {
+            const data = response.data
+            if (data.status === 'OK') {
+                console.log(response.data)
+                emit('successHandle', data.message)
+            }
+        },
+        (error) => {
+            console.error(error)
+            emit('failHandle', error.response.data.message)
+        }
+    )
 }
 const joinButtonHandler: Handler = () => {
     if (joinRequest.value.password !== passwordConfirm.value) {
-        alert('incorrect password confirm.')
+        emit('failHandle', '비밀번호 확인이 일치하지 않습니다.')
         return
     }
     signup(
         joinRequest.value,
         (response) => {
-            console.log(response)
-            viewState.value = ViewState.LOGIN
+            const data = response.data
+            if (data.status === 'OK') {
+                console.log(response.data)
+                emit('joinSuccessHandle', data.message)
+            }
         },
         (error) => {
-            console.log(error)
+            // alert(error.response.data.message)
+            console.error(error)
+            emit('failHandle', error.response.data.message)
         }
     )
 }

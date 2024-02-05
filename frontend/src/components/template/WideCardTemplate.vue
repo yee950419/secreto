@@ -5,7 +5,14 @@ import TextAtom from '@/components/atoms/TextAtom.vue'
 import type { Handler } from '@/types/common'
 import CloseButtonAtom from '@/components/atoms/CloseButtonAtom.vue'
 
-defineProps(['title', 'titleClass', 'contentMessages', 'contentClass', 'buttonLabel'])
+defineProps([
+    'title',
+    'titleClass',
+    'contentMessages',
+    'contentClass',
+    'buttonLabel',
+    'hideCloseButton'
+])
 const emit = defineEmits(['buttonClick', 'closeButtonHandle'])
 const handleClick: Handler = () => {
     emit('buttonClick')
@@ -14,7 +21,11 @@ const handleClick: Handler = () => {
 
 <template>
     <div class="wide-card-container max-md:justify-center">
-        <CloseButtonAtom class="absolute top-2 right-2" @click="() => emit('closeButtonHandle')" />
+        <CloseButtonAtom
+            class="absolute top-2 right-2"
+            @click="() => emit('closeButtonHandle')"
+            v-if="!hideCloseButton"
+        />
         <div class="flex flex-col items-center justify-between h-full w-full max-md:h-[500px]">
             <TextAtom custom-class="text-[48px] font-Iceland" :class="titleClass">{{
                 title

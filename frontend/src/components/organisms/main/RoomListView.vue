@@ -130,8 +130,9 @@ onMounted(() => {
             >
         </div>
         <div
-            class="w-full flex justify-around items-start flex-wrap gap-x-[10px] gap-y-[30px] my-[20px]"
+            class="w-full flex justify-between items-start flex-wrap gap-x-[10px] gap-y-[30px] my-[20px]"
         >
+            <RoomCreateCard @click="roomCreateHandler" />
             <RoomCard
                 v-for="roomInfo in roomInfoList"
                 :key="roomInfo.roomNo"
@@ -140,7 +141,6 @@ onMounted(() => {
                 @favorite-handle="() => roomFavoriteHandlerTest(roomInfo)"
                 @delete-handle="() => roomLeaveHandlerTest(roomInfo.roomNo)"
             />
-            <RoomCreateCard @click="roomCreateHandler" />
         </div>
     </div>
 </template>

@@ -105,7 +105,7 @@ onMounted(() => {
 </script>
 
 <template>
-    <div class="card-container max-md:justify-center max-md:items-center">
+    <div class="card-container max-md:justify-center max-md:items-center md:shadow-rb">
         <CloseButtonAtom class="absolute top-2 right-2" @click="() => emit('closeButtonHandle')" />
         <div class="flex h-full w-full justify-between flex-col items-center max-md:h-[500px]">
             <TextAtom custom-class="text-[48px] font-Iceland">My Page</TextAtom>
@@ -165,30 +165,30 @@ onMounted(() => {
                 >
             </div>
         </div>
-    </div>
 
-    <ModalTemplate
-        custom-id="modal"
-        custom-class="modal-template-style-1 w-[350px]"
-        :seen="withdrawModalSeen"
-        v-if="withdrawModalSeen"
-        @modal-close="modalToggle"
-    >
-        <AccountDeleteModalContent1
-            v-if="withdrawModalStep === 0"
-            @yes-button-handle="() => ++withdrawModalStep"
-            @no-button-handle="modalToggle"
-        />
-        <AccountDeleteModalContent2
-            v-if="withdrawModalStep === 1"
-            @yes-button-handle="() => ++withdrawModalStep"
-            @no-button-handle="modalToggle"
-        />
-        <AccountDeleteModalContent3
-            v-if="withdrawModalStep === 2"
-            @submit-button-handle="withdrawSubmitButtonHandle"
-        />
-    </ModalTemplate>
+        <ModalTemplate
+            custom-id="modal"
+            custom-class="modal-template-style-1 w-[350px]"
+            :seen="withdrawModalSeen"
+            v-if="withdrawModalSeen"
+            @modal-close="modalToggle"
+        >
+            <AccountDeleteModalContent1
+                v-if="withdrawModalStep === 0"
+                @yes-button-handle="() => ++withdrawModalStep"
+                @no-button-handle="modalToggle"
+            />
+            <AccountDeleteModalContent2
+                v-if="withdrawModalStep === 1"
+                @yes-button-handle="() => ++withdrawModalStep"
+                @no-button-handle="modalToggle"
+            />
+            <AccountDeleteModalContent3
+                v-if="withdrawModalStep === 2"
+                @submit-button-handle="withdrawSubmitButtonHandle"
+            />
+        </ModalTemplate>
+    </div>
 </template>
 
 <style scoped></style>

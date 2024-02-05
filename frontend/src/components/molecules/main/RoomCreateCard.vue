@@ -4,7 +4,7 @@ import TextAtom from '@/components/atoms/TextAtom.vue'
 
 <template>
     <div
-        class="bg-A805White w-[160px] h-[100px] rounded-lg shadow-rb cursor-pointer hover:scale-[102%] transition ease-in-out flex justify-center items-center border-solid border-A805DarkGrey border-4"
+        class="bg-A805White w-[45%] aspect-[5/3] rounded-lg shadow-rb cursor-pointer hover:scale-[102%] transition ease-in-out flex justify-center items-center border-solid border-A805DarkGrey border-4"
     >
         <div
             class="h-[50px] w-[50px] border-solid border-A805DarkGrey border-4 flex justify-center items-center rounded-full"

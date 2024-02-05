@@ -27,6 +27,22 @@ async function signup(
     userInstance.post(`/users/sign-up`, param).then(success).catch(fail)
 }
 
+async function signUpEmailVerificaionMailSend(
+    email: string,
+    success: (response: AxiosResponse) => void,
+    fail: (error: any) => void
+) {
+    userInstance.get(`/cert/${email}`).then(success).catch(fail)
+}
+
+async function signUpEmailVerify(
+    param: object,
+    success: (response: AxiosResponse) => void,
+    fail: (error: any) => void
+) {
+    userInstance.post(`/cert`, param).then(success).catch(fail)
+}
+
 async function getUser(success: (response: AxiosResponse) => void, fail: (error: any) => void) {
     userInstance.get(`/users`).then(success).catch(fail)
 }
@@ -80,12 +96,11 @@ async function changePasswordConfirm(
 }
 
 async function resetPassword(
-    password: string,
-    userId: string,
+    param: object,
     success: (response: AxiosResponse) => void,
     fail: (error: any) => void
 ) {
-    userInstance.post(`/users/change/reset/${userId}`, password).then(success).catch(fail)
+    userInstance.put(`/users/password/reset`, param).then(success).catch(fail)
 }
 
 async function regenerateToken(
@@ -100,6 +115,8 @@ export {
     login,
     logout,
     signup,
+    signUpEmailVerificaionMailSend,
+    signUpEmailVerify,
     withdraw,
     modify,
     changePassword,

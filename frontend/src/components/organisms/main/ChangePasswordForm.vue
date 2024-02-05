@@ -23,8 +23,11 @@ const changePasswordButtonHandler: Handler = () => {
     changePassword(
         passwordChangeRequest.value,
         (response) => {
-            console.log(response)
-            emit('successHandle')
+            const data = response.data
+            if (data.status === 'OK') {
+                console.log(response.data)
+                emit('successHandle', data.message)
+            }
         },
         (error) => {
             // alert(error.response.data.message)

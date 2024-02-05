@@ -1,12 +1,13 @@
 <script setup lang="ts">
 import NavBar from '@/components/organisms/common/NavBar.vue'
 import ChatRoom from '@/components/organisms/game/ChatRoom.vue'
-import { reactive, onMounted, ref } from 'vue'
+import { reactive, onMounted, onUnmounted, ref } from 'vue'
 import type { ChatRoomType } from '@/types/chat'
 import { getRoom } from '@/api/room'
 import { useRoute } from 'vue-router'
 import { useMenuStore } from '@/stores/menu'
 import { storeToRefs } from 'pinia'
+import { SSEConnect } from '@/api/sse'
 const menuStore = useMenuStore()
 const { menuSeen, isMobile } = storeToRefs(menuStore)
 import { provide, readonly } from 'vue'
@@ -16,6 +17,7 @@ const emit = defineEmits(['update-name'])
 const chatRooms = reactive<ChatRoomType[]>([])
 //라우터로 부터 방번호를 받아온다
 const route = useRoute()
+let eventSource: EventSource
 
 const roomUserInfo = ref<RoomUserInfoType>({
     roomNo: Number(route.params.roomNo),
@@ -52,6 +54,39 @@ const makeRoom = ({ name, imageUrl }: ChatRoomType) => {
     }
 }
 
+const SSEConnection = (roomUserNo: number) => {
+    console.log('SSEConnection', roomUserNo)
+    eventSource = SSEConnect(roomUserNo)
+
+    eventSource.onopen = () => {
+        console.log('Server Sent Event 연결이 열렸습니다.')
+    }
+
+    eventSource.onmessage = (event) => {
+        console.log('Server Sent Event 메시지를 받았습니다.', event.data)
+    }
+
+    // 서버로부터 알림 메시지가 오면 적절한 처리 로직을 수행
+    eventSource.addEventListener('alarm', (event) => {
+        console.log('새로운 알림이 도착했습니다', event.data)
+    })
+
+    eventSource.addEventListener('test', (event) => {
+        console.log('test')
+        const data = JSON.parse(event.data)
+        console.log(data)
+    })
+
+    // 서버로부터 채팅 메시지가 왔다는 메시지를 받으면 적절한 처리 로직을 수행
+    eventSource.addEventListener('chat', (event) => {
+        console.log('새로운 메시지가 도착했습니다.', event.data)
+    })
+
+    eventSource.addEventListener('error', (event) => {
+        console.error('Server Sent Event error:', event)
+    })
+}
+
 const getRoomData = async () => {
     console.log('방정보 호출')
     await getRoom(
@@ -63,6 +98,7 @@ const getRoomData = async () => {
             roomUserInfo.value.roomName = data.result.roomName
             roomUserNo.value = data.result.userInfo.roomUserNo
             updateRoomName(data.result.roomName)
+            SSEConnection(data.result.userInfo.roomUserNo)
         },
         (error) => {
             console.error('error', error)
@@ -70,8 +106,12 @@ const getRoomData = async () => {
     )
 }
 
-onMounted(() => {
-    getRoomData()
+onMounted(async () => {
+    await getRoomData()
+})
+
+onUnmounted(() => {
+    eventSource.close()
 })
 </script>
 

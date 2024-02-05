@@ -16,6 +16,7 @@
         "@ant-design/icons-vue": "^7.0.1",
         "ant-design-vue": "^4.1.2",
         "axios": "^1.6.5",
+        "event-source-polyfill": "^1.0.31",
         "indexof": "^0.0.1",
         "pinia": "^2.1.7",
         "pinia-plugin-persistedstate": "^3.2.1",

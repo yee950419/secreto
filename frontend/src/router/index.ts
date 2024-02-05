@@ -4,6 +4,7 @@ import { useUserStore } from '@/stores/user'
 import { storeToRefs } from 'pinia'
 import RoomView from '@/components/pages/RoomView.vue'
 import WithdrawalSuccessPage from '@/components/pages/WithdrawalSuccessPage.vue'
+import ResetPasswordPage from '@/components/pages/ResetPasswordPage.vue'
 const router = createRouter({
     history: createWebHashHistory(),
     routes: [
@@ -55,6 +56,14 @@ const router = createRouter({
             }
         },
         {
+            path: '/find_password',
+            name: 'find_password',
+            component: ResetPasswordPage,
+            meta: {
+                hide: true
+            }
+        },
+        {
             path: '/game/:roomNo',
             name: 'game',
             component: RoomView,
@@ -74,7 +83,7 @@ const router = createRouter({
                 {
                     path: 'mission',
                     name: 'game-mission',
-                    component: sswTestVue
+                    component: () => import('@/components/pages/UserMission.vue')
                 },
                 {
                     path: 'participate',
@@ -137,6 +146,14 @@ const router = createRouter({
             path: '/roomsettings',
             name: 'roomsettings',
             component: () => import('@/components/pages/RoomSetting.vue'),
+            meta: {
+                hide: true
+            }
+        },
+        {
+            path: '/test',
+            name: 'test',
+            component: sswTestVue,
             meta: {
                 hide: true
             }

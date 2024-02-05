@@ -24,6 +24,11 @@ export type ModifyRequestType = {
     profileUrl: string | null
 }
 
+export type PasswordResetRequestType = {
+    password: string
+    validationCode: string
+}
+
 export type PasswordChangeRequest = {
     oldPassword: string
     newPassword: string

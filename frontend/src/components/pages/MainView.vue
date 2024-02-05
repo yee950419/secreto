@@ -169,7 +169,6 @@ const profileClickHandler = () => {
                     />
                 </template>
                 <ServiceFeature v-if="state !== State.MAIN_AFTER_LOGIN" />
-                {{ userStore.userInfo }}
             </MainCard>
 
             <!-- mobile -->

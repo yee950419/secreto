@@ -3,7 +3,7 @@ import MainLogo from '@/components/molecules/common/MainLogo.vue'
 import ButtonAtom from '@/components/atoms/ButtonAtom.vue'
 import type { Handler } from '@/types/common'
 
-defineProps(['buttonLabelRef'])
+defineProps(['buttonLabelRef', 'buttonHide'])
 const emit = defineEmits(['buttonClick'])
 const buttonClickHandler: Handler = () => {
     emit('buttonClick')
@@ -16,6 +16,7 @@ const buttonClickHandler: Handler = () => {
         <slot></slot>
         <ButtonAtom
             custom-class="button-style-1 button-claret button-shadow m-[20px]"
+            :class="buttonHide ? 'invisible' : ''"
             @button-click="buttonClickHandler"
             >{{ buttonLabelRef }}</ButtonAtom
         >

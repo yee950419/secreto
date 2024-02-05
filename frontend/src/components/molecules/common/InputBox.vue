@@ -13,7 +13,8 @@ defineProps([
     'hidden',
     'min',
     'max',
-    'name'
+    'name',
+    'maxLength',
 ])
 const emit = defineEmits(['inputEnter'])
 const model = defineModel()
@@ -36,6 +37,7 @@ const handleEnter: Handler = () => {
             :max="max"
             :hidden="hidden"
             v-model="model"
+            :maxlength="maxLength"
             @keypress.enter="handleEnter"
         />
     </div>

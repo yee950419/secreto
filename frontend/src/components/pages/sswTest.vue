@@ -51,14 +51,18 @@ const userInfo = ref<RoomUserInfoType>({
     roomNo: 1,
     roomUserNo: 4,
     roomName: 'Dummy',
-    roomNickname: '',
+    roomNickname: 'Dum Nick Dum Nick',
     profileUrl: ''
 })
+const modalSeen = ref<boolean>(false)
 const rerollHandler: Handler = () => {
     console.log('reroll')
 }
 const goToMissionCertificationPage: DataHandler<UserMission> = (mission) => {
     console.log(mission)
+}
+const modalCloseHandler: Handler = () => {
+    modalSeen.value = false
 }
 </script>
 
@@ -141,11 +145,21 @@ const goToMissionCertificationPage: DataHandler<UserMission> = (mission) => {
                 </div>
             </div>
         </div>
+        <button
+            @click="
+                () => {
+                    modalSeen = true
+                }
+            "
+        >
+            123
+        </button>
         <ModalTemplate
             custom-id="modal"
-            custom-class="modal-template-style-1 w-[350px]"
-            :seen="true"
-            ><InferenceModalContent></InferenceModalContent>
+            custom-class="modal-template-style-1 max-md:w-[100vw]"
+            :seen="modalSeen"
+            @modal-close="modalCloseHandler"
+            ><InferenceModalContent :user-info="userInfo"></InferenceModalContent>
         </ModalTemplate>
     </div>
 </template>

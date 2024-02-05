@@ -21,6 +21,7 @@
     --A805Green: #01d04c;
     --A805Khaki: #3d4a3d;
     --A805Grey: #bbbbbb;
+    --A805Navy: #01539f;
     --A805Blue: #0085ff;
     --A805LightBlue: #00b8ff;
     --A805DarkGrey: #858585;
@@ -558,6 +559,15 @@
 
     .button-blue:hover {
         background-color: var(--A805Blue);
+    }
+
+    .button-navy {
+        background-color: var(--A805Blue);
+    }
+
+    .button-navy:hover {
+        background-color: var(--A805Navy);
+        color: var(--A805RealWhite);
     }
 
     .border-khaki {

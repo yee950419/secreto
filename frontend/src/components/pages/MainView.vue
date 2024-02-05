@@ -158,7 +158,6 @@ const profileClickHandler = () => {
                     <MainCardProfile
                         @my-page-handle="profileClickHandler"
                         @logout-handle="userLogout"
-                        @click="profileClickHandler"
                     />
                     <InputBox
                         custom-class="input-box-style-2 mt-[10px] bg-A805White w-[200px] h-[50px]"

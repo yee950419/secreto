@@ -22,7 +22,7 @@ const deleteButtonClick: Handler = () => {
 
 <template>
     <div
-        class="bg-A805Cream w-[45%] h-[8rem] max-md:max-w-[200px] rounded-lg shadow-rb cursor-pointer relative hover:scale-[102%] transition ease-in-out"
+        class="bg-A805Cream w-[45%] aspect-[5/3] rounded-lg shadow-rb cursor-pointer relative hover:scale-[102%] transition ease-in-out"
     >
         <div class="absolute top-[2px] left-[2px] flex gap-[5px] items-center">
             <BadgeAtom

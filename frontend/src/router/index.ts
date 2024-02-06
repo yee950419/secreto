@@ -91,7 +91,7 @@ const router = createRouter({
                 {
                     path: 'mission',
                     name: 'game-mission',
-                    component: sswTestVue
+                    component: () => import('@/components/pages/UserMission.vue')
                 },
                 {
                     path: 'participate',

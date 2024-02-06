@@ -45,6 +45,7 @@ export type userType = {
     standbyYn: boolean
     roomUserNo: number
     roomNo: number
-    profile_url: string
+    profileUrl: string
     nickname: string
+    checked?: boolean
 }

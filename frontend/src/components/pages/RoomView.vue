@@ -132,7 +132,7 @@ onUnmounted(() => {
         />
 
         <!-- pc버전이거나, 모바일 버전 + 메뉴가 닫힌 상태일때만 이 영역 이 보인다. -->
-        <RouterView v-if="!isMobile || !menuSeen" />
+        <RouterView v-if="!isMobile || !menuSeen" @room-name-changed="updateRoomName" />
     </div>
 </template>
 

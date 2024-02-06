@@ -19,11 +19,11 @@ async function getRoom(
 }
 
 async function changeRoomName(
-    param: object,
+    param: { roomName: string; roomNo: number },
     success: (response: AxiosResponse) => void,
     fail: (error: any) => void
 ) {
-    roomInstance.put(`/room/`, JSON.stringify(param)).then(success).catch(fail)
+    roomInstance.put(`/room`, param).then(success).catch(fail)
 }
 
 async function getRoomList(success: (response: AxiosResponse) => void, fail: (error: any) => void) {
@@ -38,4 +38,12 @@ async function getUserList(
     roomInstance.get(`/room/user/${param}`).then(success).catch(fail)
 }
 
-export { createRoom, getRoom, changeRoomName, getUserList, getRoomList }
+async function acceptRoomUsers(
+    param: Array<{ roomUserNo: number }>,
+    success: (response: AxiosResponse) => void,
+    fail: (error: any) => void
+) {
+    roomInstance.put(`/room/accept`, param).then(success).catch(fail)
+}
+
+export { createRoom, getRoom, changeRoomName, getUserList, getRoomList, acceptRoomUsers }

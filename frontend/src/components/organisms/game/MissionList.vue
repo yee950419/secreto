@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import CheckBox from '@/components/molecules/common/CheckBox.vue'
 import InputBox from '@/components/molecules/common/InputBox.vue'
-import { ref } from 'vue'
+import { ref, type ModelRef } from 'vue'
 import type { Handler } from '@/types/common'
 import type { Mission } from '@/types/mission'
 import { PlusSquareOutlined } from '@ant-design/icons-vue'
@@ -11,23 +11,8 @@ const myMissionChecked = ref(true)
 const allMissionChecked = ref(false)
 const missionInputVisibility = ref(false)
 // 데이터 바뀌면 v-model로 바꿀 예정
-const missionList = ref([
-    {
-        id: 1,
-        name: 'test1',
-        checked: true
-    },
-    {
-        id: 2,
-        name: 'test2',
-        checked: false
-    },
-    {
-        id: 3,
-        name: 'test3',
-        checked: false
-    }
-])
+
+const missionList: ModelRef<Mission[]> = defineModel({ required: true })
 const addInputBox: Handler = () => {
     if (!missionInputVisibility.value) {
         missionInputVisibility.value = true
@@ -35,8 +20,7 @@ const addInputBox: Handler = () => {
 }
 const addMission: Handler = () => {
     missionList.value.push({
-        id: missionList.value.length + 1,
-        name: myMisssionName.value,
+        content: myMisssionName.value,
         checked: myMissionChecked.value
     })
     myMisssionName.value = ''
@@ -65,12 +49,12 @@ const allChangeHandler: Handler = () => {
         <!-- 목록 -->
         <div class="flex flex-col overflow-y-auto scroll-container">
             <CheckBox
-                v-for="mission in missionList"
-                :key="mission.id"
+                v-for="(mission, index) in missionList"
+                :key="index"
                 custom-class="checkbox-molecule-style-1"
-                :custom-id="mission.id"
+                :custom-id="'mission' + String(index)"
                 v-model="mission.checked"
-                >{{ mission.name }}</CheckBox
+                >{{ mission.content }}</CheckBox
             >
             <!-- 추가 미션 -->
             <CheckBox
@@ -81,7 +65,7 @@ const allChangeHandler: Handler = () => {
             >
                 <InputBox
                     v-model="myMisssionName"
-                    custom-class="input-box-style-1 px-0 text-[14pt]"
+                    custom-class="input-box-style-1 px-0 text-[14pt] text-A805DarkGrey"
                     custom-id="new-mission"
                     @input-enter="addMission"
                 />

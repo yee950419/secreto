@@ -87,21 +87,30 @@ const handleMenuClickAndToggleSubMenu = (index: number, menu: string) => {
         <MenuItem custom-class="menu-item" :active="activeMenu === 6"
             @menu-click="handleMenuClickAndToggleSubMenu(6, 'board')">게시판</MenuItem>
         <div v-if="showSubMenu.includes('board')">
-            <MenuItem custom-class="sub-menu-item" @menu-click="
-                router.push({
-                    name: 'game-board',
-                    query: { boardCategory: 'NOTICE' }
-                }),
-                handleClick()
-                ">공지 게시판</MenuItem>
-            <MenuItem custom-class="sub-menu-item" @menu-click="
-                router.push({ name: 'game-board', query: { boardCategory: 'CERTIFICATE' } }),
-                handleClick()
-                ">인증 게시판</MenuItem>
-            <MenuItem custom-class="sub-menu-item" @menu-click="
-                router.push({ name: 'game-board', query: { boardCategory: 'BOAST' } }),
-                handleClick()
-                ">자랑 게시판</MenuItem>
+            <MenuItem
+                custom-class="sub-menu-item"
+                @menu-click="
+                    router.push({ name: 'game-board', query: { boardCategory: 'NOTICE' } }),
+                        handleClick()
+                "
+                >공지 게시판</MenuItem
+            >
+            <MenuItem
+                custom-class="sub-menu-item"
+                @menu-click="
+                    router.push({ name: 'game-board', query: { boardCategory: 'CERTIFICATE' } }),
+                        handleClick()
+                "
+                >인증 게시판</MenuItem
+            >
+            <MenuItem
+                custom-class="sub-menu-item"
+                @menu-click="
+                    router.push({ name: 'game-board', query: { boardCategory: 'BOAST' } }),
+                        handleClick()
+                "
+                >자랑 게시판</MenuItem
+            >
         </div>
         <MenuItem custom-class="menu-item" :active="activeMenu === 7"
             @menu-click="handleMenuClick(7), handleClick(), router.push({ name: 'game-statistic' })">게임 통계</MenuItem>

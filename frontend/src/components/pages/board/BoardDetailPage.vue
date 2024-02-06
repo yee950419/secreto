@@ -134,90 +134,91 @@ const replyDeleteSuccessModalToggle = () =>
 </script>
 
 <template>
-    <div class="w-full md:min-w-[768px] max-w-[1080px] max-md:min-w-0">
-        <BoardDetailTop
-            class="my-4 max-md:hidden"
-            @modify-button-handle="modifyButtonHandler"
-            @delete-button-handle="deleteModalToggle"
-            @list-button-handle="listButtonHandler"
-            :is-post-writer="roomUserNo === post.roomUserNo"
-        />
-        <div
-            class="flex flex-col w-full border md:rounded border-A805DarkGrey p-9 max-md:border-x-0"
-        >
-            <div class="w-full flex flex-col">
-                <TextAtom class="text-[28px] mb-2">{{ post.title }}</TextAtom>
-                <BoardWriterInformation
-                    :writer="post.writer"
-                    :writer-email="post.writerEmail"
-                    :writer-profile-url="post.writerProfileUrl"
-                    :register-at="post.registerAt"
-                    :hit="post.hit"
-                    :liked-count="post.likedCount"
-                    :reply-count="replyCount"
-                />
-            </div>
-            <LineAtom custom-class="my-4 border-A805LightGrey" />
-            <div>
-                {{ post.content }}
-            </div>
-            <div class="mt-[60px] flex gap-[20px] text-[16px]">
-                <!-- <ButtonAtom custom-class="flex items-center gap-[6px]"
+    <div class="w-full flex justify-center">
+        <div class="w-full md:min-w-[768px] max-w-[1400px] max-md:min-w-0">
+            <BoardDetailTop
+                class="my-4 max-md:hidden"
+                @modify-button-handle="modifyButtonHandler"
+                @delete-button-handle="deleteModalToggle"
+                @list-button-handle="listButtonHandler"
+                :is-post-writer="roomUserNo === post.roomUserNo"
+            />
+            <div
+                class="flex flex-col w-full border md:rounded border-A805LightGrey p-9 max-md:border-x-0"
+            >
+                <div class="w-full flex flex-col">
+                    <TextAtom class="text-[28px] mb-2">{{ post.title }}</TextAtom>
+                    <BoardWriterInformation
+                        :writer="post.writer"
+                        :writer-email="post.writerEmail"
+                        :writer-profile-url="post.writerProfileUrl"
+                        :register-at="post.registerAt"
+                        :hit="post.hit"
+                        :liked-count="post.likedCount"
+                        :reply-count="replyCount"
+                    />
+                </div>
+                <LineAtom custom-class="my-4 border-A805LightGrey" />
+                <div class="min-h-[150px]">
+                    {{ post.content }}
+                </div>
+                <div class="mt-[60px] flex gap-[20px] text-[16px]">
+                    <!-- <ButtonAtom custom-class="flex items-center gap-[6px]"
                 ><HeartOutlined class="text-[24px]" /> 좋아요
                 <b>{{ post.likedCount }}</b></ButtonAtom
             > -->
-                <LikeButton :liked-count="post.likedCount" />
-                <span class="flex items-center gap-[6px]"
-                    ><CommentOutlined class="text-[24px]" /> 댓글 <b>{{ replyCount }}</b></span
-                >
-            </div>
-            <LineAtom custom-class="my-4 border-A805LightGrey" />
-            <div class="flex flex-col flex-1">
-                <TextAtom custom-class="font-bold text-[20px]">댓글</TextAtom>
-                <template v-for="reply in replies" :key="reply.replyNo">
-                    <ReplyElement
-                        :reply="reply"
-                        :post-writer-user-no="post.roomUserNo"
+                    <LikeButton :liked-count="post.likedCount" />
+                    <span class="flex items-center gap-[6px]"
+                        ><CommentOutlined class="text-[24px]" /> 댓글 <b>{{ replyCount }}</b></span
+                    >
+                </div>
+                <LineAtom custom-class="my-4 border-A805LightGrey" />
+                <div class="flex flex-col flex-1">
+                    <TextAtom custom-class="font-bold text-[20px]">댓글</TextAtom>
+                    <template v-for="reply in replies" :key="reply.replyNo">
+                        <ReplyElement
+                            :reply="reply"
+                            :post-writer-user-no="post.roomUserNo"
+                            @submit-reply-success-handle="
+                                () => loadRepliesAndShowModal('댓글을 작성하였습니다.')
+                            "
+                            @delete-success-handle="
+                                () => loadRepliesAndShowModal('댓글이 삭제되었습니다.')
+                            "
+                        />
+                        <ReplyElement
+                            v-for="child in reply.children"
+                            :reply="child"
+                            :key="child.replyNo"
+                            :post-writer-user-no="post.roomUserNo"
+                            :nested="true"
+                            @submit-reply-success-handle="
+                                () => loadRepliesAndShowModal('댓글을 작성하였습니다.')
+                            "
+                            @delete-success-handle="
+                                () => loadRepliesAndShowModal('댓글이 삭제되었습니다.')
+                            "
+                        />
+                    </template>
+                    <ReplyWriteForm
+                        class="mt-5"
+                        :postNo="post.boardNo"
                         @submit-reply-success-handle="
                             () => loadRepliesAndShowModal('댓글을 작성하였습니다.')
                         "
-                        @delete-success-handle="
-                            () => loadRepliesAndShowModal('댓글이 삭제되었습니다.')
-                        "
                     />
-                    <ReplyElement
-                        v-for="child in reply.children"
-                        :reply="child"
-                        :key="child.replyNo"
-                        :post-writer-user-no="post.roomUserNo"
-                        :nested="true"
-                        @submit-reply-success-handle="
-                            () => loadRepliesAndShowModal('댓글을 작성하였습니다.')
-                        "
-                        @delete-success-handle="
-                            () => loadRepliesAndShowModal('댓글이 삭제되었습니다.')
-                        "
-                    />
-                </template>
-                <ReplyWriteForm
-                    class="mt-5"
-                    :postNo="post.boardNo"
-                    @submit-reply-success-handle="
-                        () => loadRepliesAndShowModal('댓글을 작성하였습니다.')
-                    "
-                />
+                </div>
             </div>
+            <BoardDetailBottom
+                class="my-4"
+                @write-button-handle="writeButtonHandler"
+                @modify-button-handle="modifyButtonHandler"
+                @delete-button-handle="deleteModalToggle"
+                @top-button-handle="topButtonHandler"
+                @list-button-handle="listButtonHandler"
+                :is-post-writer="roomUserNo === post.roomUserNo"
+            />
         </div>
-        <BoardDetailBottom
-            class="my-4"
-            @write-button-handle="writeButtonHandler"
-            @modify-button-handle="modifyButtonHandler"
-            @delete-button-handle="deleteModalToggle"
-            @top-button-handle="topButtonHandler"
-            @list-button-handle="listButtonHandler"
-            :is-post-writer="roomUserNo === post.roomUserNo"
-        />
-
         <!-- Delete Modal -->
         <ModalTemplate
             custom-id="modal"

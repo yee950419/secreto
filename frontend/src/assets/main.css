@@ -575,6 +575,10 @@
         border: 1px solid var(--A805Khaki);
     }
 
+    .border-darkGrey {
+        border: 1px solid var(--A805Khaki);
+    }
+
     .input-box-style-1 {
         border-radius: 30px;
         width: 100%;
@@ -646,6 +650,16 @@
         border: 1px solid var(--A805DarkGrey);
         outline: none;
     }
+
+    .line-lightGrey {
+        border: 1px solid var(--A805LightGrey);
+    }
+
+    .line-lightGrey:focus {
+        border: 1px solid var(--A805LightGrey);
+        outline: none;
+    }
+
     .checkbox-molecule-style-1 {
         display: flex;
         margin: 0px;

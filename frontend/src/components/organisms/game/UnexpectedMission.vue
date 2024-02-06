@@ -51,16 +51,21 @@ const allChangeHandler: Handler = () => {
 </script>
 
 <template>
-    <div class="flex flex-col bg-A805Red overflow-hidden w-[600px] h-[800px]">
+    <div class="flex flex-col gap-3 justify-between bg-A805Red overflow-hidden">
         <InputBox
             label="돌발 미션"
-            input-class="input-box-style-3 rounded-[100px] text-center line-darkgrey bg-white w-full"
+            label-class="text-2xl"
+            input-class="input-box-style-3 rounded-[100px] text-center line-darkgrey bg-white w-full min-h-[3rem]"
+            custom-class="flex gap-2"
         ></InputBox>
         <div name="mission-options" class="flex max-md:flex-col bg-A805Purple">
-            <CheckBox custom-class="w-[200px]">qwerewrqw</CheckBox>
-            <DatePicker class="w-[200px]"></DatePicker>
+            <CheckBox custom-class="flex flex-1 gap-2 px-2">qwerewrqw</CheckBox>
+            <DatePicker class="flex flex-1"></DatePicker>
         </div>
-        <ButtonAtom custom-class="button-blue text-A805RealWhite">미션 추가</ButtonAtom>
+        <ButtonAtom
+            custom-class="flex flex-1 button-blue text-A805RealWhite items-center justify-center min-h-[3rem] max-h-[4rem] text-2xl"
+            >미션 추가</ButtonAtom
+        >
     </div>
 </template>
 

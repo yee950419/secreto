@@ -1,24 +1,28 @@
 <script setup lang="ts">
 import NavBar from '@/components/organisms/common/NavBar.vue'
 import ChatRoom from '@/components/organisms/game/ChatRoom.vue'
-import { onMounted, onUnmounted, ref } from 'vue'
 import type { ChatRoomType } from '@/types/chat'
-import { getRoom } from '@/api/room'
-import { useRoute } from 'vue-router'
-import { useMenuStore } from '@/stores/menu'
-import { storeToRefs } from 'pinia'
-import { SSEConnect } from '@/api/sse'
-import { useRouter } from 'vue-router'
-const router = useRouter()
-const menuStore = useMenuStore()
-const { menuSeen, isMobile } = storeToRefs(menuStore)
-import { provide, readonly } from 'vue'
 import type { RoomUserInfoType, RoomInfoType } from '@/types/room'
+import { getRoom } from '@/api/room'
+import { useMenuStore } from '@/stores/menu'
+import { SSEConnect } from '@/api/sse'
+import { getNotificationLists } from '@/api/notification'
+import { onMounted, onUnmounted, ref, provide, readonly } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
+import { storeToRefs } from 'pinia'
+
+const router = useRouter()
+const route = useRoute()
+const menuStore = useMenuStore()
 const emit = defineEmits(['update-name'])
+
+const { menuSeen, isMobile } = storeToRefs(menuStore)
+const notificationLists = ref([])
+
+
 
 const chatRooms = ref<ChatRoomType[]>([])
 //라우터로 부터 방번호를 받아온다
-const route = useRoute()
 let eventSource: EventSource
 
 const roomUserInfo = ref<RoomUserInfoType>({
@@ -92,7 +96,6 @@ const SSEConnection = (roomUserNo: number) => {
 
 const getRoomData = () => {
     console.log('방정보를 호출')
-
     getRoom(
         roomUserInfo.value.roomNo,
         ({ data }) => {
@@ -115,6 +118,11 @@ const getRoomData = () => {
 
 onMounted(() => {
     getRoomData()
+    getNotificationLists(Number(route.params.roomNo), ({ data }) => {
+        notificationLists.value = data.result
+    }, (error) => {
+        console.log(error)
+    })
 })
 
 onUnmounted(() => {

@@ -15,6 +15,10 @@ const { roomInfo, roomName } = defineProps({
     },
     roomInfo: {
         type: Object as () => RoomInfoType | undefined
+    },
+    notificationLists: {
+        type: Array as () => Array<any>,
+        default: []
     }
 })
 
@@ -63,7 +67,8 @@ const handleMenuClickAndToggleSubMenu = (index: number, menu: string) => {
         </MenuItem>
         <MenuItem custom-class="menu-item">{{ roomName }}</MenuItem>
         <MenuItem custom-class="menu-item" :active="activeMenu === 1"
-            @menu-click="handleMenuClick(1), handleClick(), router.push({ name: 'game-notification' })">알림 OO건</MenuItem>
+            @menu-click="handleMenuClick(1), handleClick(), router.push({ name: 'game-notification' })">알림 {{
+                notificationLists.length }} 건</MenuItem>
         <MenuItem custom-class="menu-item" :active="activeMenu === 2"
             @menu-click="handleMenuClick(2), router.push('/main')">메인 화면</MenuItem>
         <MenuItem custom-class="menu-item" :active="activeMenu === 3" @menu-click="

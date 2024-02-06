@@ -73,13 +73,19 @@ const router = createRouter({
                 {
                     path: 'board',
                     name: 'game-board',
-                    component: () => import('@/components/template/board/BoardList.vue'),
+                    component: () => import('@/components/pages/board/BoardPage.vue'),
                     props: true
                 },
                 {
-                    path: 'post',
-                    name: 'game-board-post',
-                    component: () => import('@/components/template/board/BoardDetail.vue'),
+                    path: 'board',
+                    name: 'game-board-detail',
+                    component: () => import('@/components/pages/board/BoardDetailPage.vue'),
+                    props: true
+                },
+                {
+                    path: 'board',
+                    name: 'game-board-write',
+                    component: () => import('@/components/pages/board/BoardWritePage.vue'),
                     props: true
                 },
                 {
@@ -132,7 +138,7 @@ const router = createRouter({
         {
             path: '/board',
             name: 'board',
-            component: () => import('@/components/pages/BoardView.vue')
+            component: () => import('@/components/pages/board/BoardPage.vue')
         },
         {
             path: '/chat',

@@ -115,10 +115,7 @@ const handleMenuClickAndToggleSubMenu = (index: number, menu: string) => {
             <MenuItem
                 custom-class="sub-menu-item"
                 @menu-click="
-                    router.push({
-                        name: 'game-board',
-                        query: { boardCategory: 'NOTICE' }
-                    }),
+                    router.push({ name: 'game-board', query: { boardCategory: 'NOTICE' } }),
                         handleClick()
                 "
                 >공지 게시판</MenuItem

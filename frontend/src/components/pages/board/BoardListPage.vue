@@ -9,6 +9,8 @@ import MobileBoardElement from '@/components/molecules/board/MobileBoardElement.
 import { Pagination } from 'ant-design-vue'
 import { useRoute } from 'vue-router'
 import router from '@/router'
+import ButtonAtom from '@/components/atoms/ButtonAtom.vue'
+import { EditOutlined } from '@ant-design/icons-vue'
 const route = useRoute()
 const props = defineProps(['roomNo'])
 const boards: Ref<BoardResponseType[]> = ref([])
@@ -67,10 +69,9 @@ watch(boardCategory, () => {
 </script>
 
 <template>
-    <div class="flex flex-col w-full md:min-w-[768px] max-w-[1080px] max-md:min-w-0 items-center">
-        <BoardSearchBox class="max-md:px-[20px] mb-[30px]" />
+    <div class="flex flex-col w-full md:min-w-[568px] max-w-[1200px] max-md:min-w-0 items-center">
         <!-- pc -->
-        <table class="table-auto text-center max-md:hidden w-full">
+        <table class="table-auto text-center max-md:hidden w-full min-h-[300px]">
             <BoardTableHeader class="max-md:hidden" />
             <tbody>
                 <BoardElement
@@ -83,13 +84,15 @@ watch(boardCategory, () => {
         </table>
 
         <!-- mobile -->
-        <template v-for="(board, i) in boards" :key="board.boardNo">
-            <MobileBoardElement
-                :board="board"
-                :class="i == 0 ? 'border-t' : ''"
-                @click="() => boardDetail(board.boardNo)"
-            />
-        </template>
+        <div class="min-h-[50px]">
+            <template v-for="(board, i) in boards" :key="board.boardNo">
+                <MobileBoardElement
+                    :board="board"
+                    :class="i == 0 ? 'border-t' : ''"
+                    @click="() => boardDetail(board.boardNo)"
+                />
+            </template>
+        </div>
         <Pagination
             class="my-[30px]"
             v-model:current="current"
@@ -99,6 +102,15 @@ watch(boardCategory, () => {
             :showSizeChanger="false"
             @change="(page, pageSize) => (boardRequest.page = page - 1)"
         />
+        <div class="flex w-full justify-between px-4 items-center max-md:flex-col mb-5">
+            <div></div>
+            <BoardSearchBox />
+            <ButtonAtom
+                custom-class="button-style-4 button-claret text-[18px] w-[95px] font-bold flex justify-center items-center gap-[5px] max-md:w-full h-[35px] max-md:mt-7 max-md:rounded-none"
+                @button-click="() => router.push({ name: 'game-board-write' })"
+                ><EditOutlined /><span>글쓰기</span></ButtonAtom
+            >
+        </div>
     </div>
 </template>
 

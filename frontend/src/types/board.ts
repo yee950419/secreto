@@ -60,3 +60,13 @@ export type ReplyWriteRequestType = {
     tagUserNo?: number
     annonymityYn?: boolean
 }
+
+export type BoardWriteRequestType = {
+    boardNo: number
+    roomUserNo: number
+    title: string
+    content: string
+    boardCategory: string
+    publicYn: boolean
+    missionCategory: string
+}

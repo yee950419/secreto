@@ -132,25 +132,34 @@ const roomLeaveHandler: DataHandler<number> = (roomNo: number) => {
 }
 const roomEnterHandler: DataHandler<string> = (nickname: string) => {
     // 방 입장 api
-    enterRoom({entryCode, nickname}, ({ data }) => {
+    enterRoom({ 'entryCode': entryCode.value, 'nickname': nickname }, ({ data }) => {
+        console.log(data)
         console.log(entryCode, nickname)
+        router.push('/waiting/' + data.result)
     }, (error) => {
-        console.error('error', error)
+        console.error('error', error.response.data.message)
+        alert(error.response.data.message)
     })
-    alert('방 입장 ' + nickname + entryCode.value)
 }
 
-const invitationCodeCheck = () => {
-    console.log('초대코드 검증!', entryCode.value)
-    checkRoom(entryCode.value, ({ data }) => {
-        buttonClickHandler('roomEnter')
-        console.log(data)
+const invitationCodeCheck = (Code: string) => {
+    console.log('초대코드 검증!', Code)
+    checkRoom(Code, ({ data }) => {
+        if (data.result) {
+            entryCode.value = Code
+            buttonClickHandler('roomEnter')
+            console.table(data)
+        }
+        else
+            alert('존재하지 않는 방입니다.')
     }, (error) => {
-        buttonClickHandler('roomEnter')
-        console.error('error', error)
+        console.error(error)
     })
-    // alert('초대코드 확인 ' + entryCode.value)
+}
 
+const LogoHandler = () => {
+    console.log('clicked!')
+    router.push({ name: 'info' })
 }
 
 // main
@@ -162,114 +171,55 @@ const profileClickHandler = () => {
 
 <template>
     <div class="bg-A805White h-full w-full flex justify-center items-center min-h-[500px]">
-        <div
-            class="card-template-container max-md:w-full max-md:h-full max-md:bg-A805Cream max-md:flex-col"
-        >
+        <div class="card-template-container max-md:w-full max-md:h-full max-md:bg-A805Cream max-md:flex-col ">
             <!-- pc -->
-            <MainCard
-                class="max-md:hidden shadow-rb "
-                v-if="state !== State.TEMPLATE"
-                @button-click="invitationCodeCheck"
-                :button-label-ref="buttonLabel"
-            >
-                <div
-                    v-if="state === State.MAIN_AFTER_LOGIN"
-                    class="flex flex-col justify-around items-center h-full pt-6"
-                >
-                    <MainCardProfile
-                        @my-page-handle="profileClickHandler"
-                        @logout-handle="userLogout"
-                    />
-                    <InputBox
-                        custom-class="input-box-style-2 mt-[10px] bg-A805White w-[200px] h-[50px]"
-                        input-class="text-center text-[24px]"
-                        place-holder="초대코드 입력"
-                        v-model="entryCode"
-                    />
+            <MainCard class="max-md:hidden shadow-rb" v-if="state !== State.TEMPLATE"
+                @button-click="invitationCodeCheck(entryCode)" @logo-Handle="LogoHandler" :button-label-ref="buttonLabel">
+                <div v-if="state === State.MAIN_AFTER_LOGIN" class="flex flex-col justify-around items-center h-full pt-6">
+                    <MainCardProfile @my-page-handle="profileClickHandler" @logout-handle="userLogout" />
+                    <InputBox custom-class="input-box-style-2 mt-[10px] bg-A805White w-[200px] h-[50px]"
+                        input-class="text-center text-[24px]" place-holder="초대코드 입력" v-model="entryCode" />
                 </div>
                 <ServiceFeature v-if="state !== State.MAIN_AFTER_LOGIN" />
             </MainCard>
 
-            <div
-                class="card-container max-md:max-w-full max-md:max-h-full max-md:h-full max-md:w-full md:shadow-r p-0"
-                v-if="state === State.MAIN_AFTER_LOGIN"
-            >
+            <div class="card-container max-md:max-w-full max-md:max-h-full max-md:h-full max-md:w-full md:shadow-r p-0"
+                v-if="state === State.MAIN_AFTER_LOGIN">
                 <!-- mobile -->
                 <div class="w-full md:hidden bg-A805Cream">
-                    <MobileMiniHeader
-                        class="my-2"
-                        @my-page-handle="profileClickHandler"
-                        @logout-handle="userLogout"
-                    />
-                    <MobileInvitationCodeBox @submit-button-handle="buttonClickHandler" />
+                    <MobileMiniHeader class="my-2" @my-page-handle="profileClickHandler" @logout-handle="userLogout" />
+                    <MobileInvitationCodeBox @submit-button-handle="invitationCodeCheck" />
                 </div>
-                <RoomListView
-                    class="max-w-full w-full h-full max-h-full md:shadow-rb"
-                    @submit-button-handle="buttonClickHandler"
-                />
+                <RoomListView class="max-w-full w-full h-full max-h-full md:shadow-rb"
+                    @submit-button-handle="buttonClickHandler" />
             </div>
-            <MyPage
-                class="max-md:max-w-full max-md:max-h-full max-md:h-full max-md:w-full"
-                v-if="state === State.MY_PAGE"
-                @password-change-handle="() => (state = State.CHANGE_PWD)"
-                @close-button-handle="buttonClickHandler"
+            <MyPage class="max-md:max-w-full max-md:max-h-full max-md:h-full max-md:w-full" v-if="state === State.MY_PAGE"
+                @password-change-handle="() => (state = State.CHANGE_PWD)" @close-button-handle="buttonClickHandler"
                 @success-handle="(message: string) => yesModalOpen('Success', message)"
-                @fail-handle="(message: string) => yesModalOpen('Fail', message)"
-            />
-            <ChangePasswordForm
-                class="max-md:max-w-full max-md:max-h-full max-md:h-full max-md:w-full md:shadow-rb"
-                v-if="state === State.CHANGE_PWD"
-                @prev-button-handle="() => (state = State.MY_PAGE)"
-                @close-button-handle="() => (state = State.MY_PAGE)"
-                @success-handle="changePasswordSuccessHandler"
-                @fail-handle="(message: string) => yesModalOpen('Fail', message)"
-            />
-            <WideCardTemplate
-                v-if="state === State.TEMPLATE"
-                :title="template.title"
-                :content-messages="template.contentMessages"
-                :button-label="template.buttonLabel"
-                @button-click="template.buttonClickHandler"
-                @close-button-handle="template.buttonClickHandler"
-            />
+                @fail-handle="(message: string) => yesModalOpen('Fail', message)" />
+            <ChangePasswordForm class="max-md:max-w-full max-md:max-h-full max-md:h-full max-md:w-full md:shadow-rb"
+                v-if="state === State.CHANGE_PWD" @prev-button-handle="() => (state = State.MY_PAGE)"
+                @close-button-handle="() => (state = State.MY_PAGE)" @success-handle="changePasswordSuccessHandler"
+                @fail-handle="(message: string) => yesModalOpen('Fail', message)" />
+            <WideCardTemplate v-if="state === State.TEMPLATE" :title="template.title"
+                :content-messages="template.contentMessages" :button-label="template.buttonLabel"
+                @button-click="template.buttonClickHandler" @close-button-handle="template.buttonClickHandler" />
         </div>
     </div>
 
-    <ModalTemplate
-        custom-id="modal"
-        custom-class="modal-template-style-1 w-[350px]"
-        :seen="modalSeen"
-        v-if="modalSeen"
-        @modal-close="modalToggle"
-    >
-        <RoomCreateModalContent
-            v-if="modalState === ModalState.ROOM_CREATE"
-            @yes-button-handle="roomCreateHandler"
-            @no-button-handle="modalToggle"
-        />
-        <RoomDeleteModalContent
-            v-if="modalState === ModalState.ROOM_LEAVE"
-            @yes-button-handle="roomLeaveHandler"
-            @no-button-handle="modalToggle"
-        />
-        <RoomEnterModalContent
-            v-if="modalState === ModalState.ROOM_ENTER"
-            @yes-button-handle="roomEnterHandler"
-            @no-button-handle="modalToggle"
-        />
+    <ModalTemplate custom-id="modal" custom-class="modal-template-style-1 w-[350px]" :seen="modalSeen" v-if="modalSeen"
+        @modal-close="modalToggle">
+        <RoomCreateModalContent v-if="modalState === ModalState.ROOM_CREATE" @yes-button-handle="roomCreateHandler"
+            @no-button-handle="modalToggle" />
+        <RoomDeleteModalContent v-if="modalState === ModalState.ROOM_LEAVE" @yes-button-handle="roomLeaveHandler"
+            @no-button-handle="modalToggle" />
+        <RoomEnterModalContent v-if="modalState === ModalState.ROOM_ENTER" @yes-button-handle="roomEnterHandler"
+            @no-button-handle="modalToggle" />
     </ModalTemplate>
 
-    <ModalTemplate
-        custom-id="yesModal"
-        custom-class="modal-template-style-1 w-[350px]"
-        :seen="yesModalSeen"
-        v-if="yesModalSeen"
-        @modal-close="modalToggle"
-    >
-        <YesModalContent
-            @yes-button-handle="yesModalClose"
-            :content-title="yesModalTitle"
-            :content-message="yesModalContent"
-        />
+    <ModalTemplate custom-id="yesModal" custom-class="modal-template-style-1 w-[350px]" :seen="yesModalSeen"
+        v-if="yesModalSeen" @modal-close="modalToggle">
+        <YesModalContent @yes-button-handle="yesModalClose" :content-title="yesModalTitle"
+            :content-message="yesModalContent" />
     </ModalTemplate>
 </template>

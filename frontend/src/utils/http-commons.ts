@@ -18,7 +18,6 @@ function localAxios() {
     const instance = axios.create({
         baseURL: VITE_API_BASE_URL
     })
-    const router = useRouter()
 
     // 모든 요청에 대해 기본 헤더 속성 설정
     instance.defaults.headers.common['Type'] = 'bearer'
@@ -54,6 +53,7 @@ function localAxios() {
         console.log('토큰 만료.... 재갱신 요청 합니다.')
         const userStore = useUserStore()
         const { accessToken, refreshToken } = storeToRefs(userStore)
+        const router = useRouter()
 
         await regenerateToken(
             ({ data }) => {
@@ -66,7 +66,7 @@ function localAxios() {
                 // 토근 정보 초기화
                 accessToken.value = ''
                 refreshToken.value = ''
-                router.push({ path: '/' })
+                router.replace('/')
                 console.error(error)
             }
         )

@@ -66,6 +66,14 @@ const router = createRouter({
             }
         },
         {
+            path: '/waiting/:roomNo',
+            name: 'waiting',
+            component: () => import('@/components/pages/EntranceWaitingPage.vue'),
+            meta: {
+                hide: true
+            }
+        },
+        {
             path: '/game/:roomNo',
             name: 'game',
             component: RoomPage,
@@ -116,6 +124,11 @@ const router = createRouter({
                     path: 'wordcloud',
                     name: 'game-wordcloud',
                     component: () => import('@/components/pages/ReviewPage.vue')
+                },
+                {
+                    path: 'notification',
+                    name: 'game-notification',
+                    component: () => import('@/components/pages/NotificationPage.vue')
                 }
             ],
             beforeEnter(to, from, next) {

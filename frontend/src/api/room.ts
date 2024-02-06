@@ -17,7 +17,7 @@ async function checkRoom(
     fail: (error: any) => void
 )
 {
-    roomInstance.get(`/room/enter?entryCode=${param}`, ).then(success).catch(fail)
+    roomInstance.post(`/room/search`, {'entryCode' : param}).then(success).catch(fail)
 }
 
 async function enterRoom(
@@ -26,7 +26,8 @@ async function enterRoom(
     fail: (error: any) => void
 )
 {
-    roomInstance.post(`/room/enter`, JSON.stringify(param)).then(success).catch(fail)
+    console.table(param)
+    roomInstance.post(`/room/enter`, param).then(success).catch(fail)
 }
 
 async function getRoom(
@@ -49,6 +50,15 @@ async function getRoomList(success: (response: AxiosResponse) => void, fail: (er
     roomInstance.get(`/room/user/user_room`).then(success).catch(fail)
 }
 
+async function checkFavorite(
+    param: number,
+    success: (response: AxiosResponse) => void,
+    fail: (error: any) => void
+) {
+    roomInstance.put(`/room/bookmark`, {roomNo : param}).then(success).catch(fail)
+}
+
+
 async function getUserList(
     param: number,
     success: (response: AxiosResponse) => void,
@@ -57,4 +67,12 @@ async function getUserList(
     roomInstance.get(`/room/user/${param}`).then(success).catch(fail)
 }
 
-export { createRoom, getRoom, changeRoomName, getUserList, getRoomList, checkRoom, enterRoom }
+async function exitRoom(
+    param: number,
+    success: (response: AxiosResponse) => void,
+    fail: (error: any) => void
+) {
+    roomInstance.put(`/room/exit`, {roomNo : param}).then(success).catch(fail)
+}
+
+export { createRoom, getRoom, changeRoomName, getUserList, getRoomList, checkRoom, enterRoom, exitRoom, checkFavorite }

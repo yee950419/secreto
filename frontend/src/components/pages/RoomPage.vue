@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import NavBar from '@/components/organisms/common/NavBar.vue'
 import ChatRoom from '@/components/organisms/game/ChatRoom.vue'
-import {  onMounted, onUnmounted, ref } from 'vue'
+import { onMounted, onUnmounted, ref } from 'vue'
 import type { ChatRoomType } from '@/types/chat'
 import { getRoom } from '@/api/room'
 import { useRoute } from 'vue-router'
@@ -13,7 +13,7 @@ const router = useRouter()
 const menuStore = useMenuStore()
 const { menuSeen, isMobile } = storeToRefs(menuStore)
 import { provide, readonly } from 'vue'
-import type { RoomUserInfoType } from '@/types/room'
+import type { RoomUserInfoType, RoomInfoType } from '@/types/room'
 const emit = defineEmits(['update-name'])
 
 const chatRooms = ref<ChatRoomType[]>([])
@@ -28,6 +28,7 @@ const roomUserInfo = ref<RoomUserInfoType>({
     roomNickname: '',
     profileUrl: ''
 })
+const roomInfo = ref<RoomInfoType>()
 const roomUserNo = ref<number>(-1)
 
 const updateRoomName = (name: string | undefined) => {
@@ -89,11 +90,14 @@ const SSEConnection = (roomUserNo: number) => {
     })
 }
 
-const getRoomData =  () => {
-    console.log('방정보 호출')
-     getRoom(
+const getRoomData = () => {
+    console.log('방정보를 호출')
+
+    getRoom(
         roomUserInfo.value.roomNo,
         ({ data }) => {
+            console.table(data)
+            roomInfo.value = data.result
             roomUserInfo.value.profileUrl = data.result.userInfo.profileUrl
             roomUserInfo.value.roomNickname = data.result.userInfo.nickname
             roomUserInfo.value.roomUserNo = data.result.userInfo.roomUserNo
@@ -109,13 +113,12 @@ const getRoomData =  () => {
     )
 }
 
-onMounted( () => {
-     getRoomData()
+onMounted(() => {
+    getRoomData()
 })
 
 onUnmounted(() => {
-    if(eventSource) 
-    {
+    if (eventSource) {
         console.log('SSE 연결을 종료합니다.')
         eventSource.close()
     }
@@ -125,18 +128,11 @@ onUnmounted(() => {
 <template>
     <div class="flex flex-1 bg-A805RealWhite">
         <div v-for="room in chatRooms" :key="room.name">
-            <ChatRoom
-                :name="room.name"
-                :imageUrl="room.imageUrl"
-                @close-chat-room="removeChatRoom"
-            />
+            <ChatRoom :name="room.name" :imageUrl="room.imageUrl" @close-chat-room="removeChatRoom" />
         </div>
         <!-- pc버전이거나, 모바일 버전 + 메뉴가 체크된 상태일때만 nav가 보인다. -->
-        <NavBar
-            @make-room="makeRoom"
-            :room-name="roomUserInfo.roomName"
-            v-if="!isMobile || menuSeen"
-        />
+        <NavBar @make-room="makeRoom" :room-name="roomUserInfo.roomName" :room-info="roomInfo"
+            v-if="!isMobile || menuSeen" />
 
         <!-- pc버전이거나, 모바일 버전 + 메뉴가 닫힌 상태일때만 이 영역 이 보인다. -->
         <RouterView v-if="!isMobile || !menuSeen" />

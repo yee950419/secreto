@@ -115,82 +115,82 @@ const gameStartHandler: Handler = () => {
     console.log('gamePeriod:', gamePeriod.value[0].toString(), gamePeriod.value[1].toString())
 }
 
-const missionGet: Handler = () => {
-    getSystemMission(
-        (res) => {
-            console.log('1', res)
-        },
-        () => {
-            console.log('2')
-        }
-    )
-}
-const roomInfoGet: Handler = () => {
-    getRoom(
-        1,
-        (res) => {
-            console.log('1', res)
-        },
-        () => {
-            console.log('2')
-        }
-    )
-}
+// const missionGet: Handler = () => {
+//     getSystemMission(
+//         (res) => {
+//             console.log('1', res)
+//         },
+//         () => {
+//             console.log('2')
+//         }
+//     )
+// }
+// const roomInfoGet: Handler = () => {
+//     getRoom(
+//         1,
+//         (res) => {
+//             console.log('1', res)
+//         },
+//         () => {
+//             console.log('2')
+//         }
+//     )
+// }
 
-const missions = ref<Array<UserMission>>([
-    {
-        content: 'MBTI 물어보기',
-        missionReceivedAt: '2024/01/19',
-        missionType: 'individual',
-        missionRerollCount: 2,
-        missionCertifyYn: false
-    },
-    {
-        content: '자그마한 선물 주기',
-        missionReceivedAt: '2024/01/17',
-        missionType: 'common',
-        missionRerollCount: 2,
-        missionCertifyYn: true
-    },
-    {
-        content:
-            'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.',
-        missionReceivedAt: '2024/01/15',
-        missionType: 'individual',
-        missionRerollCount: 2,
-        missionCertifyYn: true
-    }
-])
+// const missions = ref<Array<UserMission>>([
+//     {
+//         content: 'MBTI 물어보기',
+//         missionReceivedAt: '2024/01/19',
+//         missionType: 'individual',
+//         missionRerollCount: 2,
+//         missionCertifyYn: false
+//     },
+//     {
+//         content: '자그마한 선물 주기',
+//         missionReceivedAt: '2024/01/17',
+//         missionType: 'common',
+//         missionRerollCount: 2,
+//         missionCertifyYn: true
+//     },
+//     {
+//         content:
+//             'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.',
+//         missionReceivedAt: '2024/01/15',
+//         missionType: 'individual',
+//         missionRerollCount: 2,
+//         missionCertifyYn: true
+//     }
+// ])
 
-const roomMissions = ref<Array<RoomMission>>([
-    {
-        content: '미션1'
-    },
-    {
-        content: '미션2'
-    },
-    {
-        content: '미션3'
-    }
-])
+// const roomMissions = ref<Array<RoomMission>>([
+//     {
+//         content: '미션1'
+//     },
+//     {
+//         content: '미션2'
+//     },
+//     {
+//         content: '미션3'
+//     }
+// ])
 
-const userInfo = ref<RoomUserInfoType>({
-    roomNo: 1,
-    roomUserNo: 4,
-    roomName: 'Dummy',
-    roomNickname: 'Dum Nick Dum Nick',
-    profileUrl: ''
-})
-const modalSeen = ref<boolean>(false)
-const rerollHandler: Handler = () => {
-    console.log('reroll')
-}
-const goToMissionCertificationPage: DataHandler<UserMission> = (mission) => {
-    console.log(mission)
-}
-const modalCloseHandler: Handler = () => {
-    modalSeen.value = false
-}
+// const userInfo = ref<RoomUserInfoType>({
+//     roomNo: 1,
+//     roomUserNo: 4,
+//     roomName: 'Dummy',
+//     roomNickname: 'Dum Nick Dum Nick',
+//     profileUrl: ''
+// })
+// const modalSeen = ref<boolean>(false)
+// const rerollHandler: Handler = () => {
+//     console.log('reroll')
+// }
+// const goToMissionCertificationPage: DataHandler<UserMission> = (mission) => {
+//     console.log(mission)
+// }
+// const modalCloseHandler: Handler = () => {
+//     modalSeen.value = false
+// }
 </script>
 
 <template>
@@ -257,14 +257,14 @@ const modalCloseHandler: Handler = () => {
                     >
                 </div>
                 <!-- </div> -->
-                <div name="side-part" class="flex flex-col w-[400px] max-md:w-full bg-A805Blue">
+                <!-- <div name="side-part" class="flex flex-col w-[400px] max-md:w-full bg-A805Blue">
                     <UnapprovedUserList
                         :user-list="dummyWaitingUserList"
                         class="h-[50%] border-b-2"
                     ></UnapprovedUserList>
                     <hr />
                     <ApprovedUserList :user-list="dummyUserList" class="h-[50%]"></ApprovedUserList>
-                </div>
+                </div> -->
             </div>
         </div>
     </div>

@@ -17,17 +17,17 @@ const missionInputVisibility = ref(false)
 const missionList = ref([
     {
         id: 1,
-        name: 'test1',
+        content: 'test1',
         checked: true
     },
     {
         id: 2,
-        name: 'test2',
+        content: 'test2',
         checked: false
     },
     {
         id: 3,
-        name: 'test3',
+        content: 'test3',
         checked: false
     }
 ])
@@ -39,7 +39,7 @@ const addInputBox: Handler = () => {
 const addMission: Handler = () => {
     missionList.value.push({
         id: missionList.value.length + 1,
-        name: myMisssionName.value,
+        content: myMisssionName.value,
         checked: myMissionChecked.value
     })
     myMisssionName.value = ''

@@ -13,41 +13,41 @@ const myMissionChecked = ref(true)
 const allMissionChecked = ref(false)
 const missionInputVisibility = ref(false)
 // 데이터 바뀌면 v-model로 바꿀 예정
-const missionList = ref([
-    {
-        id: 1,
-        name: 'test1',
-        checked: true
-    },
-    {
-        id: 2,
-        name: 'test2',
-        checked: false
-    },
-    {
-        id: 3,
-        name: 'test3',
-        checked: false
-    }
-])
-const addInputBox: Handler = () => {
-    if (!missionInputVisibility.value) {
-        missionInputVisibility.value = true
-    }
-}
-const addMission: Handler = () => {
-    missionList.value.push({
-        id: missionList.value.length + 1,
-        name: myMisssionName.value,
-        checked: myMissionChecked.value
-    })
-    myMisssionName.value = ''
-}
-const allChangeHandler: Handler = () => {
-    missionList.value.forEach((mission: Mission) => {
-        mission.checked = allMissionChecked.value
-    })
-}
+// const missionList = ref([
+//     {
+//         id: 1,
+//         name: 'test1',
+//         checked: true
+//     },
+//     {
+//         id: 2,
+//         name: 'test2',
+//         checked: false
+//     },
+//     {
+//         id: 3,
+//         name: 'test3',
+//         checked: false
+//     }
+// ])
+// const addInputBox: Handler = () => {
+//     if (!missionInputVisibility.value) {
+//         missionInputVisibility.value = true
+//     }
+// }
+// const addMission: Handler = () => {
+//     missionList.value.push({
+//         id: missionList.value.length + 1,
+//         name: myMisssionName.value,
+//         checked: myMissionChecked.value
+//     })
+//     myMisssionName.value = ''
+// }
+// const allChangeHandler: Handler = () => {
+//     missionList.value.forEach((mission: Mission) => {
+//         mission.checked = allMissionChecked.value
+//     })
+// }
 </script>
 
 <template>

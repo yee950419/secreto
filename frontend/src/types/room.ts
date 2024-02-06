@@ -13,21 +13,43 @@ export type RoomInfoTypeTest = {
     roomStatus?: string
 }
 
-export type RoomInfoType = {
-    roomNo: number
-    roomName: string
-    entryCode: string
-    roomStartAt: string
-    roomEndAt: string
-    hostParticipateYn: string
+export type RoomListInfoType = {
+    bookmarkYn: boolean
     commonYn: string
+    entryCode: string
+    hostParticipateYn: string
+    hostUserNo : number
     missionSubmitTime: string
     missionStartAt: string
-    roomStartYn: string
-    standbyYn: string
     nickname: string
     participantCnt: number
-    bookmarkYn: boolean
+    roomEndAt: string
+    roomName: string
+    roomNo: number
+    roomStartAt: string
+    roomStartYn: boolean
+    standbyYn: boolean
+    roomStatus: string
+}
+
+export type RoomInfoType = {
+    entryCode: string
+    commonYn: string
+    hostParticipateYn: string
+    hostRoomUserNo: number
+    missionSubmitTime: string
+    missionStartAt: string
+    roomEndAt: string
+    roomName: string
+    roomNo: number
+    roomStartAt: string
+    roomStartYn: string
+    roomStatus: string
+    userInfo: {
+        nickname : string,
+        profileUrl: string
+        roomUserNo : number
+    }
 }
 
 export type RoomUserInfoType = {

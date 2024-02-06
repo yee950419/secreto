@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import AvatarAtom from '@/components/atoms/AvatarAtom.vue'
 import TextAtom from '@/components/atoms/TextAtom.vue'
-import { defineProps } from 'vue'
 
 defineProps({
     imageUrl: {

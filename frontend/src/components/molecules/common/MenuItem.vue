@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { defineProps, defineEmits } from 'vue'
 import TextAtom from '@/components/atoms/TextAtom.vue'
 import type { Handler } from '@/types/common'
 

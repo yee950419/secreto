@@ -3,11 +3,16 @@ import type { Handler } from '@/types/common'
 import TextAtom from '@/components/atoms/TextAtom.vue'
 import BadgeAtom from '@/components/atoms/BadgeAtom.vue'
 import ButtonAtom from '@/components/atoms/ButtonAtom.vue'
+import type { RoomListInfoType} from '@/types/room'
 
 const props = defineProps({
     roomInfo: {
-        type: Object,
+        type: Object as ()=> RoomListInfoType,
         required: true
+    },
+    isMaster : {
+        type: Boolean,
+        default: false
     }
 })
 const emit = defineEmits(['favoriteHandle', 'deleteHandle'])
@@ -26,20 +31,33 @@ const deleteButtonClick: Handler = () => {
     >
         <div class="absolute top-[2px] left-[2px] flex gap-[5px] items-center">
             <BadgeAtom
-                custom-class="text-[1rem] bg-A805Red text-A805White m-1 py-[1px] w-[45px] text-center"
-                v-if="new Date(roomInfo.roomEndAt) > new Date()"
-                >참여중</BadgeAtom
+                custom-class="text-[1rem] bg-A805Purple text-A805White m-1 py-[1px] w-[60px] text-center"
+                v-if="roomInfo.standbyYn"
+                >입장전</BadgeAtom
             >
             <BadgeAtom
-                custom-class="text-[1rem] bg-A805DarkGrey text-A805White m-1 py-[1px] w-[45px] text-center"
-                v-else
+                custom-class="text-[1rem] bg-A805Khaki text-A805White m-1 py-[1px] w-[60px] text-center "
+                v-else-if="!roomInfo.roomStartAt || new Date(roomInfo.roomStartAt) > new Date()"
+                >시작전</BadgeAtom
+            >
+            <BadgeAtom
+                custom-class="text-[1rem] bg-A805DarkGrey text-A805White m-1 py-[1px] w-[60px] text-center"
+                v-else-if="roomInfo.roomStatus==='END' || new Date(roomInfo.roomEndAt) < new Date()"
                 >종료</BadgeAtom
             >
+            <BadgeAtom
+                custom-class="text-[1rem] bg-A805Red text-A805White m-1 py-[1px] w-[60px] text-center"
+                v-else
+                >참여중</BadgeAtom
+            >
+
             <TextAtom custom-class="text-[1.2rem]">{{ $props.roomInfo.participantCnt }}명</TextAtom>
-        </div>
+            <div class="flex items-center"><img v-if="isMaster" src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/People/Woman%20Fairy.png" alt="Woman Fairy" width="35" height="35" /></div>
+            </div>
+                    
         <div class="flex flex-col justify-center items-center h-full pt-[20px] text-center">
             <TextAtom custom-class="text-[1.4rem] font-bold truncate w-full px-[15px]">{{
-                props.roomInfo.roomName
+                props.roomInfo.roomName + (isMaster ? ' (방장)' : '')
             }}</TextAtom>
             <TextAtom custom-class="text-[1.1rem] truncate w-full px-[30px]">
                 {{ props.roomInfo.nickname }}

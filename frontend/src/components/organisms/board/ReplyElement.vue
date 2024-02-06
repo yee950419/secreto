@@ -52,7 +52,8 @@ const deleteModalToggle = () => (deleteModalSeen.value = !deleteModalSeen.value)
         />
     </ModalTemplate>
     <div class="flex flex-col border-b py-3" :class="nested ? 'ms-[50px]' : ''">
-        <div class="flex" v-show="!seenReplyModifyForm">
+        <div v-if="reply.deleteYn">삭제된 댓글입니다.</div>
+        <div v-if="!reply.deleteYn" class="flex" v-show="!seenReplyModifyForm">
             <AvatarAtom
                 :image-url="reply.writerProfileUrl"
                 custom-class="profile w-[40px] h-[40px] me-[10px]"

@@ -88,8 +88,9 @@ const loadReplies = () => {
             if (data.status === 'OK') {
                 console.log('========== 댓글 목록 ==========')
                 console.log(data.message)
-                console.log(data.result)
-                replyCount.value = data.result.length
+                replyCount.value = data.result.filter(
+                    (reply: ReplyResponseType) => !reply.deleteYn
+                ).length
                 replies.value = constructParentChildRelation(data.result)
             }
         },

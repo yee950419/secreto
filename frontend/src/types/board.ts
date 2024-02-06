@@ -51,6 +51,7 @@ export type ReplyResponseType = {
     writerEmail: string
     writerProfileUrl: string | null
     children?: ReplyResponseType[] | undefined
+    deleteYn?: boolean
 }
 
 export type ReplyWriteRequestType = {

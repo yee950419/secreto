@@ -90,7 +90,7 @@ const handleMenuClickAndToggleSubMenu = (index: number, menu: string) => {
             <MenuItem
                 custom-class="sub-menu-item"
                 @menu-click="
-                    router.push({ name: 'game-board', query: { boardCategory: 'NOTICE' } }),
+                    router.push({ name: 'game-board-list', query: { boardCategory: 'NOTICE' } }),
                         handleClick()
                 "
                 >공지 게시판</MenuItem
@@ -98,7 +98,10 @@ const handleMenuClickAndToggleSubMenu = (index: number, menu: string) => {
             <MenuItem
                 custom-class="sub-menu-item"
                 @menu-click="
-                    router.push({ name: 'game-board', query: { boardCategory: 'CERTIFICATE' } }),
+                    router.push({
+                        name: 'game-board-list',
+                        query: { boardCategory: 'CERTIFICATE' }
+                    }),
                         handleClick()
                 "
                 >인증 게시판</MenuItem
@@ -106,7 +109,7 @@ const handleMenuClickAndToggleSubMenu = (index: number, menu: string) => {
             <MenuItem
                 custom-class="sub-menu-item"
                 @menu-click="
-                    router.push({ name: 'game-board', query: { boardCategory: 'BOAST' } }),
+                    router.push({ name: 'game-board-list', query: { boardCategory: 'BOAST' } }),
                         handleClick()
                 "
                 >자랑 게시판</MenuItem

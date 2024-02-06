@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref, type Ref, onMounted, computed, inject, readonly, provide } from 'vue'
-import type { BoardDetailResponseType, ReplyResponseType } from '@/types/board'
+import type { BoardDetailResponseType, BoardRequestType, ReplyResponseType } from '@/types/board'
 import BoardWriterInformation from '@/components/molecules/board/BoardWriterInformation.vue'
 import ReplyWriteForm from '@/components/molecules/board/ReplyWriteForm.vue'
 import LikeButton from '@/components/molecules/board/LikeButton.vue'
@@ -15,14 +15,27 @@ import { CommentOutlined } from '@ant-design/icons-vue'
 import type { Handler } from '@/types/common'
 import { getPost, getReplies } from '@/api/board'
 import { useRoute } from 'vue-router'
+import router from '@/router'
 import YesModalContent from '@/components/organisms/modal/YesModalContent.vue'
 
 const route = useRoute()
-const postNo = computed(() => {
-    return Number(route.query.postNo)
+const boardNo = computed(() => {
+    return Number(route.query.boardNo)
 })
+const boardCategory = computed(() => {
+    return String(route.query.boardCategory)
+})
+const roomNo: Ref<number> = ref(Number(route.params.roomNo))
 const roomUserNo = inject<Ref<number>>('roomUserInfo', ref(-1))
-provide('postNo', readonly(postNo))
+const boardRequest: Ref<BoardRequestType> = ref({
+    boardCategory: String(route.query.boardCategory),
+    title: route.query.title === undefined ? '' : String(route.query.title),
+    content: route.query.content === undefined ? '' : String(route.query.content),
+    writer: route.query.writer === undefined ? '' : String(route.query.writer),
+    page: Number(route.query.page) > 0 ? Number(route.query.page) : 0,
+    size: 10
+})
+provide('boardNo', readonly(boardNo))
 
 const post: Ref<BoardDetailResponseType> = ref({
     boardNo: 0,
@@ -68,14 +81,16 @@ const constructParentChildRelation = (replies: ReplyResponseType[]): ReplyRespon
 
 const loadReplies = () => {
     getReplies(
-        postNo.value,
+        roomNo.value,
+        boardNo.value,
         (response) => {
             const data = response.data
             if (data.status === 'OK') {
                 console.log('========== 댓글 목록 ==========')
                 console.log(data.message)
-                console.log(data.result)
-                replyCount.value = data.result.length
+                replyCount.value = data.result.filter(
+                    (reply: ReplyResponseType) => !reply.deleteYn
+                ).length
                 replies.value = constructParentChildRelation(data.result)
             }
         },
@@ -85,7 +100,8 @@ const loadReplies = () => {
 
 onMounted(() => {
     getPost(
-        postNo.value,
+        roomNo.value,
+        boardNo.value,
         (response) => {
             const data = response.data
             if (data.status === 'OK') {
@@ -106,9 +122,6 @@ const loadRepliesAndShowModal = (content: string) => {
     loadReplies()
     replyDeleteSuccessModalToggle()
 }
-const writeButtonHandler: Handler = () => {
-    alert('글쓰기 페이지 이동')
-}
 const modifyButtonHandler: Handler = () => {
     alert('수정 페이지 이동')
 }
@@ -116,7 +129,7 @@ const topButtonHandler: Handler = () => {
     alert('맨 이벤트 발생')
 }
 const listButtonHandler: Handler = () => {
-    alert('목록 페이지 이동')
+    router.push({ name: 'game-board-list', query: { ...boardRequest.value } })
 }
 
 // modal
@@ -134,7 +147,7 @@ const replyDeleteSuccessModalToggle = () =>
 </script>
 
 <template>
-    <div class="w-full flex justify-center">
+    <div class="w-full flex justify-center px-5">
         <div class="w-full md:min-w-[768px] max-w-[1400px] max-md:min-w-0">
             <BoardDetailTop
                 class="my-4 max-md:hidden"
@@ -144,7 +157,7 @@ const replyDeleteSuccessModalToggle = () =>
                 :is-post-writer="roomUserNo === post.roomUserNo"
             />
             <div
-                class="flex flex-col w-full border md:rounded border-A805LightGrey p-9 max-md:border-x-0"
+                class="flex flex-col w-full border md:rounded border-A805LightGrey md:p-9 max-md:pt-3 max-md:border-x-0"
             >
                 <div class="w-full flex flex-col">
                     <TextAtom class="text-[28px] mb-2">{{ post.title }}</TextAtom>
@@ -211,7 +224,13 @@ const replyDeleteSuccessModalToggle = () =>
             </div>
             <BoardDetailBottom
                 class="my-4"
-                @write-button-handle="writeButtonHandler"
+                @write-button-handle="
+                    () =>
+                        router.push({
+                            name: 'game-board-write',
+                            query: { boardCategory: boardCategory }
+                        })
+                "
                 @modify-button-handle="modifyButtonHandler"
                 @delete-button-handle="deleteModalToggle"
                 @top-button-handle="topButtonHandler"

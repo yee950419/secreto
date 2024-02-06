@@ -3,47 +3,58 @@ import { localAxios } from '@/utils/http-commons'
 const boardInstance: AxiosInstance = localAxios()
 
 async function getBoard(
+    roomNo: number,
     param: object,
     success: (response: AxiosResponse) => void,
     fail: (error: any) => void
 ) {
-    boardInstance.get(`/board`, { params: param }).then(success).catch(fail)
+    boardInstance.get(`/board/${roomNo}`, { params: param }).then(success).catch(fail)
 }
 
 async function getPost(
-    postNo: number,
+    roomNo: number,
+    boardNo: number,
     success: (response: AxiosResponse) => void,
     fail: (error: any) => void
 ) {
-    boardInstance.get(`/post/${postNo}`).then(success).catch(fail)
+    boardInstance.get(`/post/${boardNo}/room/${roomNo}`).then(success).catch(fail)
+}
+
+async function createPost(
+    roomNo: number,
+    param: object,
+    success: (response: AxiosResponse) => void,
+    fail: (error: any) => void
+) {
+    boardInstance.post(`/post/${roomNo}`, param).then(success).catch(fail)
 }
 
 async function getReplies(
-    postNo: number,
+    roomNo: number,
+    boardNo: number,
     success: (response: AxiosResponse) => void,
     fail: (error: any) => void
 ) {
-    boardInstance.get(`/reply/${postNo}`).then(success).catch(fail)
+    boardInstance.get(`/reply/${boardNo}/room/${roomNo}`).then(success).catch(fail)
 }
 
 async function postReply(
+    roomNo: number,
     postNo: number,
     param: object,
     success: (response: AxiosResponse) => void,
     fail: (error: any) => void
 ) {
-    boardInstance.post(`/reply/${postNo}`, param).then(success).catch(fail)
+    boardInstance.post(`/reply/${postNo}/room/${roomNo}`, param).then(success).catch(fail)
 }
 
 async function deleteReply(
+    roomNo: number,
     replyNo: number,
     success: (response: AxiosResponse) => void,
     fail: (error: any) => void
 ) {
-    boardInstance
-        .delete(`/reply/${replyNo}`, { params: { replyNo: replyNo } })
-        .then(success)
-        .catch(fail)
+    boardInstance.delete(`/reply/${replyNo}/room/${roomNo}`).then(success).catch(fail)
 }
 
-export { getBoard, getPost, getReplies, postReply, deleteReply }
+export { getBoard, getPost, getReplies, postReply, deleteReply, createPost }

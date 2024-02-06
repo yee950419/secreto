@@ -5,8 +5,11 @@ import TextAtom from '@/components/atoms/TextAtom.vue'
 import { useUserStore } from '@/stores/user'
 import { inject, ref, type Ref } from 'vue'
 import type { ReplyWriteRequestType } from '@/types/board'
+import { useRoute } from 'vue-router'
+const route = useRoute()
 
-const postNo: Ref<number> = inject('postNo', ref(-1))
+const roomNo: Ref<number> = ref(Number(route.params.roomNo))
+const boardNo: Ref<number> = inject('boardNo', ref(-1))
 const props = defineProps(['parentReplyNo', 'tagUserNo'])
 const userStore = useUserStore()
 const emit = defineEmits(['submitReplySuccessHandle', 'cancelButtonHandle'])
@@ -24,7 +27,7 @@ const replyWriteHandler = () => {
     const replyRequest: ReplyWriteRequestType = {
         boardNo: -1,
         roomUserNo: -1,
-        contnet: '',
+        content: '',
         parentReplyNo: props.parentReplyNo,
         tagUserNo: props.tagUserNo,
         annonymityYn: false
@@ -34,12 +37,13 @@ const replyWriteHandler = () => {
             alert('댓글을 입력하세요!')
             return
         }
-        replyRequest.boardNo = postNo.value
+        replyRequest.boardNo = boardNo.value
         replyRequest.roomUserNo = roomUserNo.value
-        replyRequest.contnet = textArea.value.value
+        replyRequest.content = textArea.value.value
     }
     postReply(
-        postNo.value,
+        roomNo.value,
+        boardNo.value,
         replyRequest,
         (response) => {
             if (response.data.status === 'OK') {

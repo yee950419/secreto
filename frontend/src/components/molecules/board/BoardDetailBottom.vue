@@ -17,7 +17,7 @@ const writeButtonClick: Handler = () => {
 
 <template>
     <div class="w-full md:h-[40px] flex justify-between items-center max-md:flex-col">
-        <div class="flex gap-[10px] max-md:flex-col max-md:w-full max-md:px-2">
+        <div class="flex gap-[10px] max-md:flex-col max-md:w-full">
             <ButtonAtom
                 custom-class="button-style-4 button-claret text-[18px] w-[95px] font-bold flex justify-center items-center gap-[5px] max-md:w-full"
                 @button-click="writeButtonClick"
@@ -36,7 +36,7 @@ const writeButtonClick: Handler = () => {
                 >삭제</ButtonAtom
             >
         </div>
-        <div class="flex gap-[10px] max-md:flex-col-reverse max-md:w-full max-md:px-2 max-md:mt-3">
+        <div class="flex gap-[10px] max-md:flex-col-reverse max-md:w-full max-md:mt-3">
             <ButtonAtom
                 custom-class="button-style-4 button-lightGrey text-[18px] w-[80px] font-bold flex justify-center items-center  max-md:w-full"
                 @button-click="() => emit('topButtonHandle')"

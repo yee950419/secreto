@@ -1,5 +1,6 @@
+import { useRoute } from 'vue-router'
+
 export type BoardRequestType = {
-    roomNo: number
     boardCategory: string
     title: string | null
     content: string | null
@@ -50,23 +51,29 @@ export type ReplyResponseType = {
     writerEmail: string
     writerProfileUrl: string | null
     children?: ReplyResponseType[] | undefined
+    deleteYn?: boolean
 }
 
 export type ReplyWriteRequestType = {
     boardNo: number // boardNo?? postNo
     roomUserNo: number
-    contnet: string // api에서 오타 수정 후 원복
+    content: string // api에서 오타 수정 후 원복
     parentReplyNo?: number
     tagUserNo?: number
     annonymityYn?: boolean
 }
 
 export type BoardWriteRequestType = {
-    boardNo: number
-    roomUserNo: number
     title: string
     content: string
+    imageUrl: string | null
     boardCategory: string
     publicYn: boolean
-    missionCategory: string
+    missionCategory: string | null
 }
+
+export const BoardCategory = Object.freeze({
+    BOAST: 'BOAST',
+    CERTIFICATE: 'CERTIFICATE',
+    NOTICE: 'NOTICE'
+})

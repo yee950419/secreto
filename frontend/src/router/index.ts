@@ -79,22 +79,30 @@ const router = createRouter({
             component: RoomPage,
             children: [
                 {
-                    path: 'board',
+                    path: '/game/:roomNo/board',
                     name: 'game-board',
                     component: () => import('@/components/pages/board/BoardPage.vue'),
-                    props: true
-                },
-                {
-                    path: 'board',
-                    name: 'game-board-detail',
-                    component: () => import('@/components/pages/board/BoardDetailPage.vue'),
-                    props: true
-                },
-                {
-                    path: 'board',
-                    name: 'game-board-write',
-                    component: () => import('@/components/pages/board/BoardWritePage.vue'),
-                    props: true
+                    props: true,
+                    children: [
+                        {
+                            path: '/game/:roomNo/board',
+                            name: 'game-board-list',
+                            component: () => import('@/components/pages/board/BoardListPage.vue'),
+                            props: true
+                        },
+                        {
+                            path: '/game/:roomNo/board',
+                            name: 'game-board-write',
+                            component: () => import('@/components/pages/board/BoardWritePage.vue'),
+                            props: true
+                        },
+                        {
+                            path: '/game/:roomNo/board-detail',
+                            name: 'game-board-detail',
+                            component: () => import('@/components/pages/board/BoardDetailPage.vue'),
+                            props: true
+                        }
+                    ]
                 },
                 {
                     path: 'mission',

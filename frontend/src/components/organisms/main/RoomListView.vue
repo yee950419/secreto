@@ -1,13 +1,17 @@
 <script setup lang="ts">
 import { getRoomList } from '@/api/room'
 import ButtonAtom from '@/components/atoms/ButtonAtom.vue'
-import { ref, watch, type Ref, onMounted } from 'vue'
+import { ref, watch, type Ref, onMounted, onUnmounted } from 'vue'
 import type { Handler, DataHandler } from '@/types/common'
-import type { RoomInfoType } from '@/types/room'
+import type { RoomInfoType, RoomListInfoType } from '@/types/room'
 import RoomCard from '@/components/molecules/main/RoomCard.vue'
 import RoomCreateCard from '@/components/molecules/main/RoomCreateCard.vue'
 import { useRouter } from 'vue-router'
-
+import { exitRoom, checkFavorite } from '@/api/room'
+import { useUserStore } from '@/stores/user'
+import { storeToRefs } from 'pinia'
+const userStore = useUserStore()
+const { userInfo } = storeToRefs(userStore)
 const router = useRouter()
 
 const emit = defineEmits(['submit-button-handle'])
@@ -15,132 +19,106 @@ const emit = defineEmits(['submit-button-handle'])
 /**
  * dummy data
  */
-const roomInfoList = ref<Array<RoomInfoType>>([])
+const roomInfoList = ref<Array<RoomListInfoType>>([])
 const SelectState = {
-    ALL: 'all',
-    WAITING: 'waiting',
-    IN_PROGRESS: 'in_progress',
-    TERMINATED: 'terminated',
-    FAVORITES: 'favorites'
+    ALL: 'ALL',
+    WAITING: 'WAIT',
+    IN_PROGRESS: 'PARTICIPANT',
+    TERMINATED: 'END',
+    FAVORITES: 'BOOKMARK'
 }
 const selectState: Ref<string> = ref(SelectState.ALL)
 watch(selectState, () => {
-    alert('방 불러오기 이벤트 발생!!!')
+    console.log('메뉴 변경', selectState.value)
 })
-// const filteredRoomList = ref({
-//     all: roomInfoList.value,
-//     waiting: roomInfoList.value.filter((room: RoomInfoType) => {
-//         if (room['roomStatus'] === 'waiting') {
-//             return room
-//         }
-//     }),
-//     in_progress: roomInfoList.value.filter((room: RoomInfoType) => {
-//         if (room['roomStatus'] === '참여중') {
-//             return room
-//         }
-//     }),
-//     terminated: roomInfoList.value.filter((room: RoomInfoType) => {
-//         if (room['roomStatus'] === '종료') {
-//             return room
-//         }
-//     }),
-//     favorites: roomInfoList.value.filter((room: RoomInfoType) => {
-//         if (room['like']) {
-//             return room
-//         }
-//     })
-// })
-const roomEnterHandler: DataHandler<number> = (roomNo: number) => {
-    // alert(roomNo + '번 방 입장 이벤트')
-    router.push('/game/' + roomNo)
+
+const roomEnterHandler: DataHandler<RoomListInfoType> = (roomInfo: RoomListInfoType) => {
+    // 방으로 이동할 수 있는 경우
+    // 1. 방장인 경우
+    // 2. 입장이 승인됐으며 게임이 시작된 경우
+    // 3. 입장이 승인됐으며 게임이 종료된 경우
+    if (
+        roomInfo.hostUserNo === userInfo.value.id ||
+        (!roomInfo.standbyYn && (roomInfo.roomStatus === 'END' ||
+            (roomInfo.roomStatus === 'PARTICIPANT' &&
+                (new Date(roomInfo.roomStartAt) < new Date() && new Date(roomInfo.roomEndAt) > new Date())
+            )))) {
+        router.push('/game/' + roomInfo.roomNo)
+    }
+
+    else {
+        router.push('/waiting/' + roomInfo.roomNo)
+    }
+
 }
+
 const roomFavoriteHandler: DataHandler<number> = (roomNo: number) => {
-    alert(roomNo + '번 방 즐겨찾기 추가 이벤트')
-}
-const roomFavoriteHandlerTest: DataHandler<RoomInfoType> = (roomInfo: RoomInfoType) => {
-    roomInfo.bookmarkYn = !roomInfo.bookmarkYn
-}
-const roomLeaveHandler: DataHandler<number> = (roomNo: number) => {
-    alert(roomNo + '번 방 삭제 이벤트')
-}
-const roomLeaveHandlerTest: DataHandler<number> = (roomNo: number) => {
-    alert(roomNo + '번 방 삭제 이벤트')
-    roomInfoList.value = roomInfoList.value.filter((room: RoomInfoType) => {
-        if (room['roomNo'] !== roomNo) {
-            return room
+    checkFavorite(roomNo, ({ data }) => {
+        if (data.result) {
+            alert('즐겨찾기를 성공했습니다.')
         }
-    })
-    console.log(roomInfoList.value)
+        else {
+            alert('즐겨찾기를 해제하였습니다.')
+        }
+        getRoomLists()
+
+    }, (error) => console.log(error)
+    )
+}
+
+const roomLeaveHandler: DataHandler<number> = async (roomNo: number) => {
+    await exitRoom(roomNo, ({ data }) => {
+        alert(data.message); getRoomLists()
+    }, (error) => console.log(error))
+
 }
 const roomCreateHandler: Handler = () => {
     emit('submit-button-handle', 'roomCreate')
 }
 
-// 방 리스트 정보 불러오기
-onMounted(() => {
+const getRoomLists = () => {
     getRoomList(
         ({ data }) => {
+            console.log(data)
+
             roomInfoList.value = data.result
-            console.log(data.result)
+            // console.log(data.result)
         },
         (error) => {
-            console.error('error', error)
+            console.error('error', error.response.data.message)
         }
     )
+}
+
+// 방 리스트 정보 불러오기
+onMounted(() => {
+    getRoomLists()
 })
 </script>
 
 <template>
     <div class="card-container scroll-container justify-start">
-        <div
-            class="w-full flex gap-[30px] px-[10px] pb-[10px] text-A805DarkGrey border-b-[1px] border-A805Black"
-        >
-            <ButtonAtom
-                :custom-class="selectState === SelectState.ALL ? 'text-A805Black font-bold' : ''"
-                @click="() => (selectState = SelectState.ALL)"
-                >전체</ButtonAtom
-            >
-            <ButtonAtom
-                :custom-class="
-                    selectState === SelectState.WAITING ? 'text-A805Black font-bold' : ''
-                "
-                @click="() => (selectState = SelectState.WAITING)"
-                >대기중</ButtonAtom
-            >
-            <ButtonAtom
-                :custom-class="
-                    selectState === SelectState.IN_PROGRESS ? 'text-A805Black font-bold' : ''
-                "
-                @click="() => (selectState = SelectState.IN_PROGRESS)"
-                >참여중</ButtonAtom
-            >
-            <ButtonAtom
-                :custom-class="
-                    selectState === SelectState.TERMINATED ? 'text-A805Black font-bold' : ''
-                "
-                @click="() => (selectState = SelectState.TERMINATED)"
-                >종료</ButtonAtom
-            >
-            <ButtonAtom
-                :custom-class="
-                    selectState === SelectState.FAVORITES ? 'text-A805Black font-bold' : ''
-                "
-                @click="() => (selectState = SelectState.FAVORITES)"
-                >즐겨찾기</ButtonAtom
-            >
+        <div class="w-full flex gap-[30px] px-[10px] pb-[10px] text-A805DarkGrey border-b-[1px] border-A805Black">
+            <ButtonAtom :custom-class="selectState === SelectState.ALL ? 'text-A805Black font-bold' : ''"
+                @click="() => (selectState = SelectState.ALL)">전체</ButtonAtom>
+            <ButtonAtom :custom-class="selectState === SelectState.WAITING ? 'text-A805Black font-bold' : ''
+                " @click="() => (selectState = SelectState.WAITING)">대기중</ButtonAtom>
+            <ButtonAtom :custom-class="selectState === SelectState.IN_PROGRESS ? 'text-A805Black font-bold' : ''
+                " @click="() => (selectState = SelectState.IN_PROGRESS)">참여중</ButtonAtom>
+            <ButtonAtom :custom-class="selectState === SelectState.TERMINATED ? 'text-A805Black font-bold' : ''
+                " @click="() => (selectState = SelectState.TERMINATED)">종료</ButtonAtom>
+            <ButtonAtom :custom-class="selectState === SelectState.FAVORITES ? 'text-A805Black font-bold' : ''
+                " @click="() => (selectState = SelectState.FAVORITES)">즐겨찾기</ButtonAtom>
         </div>
-        <div
-            class="w-full flex justify-between items-start flex-wrap gap-x-[10px] gap-y-[30px] my-[20px]"
-        >
+        <div class="w-full flex justify-between items-start flex-wrap gap-x-[10px] gap-y-[30px] my-[20px]">
             <RoomCreateCard @click="roomCreateHandler" />
-            <RoomCard
-                v-for="roomInfo in roomInfoList"
-                :key="roomInfo.roomNo"
-                :room-info="roomInfo"
-                @click="() => roomEnterHandler(roomInfo.roomNo)"
-                @favorite-handle="() => roomFavoriteHandlerTest(roomInfo)"
-                @delete-handle="() => roomLeaveHandlerTest(roomInfo.roomNo)"
-            />
+            <template v-for="roomInfo in roomInfoList" :key="roomInfo.roomNo">
+                <RoomCard
+                    v-if="(selectState === SelectState.ALL) || (selectState === roomInfo.roomStatus) || (selectState === SelectState.FAVORITES) && (roomInfo.bookmarkYn)"
+                    :room-info="roomInfo" :is-master="roomInfo.hostUserNo === userInfo.id"
+                    @click="() => roomEnterHandler(roomInfo)" @favorite-handle="() => roomFavoriteHandler(roomInfo.roomNo)"
+                    @delete-handle="() => roomLeaveHandler(roomInfo.roomNo)" />
+            </template>
         </div>
     </div>
 </template>

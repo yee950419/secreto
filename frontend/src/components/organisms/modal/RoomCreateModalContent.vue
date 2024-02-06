@@ -5,11 +5,15 @@ import InputBox from '@/components/molecules/common/InputBox.vue'
 import type { Handler } from '@/types/common'
 import { ref, type Ref } from 'vue'
 import type { RoomCreateRequestType } from '@/types/room'
+import { useUserStore } from '@/stores/user'
+import { storeToRefs } from 'pinia'
+const userStore = useUserStore()
+const {userInfo} = storeToRefs(userStore)  
 
 const emit = defineEmits(['yesButtonHandle', 'noButtonHandle'])
 const roomCreateRequest: Ref<RoomCreateRequestType> = ref({
     roomName: '',
-    hostNickname: 'default-name'
+    hostNickname: userInfo.value.nickname
 })
 const yesButtonClick: Handler = () => {
     emit('yesButtonHandle', roomCreateRequest.value)

@@ -4,7 +4,7 @@ import ButtonAtom from '@/components/atoms/ButtonAtom.vue'
 import type { Handler } from '@/types/common'
 
 defineProps(['buttonLabelRef', 'buttonHide'])
-const emit = defineEmits(['buttonClick'])
+const emit = defineEmits(['buttonClick', 'logoHandle'])
 const buttonClickHandler: Handler = () => {
     emit('buttonClick')
 }
@@ -12,14 +12,10 @@ const buttonClickHandler: Handler = () => {
 
 <template>
     <div class="card-container bg-A805Cream md:shadow-rb">
-        <MainLogo />
+        <MainLogo @click="emit('logoHandle')" />
         <slot></slot>
-        <ButtonAtom
-            custom-class="button-style-1 button-claret button-shadow m-[20px]"
-            :class="buttonHide ? 'invisible' : ''"
-            @button-click="buttonClickHandler"
-            >{{ buttonLabelRef }}</ButtonAtom
-        >
+        <ButtonAtom custom-class="button-style-1 button-claret button-shadow m-[20px]"
+            :class="buttonHide ? 'invisible' : ''" @button-click="buttonClickHandler">{{ buttonLabelRef }}</ButtonAtom>
     </div>
 </template>
 

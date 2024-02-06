@@ -15,7 +15,7 @@ const { menuSeen } = storeToRefs(menuStore)
 defineProps({
     roomName: {
         type: String as () => string | null,
-        default: '방 제목'
+        default: ''
     }
 })
 
@@ -46,23 +46,12 @@ onUnmounted(() => {
 
 <template>
     <div
-        class="relative flex md:min-h-[140px] max-md:min-h-[100px] bg-A805Cream w-full md:justify-between items-center shadow-lg"
-    >
-        <MenuOutlined
-            v-if="!isMdOrLarger"
-            style="font-size: 24px"
-            class="ml-[40px]"
-            @click="menuClick"
-        />
+        class="relative flex md:min-h-[140px] max-md:min-h-[100px] bg-A805Cream w-full md:justify-between items-center shadow-lg">
+        <MenuOutlined v-if="!isMdOrLarger" style="font-size: 24px" class="ml-[40px]" @click="menuClick" />
         <HeaderLogo class="md:ml-[20px] max-md:mx-auto" />
         <TextAtom class="text-2 truncate max-w-[20%]" v-if="isMdOrLarger">{{ roomName }}</TextAtom>
-        <HeaderProfile
-            @click="clickHandler"
-            v-if="isMdOrLarger"
-            :imageUrl="userInfo.profileUrl"
-            :name="userInfo.nickname"
-            class="mr-[40px]"
-        />
+        <HeaderProfile @click="clickHandler" v-if="isMdOrLarger" :imageUrl="userInfo.profileUrl" :name="userInfo.nickname"
+            class="mr-[40px]" />
     </div>
 </template>
 

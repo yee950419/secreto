@@ -2,7 +2,7 @@ import sswTestVue from '@/components/pages/sswTest.vue'
 import { createRouter, createWebHistory, createWebHashHistory } from 'vue-router'
 import { useUserStore } from '@/stores/user'
 import { storeToRefs } from 'pinia'
-import RoomView from '@/components/pages/RoomView.vue'
+import RoomPage from '@/components/pages/RoomPage.vue'
 import WithdrawalSuccessPage from '@/components/pages/WithdrawalSuccessPage.vue'
 import ResetPasswordPage from '@/components/pages/ResetPasswordPage.vue'
 
@@ -66,9 +66,17 @@ const router = createRouter({
             }
         },
         {
+            path: '/waiting/:roomNo',
+            name: 'waiting',
+            component: () => import('@/components/pages/EntranceWaitingPage.vue'),
+            meta: {
+                hide: true
+            }
+        },
+        {
             path: '/game/:roomNo',
             name: 'game',
-            component: RoomView,
+            component: RoomPage,
             children: [
                 {
                     path: 'board',
@@ -122,6 +130,11 @@ const router = createRouter({
                     path: 'wordcloud',
                     name: 'game-wordcloud',
                     component: () => import('@/components/pages/ReviewPage.vue')
+                },
+                {
+                    path: 'notification',
+                    name: 'game-notification',
+                    component: () => import('@/components/pages/NotificationPage.vue')
                 }
             ],
             beforeEnter(to, from, next) {

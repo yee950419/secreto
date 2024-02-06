@@ -1,7 +1,7 @@
 export type Mission = {
-    id: number
-    name: string
-    checked: boolean
+    id?: number
+    content: string
+    checked?: boolean
 }
 
 export type RoomMission = {

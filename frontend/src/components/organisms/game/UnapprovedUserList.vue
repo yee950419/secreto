@@ -1,12 +1,13 @@
 <script setup lang="ts">
 import CheckBox from '@/components/molecules/common/CheckBox.vue'
 import InputBox from '@/components/molecules/common/InputBox.vue'
-import { ref, type Ref } from 'vue'
+import { ref, type ModelRef, type Ref } from 'vue'
 import type { DataHandler, Handler } from '@/types/common'
 import type { ProfileInfoType, ProfileInfoCheckBoxType } from '@/types/user'
 import ProfileInfo from '@/components/molecules/game/ProfileInfo.vue'
 import { CheckOutlined, MinusCircleOutlined } from '@ant-design/icons-vue'
-
+import type { userType } from '@/types/room'
+import { acceptRoomUsers } from '@/api/room'
 const props = defineProps({
     userList: {
         type: Array<ProfileInfoType>,
@@ -14,6 +15,8 @@ const props = defineProps({
     }
 })
 const emit = defineEmits(['usersApproved', 'usersDenied'])
+
+const usersUnapproved: ModelRef<userType[]> = defineModel({ required: true })
 
 const { userList } = props
 const userCheckList: Ref<Array<ProfileInfoCheckBoxType>> = ref(
@@ -36,6 +39,18 @@ const usersDeniedHandler: Handler = () => {
     emit('usersDenied', users)
 }
 const allUserChecked: Ref<boolean> = ref(true)
+
+const acceptUsersHandler: Handler = () => {
+    acceptRoomUsers(
+        usersUnapproved.value.filter((user) => user.checked),
+        ({ data }) => {
+            console.log('acceptRoomUsers success', data)
+        },
+        (error) => {
+            console.log('error', error)
+        }
+    )
+}
 </script>
 
 <template>
@@ -54,17 +69,17 @@ const allUserChecked: Ref<boolean> = ref(true)
                     >전체 선택</CheckBox
                 >
                 <div class="flex justify-between gap-3">
-                    <p class="text-A805Blue cursor-pointer" @click="usersApproveHandler">
+                    <p class="text-A805Blue cursor-pointer" @click="acceptUsersHandler">
                         선택 승인
                     </p>
                     <p class="cursor-pointer" @click="usersDeniedHandler">선택 거절</p>
                 </div>
             </div>
-            <div class="overflow-y-auto">
-                <div v-for="user in userCheckList" :key="user.id" class="px-4 py-2">
+            <div class="flex flex-col h-[220px] overflow-y-auto">
+                <div v-for="user in usersUnapproved" :key="user.roomUserNo" class="px-4 py-2">
                     <div class="flex items-center justify-between">
                         <CheckBox
-                            :custom-id="user.id"
+                            :custom-id="user.roomUserNo"
                             v-model="user.checked"
                             custom-class="checkbox-molecule-style-1 gap-3"
                         >
@@ -74,13 +89,10 @@ const allUserChecked: Ref<boolean> = ref(true)
                             ></ProfileInfo>
                         </CheckBox>
                         <div class="flex gap-5 text-[32px]">
-                            <CheckOutlined
-                                class="text-A805Green"
-                                @click="$emit('usersApproved', [user])"
-                            />
+                            <CheckOutlined class="text-A805Green" @click="$emit('usersApproved')" />
                             <MinusCircleOutlined
                                 class="text-A805Red"
-                                @click="$emit('usersDenied', [user])"
+                                @click="$emit('usersDenied')"
                             />
                         </div>
                     </div>

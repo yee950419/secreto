@@ -1,17 +1,13 @@
 <script setup lang="ts">
 import ButtonAtom from '@/components/atoms/ButtonAtom.vue'
+import { BoardCategory } from '@/types/board'
 import type { Handler } from '@/types/common'
-import { computed, onMounted, ref, type Ref } from 'vue'
+import { computed } from 'vue'
 import { useRoute } from 'vue-router'
 const route = useRoute()
 
 const emit = defineEmits(['noticeButtonHandle', 'certificateButtonHandle', 'BoastButtonHandle'])
 
-const BoardCategory = Object.freeze({
-    BOAST: 'BOAST',
-    CERTIFICATE: 'CERTIFICATE',
-    NOTICE: 'NOTICE'
-})
 const boardCategory = computed(() => {
     return String(route.query.boardCategory)
 })

@@ -11,14 +11,18 @@ import type { Handler } from '@/types/common'
 import ModalTemplate from '@/components/template/ModalTemplate.vue'
 import YesNoModalContent from '@/components/organisms/modal/YesNoModalContent.vue'
 import { deleteReply } from '@/api/board'
+import { useRoute } from 'vue-router'
 const props = defineProps(['reply', 'nested', 'postWriterUserNo'])
 const emit = defineEmits(['deleteSuccessHandle', 'submitReplySuccessHandle'])
+const route = useRoute()
 
+const roomNo: Ref<number> = ref(Number(route.params.roomNo))
 const roomUserNo: Ref<number> = inject('roomUserNo', ref(-1))
 const seenReplyWriteForm: Ref<boolean> = ref(false)
 const seenReplyModifyForm: Ref<boolean> = ref(false)
 const deleteButtonHandler: Handler = () => {
     deleteReply(
+        roomNo.value,
         props.reply.replyNo,
         (response) => {
             console.log(response.data.message)

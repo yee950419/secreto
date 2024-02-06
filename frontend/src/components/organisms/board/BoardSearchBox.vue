@@ -6,8 +6,9 @@ import InputBox from '@/components/molecules/common/InputBox.vue'
 import ButtonAtom from '@/components/atoms/ButtonAtom.vue'
 
 const emit = defineEmits(['searchHandle'])
-const searchKeyword: Ref<string> = ref('')
-const condition: Ref<string> = ref('title')
+const props = defineProps(['defaultCondition', 'defaultKeyword'])
+const searchKeyword: Ref<string> = ref(props.defaultKeyword)
+const condition: Ref<string> = ref(props.defaultCondition)
 const searchButtonHandler: Handler = () => {
     emit('searchHandle', condition.value, searchKeyword.value)
 }

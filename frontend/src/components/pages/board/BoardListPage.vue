@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { getBoard } from '@/api/board'
-import { watch, ref, type Ref, computed, onMounted } from 'vue'
-import type { BoardRequestType, BoardResponseType } from '@/types/board'
+import { watch, ref, type Ref, computed, onMounted, onUpdated } from 'vue'
+import { type BoardRequestType, type BoardResponseType } from '@/types/board'
 import BoardSearchBox from '@/components/organisms/board/BoardSearchBox.vue'
 import BoardTableHeader from '@/components/molecules/board/BoardTableHeader.vue'
 import BoardElement from '@/components/molecules/board/BoardElement.vue'
@@ -19,28 +19,25 @@ const boardCategory = computed(() => {
     return String(route.query.boardCategory)
 })
 const roomNo: Ref<number> = ref(Number(route.params.roomNo))
-const boardRequest = ref<BoardRequestType>({
-    roomNo: roomNo.value,
-    boardCategory: boardCategory.value,
-    title: null,
-    content: null,
-    writer: null,
-    page: 0,
+const boardRequest: Ref<BoardRequestType> = ref({
+    boardCategory: String(route.query.boardCategory),
+    title: route.query.title === undefined ? '' : String(route.query.title),
+    content: route.query.content === undefined ? '' : String(route.query.content),
+    writer: route.query.writer === undefined ? '' : String(route.query.writer),
+    page: Number(route.query.page) > 0 ? Number(route.query.page) : 0,
     size: 10
 })
-const current: Ref<number> = ref(1)
+const current: Ref<number> = ref(boardRequest.value.page + 1)
 const total: Ref<number> = ref(0)
 
 const loadBoardData = () => {
     boardRequest.value.boardCategory = boardCategory.value
-    console.table(boardRequest.value)
     getBoard(
         roomNo.value,
         boardRequest.value,
         (response) => {
             const data = response.data
             if (data.status === 'OK') {
-                console.log(data.result)
                 const pageable = data.result.pageable
                 boards.value = data.result.content
                 boardRequest.value.page = pageable.pageNumber
@@ -55,7 +52,7 @@ const loadBoardData = () => {
 const boardDetail = (boardNo: number): void => {
     router.push({
         name: 'game-board-detail',
-        query: { boardNo: boardNo }
+        query: { boardNo: boardNo, ...boardRequest.value }
     })
 }
 
@@ -76,10 +73,8 @@ const searchButtonHandler = (condition: string, keyword: string) => {
             break
     }
     current.value = 1
-    console.log(boardRequest)
     loadBoardData()
 }
-
 onMounted(() => {
     loadBoardData()
 })
@@ -146,10 +141,36 @@ watch(boardCategory, () => {
         />
         <div class="flex w-full justify-between px-4 items-center max-md:flex-col mb-5">
             <div></div>
-            <BoardSearchBox @search-handle="searchButtonHandler" />
+            <BoardSearchBox
+                @search-handle="searchButtonHandler"
+                :default-condition="
+                    boardRequest.title
+                        ? 'title'
+                        : boardRequest.writer
+                          ? 'writer'
+                          : boardRequest.content
+                            ? 'content'
+                            : 'title'
+                "
+                :default-keyword="
+                    boardRequest.title
+                        ? boardRequest.title
+                        : boardRequest.writer
+                          ? boardRequest.writer
+                          : boardRequest.content
+                            ? boardRequest.content
+                            : ''
+                "
+            />
             <ButtonAtom
                 custom-class="button-style-4 button-claret text-[18px] w-[95px] font-bold flex justify-center items-center gap-[5px] max-md:w-full h-[35px] max-md:mt-7 max-md:rounded-none"
-                @button-click="() => router.push({ name: 'game-board-write' })"
+                @button-click="
+                    () =>
+                        router.push({
+                            name: 'game-board-write',
+                            query: { boardCategory: boardCategory }
+                        })
+                "
                 ><EditOutlined /><span>글쓰기</span></ButtonAtom
             >
         </div>

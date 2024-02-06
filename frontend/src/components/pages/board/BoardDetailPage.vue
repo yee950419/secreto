@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref, type Ref, onMounted, computed, inject, readonly, provide } from 'vue'
-import type { BoardDetailResponseType, ReplyResponseType } from '@/types/board'
+import type { BoardDetailResponseType, BoardRequestType, ReplyResponseType } from '@/types/board'
 import BoardWriterInformation from '@/components/molecules/board/BoardWriterInformation.vue'
 import ReplyWriteForm from '@/components/molecules/board/ReplyWriteForm.vue'
 import LikeButton from '@/components/molecules/board/LikeButton.vue'
@@ -22,7 +22,19 @@ const route = useRoute()
 const boardNo = computed(() => {
     return Number(route.query.boardNo)
 })
+const boardCategory = computed(() => {
+    return String(route.query.boardCategory)
+})
+const roomNo: Ref<number> = ref(Number(route.params.roomNo))
 const roomUserNo = inject<Ref<number>>('roomUserInfo', ref(-1))
+const boardRequest: Ref<BoardRequestType> = ref({
+    boardCategory: String(route.query.boardCategory),
+    title: route.query.title === undefined ? '' : String(route.query.title),
+    content: route.query.content === undefined ? '' : String(route.query.content),
+    writer: route.query.writer === undefined ? '' : String(route.query.writer),
+    page: Number(route.query.page) > 0 ? Number(route.query.page) : 0,
+    size: 10
+})
 provide('boardNo', readonly(boardNo))
 
 const post: Ref<BoardDetailResponseType> = ref({
@@ -69,6 +81,7 @@ const constructParentChildRelation = (replies: ReplyResponseType[]): ReplyRespon
 
 const loadReplies = () => {
     getReplies(
+        roomNo.value,
         boardNo.value,
         (response) => {
             const data = response.data
@@ -86,6 +99,7 @@ const loadReplies = () => {
 
 onMounted(() => {
     getPost(
+        roomNo.value,
         boardNo.value,
         (response) => {
             const data = response.data
@@ -107,9 +121,6 @@ const loadRepliesAndShowModal = (content: string) => {
     loadReplies()
     replyDeleteSuccessModalToggle()
 }
-const writeButtonHandler: Handler = () => {
-    alert('글쓰기 페이지 이동')
-}
 const modifyButtonHandler: Handler = () => {
     alert('수정 페이지 이동')
 }
@@ -117,7 +128,7 @@ const topButtonHandler: Handler = () => {
     alert('맨 이벤트 발생')
 }
 const listButtonHandler: Handler = () => {
-    alert('목록 페이지 이동')
+    router.push({ name: 'game-board-list', query: { ...boardRequest.value } })
 }
 
 // modal
@@ -212,7 +223,13 @@ const replyDeleteSuccessModalToggle = () =>
             </div>
             <BoardDetailBottom
                 class="my-4"
-                @write-button-handle="() => router.push({ name: 'game-board-write' })"
+                @write-button-handle="
+                    () =>
+                        router.push({
+                            name: 'game-board-write',
+                            query: { boardCategory: boardCategory }
+                        })
+                "
                 @modify-button-handle="modifyButtonHandler"
                 @delete-button-handle="deleteModalToggle"
                 @top-button-handle="topButtonHandler"

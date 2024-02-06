@@ -3,6 +3,7 @@ import BoardHeader from '@/components/molecules/board/BoardHeader.vue'
 import LineAtom from '@/components/atoms/LineAtom.vue'
 
 import { useRouter } from 'vue-router'
+
 const router = useRouter()
 </script>
 

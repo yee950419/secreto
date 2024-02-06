@@ -5,9 +5,11 @@ import SelectBox from '@/components/molecules/common/SelectBox.vue'
 import InputBox from '@/components/molecules/common/InputBox.vue'
 import ButtonAtom from '@/components/atoms/ButtonAtom.vue'
 
-const searchKeyword: Ref<String> = ref('')
+const emit = defineEmits(['searchHandle'])
+const searchKeyword: Ref<string> = ref('')
+const condition: Ref<string> = ref('title')
 const searchButtonHandler: Handler = () => {
-    alert(searchKeyword.value)
+    emit('searchHandle', condition.value, searchKeyword.value)
 }
 </script>
 
@@ -16,6 +18,7 @@ const searchButtonHandler: Handler = () => {
         <SelectBox
             custom-class="w-[120px] max-md:w-full h-[35px] me-2 rounded-none !border-A805LightGrey max-md:mb-2"
             button-class="!bg-A805Claret !text-A805Khaki text-[20px]"
+            v-model="condition"
             :options="[
                 { label: '글 제목', value: 'title' },
                 { label: '글 내용', value: 'content' },

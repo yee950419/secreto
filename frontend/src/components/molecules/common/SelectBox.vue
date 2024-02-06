@@ -2,7 +2,7 @@
 import ButtonAtom from '@/components/atoms/ButtonAtom.vue'
 
 defineProps(['options', 'customClass', 'customId', 'buttonClass'])
-const emit = defineEmits([])
+const model = defineModel()
 </script>
 
 <template>
@@ -10,7 +10,7 @@ const emit = defineEmits([])
         class="flex relative rounded-md border border-A805DarkGrey overflow-hidden"
         :class="customClass"
     >
-        <select class="px-1 w-full">
+        <select class="px-1 w-full" v-model="model">
             <option v-for="option in options" :key="option.value" :value="option.value">
                 {{ option.label }}
             </option>

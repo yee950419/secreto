@@ -11,14 +11,16 @@ import { useRoute } from 'vue-router'
 import router from '@/router'
 import ButtonAtom from '@/components/atoms/ButtonAtom.vue'
 import { EditOutlined } from '@ant-design/icons-vue'
+import TextAtom from '@/components/atoms/TextAtom.vue'
+
 const route = useRoute()
-const props = defineProps(['roomNo'])
 const boards: Ref<BoardResponseType[]> = ref([])
 const boardCategory = computed(() => {
     return String(route.query.boardCategory)
 })
+const roomNo: Ref<number> = ref(Number(route.params.roomNo))
 const boardRequest = ref<BoardRequestType>({
-    roomNo: props.roomNo,
+    roomNo: roomNo.value,
     boardCategory: boardCategory.value,
     title: null,
     content: null,
@@ -31,7 +33,9 @@ const total: Ref<number> = ref(0)
 
 const loadBoardData = () => {
     boardRequest.value.boardCategory = boardCategory.value
+    console.table(boardRequest.value)
     getBoard(
+        roomNo.value,
         boardRequest.value,
         (response) => {
             const data = response.data
@@ -50,9 +54,30 @@ const loadBoardData = () => {
 
 const boardDetail = (boardNo: number): void => {
     router.push({
-        name: 'game-board-post',
-        query: { postNo: boardNo }
+        name: 'game-board-detail',
+        query: { boardNo: boardNo }
     })
+}
+
+const searchButtonHandler = (condition: string, keyword: string) => {
+    boardRequest.value.title = null
+    boardRequest.value.writer = null
+    boardRequest.value.content = null
+    boardRequest.value.page = 0
+    switch (condition) {
+        case 'title':
+            boardRequest.value.title = keyword
+            break
+        case 'writer':
+            boardRequest.value.writer = keyword
+            break
+        case 'content':
+            boardRequest.value.content = keyword
+            break
+    }
+    current.value = 1
+    console.log(boardRequest)
+    loadBoardData()
 }
 
 onMounted(() => {
@@ -69,9 +94,14 @@ watch(boardCategory, () => {
 </script>
 
 <template>
-    <div class="flex flex-col w-full md:min-w-[568px] max-w-[1200px] max-md:min-w-0 items-center">
+    <div
+        class="flex flex-col w-full md:min-w-[568px] max-w-[1400px] max-md:min-w-0 items-center relative mt-6"
+    >
         <!-- pc -->
-        <table class="table-auto text-center max-md:hidden w-full min-h-[300px]">
+        <table
+            class="table-auto text-center max-md:hidden w-full"
+            :class="boards.length === 0 ? 'min-h-[300px]' : ''"
+        >
             <BoardTableHeader class="max-md:hidden" />
             <tbody>
                 <BoardElement
@@ -81,10 +111,16 @@ watch(boardCategory, () => {
                     @click="() => boardDetail(board.boardNo)"
                 />
             </tbody>
+            <TextAtom
+                class="text-[1.5rem] text-center absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-10"
+                v-if="boards.length === 0"
+            >
+                작성된 게시글이 없습니다.
+            </TextAtom>
         </table>
 
         <!-- mobile -->
-        <div class="min-h-[50px]">
+        <div class="min-h-[150px] w-full flex flex-col items-center relative md:hidden">
             <template v-for="(board, i) in boards" :key="board.boardNo">
                 <MobileBoardElement
                     :board="board"
@@ -92,6 +128,12 @@ watch(boardCategory, () => {
                     @click="() => boardDetail(board.boardNo)"
                 />
             </template>
+            <TextAtom
+                class="text-[1.2rem] text-center absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
+                v-if="boards.length === 0"
+            >
+                작성된 게시글이 없습니다.
+            </TextAtom>
         </div>
         <Pagination
             class="my-[30px]"
@@ -104,7 +146,7 @@ watch(boardCategory, () => {
         />
         <div class="flex w-full justify-between px-4 items-center max-md:flex-col mb-5">
             <div></div>
-            <BoardSearchBox />
+            <BoardSearchBox @search-handle="searchButtonHandler" />
             <ButtonAtom
                 custom-class="button-style-4 button-claret text-[18px] w-[95px] font-bold flex justify-center items-center gap-[5px] max-md:w-full h-[35px] max-md:mt-7 max-md:rounded-none"
                 @button-click="() => router.push({ name: 'game-board-write' })"

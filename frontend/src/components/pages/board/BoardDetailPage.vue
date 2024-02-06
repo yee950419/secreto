@@ -15,14 +15,15 @@ import { CommentOutlined } from '@ant-design/icons-vue'
 import type { Handler } from '@/types/common'
 import { getPost, getReplies } from '@/api/board'
 import { useRoute } from 'vue-router'
+import router from '@/router'
 import YesModalContent from '@/components/organisms/modal/YesModalContent.vue'
 
 const route = useRoute()
-const postNo = computed(() => {
-    return Number(route.query.postNo)
+const boardNo = computed(() => {
+    return Number(route.query.boardNo)
 })
 const roomUserNo = inject<Ref<number>>('roomUserInfo', ref(-1))
-provide('postNo', readonly(postNo))
+provide('boardNo', readonly(boardNo))
 
 const post: Ref<BoardDetailResponseType> = ref({
     boardNo: 0,
@@ -68,7 +69,7 @@ const constructParentChildRelation = (replies: ReplyResponseType[]): ReplyRespon
 
 const loadReplies = () => {
     getReplies(
-        postNo.value,
+        boardNo.value,
         (response) => {
             const data = response.data
             if (data.status === 'OK') {
@@ -85,7 +86,7 @@ const loadReplies = () => {
 
 onMounted(() => {
     getPost(
-        postNo.value,
+        boardNo.value,
         (response) => {
             const data = response.data
             if (data.status === 'OK') {
@@ -134,7 +135,7 @@ const replyDeleteSuccessModalToggle = () =>
 </script>
 
 <template>
-    <div class="w-full flex justify-center">
+    <div class="w-full flex justify-center px-5">
         <div class="w-full md:min-w-[768px] max-w-[1400px] max-md:min-w-0">
             <BoardDetailTop
                 class="my-4 max-md:hidden"
@@ -144,7 +145,7 @@ const replyDeleteSuccessModalToggle = () =>
                 :is-post-writer="roomUserNo === post.roomUserNo"
             />
             <div
-                class="flex flex-col w-full border md:rounded border-A805LightGrey p-9 max-md:border-x-0"
+                class="flex flex-col w-full border md:rounded border-A805LightGrey md:p-9 max-md:pt-3 max-md:border-x-0"
             >
                 <div class="w-full flex flex-col">
                     <TextAtom class="text-[28px] mb-2">{{ post.title }}</TextAtom>
@@ -211,7 +212,7 @@ const replyDeleteSuccessModalToggle = () =>
             </div>
             <BoardDetailBottom
                 class="my-4"
-                @write-button-handle="writeButtonHandler"
+                @write-button-handle="() => router.push({ name: 'game-board-write' })"
                 @modify-button-handle="modifyButtonHandler"
                 @delete-button-handle="deleteModalToggle"
                 @top-button-handle="topButtonHandler"

@@ -3,11 +3,12 @@ import { localAxios } from '@/utils/http-commons'
 const boardInstance: AxiosInstance = localAxios()
 
 async function getBoard(
+    roomNo: number,
     param: object,
     success: (response: AxiosResponse) => void,
     fail: (error: any) => void
 ) {
-    boardInstance.get(`/board`, { params: param }).then(success).catch(fail)
+    boardInstance.get(`/board/${roomNo}`, { params: param }).then(success).catch(fail)
 }
 
 async function getPost(

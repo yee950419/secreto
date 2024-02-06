@@ -35,10 +35,11 @@ const submitButtonHandle = () => {
                     >
                         <SelectBox
                             class="w-[65%] max-md:w-full max-md:h-[30px]"
+                            button-class="!bg-A805Claret"
                             :options="[{ label: '미션을 선택해 주세요.', value: 0 }]"
                         />
                         <CheckBox
-                            class="gap-[10px] md:justify-end max-md:justify-center"
+                            class="gap-[10px] md:justify-end max-md:justify-center accent-[#E0AED0]"
                             custom-id="publicYn"
                             >인증 글 공개 여부</CheckBox
                         >
@@ -53,7 +54,7 @@ const submitButtonHandle = () => {
                         v-model="boardWriteRequest.title"
                     ></InputBox>
                 </div>
-                <div class="w-full h-[400px] mb-16">
+                <div class="w-full h-[500px] mb-16">
                     <QuillEditor
                         theme="snow"
                         toolbar="full"

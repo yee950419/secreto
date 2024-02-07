@@ -9,6 +9,7 @@ import { computed, ref, type Ref } from 'vue'
 import { BoardCategory, type BoardWriteRequestType } from '@/types/board'
 import { createPost } from '@/api/board'
 import { useRoute } from 'vue-router'
+import { toolbarOptions, modules } from '@/utils/editor'
 import router from '@/router'
 
 const route = useRoute()
@@ -56,6 +57,7 @@ const submitButtonHandle = () => {
         <div
             class="flex flex-col w-full md:min-w-[568px] max-w-[1400px] max-md:min-w-0 items-center px-[20px] gap-[10px]"
         >
+            {{ boardWriteRequest.content }}
             <div class="w-full flex flex-col gap-[10px] my-[20px]">
                 <div class="flex flex-col gap-[15px] border border-A805LightGrey p-5 rounded-sm">
                     <div
@@ -88,7 +90,8 @@ const submitButtonHandle = () => {
                 <div class="w-full h-[500px] mb-16">
                     <QuillEditor
                         theme="snow"
-                        toolbar="full"
+                        :toolbar="toolbarOptions"
+                        :modules="modules"
                         v-model:content="boardWriteRequest.content"
                         content-type="html"
                     />

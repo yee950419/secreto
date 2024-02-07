@@ -9,6 +9,7 @@ import { computed, onMounted, ref, type Ref } from 'vue'
 import { BoardCategory, type BoardModifyRequestType } from '@/types/board'
 import { modifyPost, getPost } from '@/api/board'
 import { useRoute } from 'vue-router'
+import { toolbarOptions, modules } from '@/utils/editor'
 import router from '@/router'
 
 const route = useRoute()
@@ -109,7 +110,8 @@ onMounted(() => {
                 <div class="w-full h-[500px] mb-16">
                     <QuillEditor
                         theme="snow"
-                        toolbar="full"
+                        :toolbar="toolbarOptions"
+                        :modules="modules"
                         v-model:content="boardModifyRequest.content"
                         content-type="html"
                     />

@@ -63,6 +63,7 @@ export type ReplyModifyRequestType = {
 export type ReplyWriteRequestType = {
     content: string
     parentReplyNo?: number
+    tagUserNo?: number
     anonymityYn?: boolean
 }
 

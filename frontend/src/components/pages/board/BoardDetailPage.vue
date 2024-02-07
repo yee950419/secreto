@@ -177,9 +177,7 @@ const replyDeleteSuccessModalToggle = () =>
                     />
                 </div>
                 <LineAtom custom-class="my-4 border-A805LightGrey" />
-                <div class="min-h-[150px]">
-                    {{ post.content }}
-                </div>
+                <div class="min-h-[150px]" v-html="post.content"></div>
                 <div class="mt-[60px] flex gap-[20px] text-[16px]">
                     <!-- <ButtonAtom custom-class="flex items-center gap-[6px]"
                 ><HeartOutlined class="text-[24px]" /> 좋아요

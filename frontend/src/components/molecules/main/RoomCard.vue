@@ -3,14 +3,14 @@ import type { Handler } from '@/types/common'
 import TextAtom from '@/components/atoms/TextAtom.vue'
 import BadgeAtom from '@/components/atoms/BadgeAtom.vue'
 import ButtonAtom from '@/components/atoms/ButtonAtom.vue'
-import type { RoomListInfoType} from '@/types/room'
+import type { RoomListInfoType } from '@/types/room'
 
 const props = defineProps({
     roomInfo: {
-        type: Object as ()=> RoomListInfoType,
+        type: Object as () => RoomListInfoType,
         required: true
     },
-    isMaster : {
+    isMaster: {
         type: Boolean,
         default: false
     }
@@ -42,7 +42,9 @@ const deleteButtonClick: Handler = () => {
             >
             <BadgeAtom
                 custom-class="text-[1rem] bg-A805DarkGrey text-A805White m-1 py-[1px] w-[60px] text-center"
-                v-else-if="roomInfo.roomStatus==='END' || new Date(roomInfo.roomEndAt) < new Date()"
+                v-else-if="
+                    roomInfo.roomStatus === 'END' || new Date(roomInfo.roomEndAt) < new Date()
+                "
                 >종료</BadgeAtom
             >
             <BadgeAtom
@@ -52,9 +54,17 @@ const deleteButtonClick: Handler = () => {
             >
 
             <TextAtom custom-class="text-[1.2rem]">{{ $props.roomInfo.participantCnt }}명</TextAtom>
-            <div class="flex items-center"><img v-if="isMaster" src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/People/Woman%20Fairy.png" alt="Woman Fairy" width="35" height="35" /></div>
+            <div class="flex items-center">
+                <img
+                    v-if="isMaster"
+                    src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/People/Woman%20Fairy.png"
+                    alt="Woman Fairy"
+                    width="35"
+                    height="35"
+                />
             </div>
-                    
+        </div>
+
         <div class="flex flex-col justify-center items-center h-full pt-[20px] text-center">
             <TextAtom custom-class="text-[1.4rem] font-bold truncate w-full px-[15px]">{{
                 props.roomInfo.roomName + (isMaster ? ' (방장)' : '')

@@ -11,7 +11,12 @@ export type RoomMission = {
 export type UserMission = {
     content: string
     missionReceivedAt: string
-    missionType: 'common' | 'individual'
+    missionType: 'SUDDEN' | 'REGULAR'
     missionRerollCount: number
     missionCertifyYn: boolean
+}
+
+export type SuddenMissionResponse = {
+    content: string
+    missionSubmitAt: string
 }

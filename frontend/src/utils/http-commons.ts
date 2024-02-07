@@ -12,7 +12,7 @@ import { useRouter } from 'vue-router'
  *
  */
 
-const whiteList = ['/users/log-in', '/users/sign-up']
+const whiteList = ['/users/log-in', '/users/sign-up', '/users/log-out', '/oauth/redirect']
 
 function localAxios() {
     const instance = axios.create({

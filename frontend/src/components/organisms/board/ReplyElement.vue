@@ -13,7 +13,11 @@ import YesNoModalContent from '@/components/organisms/modal/YesNoModalContent.vu
 import { deleteReply } from '@/api/board'
 import { useRoute } from 'vue-router'
 const props = defineProps(['reply', 'nested', 'postWriterUserNo'])
-const emit = defineEmits(['deleteSuccessHandle', 'submitReplySuccessHandle'])
+const emit = defineEmits([
+    'deleteSuccessHandle',
+    'submitReplySuccessHandle',
+    'modifyReplySuccessHandle'
+])
 const route = useRoute()
 
 const roomNo: Ref<number> = ref(Number(route.params.roomNo))
@@ -107,7 +111,13 @@ const deleteModalToggle = () => (deleteModalSeen.value = !deleteModalSeen.value)
         <ReplyModifyForm
             nested="true"
             v-if="seenReplyModifyForm"
-            :default-value="reply.content"
+            :reply="reply"
+            @modify-reply-success-handle="
+                () => {
+                    seenReplyModifyForm = false
+                    emit('modifyReplySuccessHandle')
+                }
+            "
             @cancel-button-handle="() => (seenReplyModifyForm = false)"
         />
         <NestedReplyWriteForm

@@ -1,0 +1,12 @@
+spring:
+  cloud:
+    aws:
+      credentials:
+        accessKey: AKIAS6ARR7TB2B6JEAVY
+        secretKey: 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
+      s3:
+        bucket: enjotytip
+      region:
+        static: us-east-2
+      stack:
+        auto: false

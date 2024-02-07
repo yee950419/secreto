@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { getBoard } from '@/api/board'
-import { watch, ref, type Ref, computed, onMounted, onUpdated } from 'vue'
+import { watch, ref, type Ref, computed, onMounted } from 'vue'
 import { type BoardRequestType, type BoardResponseType } from '@/types/board'
 import BoardSearchBox from '@/components/organisms/board/BoardSearchBox.vue'
 import BoardTableHeader from '@/components/molecules/board/BoardTableHeader.vue'
@@ -110,7 +110,6 @@ watch(boardCategory, () => {
                 class="text-[1.5rem] text-center absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-10"
                 v-if="boards.length === 0"
             >
-                작성된 게시글이 없습니다.
             </TextAtom>
         </table>
 
@@ -143,6 +142,7 @@ watch(boardCategory, () => {
             <div></div>
             <BoardSearchBox
                 @search-handle="searchButtonHandler"
+                :boardCategory="boardCategory"
                 :default-condition="
                     boardRequest.title
                         ? 'title'

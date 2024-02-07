@@ -51,12 +51,6 @@ const template: Ref<WideCardTemplateType> = ref({
 })
 
 // login view
-const googleLoginHandler: Handler = () => {
-    alert('google login')
-}
-const kakaoLoginHandler: Handler = () => {
-    alert('kakao login')
-}
 const findPasswordHandler: Handler = () => {
     viewState.value = ViewState.PASSWORD
     buttonLabel.value = ButtonLabel.LOGIN
@@ -128,8 +122,6 @@ onMounted(() => {
             <LoginForm
                 class="max-md:max-w-full max-md:max-h-full max-md:h-full max-md:w-full"
                 v-if="viewState === ViewState.LOGIN"
-                @google-login-handle="googleLoginHandler"
-                @kakao-login-handle="kakaoLoginHandler"
                 @find-password-handle="findPasswordHandler"
                 @close-button-handle="cardCloseHandler"
                 @go-register-button-handle="buttonClickHandler"

@@ -12,13 +12,7 @@ const { userLogin } = userStore
 
 import CloseButtonAtom from '@/components/atoms/CloseButtonAtom.vue'
 
-const emit = defineEmits([
-    'kakaoLoginHandle',
-    'googleLoginHandle',
-    'findPasswordHandle',
-    'closeButtonHandle',
-    'goRegisterButtonHandle'
-])
+const emit = defineEmits(['findPasswordHandle', 'closeButtonHandle', 'goRegisterButtonHandle'])
 const loginRequest: Ref<LoginRequestType> = ref({
     email: '',
     password: ''
@@ -27,10 +21,10 @@ const loginButtonHandler: Handler = () => {
     userLogin(loginRequest.value)
 }
 const kakaoLoginButtonHandler: Handler = () => {
-    emit('kakaoLoginHandle')
+    window.location.href = 'https://i10a805.p.ssafy.io:8080/oauth2/authorization/kakao'
 }
 const googleLoginButtonHandler: Handler = () => {
-    emit('googleLoginHandle')
+    window.location.href = 'https://i10a805.p.ssafy.io:8080/oauth2/authorization/google'
 }
 const findPasswordButtonHandler: Handler = () => {
     emit('findPasswordHandle')

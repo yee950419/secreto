@@ -76,7 +76,6 @@ const constructParentChildRelation = (replies: ReplyResponseType[]): ReplyRespon
             index != constructed[index]['children']?.push(child)
         }
     })
-    console.log(constructed.filter((reply) => reply.deleteYn))
     return constructed.filter(
         (reply) =>
             reply.deleteYn === false ||
@@ -96,6 +95,7 @@ const loadReplies = () => {
                 replyCount.value = data.result.filter(
                     (reply: ReplyResponseType) => !reply.deleteYn
                 ).length
+                console.log(data.result)
                 replies.value = constructParentChildRelation(data.result)
             }
         },
@@ -203,6 +203,9 @@ const replyDeleteSuccessModalToggle = () =>
                             @delete-success-handle="
                                 () => loadRepliesAndShowModal('댓글이 삭제되었습니다.')
                             "
+                            @modify-reply-success-handle="
+                                () => loadRepliesAndShowModal('댓글이 수정되었습니다.')
+                            "
                         />
                         <ReplyElement
                             v-for="child in reply.children"
@@ -215,6 +218,9 @@ const replyDeleteSuccessModalToggle = () =>
                             "
                             @delete-success-handle="
                                 () => loadRepliesAndShowModal('댓글이 삭제되었습니다.')
+                            "
+                            @modify-reply-success-handle="
+                                () => loadRepliesAndShowModal('댓글이 수정되었습니다.')
                             "
                         />
                     </template>

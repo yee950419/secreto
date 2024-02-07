@@ -51,7 +51,13 @@ export type ReplyResponseType = {
     writerEmail: string
     writerProfileUrl: string | null
     children?: ReplyResponseType[] | undefined
+    anonymityYn?: boolean
     deleteYn?: boolean
+}
+
+export type ReplyModifyRequestType = {
+    content: string
+    anonymityYn: boolean
 }
 
 export type ReplyWriteRequestType = {

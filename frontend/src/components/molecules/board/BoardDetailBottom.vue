@@ -1,8 +1,16 @@
 <script setup lang="ts">
 import ButtonAtom from '@/components/atoms/ButtonAtom.vue'
+import { BoardCategory } from '@/types/board'
 import type { Handler } from '@/types/common'
 import { EditOutlined, CaretUpOutlined } from '@ant-design/icons-vue'
-defineProps(['isPostWriter'])
+import { computed } from 'vue'
+import { useRoute } from 'vue-router'
+defineProps(['isPostWriter', 'isHostUser'])
+
+const route = useRoute()
+const boardCategory = computed(() => {
+    return String(route.query.boardCategory)
+})
 const emit = defineEmits([
     'writeButtonHandle',
     'modifyButtonHandle',
@@ -21,6 +29,7 @@ const writeButtonClick: Handler = () => {
             <ButtonAtom
                 custom-class="button-style-4 button-claret text-[18px] w-[95px] font-bold flex justify-center items-center gap-[5px] max-md:w-full"
                 @button-click="writeButtonClick"
+                v-if="boardCategory !== BoardCategory.NOTICE || isHostUser"
                 ><EditOutlined /><span>글쓰기</span></ButtonAtom
             >
             <ButtonAtom

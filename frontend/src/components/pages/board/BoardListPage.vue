@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { getBoard } from '@/api/board'
-import { watch, ref, type Ref, computed, onMounted } from 'vue'
-import { type BoardRequestType, type BoardResponseType } from '@/types/board'
+import { watch, ref, type Ref, computed, onMounted, inject } from 'vue'
+import { BoardCategory, type BoardRequestType, type BoardResponseType } from '@/types/board'
 import BoardSearchBox from '@/components/organisms/board/BoardSearchBox.vue'
 import BoardTableHeader from '@/components/molecules/board/BoardTableHeader.vue'
 import BoardElement from '@/components/molecules/board/BoardElement.vue'
@@ -19,6 +19,8 @@ const boardCategory = computed(() => {
     return String(route.query.boardCategory)
 })
 const roomNo: Ref<number> = ref(Number(route.params.roomNo))
+const roomUserNo = inject<Ref<number>>('roomUserNo', ref(-1))
+const hostRoomUserNo = inject<Ref<number>>('hostRoomUserNo', ref(-1))
 const boardRequest: Ref<BoardRequestType> = ref({
     boardCategory: String(route.query.boardCategory),
     title: route.query.title === undefined ? '' : String(route.query.title),
@@ -162,17 +164,20 @@ watch(boardCategory, () => {
                             : ''
                 "
             />
-            <ButtonAtom
-                custom-class="button-style-4 button-claret text-[18px] w-[95px] font-bold flex justify-center items-center gap-[5px] max-md:w-full h-[35px] max-md:mt-7 max-md:rounded-none"
-                @button-click="
-                    () =>
-                        router.push({
-                            name: 'game-board-write',
-                            query: { boardCategory: boardCategory }
-                        })
-                "
-                ><EditOutlined /><span>글쓰기</span></ButtonAtom
-            >
+            <div>
+                <ButtonAtom
+                    custom-class="button-style-4 button-claret text-[18px] w-[95px] font-bold flex justify-center items-center gap-[5px] max-md:w-full h-[35px] max-md:mt-7 max-md:rounded-none"
+                    v-if="boardCategory !== BoardCategory.NOTICE || roomUserNo === hostRoomUserNo"
+                    @button-click="
+                        () =>
+                            router.push({
+                                name: 'game-board-write',
+                                query: { boardCategory: boardCategory }
+                            })
+                    "
+                    ><EditOutlined /><span>글쓰기</span></ButtonAtom
+                >
+            </div>
         </div>
     </div>
 </template>

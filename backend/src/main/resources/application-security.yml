@@ -6,13 +6,13 @@ spring:
           google:
             client-id: 787093774505-eks42l1227pfcefgftgerol4bpb7e50p.apps.googleusercontent.com
             client-secret: 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
-            redirect-uri: http://localhost:8080/login/oauth2/code/google
+            redirect-uri: https://i10a805.p.ssafy.io:8080/login/oauth2/code/google
             scope: openid,profile,email
 
           kakao:
             client-id: 27791d30c5f0484aee5db5b1f69202d5
             authorization-grant-type: authorization_code
-            redirect-uri: http://localhost:8080/login/oauth2/code/kakao
+            redirect-uri: https://i10a805.p.ssafy.io:8080/oauth2/code/kakao
             scope: openid,profile_nickname,profile_image,account_email
 
         provider:
@@ -48,3 +48,7 @@ email:
 
 password:
   expiration: 1800
+
+
+oauth:
+  redirect: https://i10a805.p.ssafy.io:8080/oauth/redirect

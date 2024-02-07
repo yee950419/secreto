@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, ref, type Ref, watch, onMounted, inject } from 'vue'
+import { computed, ref, type Ref, watch, onMounted, inject, type PropType } from 'vue'
 import ButtonAtom from '@/components/atoms/ButtonAtom.vue'
 import ButtonInputBox from '@/components/molecules/common/ButtonInputBox.vue'
 import CheckBox from '@/components/molecules/common/CheckBox.vue'
@@ -28,8 +28,28 @@ import ExpectedMissionList from '@/components/organisms/game/ExpectedMissionList
 import UnexpectedMission from '@/components/organisms/game/UnexpectedMission.vue'
 import { addUnexpectedMission } from '@/api/mission'
 
-// defineProps<{ roomInfo: RoomInfoType }>()
-// console.log('?S?ADFSADf', roomInfo)
+// const props = defineProps({
+//     roomInfo: { type: Object as () => RoomInfoType, required: true }
+// })
+const roomInfo = ref<RoomInfoType>({
+    entryCode: '',
+    commonYn: true,
+    hostParticipateYn: '',
+    hostRoomUserNo: 0,
+    missionSubmitTime: '',
+    missionStartAt: '',
+    roomEndAt: '',
+    roomName: '',
+    roomNo: 0,
+    roomStartAt: '',
+    roomStartYn: '',
+    roomStatus: '',
+    userInfo: {
+        nickname: '',
+        profileUrl: '',
+        roomUserNo: 0
+    }
+})
 // const test: RoomInfoType = props.roomInfo
 const route = useRoute()
 
@@ -85,6 +105,19 @@ const clipboardHandler: Handler = () => {
 }
 
 const gameStartHandler: Handler = () => {
+    console.log(
+        ':<',
+        {
+            period: missionInterval.value,
+            commonYn: !isInvidual.value,
+            hostParticipantYn: hostInGame.value,
+            missionStartAt: gamePeriod.value[0].format(dateTimeFormat).slice(0, 10),
+            missionSubmitTime: gamePeriod.value[0].format(dateTimeFormat).slice(11) + ':00',
+            roomEndAt: gamePeriod.value[1].format(dateTimeFormat) + ':00',
+            missionList: checkedMissons.value
+        },
+        roomUserInfo.value.roomNo
+    )
     startRoom(
         roomUserInfo.value.roomNo,
         {
@@ -140,12 +173,14 @@ const userListGet: Handler = () => {
 }
 const roomInfoGet: Handler = () => {
     getRoom(
-        1,
-        (res) => {
-            console.log('1', res)
+        roomUserInfo.value.roomNo,
+        ({ data }) => {
+            roomInfo.value = data.result
+            changeRoomNameHandler()
+            console.log('roomInfo', roomInfo.value)
         },
-        () => {
-            console.log('2')
+        (error) => {
+            console.log(':(', error)
         }
     )
 }
@@ -189,6 +224,9 @@ const gameEndHandler: Handler = () => {
         { roomNo: roomUserInfo.value.roomNo },
         ({ data }) => {
             console.log(':)', data)
+            router.push({
+                name: 'game-statistic'
+            })
         },
         (error) => {
             console.error(':(', error)
@@ -196,13 +234,14 @@ const gameEndHandler: Handler = () => {
     )
 }
 onMounted(async () => {
+    await roomInfoGet()
     await missionGet()
     await userListGet()
 })
 </script>
 
 <template>
-    <!-- {{ props.roomInfo }} -->
+    <!-- {{ roomInfo }} -->
     <div class="flex flex-1">
         <div class="bg-A805RealWhite flex flex-col">
             <div class="flex justify-center max-md:flex-col gap-3 m-[3%]">
@@ -213,7 +252,10 @@ onMounted(async () => {
                         v-model="roomName" button-label="수정" @button-click="changeRoomNameHandler" />
                     <!-- status 연동 필요 -->
                     <!-- <div v-if="test.roomStatus === 'WAIT'" name="before-start"> -->
-                    <div v-if="true" name="before-start">
+                    <div
+                        v-if="roomInfo.roomStatus === 'WAIT' || roomInfo.roomStatus === 'END'"
+                        name="before-start"
+                    >
                         <MissionList v-model="missionList"></MissionList>
                         <div name="option-list" class="flex gap-[10%]">
                             <CheckBox v-model="isInvidual">각자 다른 미션 받기</CheckBox>
@@ -236,11 +278,17 @@ onMounted(async () => {
                             slot-class="w-[50px] text-[12pt]" type="number" label="미션 주기" v-model="missionInterval">일 마다
                         </DateButton>
 
-                        <ButtonInputBox :readonly="true" label="초대 코드" button-label="복사" v-model="roomCode"
-                            label-class="text-[15pt]" custom-class=""
+                        <ButtonInputBox
+                            :readonly="true"
+                            label="초대 코드"
+                            button-label="복사"
+                            v-model="roomInfo.entryCode"
+                            label-class="text-[15pt]"
+                            custom-class=""
                             input-class="w-[150px] h-[45px] text-center text-[15pt]"
                             button-class="button-blue button-style-7 text-white text-[20pt]"
-                            @button-click="clipboardHandler">qwer1234</ButtonInputBox>
+                            @button-click="clipboardHandler"
+                        ></ButtonInputBox>
                     </div>
                     <div class="flex flex-col">
                         <label for="range">마니또 기간</label>
@@ -249,12 +297,18 @@ onMounted(async () => {
                     <div name="calendar-div">
                         <Calendar :fullscreen="false" class="h-[40%]"></Calendar>
                     </div>
-                    <ButtonAtom aaav-if="test.roomStatus === 'WAIT'" v-if="true"
-                        custom-class="button-blue h-[10%] text-A805RealWhite" @button-click="gameStartHandler">게임 시작하기
-                    </ButtonAtom>
-                    <ButtonAtom aaav-else-if="test.roomStatus === 'PARTICIPANT'" v-else
-                        custom-class="bg-A805Red h-[10%] text-A805RealWhite" @button-click="gameEndHandler">게임 종료하기
-                    </ButtonAtom>
+                    <ButtonAtom
+                        v-if="roomInfo.roomStatus === 'WAIT' || roomInfo.roomStatus === 'END'"
+                        custom-class="button-blue h-[10%] text-A805RealWhite"
+                        @button-click="gameStartHandler"
+                        >게임 시작하기</ButtonAtom
+                    >
+                    <ButtonAtom
+                        v-else
+                        custom-class="bg-A805Red h-[10%] text-A805RealWhite"
+                        @button-click="gameEndHandler"
+                        >게임 종료하기</ButtonAtom
+                    >
                 </div>
                 <!-- </div> -->
                 <div name="side-part" class="flex flex-col w-[400px] max-md:w-full">

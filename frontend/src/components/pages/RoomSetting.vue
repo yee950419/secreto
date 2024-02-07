@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, ref, type Ref, watch, onMounted, inject } from 'vue'
+import { computed, ref, type Ref, watch, onMounted, inject, type PropType } from 'vue'
 import ButtonAtom from '@/components/atoms/ButtonAtom.vue'
 import ButtonInputBox from '@/components/molecules/common/ButtonInputBox.vue'
 import CheckBox from '@/components/molecules/common/CheckBox.vue'
@@ -28,8 +28,10 @@ import ExpectedMissionList from '@/components/organisms/game/ExpectedMissionList
 import UnexpectedMission from '@/components/organisms/game/UnexpectedMission.vue'
 import { addUnexpectedMission } from '@/api/mission'
 
-// defineProps<{ roomInfo: RoomInfoType }>()
-// console.log('?S?ADFSADf', roomInfo)
+const props = defineProps({
+    roomInfo: { type: Object as () => RoomInfoType, required: true }
+})
+console.log('?S?ADFSADf', props.roomInfo)
 // const test: RoomInfoType = props.roomInfo
 const route = useRoute()
 
@@ -198,6 +200,7 @@ const gameEndHandler: Handler = () => {
 onMounted(async () => {
     await missionGet()
     await userListGet()
+    console.log('?S??f', props.roomInfo)
 })
 </script>
 

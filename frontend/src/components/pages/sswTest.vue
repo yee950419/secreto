@@ -206,8 +206,8 @@ const gameStartHandler: Handler = () => {
                         v-model="roomName"
                         button-label="수정"
                     />
-                    <UnexpectedMission></UnexpectedMission>
-                    <ExpectedMissionList></ExpectedMissionList>
+                    <!-- <UnexpectedMission></UnexpectedMission>
+                    <ExpectedMissionList></ExpectedMissionList> -->
                 </div>
                 >
                 <div name="main-2" class="flex flex-col w-[500px] px-4 gap-[5%] max-md:w-full">

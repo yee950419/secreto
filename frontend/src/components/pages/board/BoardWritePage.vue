@@ -38,8 +38,8 @@ const submitButtonHandle = () => {
         (response) => {
             if (response.data.status === 'OK') {
                 router.push({
-                    name: 'game-board-list',
-                    query: { boardCategory: boardCategory.value }
+                    name: 'game-board-detail',
+                    query: { boardCategory: boardCategory.value, boardNo: response.data.result }
                 })
             }
         },

@@ -10,6 +10,24 @@ async function getPredictResult(
     await historyInstance.get(`/history/${param}/predict`).then(success).catch(fail)
 }
 
+// 나의 활동 기록
+async function getMyHistoryList(
+    roomUserNo : number,
+    success: (response: AxiosResponse) => void,
+    fail: (error: any) => void
+) {
+    await historyInstance.get(`/history/${roomUserNo}/maniti`).then(success).catch(fail)
+}
+
+// 내 마니또의 활동 기록
+async function getManitoHisotryList(
+    roomUserNo : number,
+    success: (response: AxiosResponse) => void,
+    fail: (error: any) => void
+) {
+    await historyInstance.get(`/history/${roomUserNo}/manito`).then(success).catch(fail)
+}
+
 async function getWordCloud(
     param: number,
     success: (response: AxiosResponse) => void,
@@ -28,4 +46,4 @@ async function sendWord(
 }
 
 
-export { getPredictResult, getWordCloud, sendWord }
+export { getPredictResult, getWordCloud, sendWord, getMyHistoryList, getManitoHisotryList }

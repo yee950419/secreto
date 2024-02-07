@@ -76,6 +76,14 @@ export type BoardWriteRequestType = {
     missionCategory: string | null
 }
 
+export type BoardModifyRequestType = {
+    title: string
+    content: string
+    imageUrl: string | null
+    publicYn: boolean
+    missionCategory: string | null
+}
+
 export const BoardCategory = Object.freeze({
     BOAST: 'BOAST',
     CERTIFICATE: 'CERTIFICATE',

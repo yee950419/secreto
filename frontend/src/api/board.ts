@@ -29,6 +29,16 @@ async function createPost(
     boardInstance.post(`/post/${roomNo}`, param).then(success).catch(fail)
 }
 
+async function modifyPost(
+    boardNo: number,
+    roomNo: number,
+    param: object,
+    success: (response: AxiosResponse) => void,
+    fail: (error: any) => void
+) {
+    boardInstance.put(`/post/${boardNo}/room/${roomNo}`, param).then(success).catch(fail)
+}
+
 async function getReplies(
     roomNo: number,
     boardNo: number,
@@ -67,4 +77,13 @@ async function modifyReply(
     boardInstance.put(`/reply/${replyNo}/room/${roomNo}`, param).then(success).catch(fail)
 }
 
-export { getBoard, getPost, getReplies, postReply, deleteReply, modifyReply, createPost }
+export {
+    getBoard,
+    getPost,
+    modifyPost,
+    getReplies,
+    postReply,
+    deleteReply,
+    modifyReply,
+    createPost
+}

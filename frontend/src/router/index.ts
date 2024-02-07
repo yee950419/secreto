@@ -106,6 +106,12 @@ const router = createRouter({
                             name: 'game-board-detail',
                             component: () => import('@/components/pages/board/BoardDetailPage.vue'),
                             props: true
+                        },
+                        {
+                            path: '/game/:roomNo/board-modify',
+                            name: 'game-board-modify',
+                            component: () => import('@/components/pages/board/BoardModifyPage.vue'),
+                            props: true
                         }
                     ]
                 },

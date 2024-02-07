@@ -26,7 +26,7 @@ const boardCategory = computed(() => {
     return String(route.query.boardCategory)
 })
 const roomNo: Ref<number> = ref(Number(route.params.roomNo))
-const roomUserNo = inject<Ref<number>>('roomUserInfo', ref(-1))
+const roomUserNo = inject<Ref<number>>('roomUserNo', ref(-1))
 const boardRequest: Ref<BoardRequestType> = ref({
     boardCategory: String(route.query.boardCategory),
     title: route.query.title === undefined ? '' : String(route.query.title),
@@ -128,7 +128,10 @@ const loadRepliesAndShowModal = (content: string) => {
     replyDeleteSuccessModalToggle()
 }
 const modifyButtonHandler: Handler = () => {
-    alert('수정 페이지 이동')
+    router.push({
+        name: 'game-board-modify',
+        query: { boardNo: boardNo.value, boardCategory: boardCategory.value }
+    })
 }
 const topButtonHandler: Handler = () => {
     alert('맨 이벤트 발생')

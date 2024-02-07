@@ -258,7 +258,7 @@ onMounted(async () => {
                     <!-- status 연동 필요 -->
                     <!-- <div v-if="test.roomStatus === 'WAIT'" name="before-start"> -->
                     <div
-                        v-if="roomInfo.roomStatus === 'WIAT' || roomInfo.roomStatus === 'END'"
+                        v-if="roomInfo.roomStatus === 'WAIT' || roomInfo.roomStatus === 'END'"
                         name="before-start"
                     >
                         <MissionList v-model="missionList"></MissionList>

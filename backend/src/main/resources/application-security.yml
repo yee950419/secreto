@@ -12,7 +12,7 @@ spring:
           kakao:
             client-id: 27791d30c5f0484aee5db5b1f69202d5
             authorization-grant-type: authorization_code
-            redirect-uri: https://i10a805.p.ssafy.io:8080/oauth2/code/kakao
+            redirect-uri: https://i10a805.p.ssafy.io:8080/login/oauth2/code/kakao
             scope: openid,profile_nickname,profile_image,account_email
 
         provider:

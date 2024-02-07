@@ -84,7 +84,7 @@ const approvedUserList = computed(() => {
 const isInvidual = ref<boolean>(false)
 const hostInGame = ref<boolean>(false)
 const missionInterval = ref<number>(7)
-const roomCode = ref('qwe123rt')
+const roomCode: Ref<string> = inject('roomCode', ref('qwer1234'))
 const dateTimeFormat = 'YYYY-MM-DD HH:mm'
 const gamePeriod = ref<[Dayjs, Dayjs]>([
     dayjs(),
@@ -247,14 +247,9 @@ onMounted(async () => {
             <div class="flex justify-center max-md:flex-col gap-3 m-[3%]">
                 <!-- <div name="main-part" class="flex selection:max-md:flex-col max-md:w-full"> -->
                 <div name="main-1" class="flex flex-col w-[500px] px-4 gap-8 max-md:w-full">
-                    <ButtonInputBox
-                        label="방 제목"
-                        button-class="button-blue text-white line-darkgrey  border-s-0"
+                    <ButtonInputBox label="방 제목" button-class="button-blue text-white line-darkgrey  border-s-0"
                         input-class="input-box-style-3 rounded-s-[100px] text-center line-darkgrey bg-white"
-                        v-model="roomName"
-                        button-label="수정"
-                        @button-click="changeRoomNameHandler"
-                    />
+                        v-model="roomName" button-label="수정" @button-click="changeRoomNameHandler" />
                     <!-- status 연동 필요 -->
                     <!-- <div v-if="test.roomStatus === 'WAIT'" name="before-start"> -->
                     <div
@@ -269,30 +264,19 @@ onMounted(async () => {
                     </div>
                     <!-- <div v-else-if="test.roomStatus === 'PARTICIPANT'"> -->
                     <div v-else>
-                        <UnexpectedMission
-                            v-model:content="unexpectedMissionContent"
-                            v-model:reserved="unexpectedMissionReserved"
-                            v-model:time="unexpectedMissionReservationTime"
-                            @add-unexpected-mission="addUnexpectedMissionHandler"
-                        ></UnexpectedMission>
+                        <UnexpectedMission v-model:content="unexpectedMissionContent"
+                            v-model:reserved="unexpectedMissionReserved" v-model:time="unexpectedMissionReservationTime"
+                            @add-unexpected-mission="addUnexpectedMissionHandler"></UnexpectedMission>
                         <!-- 추후 개발 필요 -->
                         <ExpectedMissionList v-if="false"></ExpectedMissionList>
                     </div>
                 </div>
                 <div name="main-2" class="flex flex-col w-[500px] px-4 gap-[5%] max-md:w-full">
                     <div name="main-2-1" class="flex justify-between">
-                        <DateButton
-                            class=""
-                            custon-class=""
-                            label-class="text-[15pt]"
-                            button-class="button-style-7 button-blue text-white"
-                            input-class="w-[60px] input-box-style-4"
-                            slot-class="w-[50px] text-[12pt]"
-                            type="number"
-                            label="미션 주기"
-                            v-model="missionInterval"
-                            >일 마다</DateButton
-                        >
+                        <DateButton class="" custon-class="" label-class="text-[15pt]"
+                            button-class="button-style-7 button-blue text-white" input-class="w-[60px] input-box-style-4"
+                            slot-class="w-[50px] text-[12pt]" type="number" label="미션 주기" v-model="missionInterval">일 마다
+                        </DateButton>
 
                         <ButtonInputBox
                             :readonly="true"
@@ -308,12 +292,7 @@ onMounted(async () => {
                     </div>
                     <div class="flex flex-col">
                         <label for="range">마니또 기간</label>
-                        <RangePicker
-                            id="range"
-                            showTime
-                            v-model:value="gamePeriod"
-                            :format="dateTimeFormat"
-                        />
+                        <RangePicker id="range" showTime v-model:value="gamePeriod" :format="dateTimeFormat" />
                     </div>
                     <div name="calendar-div">
                         <Calendar :fullscreen="false" class="h-[40%]"></Calendar>
@@ -333,12 +312,8 @@ onMounted(async () => {
                 </div>
                 <!-- </div> -->
                 <div name="side-part" class="flex flex-col w-[400px] max-md:w-full">
-                    <UnapprovedUserList
-                        v-model="unapprovedUserList"
-                        class="h-[50%] border-b-2"
-                        @users-approved="userListGet"
-                        @users-denied="userListGet"
-                    ></UnapprovedUserList>
+                    <UnapprovedUserList v-model="unapprovedUserList" class="h-[50%] border-b-2"
+                        @users-approved="userListGet" @users-denied="userListGet"></UnapprovedUserList>
                     <hr />
                     <ApprovedUserList v-model="approvedUserList" class="h-[50%]"></ApprovedUserList>
                 </div>

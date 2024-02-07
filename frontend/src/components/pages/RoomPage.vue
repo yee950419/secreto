@@ -18,7 +18,7 @@ const emit = defineEmits(['update-name'])
 
 const { menuSeen, isMobile } = storeToRefs(menuStore)
 const notificationLists = ref([])
-
+const entryCode = ref('')
 const chatRooms = ref<ChatRoomType[]>([])
 //라우터로 부터 방번호를 받아온다
 let eventSource: EventSource
@@ -40,6 +40,7 @@ const updateRoomName = (name: string | undefined) => {
 
 provide('roomUserInfo', readonly(roomUserInfo))
 provide('roomUserNo', readonly(roomUserNo))
+provide('roomCode', readonly(entryCode))
 
 const removeChatRoom = (name: string) => {
     const index = chatRooms.value.findIndex((room) => room.name === name)
@@ -67,25 +68,14 @@ const SSEConnection = (roomUserNo: number) => {
         console.log('Server Sent Event 연결이 열렸습니다.')
     }
 
-    eventSource.onmessage = (event) => {
-        console.log('Server Sent Event 메시지를 받았습니다.', event.data)
-    }
 
     // 서버로부터 알림 메시지가 오면 적절한 처리 로직을 수행
-    eventSource.addEventListener('alarm', (event) => {
-        console.log('새로운 알림이 도착했습니다', event.data)
+    eventSource.addEventListener('message', (event) => {
+        alert(event.data.author + ' 로부터 ' + event.data.content + '도착!')
+        router.go(0)
     })
 
-    eventSource.addEventListener('test', (event) => {
-        console.log('test')
-        const data = JSON.parse(event.data)
-        console.log(data)
-    })
 
-    // 서버로부터 채팅 메시지가 왔다는 메시지를 받으면 적절한 처리 로직을 수행
-    eventSource.addEventListener('chat', (event) => {
-        console.log('새로운 메시지가 도착했습니다.', event.data)
-    })
 
     eventSource.addEventListener('error', (event) => {
         console.error('Server Sent Event error:', event)
@@ -104,6 +94,7 @@ const getRoomData = () => {
             roomUserInfo.value.roomUserNo = data.result.userInfo.roomUserNo
             roomUserInfo.value.roomName = data.result.roomName
             roomUserNo.value = data.result.userInfo.roomUserNo
+            entryCode.value = data.result.entryCode
             updateRoomName(data.result.roomName)
             SSEConnection(data.result.userInfo.roomUserNo)
         },
@@ -120,6 +111,7 @@ onMounted(() => {
         Number(route.params.roomNo),
         ({ data }) => {
             notificationLists.value = data.result
+            console.log('알람리스트', notificationLists.value)
         },
         (error) => {
             console.log(error)
@@ -138,19 +130,11 @@ onUnmounted(() => {
 <template>
     <div class="flex flex-1 bg-A805RealWhite">
         <div v-for="room in chatRooms" :key="room.name">
-            <ChatRoom
-                :name="room.name"
-                :imageUrl="room.imageUrl"
-                @close-chat-room="removeChatRoom"
-            />
+            <ChatRoom :name="room.name" :imageUrl="room.imageUrl" @close-chat-room="removeChatRoom" />
         </div>
         <!-- pc버전이거나, 모바일 버전 + 메뉴가 체크된 상태일때만 nav가 보인다. -->
-        <NavBar
-            @make-room="makeRoom"
-            :room-name="roomUserInfo.roomName"
-            :room-info="roomInfo"
-            v-if="!isMobile || menuSeen"
-        />
+        <NavBar @make-room="makeRoom" :room-name="roomUserInfo.roomName" :room-info="roomInfo"
+            :notification-lists="notificationLists" v-if="!isMobile || menuSeen" />
 
         <!-- pc버전이거나, 모바일 버전 + 메뉴가 닫힌 상태일때만 이 영역 이 보인다. -->
         <RouterView v-if="!isMobile || !menuSeen" :room-info="roomInfo" />

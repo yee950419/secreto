@@ -10,4 +10,14 @@ async function getNotificationLists(
     await notificationInstance.get(`/alarm-list/${param}`).then(success).catch(fail)
 }
 
-export { getNotificationLists}
+async function notificationRead(
+    alarmNo : number,
+    roomNo: number,
+    success: (response: AxiosResponse) => void,
+    fail: (error: any) => void
+) {
+    await notificationInstance.get(`/alarm/${alarmNo}/room/${roomNo}`).then(success).catch(fail)
+}
+
+
+export { getNotificationLists, notificationRead}

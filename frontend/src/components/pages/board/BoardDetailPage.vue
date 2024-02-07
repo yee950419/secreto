@@ -72,11 +72,16 @@ const constructParentChildRelation = (replies: ReplyResponseType[]): ReplyRespon
     children.forEach((child) => {
         if (child.parentReplyNo === null) return
         const index = parentIndexer.get(child.parentReplyNo)
-        if (index !== undefined) {
+        if (index !== undefined && child.deleteYn === false) {
             index != constructed[index]['children']?.push(child)
         }
     })
-    return constructed
+    console.log(constructed.filter((reply) => reply.deleteYn))
+    return constructed.filter(
+        (reply) =>
+            reply.deleteYn === false ||
+            (reply.deleteYn === true && reply.children !== undefined && reply.children.length > 0)
+    )
 }
 
 const loadReplies = () => {

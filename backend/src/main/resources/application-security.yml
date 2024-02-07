@@ -51,4 +51,4 @@ password:
 
 
 oauth:
-  redirect: https://i10a805.p.ssafy.io:8080/oauth/redirect
+  redirect: https://i10a805.p.ssafy.io:80/oauth/redirect

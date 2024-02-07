@@ -48,3 +48,7 @@ email:
 
 password:
   expiration: 1800
+
+
+oauth:
+  redirect: https://i10a805.p.ssafy.io:8080/oauth/redirect

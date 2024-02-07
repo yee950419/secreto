@@ -172,9 +172,9 @@ const router = createRouter({
             component: () => import('@/components/pages/ServiceView.vue')
         },
         {
-            path: '/roomsettings',
-            name: 'roomsettings',
-            component: () => import('@/components/pages/RoomSetting.vue'),
+            path: '/test',
+            name: 'test',
+            component: sswTestVue,
             meta: {
                 hide: true
             }

@@ -18,7 +18,7 @@ export type RoomListInfoType = {
     commonYn: string
     entryCode: string
     hostParticipateYn: string
-    hostUserNo : number
+    hostUserNo: number
     missionSubmitTime: string
     missionStartAt: string
     nickname: string
@@ -34,7 +34,7 @@ export type RoomListInfoType = {
 
 export type RoomInfoType = {
     entryCode: string
-    commonYn: string
+    commonYn: boolean
     hostParticipateYn: string
     hostRoomUserNo: number
     missionSubmitTime: string
@@ -46,9 +46,9 @@ export type RoomInfoType = {
     roomStartYn: string
     roomStatus: string
     userInfo: {
-        nickname : string,
+        nickname: string
         profileUrl: string
-        roomUserNo : number
+        roomUserNo: number
     }
 }
 
@@ -70,4 +70,14 @@ export type userType = {
     profileUrl: string
     nickname: string
     checked?: boolean
+}
+
+export type roomStartType = {
+    roomEndAt: string
+    hostParticipantYn: boolean
+    commonYn: boolean
+    missionSubmitTime: string
+    missionStartAt: string
+    period: number
+    missionList: { content: string }[]
 }

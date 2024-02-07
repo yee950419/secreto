@@ -16,58 +16,33 @@ import { type Dayjs } from 'dayjs'
 import dayjs from 'dayjs'
 import type { Mission } from '@/types/mission'
 import { getSystemMission } from '@/api/mission'
-import { getUserList } from '@/api/room'
+import { getUserList, startRoom, endRoom } from '@/api/room'
 import { DatePicker, Calendar } from 'ant-design-vue'
 import { getRoom } from '@/api/room'
 import defaultImage from '@/assets/images/default-avatar.png'
 import { changeRoomName } from '@/api/room'
-import type { RoomUserInfoType, userType } from '@/types/room'
+import type { RoomUserInfoType, userType, roomStartType, RoomInfoType } from '@/types/room'
 import { useRoute } from 'vue-router'
 import router from '@/router'
+import ExpectedMissionList from '@/components/organisms/game/ExpectedMissionList.vue'
+import UnexpectedMission from '@/components/organisms/game/UnexpectedMission.vue'
+import { addUnexpectedMission } from '@/api/mission'
+
+// defineProps<{ roomInfo: RoomInfoType }>()
+// console.log('?S?ADFSADf', roomInfo)
+// const test: RoomInfoType = props.roomInfo
 const route = useRoute()
 
 const emit = defineEmits(['roomNameChanged'])
-const missionList = ref<Mission[]>()
-const dummyUserList: Ref<ProfileInfoType[]> = ref([
-    {
-        id: 1,
-        nickname: 'test1',
-        profileUrl: 'src/assets/images/member/member1.png',
-        email: 'test1@test.com'
-    },
-    {
-        id: 2,
-        nickname: 'test2',
-        profileUrl: 'src/assets/images/member/member2.png',
-        email: 'test2@test.com'
-    },
-    {
-        id: 3,
-        nickname: 'test3',
-        profileUrl: 'src/assets/images/member/member3.png',
-        email: 'test3@test.com'
-    }
-])
-const dummyWaitingUserList: Ref<ProfileInfoType[]> = ref([
-    {
-        id: 4,
-        nickname: 'test4',
-        profileUrl: 'src/assets/images/member/member4.png',
-        email: 'test1@test.com'
-    },
-    {
-        id: 5,
-        nickname: 'test5',
-        profileUrl: 'src/assets/images/member/member5.png',
-        email: 'test2@test.com'
-    },
-    {
-        id: 6,
-        nickname: 'test6',
-        profileUrl: 'src/assets/images/member/member6.png',
-        email: 'test6@test.com'
-    }
-])
+const missionList = ref<Mission[]>([])
+const checkedMissons = computed<{ content: string }[]>(() => {
+    return missionList.value
+        .filter((mission) => mission.checked)
+        .map((mission) => ({
+            content: mission.content
+        })) as { content: string }[]
+})
+
 const roomUserInfo = inject<Ref<RoomUserInfoType>>(
     'roomUserInfo',
     ref({
@@ -91,10 +66,15 @@ const hostInGame = ref<boolean>(false)
 const missionInterval = ref<number>(7)
 const roomCode = ref('qwe123rt')
 const dateTimeFormat = 'YYYY-MM-DD HH:mm'
-const gamePeriod = ref([
-    dayjs(dayjs(), dateTimeFormat),
-    dayjs(dayjs().add(1, 'day'), dateTimeFormat)
+const gamePeriod = ref<[Dayjs, Dayjs]>([
+    dayjs(),
+    dayjs().add(1, 'day')
+    // dayjs(dayjs(), dateTimeFormat),
+    // dayjs(dayjs().add(1, 'day'), dateTimeFormat)
 ])
+const unexpectedMissionContent = ref<string>('')
+const unexpectedMissionReserved = ref<boolean>(false)
+const unexpectedMissionReservationTime = ref<Dayjs>(dayjs())
 
 const { RangePicker } = DatePicker
 const { toClipboard } = useClipboard()
@@ -105,12 +85,27 @@ const clipboardHandler: Handler = () => {
 }
 
 const gameStartHandler: Handler = () => {
-    console.log('roomName:', roomName.value)
-    console.log('isInvidual:', isInvidual.value)
-    console.log('hostInGame:', hostInGame.value)
-    console.log('missionInterval:', missionInterval.value)
-    console.log('roomCode:', roomCode.value)
-    console.log('gamePeriod:', gamePeriod.value[0].toString(), gamePeriod.value[1].toString())
+    startRoom(
+        roomUserInfo.value.roomNo,
+        {
+            period: missionInterval.value,
+            commonYn: !isInvidual.value,
+            hostParticipantYn: hostInGame.value,
+            missionStartAt: gamePeriod.value[0].format(dateTimeFormat).slice(0, 10),
+            missionSubmitTime: gamePeriod.value[0].format(dateTimeFormat).slice(11) + ':00',
+            roomEndAt: gamePeriod.value[1].format(dateTimeFormat) + ':00',
+            missionList: checkedMissons.value
+        },
+        ({ data }) => {
+            console.log(':)', data)
+            router.push({
+                name: 'game-participate'
+            })
+        },
+        (error) => {
+            console.log(':(', error)
+        }
+    )
 }
 
 const missionGet: Handler = () => {
@@ -172,6 +167,34 @@ const changeRoomNameHandler: Handler = () => {
     )
 }
 
+const addUnexpectedMissionHandler: Handler = () => {
+    const testobj = {
+        roomNo: roomUserInfo.value.roomNo,
+        content: unexpectedMissionContent.value
+    }
+    console.log('?', testobj)
+    addUnexpectedMission(
+        testobj,
+        ({ data }) => {
+            console.log(':)', data)
+        },
+        (error) => {
+            console.error(':(', error)
+        }
+    )
+}
+
+const gameEndHandler: Handler = () => {
+    endRoom(
+        { roomNo: roomUserInfo.value.roomNo },
+        ({ data }) => {
+            console.log(':)', data)
+        },
+        (error) => {
+            console.error(':(', error)
+        }
+    )
+}
 onMounted(async () => {
     await missionGet()
     await userListGet()
@@ -179,6 +202,7 @@ onMounted(async () => {
 </script>
 
 <template>
+    <!-- {{ props.roomInfo }} -->
     <div class="flex flex-1">
         <div class="bg-A805RealWhite flex flex-col">
             <div class="flex justify-center max-md:flex-col gap-3 m-[3%]">
@@ -192,10 +216,25 @@ onMounted(async () => {
                         button-label="수정"
                         @button-click="changeRoomNameHandler"
                     />
-                    <MissionList v-model="missionList"></MissionList>
-                    <div name="option-list" class="flex gap-[10%]">
-                        <CheckBox v-model="isInvidual">각자 다른 미션 받기</CheckBox>
-                        <CheckBox v-model="hostInGame">방장도 게임 참여</CheckBox>
+                    <!-- status 연동 필요 -->
+                    <!-- <div v-if="test.roomStatus === 'WAIT'" name="before-start"> -->
+                    <div v-if="true" name="before-start">
+                        <MissionList v-model="missionList"></MissionList>
+                        <div name="option-list" class="flex gap-[10%]">
+                            <CheckBox v-model="isInvidual">각자 다른 미션 받기</CheckBox>
+                            <CheckBox v-model="hostInGame">방장도 게임 참여</CheckBox>
+                        </div>
+                    </div>
+                    <!-- <div v-else-if="test.roomStatus === 'PARTICIPANT'"> -->
+                    <div v-else>
+                        <UnexpectedMission
+                            v-model:content="unexpectedMissionContent"
+                            v-model:reserved="unexpectedMissionReserved"
+                            v-model:time="unexpectedMissionReservationTime"
+                            @add-unexpected-mission="addUnexpectedMissionHandler"
+                        ></UnexpectedMission>
+                        <!-- 추후 개발 필요 -->
+                        <ExpectedMissionList v-if="false"></ExpectedMissionList>
                     </div>
                 </div>
                 <div name="main-2" class="flex flex-col w-[500px] px-4 gap-[5%] max-md:w-full">
@@ -231,7 +270,7 @@ onMounted(async () => {
                         <RangePicker
                             id="range"
                             showTime
-                            :v-model:value="gamePeriod"
+                            v-model:value="gamePeriod"
                             :format="dateTimeFormat"
                         />
                     </div>
@@ -239,24 +278,30 @@ onMounted(async () => {
                         <Calendar :fullscreen="false" class="h-[40%]"></Calendar>
                     </div>
                     <ButtonAtom
+                        aaav-if="test.roomStatus === 'WAIT'"
+                        v-if="true"
                         custom-class="button-blue h-[10%] text-A805RealWhite"
                         @button-click="gameStartHandler"
                         >게임 시작하기</ButtonAtom
+                    >
+                    <ButtonAtom
+                        aaav-else-if="test.roomStatus === 'PARTICIPANT'"
+                        v-else
+                        custom-class="bg-A805Red h-[10%] text-A805RealWhite"
+                        @button-click="gameEndHandler"
+                        >게임 종료하기</ButtonAtom
                     >
                 </div>
                 <!-- </div> -->
                 <div name="side-part" class="flex flex-col w-[400px] max-md:w-full">
                     <UnapprovedUserList
                         v-model="unapprovedUserList"
-                        :user-list="dummyWaitingUserList"
                         class="h-[50%] border-b-2"
+                        @users-approved="userListGet"
+                        @users-denied="userListGet"
                     ></UnapprovedUserList>
                     <hr />
-                    <ApprovedUserList
-                        v-model="approvedUserList"
-                        :user-list="dummyUserList"
-                        class="h-[50%]"
-                    ></ApprovedUserList>
+                    <ApprovedUserList v-model="approvedUserList" class="h-[50%]"></ApprovedUserList>
                 </div>
             </div>
         </div>

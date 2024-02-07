@@ -1,78 +1,52 @@
 <script setup lang="ts">
 import CheckBox from '@/components/molecules/common/CheckBox.vue'
 import InputBox from '@/components/molecules/common/InputBox.vue'
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
 import type { Handler } from '@/types/common'
-import type { Mission } from '@/types/mission'
+import type { Mission, SuddenMissionResponse } from '@/types/mission'
 import { PlusSquareOutlined } from '@ant-design/icons-vue'
 import ButtonAtom from '@/components/atoms/ButtonAtom.vue'
 import { DatePicker, Calendar } from 'ant-design-vue'
 import ExpectedMission from '@/components/molecules/game/ExpectedMission.vue'
+import { getSuddenMission } from '@/api/mission'
+import { useRoute } from 'vue-router'
 
-const myMisssionName = ref('')
-const myMissionChecked = ref(true)
-const allMissionChecked = ref(false)
-const missionInputVisibility = ref(false)
+defineProps(['unexpectedMissionList'])
+const route = useRoute()
+const roomNo = ref<number>(Number(route.params.roomNo))
 // 데이터 바뀌면 v-model로 바꿀 예정
-const missionList = ref([
-    {
-        id: 1,
-        content: 'test1',
-        checked: true
-    },
-    {
-        id: 2,
-        content: 'test2',
-        checked: false
-    },
-    {
-        id: 3,
-        content: 'test3',
-        checked: false
-    }
-])
-const addInputBox: Handler = () => {
-    if (!missionInputVisibility.value) {
-        missionInputVisibility.value = true
-    }
+const missionList = ref<SuddenMissionResponse[]>([])
+
+const getSuddenMissionHandler: Handler = () => {
+    console.log('???', roomNo.value)
+    getSuddenMission(
+        roomNo.value,
+        (res) => {
+            missionList.value = res.data.result
+            console.log('sudden missions', res.data)
+        },
+        () => {
+            console.log('2')
+        }
+    )
 }
-const addMission: Handler = () => {
-    missionList.value.push({
-        id: missionList.value.length + 1,
-        content: myMisssionName.value,
-        checked: myMissionChecked.value
-    })
-    myMisssionName.value = ''
-}
-const allChangeHandler: Handler = () => {
-    missionList.value.forEach((mission: Mission) => {
-        mission.checked = allMissionChecked.value
-    })
-}
+
+onMounted(async () => {
+    getSuddenMissionHandler()
+})
 </script>
 
 <template>
     <div class="flex flex-1 flex-col gap-3 overflow-hidden">
         <h1 class="text-2xl">예약 리스트</h1>
+        {{ missionList }}
         <div
             name="list-container"
             class="flex flex-1 flex-col-reverse border-2 max-h-[300px] overflow-y-auto"
         >
-            <ExpectedMission>ㅁㄴㅇㄻㄴㅇㄹ1</ExpectedMission>
-            <ExpectedMission>ㅁㄴㅇㄻㄴㅇㄹ2</ExpectedMission>
-            <ExpectedMission>ㅁㄴㅇㄻㄴㅇㄹ3</ExpectedMission>
-            <ExpectedMission>ㅁㄴㅇㄻㄴㅇㄹ4</ExpectedMission>
-            <ExpectedMission>ㅁㄴㅇㄻㄴㅇㄹ5</ExpectedMission>
-            <ExpectedMission>ㅁㄴㅇㄻㄴㅇㄹ6</ExpectedMission>
-            <ExpectedMission>ㅁㄴㅇㄻㄴㅇㄹ7</ExpectedMission>
-            <ExpectedMission>ㅁㄴㅇㄻㄴㅇㄹ8</ExpectedMission>
-            <ExpectedMission>ㅁㄴㅇㄻㄴㅇㄹ8</ExpectedMission>
-            <ExpectedMission>ㅁㄴㅇㄻㄴㅇㄹ8</ExpectedMission>
-            <ExpectedMission>ㅁㄴㅇㄻㄴㅇㄹ8</ExpectedMission>
-            <ExpectedMission>ㅁㄴㅇㄻㄴㅇㄹ8</ExpectedMission>
-            <ExpectedMission>ㅁㄴㅇㄻㄴㅇㄹ8</ExpectedMission>
-            <ExpectedMission>ㅁㄴㅇㄻㄴㅇㄹ8</ExpectedMission>
-            <ExpectedMission>ㅁㄴㅇㄻㄴㅇㄹ8</ExpectedMission>
+            <ExpectedMission v-for="(event, index) in missionList" :key="index"
+                >{{ event.content }}{{ event.missionSubmitAt }}</ExpectedMission
+            >
         </div>
     </div>
 </template>

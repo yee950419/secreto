@@ -19,8 +19,6 @@ const emit = defineEmits(['update-name'])
 const { menuSeen, isMobile } = storeToRefs(menuStore)
 const notificationLists = ref([])
 
-
-
 const chatRooms = ref<ChatRoomType[]>([])
 //라우터로 부터 방번호를 받아온다
 let eventSource: EventSource
@@ -118,11 +116,15 @@ const getRoomData = () => {
 
 onMounted(() => {
     getRoomData()
-    getNotificationLists(Number(route.params.roomNo), ({ data }) => {
-        notificationLists.value = data.result
-    }, (error) => {
-        console.log(error)
-    })
+    getNotificationLists(
+        Number(route.params.roomNo),
+        ({ data }) => {
+            notificationLists.value = data.result
+        },
+        (error) => {
+            console.log(error)
+        }
+    )
 })
 
 onUnmounted(() => {
@@ -136,14 +138,22 @@ onUnmounted(() => {
 <template>
     <div class="flex flex-1 bg-A805RealWhite">
         <div v-for="room in chatRooms" :key="room.name">
-            <ChatRoom :name="room.name" :imageUrl="room.imageUrl" @close-chat-room="removeChatRoom" />
+            <ChatRoom
+                :name="room.name"
+                :imageUrl="room.imageUrl"
+                @close-chat-room="removeChatRoom"
+            />
         </div>
         <!-- pc버전이거나, 모바일 버전 + 메뉴가 체크된 상태일때만 nav가 보인다. -->
-        <NavBar @make-room="makeRoom" :room-name="roomUserInfo.roomName" :room-info="roomInfo"
-            v-if="!isMobile || menuSeen" />
+        <NavBar
+            @make-room="makeRoom"
+            :room-name="roomUserInfo.roomName"
+            :room-info="roomInfo"
+            v-if="!isMobile || menuSeen"
+        />
 
         <!-- pc버전이거나, 모바일 버전 + 메뉴가 닫힌 상태일때만 이 영역 이 보인다. -->
-        <RouterView v-if="!isMobile || !menuSeen" />
+        <RouterView v-if="!isMobile || !menuSeen" :room-info="roomInfo" />
     </div>
 </template>
 

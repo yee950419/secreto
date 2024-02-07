@@ -2,10 +2,13 @@
 import ButtonAtom from '@/components/atoms/ButtonAtom.vue'
 import ChatProfile from '@/components/molecules/game/ChatProfile.vue'
 import { CloseOutlined } from '@ant-design/icons-vue'
-import { ref, onMounted, onUnmounted } from 'vue'
-import { io } from 'socket.io-client'
 import type { Message } from '@/types/chat'
 import type { Socket } from 'socket.io-client'
+import { ref, onMounted, onUnmounted, watch, type Ref, nextTick } from 'vue'
+import { io } from 'socket.io-client'
+import { message } from 'ant-design-vue'
+
+const emit = defineEmits(['close-chat-room'])
 
 const { imageUrl, name } = defineProps({
     imageUrl: {
@@ -21,19 +24,19 @@ const { imageUrl, name } = defineProps({
         default: ''
     }
 })
+
 const messages = ref<Message[]>([])
+const attemp = ref(0)
+const textMessage = ref<string>('')
+const chatRoomRef = ref<HTMLElement | null>(null)
+const dragging = ref(false)
+const offsetX = ref(0)
+const offsetY = ref(0)
+
 const socket: Socket = io('http://localhost:3000', {
     reconnectionDelay: 1000, // 1초마다 재시도
     reconnectionDelayMax: 5000, // 최대 5초까지 재시도 간격 증가
     reconnectionAttempts: 3 // 최대 5번 재시도
-})
-const attemp = ref(0)
-
-const textMessage = ref<string>('')
-
-onMounted(() => {
-    handleResize()
-    window.addEventListener('resize', handleResize)
 })
 
 socket.on('connect', () => {
@@ -47,11 +50,6 @@ socket.on('connect_error', () => {
     }
     displayConnect(`연결실패, 재시도중... ${++attemp.value}`, 'connect')
 })
-
-// socket.on('reconnect_failed', () => {
-//     console.log('모든 재시도에 실패했습니다')
-//     displayConnect('서버와 연결이 원활하지 않습니다', 'connect')
-// })
 
 socket.emit('join-room', name, (datas: Message[]) => {
     messages.value = datas
@@ -76,16 +74,10 @@ const sendMessage = () => {
     displayMessage(textMessage.value, 'sent')
 }
 
-const emit = defineEmits(['close-chat-room'])
 
 const closeChatRoom = () => {
     emit('close-chat-room', name)
 }
-
-const chatRoomRef = ref<HTMLElement | null>(null)
-const dragging = ref(false)
-const offsetX = ref(0)
-const offsetY = ref(0)
 
 const startDrag = (e: MouseEvent) => {
     if (!chatRoomRef.value || window.innerWidth <= 768) return
@@ -123,28 +115,43 @@ const handleResize = () => {
     }
 }
 
+
+const messageContainer = ref<HTMLDivElement | null>(null);
+
+const scrollToBottom = () => {
+    const container = messageContainer.value;
+    if (container) {
+        container.scrollTop = container.scrollHeight;
+    }
+};
+
+// 메시지 배열이 변경될 때마다 스크롤을 맨 아래로 이동시킵니다.
+watch(() => messages, () => {
+    nextTick(() => {
+        scrollToBottom();
+    });
+}, { deep: true });
+
+
+onMounted(() => {
+    handleResize()
+    window.addEventListener('resize', handleResize)
+})
+
 onUnmounted(() => {
     window.removeEventListener('resize', handleResize)
 })
 </script>
 
 <template>
-    <div
-        class="modal md:absolute z-[1] max-md:relative flex flex-col flex-1 overflow-hidden max-md:w-screen max-md:h-full max-md:min-h-[600px] md:min-h-[600px] md:w-[350px] md:rounded-md md:border-2 md:border-solid md:border-A805Black bg-A805Grey md:left-[50%] md:top-[20%] cursor-pointer"
-        ref="chatRoomRef"
-        @mousedown="startDrag"
-        @mousemove="drag"
-        @mouseup="stopDrag"
-    >
-        <div
-            class="flex flex-[1] px-[10px] items-center justify-between bg-A805White headerSection"
-        >
-            <ChatProfile :imageUrl="imageUrl" :name="name" /><CloseOutlined
-                style="font-size: 24px"
-                @click="closeChatRoom"
-            />
+    <div class="modal md:absolute z-[1] max-md:relative flex flex-col flex-1 overflow-hidden max-md:w-screen max-md:h-full max-md:min-h-[600px] md:min-h-[600px] md:w-[350px] md:rounded-md md:border-2 md:border-solid md:border-A805Black bg-A805Grey md:left-[50%] md:top-[20%] cursor-pointer"
+        ref="chatRoomRef" @mousedown="startDrag" @mousemove="drag" @mouseup="stopDrag">
+        <div class="flex flex-[1] px-[10px] items-center justify-between bg-A805White headerSection">
+            <ChatProfile :imageUrl="imageUrl" :name="name" />
+            <CloseOutlined style="font-size: 24px" @click="closeChatRoom" />
         </div>
-        <div class="flex flex-[6] flex-col bg-A805White contentsSection px-[10px]">
+        <div class="flex flex-[6] flex-col bg-A805White contentsSection px-[10px] max-md:max-h-[400px] md:max-h-[400px] overflow-y-scroll"
+            ref="messageContainer">
             <div v-for="(message, index) in messages" :key="index">
                 <div class="flex items-end justify-start mb-2" v-if="message.type === 'received'">
                     <div class="bg-white p-3 rounded-md shadow-md">
@@ -166,14 +173,10 @@ onUnmounted(() => {
         <div class="flex flex-[1] inputSection">
             <textarea
                 class="resize-none rounded-md border-2 border-solid border-A805Black cursor-text w-full bg-A805White m-[10px] p-[10px]"
-                v-model="textMessage"
-                placeholder="내용을 입력해보세요"
-            ></textarea>
+                v-model="textMessage" placeholder="내용을 입력해보세요"></textarea>
         </div>
         <div class="flex justify-end">
-            <ButtonAtom custom-class="chat-button rounded-md m-[10px]" @button-click="sendMessage"
-                >전송</ButtonAtom
-            >
+            <ButtonAtom custom-class="chat-button rounded-md m-[10px]" @button-click="sendMessage">전송</ButtonAtom>
         </div>
     </div>
 </template>

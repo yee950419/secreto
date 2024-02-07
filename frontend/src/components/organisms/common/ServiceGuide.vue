@@ -175,8 +175,7 @@ onMounted(() => {
         <div class="flex flex-col items-center md:mx-[20%] md:gap-[30px] max-md:gap-[15px]">
             <HeaderLogo />
             <TextAtom custom-class="md:text-1 max-md:text-2">시크리또를 소개합니다</TextAtom>
-            <TextAtom custom-class="md:text-2 max-md:text-4 text-center"
-                >우리 서비스 시크리또는 싸피 10기 8반 전공자 4명과 비전공자 2명 총 6명의 팀원이 함께
+            <TextAtom custom-class="md:text-2 max-md:text-4 text-center">우리 서비스 시크리또는 싸피 10기 8반 전공자 4명과 비전공자 2명 총 6명의 팀원이 함께
                 모여 만들었습니다. 모두가 친해지는 그날까지 시크리또가 함께 하겠습니다.
             </TextAtom>
         </div>
@@ -185,7 +184,8 @@ onMounted(() => {
                 <TextAtom custom-class="md:text-1 max-md:text-2">서비스 사용법</TextAtom>
                 <div class="flex w-full justify-evenly">
                     <div class="flex flex-col items-center cursor-pointer" @click="Secreto">
-                        <CharacterAtom custom-class="w-[60px]" /><TextAtom>시크리또 멤버</TextAtom>
+                        <CharacterAtom custom-class="w-[60px]" />
+                        <TextAtom>시크리또 멤버</TextAtom>
                     </div>
                     <div class="flex flex-col items-center cursor-pointer" @click="Setting">
                         <HomeFilled style="font-size: 40px" /><text>방장 가이드</text>
@@ -196,25 +196,16 @@ onMounted(() => {
                 </div>
             </div>
             <div class="flex flex-1 justify-center">
-                <div
-                    class="flex flex-col md:min-w-[1200px] md:p-[20px] md:gap-[20px] md:h-[600px] max-md:min-h-[400px]"
-                >
+                <div class="flex flex-col md:min-w-[1200px] md:p-[20px] md:gap-[20px] md:h-[600px] max-md:min-h-[400px]">
                     <div class="flex flex-[4] max-md:h-[320px] justify-center items-center">
-                        <LeftOutlined
-                            style="font-size: 24px; cursor: pointer"
-                            class="max-md:absolute left-0"
-                            @click="leftHandler"
-                        />
+                        <LeftOutlined style="font-size: 24px; cursor: pointer" class="max-md:absolute left-0"
+                            @click="leftHandler" />
                         <img :src="showData[showIndex].img" class="h-full object-contain" />
-                        <RightOutlined
-                            style="font-size: 24px; cursor: pointer; right: 0"
-                            class="max-md:absolute right-0"
-                            @click="rightHandler"
-                        />
+                        <RightOutlined style="font-size: 24px; cursor: pointer; right: 0" class="max-md:absolute right-0"
+                            @click="rightHandler" />
                     </div>
                     <div
-                        class="flex h-[40px] max-md:h-[80px] bg-A805LightGrey justify-center items-center md:text-3 md:text-center max-md:text-4 text-bold"
-                    >
+                        class="flex h-[40px] max-md:h-[80px] bg-A805LightGrey justify-center items-center md:text-3 md:text-center max-md:text-4 text-bold">
                         <TextAtom>{{ showData[showIndex].text }}</TextAtom>
                     </div>
                 </div>

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, ref, type Ref, watch, onMounted, inject } from 'vue'
+import { computed, ref, type Ref, watch, onMounted, inject, type PropType } from 'vue'
 import ButtonAtom from '@/components/atoms/ButtonAtom.vue'
 import ButtonInputBox from '@/components/molecules/common/ButtonInputBox.vue'
 import CheckBox from '@/components/molecules/common/CheckBox.vue'
@@ -28,8 +28,28 @@ import ExpectedMissionList from '@/components/organisms/game/ExpectedMissionList
 import UnexpectedMission from '@/components/organisms/game/UnexpectedMission.vue'
 import { addUnexpectedMission } from '@/api/mission'
 
-// defineProps<{ roomInfo: RoomInfoType }>()
-// console.log('?S?ADFSADf', roomInfo)
+// const props = defineProps({
+//     roomInfo: { type: Object as () => RoomInfoType, required: true }
+// })
+const roomInfo = ref<RoomInfoType>({
+    entryCode: '',
+    commonYn: true,
+    hostParticipateYn: '',
+    hostRoomUserNo: 0,
+    missionSubmitTime: '',
+    missionStartAt: '',
+    roomEndAt: '',
+    roomName: '',
+    roomNo: 0,
+    roomStartAt: '',
+    roomStartYn: '',
+    roomStatus: '',
+    userInfo: {
+        nickname: '',
+        profileUrl: '',
+        roomUserNo: 0
+    }
+})
 // const test: RoomInfoType = props.roomInfo
 const route = useRoute()
 
@@ -64,7 +84,7 @@ const approvedUserList = computed(() => {
 const isInvidual = ref<boolean>(false)
 const hostInGame = ref<boolean>(false)
 const missionInterval = ref<number>(7)
-const roomCode = ref('qwe123rt')
+const roomCode: Ref<string> = inject('roomCode', ref('qwer1234'))
 const dateTimeFormat = 'YYYY-MM-DD HH:mm'
 const gamePeriod = ref<[Dayjs, Dayjs]>([
     dayjs(),
@@ -85,6 +105,19 @@ const clipboardHandler: Handler = () => {
 }
 
 const gameStartHandler: Handler = () => {
+    console.log(
+        ':<',
+        {
+            period: missionInterval.value,
+            commonYn: !isInvidual.value,
+            hostParticipantYn: hostInGame.value,
+            missionStartAt: gamePeriod.value[0].format(dateTimeFormat).slice(0, 10),
+            missionSubmitTime: gamePeriod.value[0].format(dateTimeFormat).slice(11) + ':00',
+            roomEndAt: gamePeriod.value[1].format(dateTimeFormat) + ':00',
+            missionList: checkedMissons.value
+        },
+        roomUserInfo.value.roomNo
+    )
     startRoom(
         roomUserInfo.value.roomNo,
         {
@@ -140,12 +173,14 @@ const userListGet: Handler = () => {
 }
 const roomInfoGet: Handler = () => {
     getRoom(
-        1,
-        (res) => {
-            console.log('1', res)
+        roomUserInfo.value.roomNo,
+        ({ data }) => {
+            roomInfo.value = data.result
+            changeRoomNameHandler()
+            console.log('roomInfo', roomInfo.value)
         },
-        () => {
-            console.log('2')
+        (error) => {
+            console.log(':(', error)
         }
     )
 }
@@ -189,6 +224,9 @@ const gameEndHandler: Handler = () => {
         { roomNo: roomUserInfo.value.roomNo },
         ({ data }) => {
             console.log(':)', data)
+            router.push({
+                name: 'game-statistic'
+            })
         },
         (error) => {
             console.error(':(', error)
@@ -196,29 +234,28 @@ const gameEndHandler: Handler = () => {
     )
 }
 onMounted(async () => {
+    await roomInfoGet()
     await missionGet()
     await userListGet()
 })
 </script>
 
 <template>
-    <!-- {{ props.roomInfo }} -->
+    <!-- {{ roomInfo }} -->
     <div class="flex flex-1">
         <div class="bg-A805RealWhite flex flex-col">
             <div class="flex justify-center max-md:flex-col gap-3 m-[3%]">
                 <!-- <div name="main-part" class="flex selection:max-md:flex-col max-md:w-full"> -->
                 <div name="main-1" class="flex flex-col w-[500px] px-4 gap-8 max-md:w-full">
-                    <ButtonInputBox
-                        label="방 제목"
-                        button-class="button-blue text-white line-darkgrey  border-s-0"
+                    <ButtonInputBox label="방 제목" button-class="button-blue text-white line-darkgrey  border-s-0"
                         input-class="input-box-style-3 rounded-s-[100px] text-center line-darkgrey bg-white"
-                        v-model="roomName"
-                        button-label="수정"
-                        @button-click="changeRoomNameHandler"
-                    />
+                        v-model="roomName" button-label="수정" @button-click="changeRoomNameHandler" />
                     <!-- status 연동 필요 -->
                     <!-- <div v-if="test.roomStatus === 'WAIT'" name="before-start"> -->
-                    <div v-if="true" name="before-start">
+                    <div
+                        v-if="roomInfo.roomStatus === 'WAIT' || roomInfo.roomStatus === 'END'"
+                        name="before-start"
+                    >
                         <MissionList v-model="missionList"></MissionList>
                         <div name="option-list" class="flex gap-[10%]">
                             <CheckBox v-model="isInvidual">각자 다른 미션 받기</CheckBox>
@@ -227,65 +264,46 @@ onMounted(async () => {
                     </div>
                     <!-- <div v-else-if="test.roomStatus === 'PARTICIPANT'"> -->
                     <div v-else>
-                        <UnexpectedMission
-                            v-model:content="unexpectedMissionContent"
-                            v-model:reserved="unexpectedMissionReserved"
-                            v-model:time="unexpectedMissionReservationTime"
-                            @add-unexpected-mission="addUnexpectedMissionHandler"
-                        ></UnexpectedMission>
+                        <UnexpectedMission v-model:content="unexpectedMissionContent"
+                            v-model:reserved="unexpectedMissionReserved" v-model:time="unexpectedMissionReservationTime"
+                            @add-unexpected-mission="addUnexpectedMissionHandler"></UnexpectedMission>
                         <!-- 추후 개발 필요 -->
                         <ExpectedMissionList v-if="false"></ExpectedMissionList>
                     </div>
                 </div>
                 <div name="main-2" class="flex flex-col w-[500px] px-4 gap-[5%] max-md:w-full">
                     <div name="main-2-1" class="flex justify-between">
-                        <DateButton
-                            class=""
-                            custon-class=""
-                            label-class="text-[15pt]"
-                            button-class="button-style-7 button-blue text-white"
-                            input-class="w-[60px] input-box-style-4"
-                            slot-class="w-[50px] text-[12pt]"
-                            type="number"
-                            label="미션 주기"
-                            v-model="missionInterval"
-                            >일 마다</DateButton
-                        >
+                        <DateButton class="" custon-class="" label-class="text-[15pt]"
+                            button-class="button-style-7 button-blue text-white" input-class="w-[60px] input-box-style-4"
+                            slot-class="w-[50px] text-[12pt]" type="number" label="미션 주기" v-model="missionInterval">일 마다
+                        </DateButton>
 
                         <ButtonInputBox
                             :readonly="true"
                             label="초대 코드"
                             button-label="복사"
-                            v-model="roomCode"
+                            v-model="roomInfo.entryCode"
                             label-class="text-[15pt]"
                             custom-class=""
                             input-class="w-[150px] h-[45px] text-center text-[15pt]"
                             button-class="button-blue button-style-7 text-white text-[20pt]"
                             @button-click="clipboardHandler"
-                            >qwer1234</ButtonInputBox
-                        >
+                        ></ButtonInputBox>
                     </div>
                     <div class="flex flex-col">
                         <label for="range">마니또 기간</label>
-                        <RangePicker
-                            id="range"
-                            showTime
-                            v-model:value="gamePeriod"
-                            :format="dateTimeFormat"
-                        />
+                        <RangePicker id="range" showTime v-model:value="gamePeriod" :format="dateTimeFormat" />
                     </div>
                     <div name="calendar-div">
                         <Calendar :fullscreen="false" class="h-[40%]"></Calendar>
                     </div>
                     <ButtonAtom
-                        aaav-if="test.roomStatus === 'WAIT'"
-                        v-if="true"
+                        v-if="roomInfo.roomStatus === 'WAIT' || roomInfo.roomStatus === 'END'"
                         custom-class="button-blue h-[10%] text-A805RealWhite"
                         @button-click="gameStartHandler"
                         >게임 시작하기</ButtonAtom
                     >
                     <ButtonAtom
-                        aaav-else-if="test.roomStatus === 'PARTICIPANT'"
                         v-else
                         custom-class="bg-A805Red h-[10%] text-A805RealWhite"
                         @button-click="gameEndHandler"
@@ -294,12 +312,8 @@ onMounted(async () => {
                 </div>
                 <!-- </div> -->
                 <div name="side-part" class="flex flex-col w-[400px] max-md:w-full">
-                    <UnapprovedUserList
-                        v-model="unapprovedUserList"
-                        class="h-[50%] border-b-2"
-                        @users-approved="userListGet"
-                        @users-denied="userListGet"
-                    ></UnapprovedUserList>
+                    <UnapprovedUserList v-model="unapprovedUserList" class="h-[50%] border-b-2"
+                        @users-approved="userListGet" @users-denied="userListGet"></UnapprovedUserList>
                     <hr />
                     <ApprovedUserList v-model="approvedUserList" class="h-[50%]"></ApprovedUserList>
                 </div>

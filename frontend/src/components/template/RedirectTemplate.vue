@@ -1,5 +1,8 @@
 <script setup lang="ts">
+import { useUserStore } from '@/stores/user'
 import { useRouter, useRoute } from 'vue-router'
+const userStore = useUserStore()
+const { updateTokens } = userStore
 
 const router = useRouter()
 const route = useRoute()
@@ -9,7 +12,6 @@ type TokenType = {
     refreshToken: string
 }
 
-// 쿼리 스트링 파싱 함수
 const parseQueryString = (queryString: string): TokenType => {
     const tokenPair: TokenType = {
         accessToken: '',
@@ -23,16 +25,27 @@ const parseQueryString = (queryString: string): TokenType => {
     return tokenPair
 }
 
-// 현재 라우트의 쿼리 스트링 파싱
 const tokens: TokenType = parseQueryString(route.fullPath.split('?')[1] || '')
-
-// 유저 아이디와 이름 표시
 const accessToken = tokens.accessToken || ''
 const refreshToken = tokens.refreshToken || ''
+updateTokens(
+    accessToken,
+    refreshToken,
+    (response) => {
+        const data = response.data
+        if (data.status === 'OK') {
+            router.push({ name: 'main' })
+        }
+    },
+    (error) => {
+        router.push({ name: 'main' })
+        alert('로그인에 실패했습니다.')
+    }
+)
 </script>
 
 <template>
-    <div>유저 아이디: {{ accessToken }}, 유저 이름: {{ refreshToken }}</div>
+    <div>accessToken: {{ accessToken }}, refreshToken: {{ refreshToken }}</div>
 </template>
 
 <style scoped></style>

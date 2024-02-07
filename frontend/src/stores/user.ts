@@ -1,8 +1,9 @@
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
 import { login, getUser, logout } from '@/api/user'
-import type { LoginRequestType, LogoutRequestType } from '@/types/user'
+import type { LoginRequestType } from '@/types/user'
 import { useRouter } from 'vue-router'
+import type { AxiosResponse } from 'axios'
 
 type UserInterface = {
     id: number
@@ -103,6 +104,32 @@ export const useUserStore = defineStore(
             )
         }
 
+        const updateTokens = (
+            _accessToken: string,
+            _refreshToken: string,
+            successHandler: (response: AxiosResponse) => void,
+            failHandler: (error: any) => void
+        ) => {
+            accessToken.value = _accessToken
+            refreshToken.value = _refreshToken
+            getUser(
+                (response) => {
+                    const data = response.data
+                    console.log(response)
+                    if (data.status === 'OK') {
+                        isLogin.value = true
+                        userInfo.value = data.result
+                    }
+                    successHandler(response)
+                },
+                (error) => {
+                    accessToken.value = ''
+                    refreshToken.value = ''
+                    failHandler(error)
+                }
+            )
+        }
+
         return {
             isLogin,
             userInfo,
@@ -112,6 +139,7 @@ export const useUserStore = defineStore(
             userLogin,
             getUserToStore,
             clearUserStore,
+            updateTokens,
             userLogout
         }
     },

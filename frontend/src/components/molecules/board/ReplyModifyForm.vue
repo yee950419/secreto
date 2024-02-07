@@ -2,11 +2,17 @@
 import ButtonAtom from '@/components/atoms/ButtonAtom.vue'
 import TextAtom from '@/components/atoms/TextAtom.vue'
 import { useUserStore } from '@/stores/user'
-import { ref } from 'vue'
-const props = defineProps(['nested', 'postNo', 'defaultValue'])
+import { inject, ref, type Ref } from 'vue'
+import { modifyReply } from '@/api/board'
+import type { ReplyModifyRequestType } from '@/types/board'
+import { useRoute } from 'vue-router'
+const route = useRoute()
+
+const roomNo: Ref<number> = ref(Number(route.params.roomNo))
+const props = defineProps(['nested', 'reply'])
 
 const userStore = useUserStore()
-const emit = defineEmits(['submitButtonHandle', 'cancelButtonHandle'])
+const emit = defineEmits(['modifyReplySuccessHandle', 'cancelButtonHandle'])
 
 const textArea = ref<HTMLInputElement | null>(null)
 const resize = () => {
@@ -17,9 +23,27 @@ const resize = () => {
 }
 
 const replyModifyHandler = () => {
-    alert('댓글 수정 API 연동')
-    console.log(textArea.value?.value)
-    emit('submitButtonHandle')
+    if (textArea.value == undefined) return
+    const modifyRequest: ReplyModifyRequestType = {
+        content: textArea.value?.value,
+        anonymityYn: props.reply.anonymityYn || false
+    }
+    modifyReply(
+        roomNo.value,
+        props.reply.replyNo,
+        modifyRequest,
+        (response) => {
+            if (response.data.status === 'OK') {
+                console.log(response.data.message)
+                emit('modifyReplySuccessHandle')
+                if (textArea.value) {
+                    textArea.value.value = ''
+                    resize()
+                }
+            }
+        },
+        (error) => alert(error.message)
+    )
 }
 </script>
 
@@ -32,7 +56,7 @@ const replyModifyHandler = () => {
             ref="textArea"
             class="min-h-[40px] resize-none focus:outline-none my-2"
             placeholder="댓글을 남겨보세요"
-            :value="defaultValue"
+            :value="reply.content"
             @input="resize"
         ></textarea>
         <ButtonAtom

@@ -51,16 +51,20 @@ export type ReplyResponseType = {
     writerEmail: string
     writerProfileUrl: string | null
     children?: ReplyResponseType[] | undefined
+    anonymityYn?: boolean
     deleteYn?: boolean
 }
 
+export type ReplyModifyRequestType = {
+    content: string
+    anonymityYn: boolean
+}
+
 export type ReplyWriteRequestType = {
-    boardNo: number // boardNo?? postNo
-    roomUserNo: number
-    content: string // api에서 오타 수정 후 원복
+    content: string
     parentReplyNo?: number
     tagUserNo?: number
-    annonymityYn?: boolean
+    anonymityYn?: boolean
 }
 
 export type BoardWriteRequestType = {

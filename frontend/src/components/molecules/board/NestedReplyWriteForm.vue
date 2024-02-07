@@ -25,22 +25,19 @@ const resize = () => {
 
 const replyWriteHandler = () => {
     const replyRequest: ReplyWriteRequestType = {
-        boardNo: -1,
-        roomUserNo: -1,
         content: '',
         parentReplyNo: props.parentReplyNo,
         tagUserNo: props.tagUserNo,
-        annonymityYn: false
+        anonymityYn: false
     }
     if (textArea.value) {
         if (textArea.value.value === '') {
             alert('댓글을 입력하세요!')
             return
         }
-        replyRequest.boardNo = boardNo.value
-        replyRequest.roomUserNo = roomUserNo.value
         replyRequest.content = textArea.value.value
     }
+    console.log(replyRequest)
     postReply(
         roomNo.value,
         boardNo.value,
@@ -55,7 +52,10 @@ const replyWriteHandler = () => {
                 }
             }
         },
-        (error) => alert(error.message)
+        (error) => {
+            alert(error.message)
+            console.log(error)
+        }
     )
 }
 </script>

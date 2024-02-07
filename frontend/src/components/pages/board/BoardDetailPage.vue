@@ -72,11 +72,15 @@ const constructParentChildRelation = (replies: ReplyResponseType[]): ReplyRespon
     children.forEach((child) => {
         if (child.parentReplyNo === null) return
         const index = parentIndexer.get(child.parentReplyNo)
-        if (index !== undefined) {
+        if (index !== undefined && child.deleteYn === false) {
             index != constructed[index]['children']?.push(child)
         }
     })
-    return constructed
+    return constructed.filter(
+        (reply) =>
+            reply.deleteYn === false ||
+            (reply.deleteYn === true && reply.children !== undefined && reply.children.length > 0)
+    )
 }
 
 const loadReplies = () => {
@@ -91,6 +95,7 @@ const loadReplies = () => {
                 replyCount.value = data.result.filter(
                     (reply: ReplyResponseType) => !reply.deleteYn
                 ).length
+                console.log(data.result)
                 replies.value = constructParentChildRelation(data.result)
             }
         },
@@ -172,9 +177,7 @@ const replyDeleteSuccessModalToggle = () =>
                     />
                 </div>
                 <LineAtom custom-class="my-4 border-A805LightGrey" />
-                <div class="min-h-[150px]">
-                    {{ post.content }}
-                </div>
+                <div class="min-h-[150px]" v-html="post.content"></div>
                 <div class="mt-[60px] flex gap-[20px] text-[16px]">
                     <!-- <ButtonAtom custom-class="flex items-center gap-[6px]"
                 ><HeartOutlined class="text-[24px]" /> 좋아요
@@ -198,6 +201,9 @@ const replyDeleteSuccessModalToggle = () =>
                             @delete-success-handle="
                                 () => loadRepliesAndShowModal('댓글이 삭제되었습니다.')
                             "
+                            @modify-reply-success-handle="
+                                () => loadRepliesAndShowModal('댓글이 수정되었습니다.')
+                            "
                         />
                         <ReplyElement
                             v-for="child in reply.children"
@@ -210,6 +216,9 @@ const replyDeleteSuccessModalToggle = () =>
                             "
                             @delete-success-handle="
                                 () => loadRepliesAndShowModal('댓글이 삭제되었습니다.')
+                            "
+                            @modify-reply-success-handle="
+                                () => loadRepliesAndShowModal('댓글이 수정되었습니다.')
                             "
                         />
                     </template>

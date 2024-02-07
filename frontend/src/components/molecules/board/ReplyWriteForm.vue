@@ -24,18 +24,13 @@ const resize = () => {
 
 const replyWriteHandler = () => {
     const replyRequest: ReplyWriteRequestType = {
-        boardNo: -1,
-        roomUserNo: -1,
-        content: '',
-        annonymityYn: false
+        content: ''
     }
     if (textArea.value) {
         if (textArea.value.value === '') {
             alert('댓글을 입력하세요!')
             return
         }
-        replyRequest.boardNo = boardNo.value
-        replyRequest.roomUserNo = roomUserNo.value
         replyRequest.content = textArea.value.value
     }
     console.log(replyRequest)

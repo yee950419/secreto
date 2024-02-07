@@ -57,4 +57,14 @@ async function deleteReply(
     boardInstance.delete(`/reply/${replyNo}/room/${roomNo}`).then(success).catch(fail)
 }
 
-export { getBoard, getPost, getReplies, postReply, deleteReply, createPost }
+async function modifyReply(
+    roomNo: number,
+    replyNo: number,
+    param: object,
+    success: (response: AxiosResponse) => void,
+    fail: (error: any) => void
+) {
+    boardInstance.put(`/reply/${replyNo}/room/${roomNo}`, param).then(success).catch(fail)
+}
+
+export { getBoard, getPost, getReplies, postReply, deleteReply, modifyReply, createPost }

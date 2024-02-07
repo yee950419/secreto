@@ -1,5 +1,3 @@
-import { useRoute } from 'vue-router'
-
 export type BoardRequestType = {
     boardCategory: string
     title: string | null

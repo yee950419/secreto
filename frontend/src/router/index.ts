@@ -10,6 +10,11 @@ const router = createRouter({
     history: createWebHistory(),
     routes: [
         {
+            path: '/oauth/redirect',
+            name: 'redirect',
+            component: () => import('@/components/template/RedirectTemplate.vue')
+        },
+        {
             path: '/',
             name: 'beforeLogin',
             component: () => import('@/components/pages/LoginView.vue'),

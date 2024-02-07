@@ -61,12 +61,9 @@ export type ReplyModifyRequestType = {
 }
 
 export type ReplyWriteRequestType = {
-    boardNo: number // boardNo?? postNo
-    roomUserNo: number
-    content: string // api에서 오타 수정 후 원복
+    content: string
     parentReplyNo?: number
-    tagUserNo?: number
-    annonymityYn?: boolean
+    anonymityYn?: boolean
 }
 
 export type BoardWriteRequestType = {

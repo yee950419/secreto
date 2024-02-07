@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import ButtonAtom from '@/components/atoms/ButtonAtom.vue'
-defineProps(['isPostWriter'])
+defineProps(['isPostWriter', 'isHostUser'])
 const emit = defineEmits(['modifyButtonHandle', 'deleteButtonHandle', 'listButtonHandle'])
 </script>
 

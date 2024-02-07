@@ -9,6 +9,7 @@ import { computed, onMounted, ref, type Ref } from 'vue'
 import { BoardCategory, type BoardModifyRequestType } from '@/types/board'
 import { modifyPost, getPost } from '@/api/board'
 import { useRoute } from 'vue-router'
+import { toolbarOptions, modules } from '@/utils/editor'
 import router from '@/router'
 
 const route = useRoute()
@@ -30,15 +31,20 @@ const missionCategory: Ref<string | null> = ref(null)
 const publicYn: Ref<boolean> = ref(false)
 const submitButtonHandle = () => {
     console.log(boardModifyRequest.value)
+    if (boardCategory.value !== BoardCategory.CERTIFICATE) {
+        boardModifyRequest.value.missionCategory = null
+        boardModifyRequest.value.publicYn = true
+    }
     modifyPost(
         boardNo.value,
         roomNo.value,
         boardModifyRequest.value,
         (response) => {
             if (response.data.status === 'OK') {
+                console.log()
                 router.push({
-                    name: 'game-board-list',
-                    query: { boardCategory: boardCategory.value }
+                    name: 'game-board-detail',
+                    query: { boardCategory: boardCategory.value, boardNo: response.data.result }
                 })
             }
         },
@@ -104,7 +110,8 @@ onMounted(() => {
                 <div class="w-full h-[500px] mb-16">
                     <QuillEditor
                         theme="snow"
-                        toolbar="full"
+                        :toolbar="toolbarOptions"
+                        :modules="modules"
                         v-model:content="boardModifyRequest.content"
                         content-type="html"
                     />

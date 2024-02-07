@@ -10,11 +10,14 @@ import { useRouter } from 'vue-router'
  * 헤더 동적 셋팅을 적용한 axios 인스턴스 생성부
  * @author 지인성
  *
+ * 이미지 업로드를 위해 localAxios 생성 시 content type을 입력받을 수 있도록 수정
+ * 이미지 업로드 시에는 'Content-Type'을 multipart/form-data로 설정
+ * @author 김현창
  */
 
 const whiteList = ['/users/log-in', '/users/sign-up', '/users/log-out', '/oauth/redirect']
 
-function localAxios() {
+function localAxios(contentType?: string) {
     const instance = axios.create({
         baseURL: VITE_API_BASE_URL
     })
@@ -24,6 +27,9 @@ function localAxios() {
     instance.defaults.headers.common['Content-Type'] = 'application/json;charset=utf-8'
     instance.defaults.headers.common['AccessToken'] = ''
     instance.defaults.headers.common['RefreshToken'] = ''
+    if (contentType) {
+        instance.defaults.headers.common['Content-Type'] = contentType
+    }
 
     // 특정 요청에 대해서만 헤더 설정이 필요할때는
     // instance.defaults.headers.{RestApi}['타입명'] = '값' 써주기

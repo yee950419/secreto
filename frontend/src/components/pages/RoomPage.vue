@@ -32,6 +32,7 @@ const roomUserInfo = ref<RoomUserInfoType>({
 })
 const roomInfo = ref<RoomInfoType>()
 const roomUserNo = ref<number>(-1)
+const hostRoomUserNo = ref<number>(-1)
 
 const updateRoomName = (name: string | undefined) => {
     roomUserInfo.value.roomName = name ? name : '방 제목'
@@ -40,6 +41,7 @@ const updateRoomName = (name: string | undefined) => {
 
 provide('roomUserInfo', readonly(roomUserInfo))
 provide('roomUserNo', readonly(roomUserNo))
+provide('hostRoomUserNo', readonly(hostRoomUserNo))
 provide('roomCode', readonly(entryCode))
 
 const removeChatRoom = (name: string) => {
@@ -88,12 +90,14 @@ const getRoomData = () => {
         roomUserInfo.value.roomNo,
         ({ data }) => {
             console.table(data)
+            console.table(data.result)
             roomInfo.value = data.result
             roomUserInfo.value.profileUrl = data.result.userInfo.profileUrl
             roomUserInfo.value.roomNickname = data.result.userInfo.nickname
             roomUserInfo.value.roomUserNo = data.result.userInfo.roomUserNo
             roomUserInfo.value.roomName = data.result.roomName
             roomUserNo.value = data.result.userInfo.roomUserNo
+            hostRoomUserNo.value = data.result.hostRoomUserNo
             entryCode.value = data.result.entryCode
             updateRoomName(data.result.roomName)
             SSEConnection(data.result.userInfo.roomUserNo)

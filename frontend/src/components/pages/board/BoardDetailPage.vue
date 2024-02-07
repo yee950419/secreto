@@ -27,6 +27,7 @@ const boardCategory = computed(() => {
 })
 const roomNo: Ref<number> = ref(Number(route.params.roomNo))
 const roomUserNo = inject<Ref<number>>('roomUserNo', ref(-1))
+const hostRoomUserNo = inject<Ref<number>>('hostRoomUserNo', ref(-1))
 const boardRequest: Ref<BoardRequestType> = ref({
     boardCategory: String(route.query.boardCategory),
     title: route.query.title === undefined ? '' : String(route.query.title),
@@ -247,6 +248,7 @@ const replyDeleteSuccessModalToggle = () =>
                 @delete-button-handle="deleteModalToggle"
                 @top-button-handle="topButtonHandler"
                 @list-button-handle="listButtonHandler"
+                :is-host-user="hostRoomUserNo === roomUserNo"
                 :is-post-writer="roomUserNo === post.roomUserNo"
             />
         </div>

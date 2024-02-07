@@ -30,15 +30,20 @@ const missionCategory: Ref<string | null> = ref(null)
 const publicYn: Ref<boolean> = ref(false)
 const submitButtonHandle = () => {
     console.log(boardModifyRequest.value)
+    if (boardCategory.value !== BoardCategory.CERTIFICATE) {
+        boardModifyRequest.value.missionCategory = null
+        boardModifyRequest.value.publicYn = true
+    }
     modifyPost(
         boardNo.value,
         roomNo.value,
         boardModifyRequest.value,
         (response) => {
             if (response.data.status === 'OK') {
+                console.log()
                 router.push({
-                    name: 'game-board-list',
-                    query: { boardCategory: boardCategory.value }
+                    name: 'game-board-detail',
+                    query: { boardCategory: boardCategory.value, boardNo: response.data.result }
                 })
             }
         },

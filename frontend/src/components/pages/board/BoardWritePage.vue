@@ -28,6 +28,10 @@ const missionCategory: Ref<string | null> = ref(null)
 const publicYn: Ref<boolean> = ref(false)
 const submitButtonHandle = () => {
     boardWriteRequest.value.boardCategory = boardCategory.value
+    if (boardCategory.value !== BoardCategory.CERTIFICATE) {
+        boardWriteRequest.value.missionCategory = null
+        boardWriteRequest.value.publicYn = true
+    }
     createPost(
         roomNo.value,
         boardWriteRequest.value,
@@ -39,7 +43,10 @@ const submitButtonHandle = () => {
                 })
             }
         },
-        (error) => alert(error.message)
+        (error) => {
+            alert(error.response.data.message)
+            console.error(error)
+        }
     )
 }
 </script>

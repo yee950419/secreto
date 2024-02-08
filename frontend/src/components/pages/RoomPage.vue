@@ -14,7 +14,7 @@ import { storeToRefs } from 'pinia'
 const router = useRouter()
 const route = useRoute()
 const menuStore = useMenuStore()
-const emit = defineEmits(['update-name'])
+const emit = defineEmits(['update-name', 'in-room', 'set-nickname'])
 
 const { menuSeen, isMobile } = storeToRefs(menuStore)
 const notificationLists = ref([])
@@ -101,6 +101,7 @@ const getRoomData = () => {
             hostRoomUserNo.value = data.result.hostRoomUserNo
             entryCode.value = data.result.entryCode
             updateRoomName(data.result.roomName)
+            emit('set-nickname', data.result.userInfo.nickname)
             SSEConnection(data.result.userInfo.roomUserNo)
         },
         (error) => {
@@ -124,8 +125,10 @@ const getNotify = () => {
 }
 
 onMounted(() => {
+    console.log('in-room은 true로 변경합니다.')
     getRoomData()
     getNotify()
+    emit('in-room', true)
 })
 
 onUnmounted(() => {
@@ -133,6 +136,8 @@ onUnmounted(() => {
         console.log('SSE 연결을 종료합니다.')
         eventSource.close()
     }
+    console.log('in-room은 false로 변경합니다.')
+    emit('in-room', false)
 })
 </script>
 

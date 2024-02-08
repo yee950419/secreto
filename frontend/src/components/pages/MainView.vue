@@ -225,7 +225,7 @@ const profileClickHandler = () => {
                 </div>
                 <RoomListView
                     class="max-w-full w-full h-full max-h-full md:shadow-rb"
-                    @submit-button-handle="buttonClickHandler"
+                    @submit-button-handle="() => roomModalChange('roomCreate')"
                 />
             </div>
             <MyPage

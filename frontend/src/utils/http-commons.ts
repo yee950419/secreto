@@ -72,8 +72,10 @@ function localAxios(contentType?: string) {
                 // 토근 정보 초기화
                 accessToken.value = ''
                 refreshToken.value = ''
-                router.replace('/')
-                console.error(error)
+                // 로그인 페이지로 이동
+                setTimeout(() => {
+                router.push('/')
+                }, 1000)
             }
         )
     }

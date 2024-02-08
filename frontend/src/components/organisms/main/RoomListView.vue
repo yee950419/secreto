@@ -40,12 +40,11 @@ const roomEnterHandler: DataHandler<RoomListInfoType> = (roomInfo: RoomListInfoT
     if (
         roomInfo.hostUserNo === userInfo.value.id ||
         (!roomInfo.standbyYn && (roomInfo.roomStatus === 'END' ||
-            (roomInfo.roomStatus === 'PARTICIPANT' &&
-                (new Date(roomInfo.roomStartAt) < new Date() && new Date(roomInfo.roomEndAt) > new Date())
-            )))) {
+            (roomInfo.roomStatus === 'PARTICIPANT' && (new Date(roomInfo.roomStartAt) < new Date())
+            )
+        ))) {
         router.push('/game/' + roomInfo.roomNo)
     }
-
     else {
         router.push('/waiting/' + roomInfo.roomNo)
     }

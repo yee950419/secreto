@@ -27,6 +27,9 @@ import router from '@/router'
 import ExpectedMissionList from '@/components/organisms/game/ExpectedMissionList.vue'
 import UnexpectedMission from '@/components/organisms/game/UnexpectedMission.vue'
 import { addUnexpectedMission } from '@/api/mission'
+import { Calendar as VCalendar, DatePicker as VDatePicker } from 'v-calendar'
+import IconArrowRight from 'v-calendar'
+import 'v-calendar/style.css'
 
 // const props = defineProps({
 //     roomInfo: { type: Object as () => RoomInfoType, required: true }
@@ -92,6 +95,16 @@ const gamePeriod = ref<[Dayjs, Dayjs]>([
     // dayjs(dayjs(), dateTimeFormat),
     // dayjs(dayjs().add(1, 'day'), dateTimeFormat)
 ])
+const range = ref<{ start: string; end: string }>({
+    start: dayjs().format(dateTimeFormat),
+    end: dayjs().add(1, 'day').format(dateTimeFormat)
+})
+const crange = computed(() => {
+    return [
+        dayjs(range.value.start).format(dateTimeFormat),
+        dayjs(range.value.end).format(dateTimeFormat)
+    ]
+})
 const unexpectedMissionContent = ref<string>('')
 const unexpectedMissionReserved = ref<boolean>(false)
 const unexpectedMissionReservationTime = ref<Dayjs>(dayjs())
@@ -105,30 +118,40 @@ const clipboardHandler: Handler = () => {
 }
 
 const gameStartHandler: Handler = () => {
-    console.log(
-        ':<',
-        {
-            period: missionInterval.value,
-            commonYn: !isInvidual.value,
-            hostParticipantYn: hostInGame.value,
-            missionStartAt: gamePeriod.value[0].format(dateTimeFormat).slice(0, 10),
-            missionSubmitTime: gamePeriod.value[0].format(dateTimeFormat).slice(11) + ':00',
-            roomEndAt: gamePeriod.value[1].format(dateTimeFormat) + ':00',
-            missionList: checkedMissons.value
-        },
-        roomUserInfo.value.roomNo
-    )
+    // console.log(
+    //     ':<',
+    //     {
+    //         period: missionInterval.value,
+    //         commonYn: !isInvidual.value,
+    //         hostParticipantYn: hostInGame.value,
+    //         missionStartAt: gamePeriod.value[0].format(dateTimeFormat).slice(0, 10),
+    //         missionSubmitTime: gamePeriod.value[0].format(dateTimeFormat).slice(11) + ':00',
+    //         roomEndAt: gamePeriod.value[1].format(dateTimeFormat) + ':00',
+    //         missionList: checkedMissons.value
+    //     },
+    //     roomUserInfo.value.roomNo
+    // )
+    console.log(range.value, typeof range.value.start)
     startRoom(
         roomUserInfo.value.roomNo,
         {
             period: missionInterval.value,
             commonYn: !isInvidual.value,
             hostParticipantYn: hostInGame.value,
-            missionStartAt: gamePeriod.value[0].format(dateTimeFormat).slice(0, 10),
-            missionSubmitTime: gamePeriod.value[0].format(dateTimeFormat).slice(11) + ':00',
-            roomEndAt: gamePeriod.value[1].format(dateTimeFormat) + ':00',
+            missionStartAt: crange.value[0].slice(0, 10),
+            missionSubmitTime: crange.value[0].slice(11) + ':00',
+            roomEndAt: crange.value[1] + ':00',
             missionList: checkedMissons.value
         },
+        // {
+        //     period: missionInterval.value,
+        //     commonYn: !isInvidual.value,
+        //     hostParticipantYn: hostInGame.value,
+        //     missionStartAt: gamePeriod.value[0].format(dateTimeFormat).slice(0, 10),
+        //     missionSubmitTime: gamePeriod.value[0].format(dateTimeFormat).slice(11) + ':00',
+        //     roomEndAt: gamePeriod.value[1].format(dateTimeFormat) + ':00',
+        //     missionList: checkedMissons.value
+        // },
         ({ data }) => {
             console.log(':)', data)
             router.push({
@@ -137,6 +160,7 @@ const gameStartHandler: Handler = () => {
         },
         (error) => {
             console.log(':(', error)
+            alert(error.response.data.message)
         }
     )
 }
@@ -247,9 +271,14 @@ onMounted(async () => {
             <div class="flex justify-center max-md:flex-col gap-3 m-[3%]">
                 <!-- <div name="main-part" class="flex selection:max-md:flex-col max-md:w-full"> -->
                 <div name="main-1" class="flex flex-col w-[500px] px-4 gap-8 max-md:w-full">
-                    <ButtonInputBox label="방 제목" button-class="button-blue text-white line-darkgrey  border-s-0"
+                    <ButtonInputBox
+                        label="방 제목"
+                        button-class="button-blue text-white line-darkgrey  border-s-0"
                         input-class="input-box-style-3 rounded-s-[100px] text-center line-darkgrey bg-white"
-                        v-model="roomName" button-label="수정" @button-click="changeRoomNameHandler" />
+                        v-model="roomName"
+                        button-label="수정"
+                        @button-click="changeRoomNameHandler"
+                    />
                     <!-- status 연동 필요 -->
                     <!-- <div v-if="test.roomStatus === 'WAIT'" name="before-start"> -->
                     <div
@@ -264,18 +293,29 @@ onMounted(async () => {
                     </div>
                     <!-- <div v-else-if="test.roomStatus === 'PARTICIPANT'"> -->
                     <div v-else>
-                        <UnexpectedMission v-model:content="unexpectedMissionContent"
-                            v-model:reserved="unexpectedMissionReserved" v-model:time="unexpectedMissionReservationTime"
-                            @add-unexpected-mission="addUnexpectedMissionHandler"></UnexpectedMission>
+                        <UnexpectedMission
+                            v-model:content="unexpectedMissionContent"
+                            v-model:reserved="unexpectedMissionReserved"
+                            v-model:time="unexpectedMissionReservationTime"
+                            @add-unexpected-mission="addUnexpectedMissionHandler"
+                        ></UnexpectedMission>
                         <!-- 추후 개발 필요 -->
                         <ExpectedMissionList v-if="false"></ExpectedMissionList>
                     </div>
                 </div>
                 <div name="main-2" class="flex flex-col w-[500px] px-4 gap-[5%] max-md:w-full">
                     <div name="main-2-1" class="flex justify-between">
-                        <DateButton class="" custon-class="" label-class="text-[15pt]"
-                            button-class="button-style-7 button-blue text-white" input-class="w-[60px] input-box-style-4"
-                            slot-class="w-[50px] text-[12pt]" type="number" label="미션 주기" v-model="missionInterval">일 마다
+                        <DateButton
+                            class=""
+                            custon-class=""
+                            label-class="text-[15pt]"
+                            button-class="button-style-7 button-blue text-white"
+                            input-class="w-[60px] input-box-style-4"
+                            slot-class="w-[50px] text-[12pt]"
+                            type="number"
+                            label="미션 주기"
+                            v-model="missionInterval"
+                            >일 마다
                         </DateButton>
 
                         <ButtonInputBox
@@ -292,10 +332,20 @@ onMounted(async () => {
                     </div>
                     <div class="flex flex-col">
                         <label for="range">마니또 기간</label>
-                        <RangePicker id="range" showTime v-model:value="gamePeriod" :format="dateTimeFormat" />
+                        <!-- <RangePicker
+                            id="range"
+                            showTime
+                            v-model:value="gamePeriod"
+                            :format="dateTimeFormat"
+                        /> -->
                     </div>
-                    <div name="calendar-div">
-                        <Calendar :fullscreen="false" class="h-[40%]"></Calendar>
+                    <div name="calendar-div w-full">
+                        <!-- <Calendar :fullscreen="false" class="h-[40%]"></Calendar> -->
+                        <VDatePicker
+                            v-model.range="range"
+                            mode="dateTime"
+                            class="w-full"
+                        ></VDatePicker>
                     </div>
                     <ButtonAtom
                         v-if="roomInfo.roomStatus === 'WAIT' || roomInfo.roomStatus === 'END'"
@@ -312,8 +362,12 @@ onMounted(async () => {
                 </div>
                 <!-- </div> -->
                 <div name="side-part" class="flex flex-col w-[400px] max-md:w-full">
-                    <UnapprovedUserList v-model="unapprovedUserList" class="h-[50%] border-b-2"
-                        @users-approved="userListGet" @users-denied="userListGet"></UnapprovedUserList>
+                    <UnapprovedUserList
+                        v-model="unapprovedUserList"
+                        class="h-[50%] border-b-2"
+                        @users-approved="userListGet"
+                        @users-denied="userListGet"
+                    ></UnapprovedUserList>
                     <hr />
                     <ApprovedUserList v-model="approvedUserList" class="h-[50%]"></ApprovedUserList>
                 </div>

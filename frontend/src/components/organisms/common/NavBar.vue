@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import MenuItem from '@/components/molecules/common/MenuItem.vue'
 import { SettingOutlined } from '@ant-design/icons-vue'
-import { ref, inject, watch } from 'vue'
+import { ref, inject, watch, type Ref, onMounted } from 'vue'
 import type { RoomUserInfoType, RoomInfoType } from '@/types/room'
 import type { notificationTypes } from '@/types/notify'
 import { useRouter } from 'vue-router'
@@ -9,20 +9,17 @@ import { useMenuStore } from '@/stores/menu'
 const menuStore = useMenuStore()
 const { handleClick } = menuStore
 
-const { roomInfo, roomName } = defineProps({
+defineProps({
     roomName: {
         type: String as () => String,
         default: '방 제목'
     },
     roomInfo: {
         type: Object as () => RoomInfoType | undefined
-    },
-    notificationLists: {
-        type: Object as () => notificationTypes[],
-        default: []
     }
 })
 
+const notificationLists: Ref<notificationTypes[]> = inject('notifyLists') as Ref<notificationTypes[]>
 const roomUserInfo = inject<RoomUserInfoType>('roomUserInfo')
 const showSubMenu = ref<string[]>([])
 const activeMenu = ref(-1)
@@ -38,24 +35,23 @@ const makeRoom = (roomName: string) => {
     })
 }
 
-// notificationLists.forEach((notification) => {
-//     if (notification.readYn == false) {
-//         unReadMessage.value++
-//     }
-// })
-
-
-const getUnReadMessages = (lists: notificationTypes[]) => {
+const calculateUnReadMessage = () => {
     unReadMessage.value = 0
-    lists.forEach((notification) => {
-        if (notification.readYn == false) {
+    notificationLists.value.forEach((notification) => {
+        if (!notification.readYn) {
             unReadMessage.value++
         }
     })
-    return unReadMessage.value
 }
 
+watch(notificationLists, () => {
+    console.log(notificationLists.value)
+    calculateUnReadMessage()
+}, { deep: true })
 
+onMounted(() => {
+    calculateUnReadMessage()
+})
 
 const toggleSubMenu = (menu: string) => {
     const index = showSubMenu.value.indexOf(menu)
@@ -90,7 +86,7 @@ const handleMenuClickAndToggleSubMenu = (index: number, menu: string) => {
         <MenuItem custom-class="menu-item">{{ roomName }}</MenuItem>
         <MenuItem custom-class="menu-item" :active="activeMenu === 1"
             @menu-click="handleMenuClick(1), handleClick(), router.push({ name: 'game-notification' })">알림 {{
-                getUnReadMessages(notificationLists) }} 건</MenuItem>
+                unReadMessage }} 건</MenuItem>
         <MenuItem custom-class="menu-item" :active="activeMenu === 2"
             @menu-click="handleMenuClick(2), router.push('/main')">메인 화면</MenuItem>
         <MenuItem custom-class="menu-item" :active="activeMenu === 3" @menu-click="

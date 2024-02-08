@@ -43,6 +43,7 @@ provide('roomUserInfo', readonly(roomUserInfo))
 provide('roomUserNo', readonly(roomUserNo))
 provide('hostRoomUserNo', readonly(hostRoomUserNo))
 provide('roomCode', readonly(entryCode))
+provide('notifyLists', readonly(notificationLists))
 
 const removeChatRoom = (name: string) => {
     const index = chatRooms.value.findIndex((room) => room.name === name)
@@ -109,8 +110,7 @@ const getRoomData = () => {
     )
 }
 
-onMounted(() => {
-    getRoomData()
+const getNotify = () => {
     getNotificationLists(
         Number(route.params.roomNo),
         ({ data }) => {
@@ -121,6 +121,11 @@ onMounted(() => {
             console.log(error)
         }
     )
+}
+
+onMounted(() => {
+    getRoomData()
+    getNotify()
 })
 
 onUnmounted(() => {
@@ -137,11 +142,10 @@ onUnmounted(() => {
             <ChatRoom :name="room.name" :imageUrl="room.imageUrl" @close-chat-room="removeChatRoom" />
         </div>
         <!-- pc버전이거나, 모바일 버전 + 메뉴가 체크된 상태일때만 nav가 보인다. -->
-        <NavBar @make-room="makeRoom" :room-name="roomUserInfo.roomName" :room-info="roomInfo"
-            :notification-lists="notificationLists" v-if="!isMobile || menuSeen" />
-
+        <NavBar @make-room="makeRoom" v-if="!isMobile || menuSeen" :room-name="roomUserInfo.roomName"
+            :room-info="roomInfo" />
         <!-- pc버전이거나, 모바일 버전 + 메뉴가 닫힌 상태일때만 이 영역 이 보인다. -->
-        <RouterView v-if="!isMobile || !menuSeen" :room-info="roomInfo" />
+        <RouterView v-if="!isMobile || !menuSeen" :room-info="roomInfo" @refresh-notify="getNotify" />
     </div>
 </template>
 

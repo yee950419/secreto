@@ -1,36 +1,26 @@
 <script setup lang="ts">
 import TextAtom from '@/components/atoms/TextAtom.vue';
 import type { notificationTypes } from '@/types/notify';
-import { getNotificationLists, notificationRead } from '@/api/notification';
-import { ref, onMounted } from 'vue';
+import { notificationRead } from '@/api/notification';
+import { inject, type Ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
+
+const emit = defineEmits(['refreshNotify'])
+
 const router = useRouter()
 const route = useRoute()
-const notificationLists = ref<notificationTypes[]>([]);
+const notificationLists = inject('notifyLists') as Ref<notificationTypes[]>
 
 const notifyReading = (alarmNo: number) => {
     console.log(alarmNo, Number(route.params.roomNo))
     notificationRead(alarmNo, Number(route.params.roomNo), ({ data }) => {
         console.log(data)
-        getNotifyLists()
-        router.go(0)
+        emit('refreshNotify')
     }, (error) => {
         console.log(error)
     })
 }
 
-const getNotifyLists = () => {
-    getNotificationLists(Number(route.params.roomNo), ({ data }) => {
-        notificationLists.value = data.result
-        console.log(data)
-    }, (error) => {
-        console.log(error)
-    })
-}
-
-onMounted(() => {
-    getNotifyLists()
-})
 </script>
 
 <template>

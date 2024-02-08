@@ -38,11 +38,40 @@ const acceptUsersHandler: Handler = () => {
         }
     )
 }
+const acceptUserHandler: DataHandler<number> = (no) => {
+    acceptRoomUsers(
+        {
+            roomUserNos: [no]
+        },
+        ({ data }) => {
+            console.log('acceptRoomUsers success', data)
+            emit('usersApproved')
+        },
+        (error) => {
+            console.log('error', error)
+        }
+    )
+}
 const denyUsersHandler: Handler = () => {
     console.log('?', targetUsers.value, typeof targetUsers.value)
     denyRoomUsers(
         {
             roomUserNos: targetUsers.value
+        },
+        ({ data }) => {
+            console.log('denyRoomUser success', data)
+            emit('usersDenied')
+        },
+        (error) => {
+            console.log('error', error)
+        }
+    )
+}
+const denyUserHandler: DataHandler<number> = (no) => {
+    console.log('?')
+    denyRoomUsers(
+        {
+            roomUserNos: [no]
         },
         ({ data }) => {
             console.log('denyRoomUser success', data)
@@ -91,10 +120,13 @@ const denyUsersHandler: Handler = () => {
                             ></ProfileInfo>
                         </CheckBox>
                         <div class="flex gap-5 text-[32px]">
-                            <CheckOutlined class="text-A805Green" @click="$emit('usersApproved')" />
+                            <CheckOutlined
+                                class="text-A805Green"
+                                @click="acceptUserHandler(user.roomUserNo)"
+                            />
                             <MinusCircleOutlined
                                 class="text-A805Red"
-                                @click="$emit('usersDenied')"
+                                @click="denyUserHandler(user.roomUserNo)"
                             />
                         </div>
                     </div>

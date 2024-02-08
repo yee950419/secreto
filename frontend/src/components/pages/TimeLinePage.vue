@@ -1,12 +1,13 @@
 <script setup lang="ts">
-import { ref, watch, onMounted, type Ref } from 'vue'
+import { ref, watch, onMounted, inject, type Ref } from 'vue'
 import TextAtom from '@/components/atoms/TextAtom.vue'
 import HistoryCard from '@/components/organisms/game/HistoryCard.vue'
 import PredictCard from '@/components/organisms/game/PredictCard.vue'
 import type { HistoryArrayType } from '@/types/history'
 import { getMyHistoryList, getManitoHisotryList } from '@/api/history'
+import type { RoomUserInfoType } from '@/types/room'
 
-
+const roomUserInfo = inject('roomUserInfo') as Ref<RoomUserInfoType>
 const manitiData: any = ref([])
 const manitoData: any = ref([])
 
@@ -19,7 +20,7 @@ const setMyActivity = (value: boolean) => {
 //TODO: API 연동 필요
 // 내가 마니띠에게 활동한 기록 가져오는 API
 const getMyActivity = () => {
-    getMyHistoryList(1, ({ data }) => {
+    getMyHistoryList(roomUserInfo.value.roomNo, ({ data }) => {
         manitiData.value = data.result.result.maniti;
         manitoData.value = data.result.result.manito
         console.log('maniti data : ', manitiData.value)
@@ -30,7 +31,7 @@ const getMyActivity = () => {
 
 // 나의 마니또의 활동 기록 가져오는 API
 const getMyManito = () => {
-    getManitoHisotryList(1, ({ data }) => {
+    getManitoHisotryList(roomUserInfo.value.roomNo, ({ data }) => {
         manitiData.value = data.result.result.maniti;
         manitoData.value = data.result.result.manito
         console.log('maniti data : ', manitiData.value)

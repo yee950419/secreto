@@ -38,7 +38,7 @@ export const useUserStore = defineStore(
         const viewState = ref<string>(ViewState.MAIN)
         const router = useRouter()
 
-        const userLogin = (loginRequest: LoginRequestType) => {
+        const userLogin = (loginRequest: LoginRequestType, fail: () => void) => {
             login(
                 loginRequest,
                 (response) => {
@@ -52,7 +52,9 @@ export const useUserStore = defineStore(
                 },
                 (error) => {
                     console.log(error)
-                    alert(error.response.data.message)
+                    // alert(error.response.data.message)
+                    // alert('로그인에 실패했습니다.')
+                    fail()
                 }
             )
         }

@@ -164,9 +164,9 @@ watch(boardCategory, () => {
                             : ''
                 "
             />
-            <div>
+            <div class="max-md:w-full">
                 <ButtonAtom
-                    custom-class="button-style-4 button-claret text-[18px] w-[95px] font-bold flex justify-center items-center gap-[5px] max-md:w-full h-[35px] max-md:mt-7 max-md:rounded-none"
+                    custom-class="button-style-4 button-claret text-[18px] md:w-[95px] font-bold flex justify-center items-center gap-[5px] max-md:w-full h-[35px] max-md:mt-7 max-md:rounded-none"
                     v-if="boardCategory !== BoardCategory.NOTICE || roomUserNo === hostRoomUserNo"
                     @button-click="
                         () =>

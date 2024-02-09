@@ -42,12 +42,16 @@ onMounted(() => {
     <div class="flex flex-1 flex-col bg-A805White">
         <MissionHeader custom-class="flex w-full min-h-[100px] p-[20px] shadow-lg" />
         <div class="flex flex-1 items-center justify-center">
-            <div class="flex flex-wrap items-center justify-center gap-[45px] m-[80px]">
+            <div class="flex flex-wrap items-center justify-center gap-[50px] md:m-[80px] max-md:m-[60px]">
                 <template v-for="user in userList" :key="user.userNo">
-                    <PaticipateProfile :nick-name="user.nickname" :image-url="''" :title="user.roomUserNo"
-                        v-if="user.roomUserNo !== roomUserInfo.roomUserNo" />
-                    <PaticipateProfile :nick-name="user.nickname + ' (나)'" :image-url="''"
-                        class="border-black border-2 border-solid" v-else />
+                    <PaticipateProfile v-if="user.roomUserNo === roomUserInfo.roomUserNo"
+                        :nick-name="user.nickname + ' (나)'" :image-url="user.profileUrl" :title="user.email" :mine="true"
+                        class="border-black border-2 border-solid" />
+
+                    <PaticipateProfile :nick-name="user.nickname + ' (마니띠)'" :image-url="user.profileUrl" :maniti="true"
+                        :title="user.email" v-else-if="user.usersManito === roomUserInfo.roomUserNo"
+                        class="border-A805LightBlue border-2 border-solid" />
+                    <PaticipateProfile :nick-name="user.nickname" :image-url="user.profileUrl" :title="user.email" v-else />
                 </template>
             </div>
         </div>

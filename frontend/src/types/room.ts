@@ -70,6 +70,9 @@ export type userType = {
     profileUrl: string
     nickname: string
     checked?: boolean
+    usersManiti : number,
+    usersManito : number,
+    email : string
 }
 
 export type roomStartType = {
@@ -81,3 +84,5 @@ export type roomStartType = {
     period: number
     missionList: { content: string }[]
 }
+
+

@@ -7,6 +7,7 @@ import { onMounted, ref, type Ref } from 'vue'
 import type { Handler } from '@/types/common'
 import type { ModifyRequestType } from '@/types/user'
 import CloseButtonAtom from '@/components/atoms/CloseButtonAtom.vue'
+import InputImageAtom from '@/components/atoms/InputImageAtom.vue'
 import { getUser, withdraw, modify } from '@/api/user'
 import ModalTemplate from '@/components/template/ModalTemplate.vue'
 import AccountDeleteModalContent1 from '@/components/organisms/modal/AccountDeleteModalContent1.vue'
@@ -29,8 +30,8 @@ const userInfoModifyRequest: Ref<ModifyRequestType> = ref({
     nickname: '',
     profileUrl: null
 })
-const profileImageChangeHandler: Handler = () => {
-    alert('profile image change')
+const profileImageChangeHandler = (imageUrl: string) => {
+    userInfoModifyRequest.value.profileUrl = imageUrl
 }
 const modifyButtonHandler: Handler = () => {
     modify(
@@ -50,8 +51,7 @@ const modifyButtonHandler: Handler = () => {
     )
 }
 const profileImageDeleteButtonHandler: Handler = () => {
-    alert('profile image delete')
-    changePasswordButtonHandler
+    userInfoModifyRequest.value.profileUrl = null
 }
 const changePasswordButtonHandler: Handler = () => {
     emit('passwordChangeHandle')
@@ -130,11 +130,12 @@ onMounted(() => {
                     v-model="userInfoModifyRequest.nickname"
                 ></InputBox>
                 <div class="w-full flex justify-left ps-[20px] items-center">
-                    <AvatarAtom
-                        custom-class="my-page-profile h-[100px] cursor-pointer"
-                        :image-url="userInfoModifyRequest.profileUrl"
-                        @image-click="profileImageChangeHandler"
-                    ></AvatarAtom>
+                    <InputImageAtom @image-upload-handle="profileImageChangeHandler">
+                        <AvatarAtom
+                            custom-class="my-page-profile h-[100px] cursor-pointer"
+                            :image-url="userInfoModifyRequest.profileUrl"
+                        ></AvatarAtom
+                    ></InputImageAtom>
                     <div class="flex flex-col text-[12px] text-A805DarkGrey ms-[14px]">
                         <TextAtom>200 X 200</TextAtom>
                         <TextAtom>5MB 이내</TextAtom>

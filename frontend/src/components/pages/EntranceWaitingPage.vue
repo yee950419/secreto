@@ -28,11 +28,11 @@ const getStatus = () => {
             if (state.value === 'WAIT') {
                 return;
             }
-            //입장승인, 게임시작안함
-            else if (state.value === 'PARTICIPANT' && (data.result.roomStartAt === null || !data.result.roomStartYn)) {
+            //입장승인 됨, 게임시작안함 
+            else if (state.value === 'PARTICIPANT' && (data.result.roomStartYn !== null ? !data.result.roomStartYn : false)) {
                 enterApprove.value = true
             }
-            //게임시작 혹은 종료
+            //게임시작 혹은 종료한 경우.
             else if (state.value === 'END' || data.result.roomStartYn) {
                 router.push(`/game/${route.params.roomNo}`)
             }

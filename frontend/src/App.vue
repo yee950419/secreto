@@ -23,8 +23,20 @@ onUnmounted(() => {
 })
 
 const roomName = ref<string | undefined>()
+const inRoom = ref<boolean>(false)
+const nickName = ref<string>('')
+
+const updateGameState = (state: boolean) => {
+    console.log('state 변경!', state)
+    inRoom.value = state
+}
 const updateRoomName = (name: string | undefined) => {
     roomName.value = name
+}
+
+const setNickName = (name: string) => {
+    console.log('닉네임 변경!', name)
+    nickName.value = name
 }
 
 watch(route, () => {
@@ -38,8 +50,9 @@ watch(route, () => {
 
 <template>
     <div class="flex flex-1 flex-col min-w-[360px] w-screen h-real-screen overflow-x-hidden">
-        <HeaderBar v-if="headerSeen" @updateRoomName="updateRoomName" :room-name="roomName" />
-        <RouterView @update-name="updateRoomName" />
+        <HeaderBar v-if="headerSeen" @updateRoomName="updateRoomName" :room-name="roomName" :in-room="inRoom"
+            :nick-name="nickName" />
+        <RouterView @update-name="updateRoomName" @in-room="updateGameState" @set-nickname="setNickName" />
         <FooterBar v-if="headerSeen" />
     </div>
 </template>

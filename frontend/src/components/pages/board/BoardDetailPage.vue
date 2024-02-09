@@ -1,6 +1,11 @@
 <script setup lang="ts">
 import { ref, type Ref, onMounted, computed, inject, readonly, provide } from 'vue'
-import type { BoardDetailResponseType, BoardRequestType, ReplyResponseType } from '@/types/board'
+import {
+    BoardCategory,
+    type BoardDetailResponseType,
+    type BoardRequestType,
+    type ReplyResponseType
+} from '@/types/board'
 import BoardWriterInformation from '@/components/molecules/board/BoardWriterInformation.vue'
 import ReplyWriteForm from '@/components/molecules/board/ReplyWriteForm.vue'
 import LikeButton from '@/components/molecules/board/LikeButton.vue'
@@ -198,7 +203,15 @@ const replyDeleteSuccessModalToggle = () =>
                 class="flex flex-col w-full border md:rounded border-A805LightGrey md:p-9 max-md:pt-3 max-md:border-x-0"
             >
                 <div class="w-full flex flex-col">
-                    <TextAtom class="text-[28px] mb-2">{{ post.title }}</TextAtom>
+                    <TextAtom class="text-[28px] mb-2">
+                        <span
+                            v-if="post.boardCategory === BoardCategory.CERTIFICATE"
+                            class="text-A805DarkGrey"
+                        >
+                            [{{ post.missionCategory }}]
+                        </span>
+                        {{ post.title }}</TextAtom
+                    >
                     <BoardWriterInformation
                         :writer="post.writer"
                         :writer-email="post.writerEmail"
@@ -207,6 +220,7 @@ const replyDeleteSuccessModalToggle = () =>
                         :hit="post.hit"
                         :liked-count="post.likedCount"
                         :reply-count="replyCount"
+                        :is-certificate="boardCategory === BoardCategory.CERTIFICATE"
                     />
                 </div>
                 <LineAtom custom-class="my-4 border-A805LightGrey" />

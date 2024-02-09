@@ -5,15 +5,17 @@ import '@vueup/vue-quill/dist/vue-quill.snow.css'
 import CheckBox from '@/components/molecules/common/CheckBox.vue'
 import InputBox from '@/components/molecules/common/InputBox.vue'
 import SelectBox from '@/components/molecules/common/SelectBox.vue'
-import { computed, ref, type Ref } from 'vue'
+import { computed, inject, onMounted, ref, type Ref } from 'vue'
 import { BoardCategory, type BoardWriteRequestType } from '@/types/board'
+import type { UserMission } from '@/types/mission'
 import { createPost } from '@/api/board'
 import { useRoute } from 'vue-router'
 import { toolbarOptions, modules } from '@/utils/editor'
 import router from '@/router'
+import { getUserMission } from '@/api/mission'
 
 const route = useRoute()
-const roomNo: Ref<number> = ref(Number(route.params.roomNo))
+const roomNo: Ref<number> = inject('roomNo', ref(-1))
 const boardCategory = computed(() => {
     return String(route.query.boardCategory)
 })
@@ -22,17 +24,16 @@ const boardWriteRequest: Ref<BoardWriteRequestType> = ref({
     content: '',
     boardCategory: boardCategory.value,
     imageUrl: null,
-    missionCategory: null,
+    userMissionNo: null,
     publicYn: false
 })
-const missionCategory: Ref<string | null> = ref(null)
-const publicYn: Ref<boolean> = ref(false)
 const submitButtonHandle = () => {
     boardWriteRequest.value.boardCategory = boardCategory.value
     if (boardCategory.value !== BoardCategory.CERTIFICATE) {
-        boardWriteRequest.value.missionCategory = null
+        boardWriteRequest.value.userMissionNo = null
         boardWriteRequest.value.publicYn = true
     }
+    console.log(boardWriteRequest.value)
     createPost(
         roomNo.value,
         boardWriteRequest.value,
@@ -50,6 +51,28 @@ const submitButtonHandle = () => {
         }
     )
 }
+const options: Ref<{ label: string; value: number }[]> = ref([])
+
+onMounted(() => {
+    if (boardCategory.value === BoardCategory.CERTIFICATE) {
+        getUserMission(
+            roomNo.value,
+            (response) => {
+                const data = response.data
+                if (data.status === 'OK') {
+                    const userMissions = data.result
+                        .filter((mission: UserMission) => mission.missionCertifyYn === false)
+                        .map((mission: UserMission) => ({ label: mission.content, value: 2 }))
+                    options.value = userMissions
+                }
+            },
+            (error) => {
+                console.error(error)
+                alert(error.response.data.message)
+            }
+        )
+    }
+})
 </script>
 
 <template>
@@ -57,7 +80,6 @@ const submitButtonHandle = () => {
         <div
             class="flex flex-col w-full md:min-w-[568px] max-w-[1400px] max-md:min-w-0 items-center px-[20px] gap-[10px]"
         >
-            {{ boardWriteRequest.content }}
             <div class="w-full flex flex-col gap-[10px] my-[20px]">
                 <div class="flex flex-col gap-[15px] border border-A805LightGrey p-5 rounded-sm">
                     <div
@@ -67,14 +89,14 @@ const submitButtonHandle = () => {
                         <SelectBox
                             class="w-[65%] max-md:w-full max-md:h-[30px]"
                             button-class="!bg-A805Claret"
-                            v-model="missionCategory"
-                            :options="[{ label: '미션을 선택해 주세요.', value: -1 }]"
+                            v-model="boardWriteRequest.userMissionNo"
+                            :options="options"
                         />
                         <CheckBox
                             class="gap-[10px] md:justify-end max-md:justify-center accent-[#E0AED0]"
                             custom-id="publicYn"
-                            v-model="publicYn"
-                            >인증 글 공개 여부</CheckBox
+                            v-model="boardWriteRequest.publicYn"
+                            >인증글 공개</CheckBox
                         >
                     </div>
                     <InputBox

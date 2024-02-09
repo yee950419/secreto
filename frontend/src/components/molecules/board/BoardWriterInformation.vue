@@ -9,7 +9,8 @@ defineProps([
     'registerAt',
     'hit',
     'likedCount',
-    'replyCount'
+    'replyCount',
+    'isCertificate'
 ])
 </script>
 
@@ -22,7 +23,7 @@ defineProps([
         <div class="flex flex-col">
             <TextAtom
                 ><span class="font-bold me-1">{{ writer }}</span>
-                <span>({{ writerEmail }})</span>
+                <span v-if="!isCertificate">({{ writerEmail }})</span>
             </TextAtom>
             <TextAtom class="text-[14px] text-A805Khaki">{{
                 convertStringToRegistrationDateTime(registerAt)

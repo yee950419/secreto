@@ -12,13 +12,20 @@ const { userLogin } = userStore
 
 import CloseButtonAtom from '@/components/atoms/CloseButtonAtom.vue'
 
-const emit = defineEmits(['findPasswordHandle', 'closeButtonHandle', 'goRegisterButtonHandle'])
+const emit = defineEmits([
+    'findPasswordHandle',
+    'closeButtonHandle',
+    'goRegisterButtonHandle',
+    'failHandle'
+])
 const loginRequest: Ref<LoginRequestType> = ref({
     email: '',
     password: ''
 })
 const loginButtonHandler: Handler = () => {
-    userLogin(loginRequest.value)
+    userLogin(loginRequest.value, (): void => {
+        emit('failHandle', '로그인에 실패했습니다.')
+    })
 }
 const kakaoLoginButtonHandler: Handler = () => {
     window.location.href = 'https://i10a805.p.ssafy.io:8080/oauth2/authorization/kakao'
@@ -45,6 +52,7 @@ const findPasswordButtonHandler: Handler = () => {
                 custom-id="email"
                 place-holder="example@secreto.com"
                 v-model="loginRequest.email"
+                @keyup.enter="loginButtonHandler"
             ></InputBox>
             <InputBox
                 label="비밀번호"
@@ -55,6 +63,7 @@ const findPasswordButtonHandler: Handler = () => {
                 custom-id="password"
                 place-holder="비밀번호를 입력해주세요"
                 v-model="loginRequest.password"
+                @keyup.enter="loginButtonHandler"
             ></InputBox>
             <div class="text-[12px] w-full flex justify-between items-center">
                 <CheckBox

@@ -20,7 +20,7 @@ const emit = defineEmits([
 ])
 const route = useRoute()
 
-const roomNo: Ref<number> = ref(Number(route.params.roomNo))
+const roomNo: Ref<number> = inject('roomNo', ref(-1))
 const roomUserNo: Ref<number> = inject('roomUserNo', ref(-1))
 const seenReplyWriteForm: Ref<boolean> = ref(false)
 const seenReplyModifyForm: Ref<boolean> = ref(false)

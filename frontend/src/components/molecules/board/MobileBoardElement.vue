@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import TextAtom from '@/components/atoms/TextAtom.vue'
+import { BoardCategory } from '@/types/board'
 import { convertStringToMobileRegistrationDate } from '@/utils/date'
 defineProps(['board'])
 </script>
@@ -10,6 +11,12 @@ defineProps(['board'])
     >
         <div class="flex flex-col"></div>
         <TextAtom custom-class="truncate text-[16px] text-A805Black">
+            <span
+                v-if="board.boardCategory === BoardCategory.CERTIFICATE"
+                class="text-A805DarkGrey"
+            >
+                [{{ board.missionCategory }}]</span
+            >
             {{ board.title }}
         </TextAtom>
         <TextAtom custom-class=" text-[14px] text-A805Khaki">{{ board.writer }}</TextAtom>

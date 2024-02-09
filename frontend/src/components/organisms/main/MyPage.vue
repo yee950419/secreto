@@ -18,7 +18,7 @@ import { useRouter } from 'vue-router'
 
 const router = useRouter()
 const userStore = useUserStore()
-const { getUserToStore, clearUserStore } = userStore
+const { getUserToStore, clearUserStore, userInfo } = userStore
 const emit = defineEmits([
     'passwordChangeHandle',
     'closeButtonHandle',
@@ -85,6 +85,9 @@ const withdrawSubmitButtonHandle = (password: string) => {
             emit('failHandle', error.response.data.message)
         }
     )
+}
+const withdrawOauth = () => {
+    alert('OAuth 로그인 회원 삭제')
 }
 
 onMounted(() => {
@@ -155,6 +158,7 @@ onMounted(() => {
             >
             <div class="flex justify-around w-full">
                 <ButtonAtom
+                    v-if="userInfo.provider === 'none'"
                     custom-class="text-[14px] text-A805Blue"
                     @button-click="changePasswordButtonHandler"
                     >비밀번호 변경</ButtonAtom
@@ -181,7 +185,12 @@ onMounted(() => {
             />
             <AccountDeleteModalContent2
                 v-if="withdrawModalStep === 1"
-                @yes-button-handle="() => ++withdrawModalStep"
+                @yes-button-handle="
+                    () => {
+                        if (userInfo.provider === 'none') ++withdrawModalStep
+                        else withdrawOauth()
+                    }
+                "
                 @no-button-handle="modalToggle"
             />
             <AccountDeleteModalContent3

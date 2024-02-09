@@ -24,15 +24,14 @@ const boardModifyRequest: Ref<BoardModifyRequestType> = ref({
     title: '',
     content: '',
     imageUrl: null,
-    missionCategory: null,
+    userMissionNo: null,
     publicYn: false
 })
-const missionCategory: Ref<string | null> = ref(null)
-const publicYn: Ref<boolean> = ref(false)
+const userMission: Ref<string> = ref('')
 const submitButtonHandle = () => {
     console.log(boardModifyRequest.value)
     if (boardCategory.value !== BoardCategory.CERTIFICATE) {
-        boardModifyRequest.value.missionCategory = null
+        boardModifyRequest.value.userMissionNo = null
         boardModifyRequest.value.publicYn = true
     }
     modifyPost(
@@ -66,6 +65,9 @@ onMounted(() => {
                 console.log(data.result)
                 boardModifyRequest.value.title = data.result.title
                 boardModifyRequest.value.content = data.result.content
+                boardModifyRequest.value.userMissionNo = data.result.userMissionNo
+                boardModifyRequest.value.publicYn = data.result.publicYn
+                userMission.value = data.result.missionCategory
             }
         },
         (error) => alert('게시글 조회 실패')
@@ -84,17 +86,19 @@ onMounted(() => {
                         class="flex justify-between md:h-[30px] max-md:flex-col-reverse max-md:gap-3"
                         v-if="boardCategory === BoardCategory.CERTIFICATE"
                     >
-                        <SelectBox
-                            class="w-[65%] max-md:w-full max-md:h-[30px]"
-                            button-class="!bg-A805Claret"
-                            v-model="missionCategory"
-                            :options="[{ label: '미션을 선택해 주세요.', value: -1 }]"
-                        />
+                        <InputBox
+                            type="text"
+                            input-class="input-box-style-2 line-lightGrey bg-A805White text-A805Black cursor-not-allowed"
+                            custom-class="w-[65%] max-md:w-full max-md:h-[30px]"
+                            custom-id="missionCategory"
+                            v-model="userMission"
+                            readonly="true"
+                        ></InputBox>
                         <CheckBox
                             class="gap-[10px] md:justify-end max-md:justify-center accent-[#E0AED0]"
                             custom-id="publicYn"
-                            v-model="publicYn"
-                            >인증 글 공개 여부</CheckBox
+                            v-model="boardModifyRequest.publicYn"
+                            >인증글 공개</CheckBox
                         >
                     </div>
                     <InputBox
@@ -102,7 +106,7 @@ onMounted(() => {
                         label-class="ps-[10px]"
                         input-class="input-box-style-2 line-lightGrey bg-A805White text-A805Black"
                         custom-class="w-full"
-                        custom-id="email"
+                        custom-id="title"
                         place-holder="제목을 입력해 주세요."
                         v-model="boardModifyRequest.title"
                     ></InputBox>

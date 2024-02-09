@@ -13,7 +13,7 @@ import ModalTemplate from '@/components/template/ModalTemplate.vue'
 import YesNoModalContent from '@/components/organisms/modal/YesNoModalContent.vue'
 import { CommentOutlined } from '@ant-design/icons-vue'
 import type { Handler } from '@/types/common'
-import { getPost, getReplies } from '@/api/board'
+import { getPost, getReplies, boardLike, boardUnlike, deletePost } from '@/api/board'
 import { useRoute } from 'vue-router'
 import router from '@/router'
 import YesModalContent from '@/components/organisms/modal/YesModalContent.vue'
@@ -141,13 +141,42 @@ const listButtonHandler: Handler = () => {
     router.push({ name: 'game-board-list', query: { ...boardRequest.value } })
 }
 
+const likeButtonHandler = () => {
+    /**
+     * 좋아요 눌렀는 지 여부 판단
+     */
+    boardLike(
+        roomNo.value,
+        boardNo.value,
+        (response) => {},
+        (error) => {
+            console.error(error)
+            alert(error.response.data.message)
+        }
+    )
+}
+
 // modal
 const deleteModalSeen: Ref<boolean> = ref(false)
 const deleteModalToggle: Handler = () => {
     deleteModalSeen.value = !deleteModalSeen.value
 }
 const postDeleteHandler: Handler = () => {
-    alert('게시글 삭제 이벤트')
+    deletePost(
+        boardNo.value,
+        roomNo.value,
+        (response) => {
+            console.log(response)
+            router.push({
+                name: 'game-board-list',
+                query: { boardCategory: boardCategory.value }
+            })
+        },
+        (error) => {
+            console.error(error)
+            alert(error.response.data.message)
+        }
+    )
 }
 
 const replyDeleteSuccessModalSeen: Ref<boolean> = ref(false)
@@ -183,11 +212,7 @@ const replyDeleteSuccessModalToggle = () =>
                 <LineAtom custom-class="my-4 border-A805LightGrey" />
                 <div class="min-h-[150px]" v-html="post.content"></div>
                 <div class="mt-[60px] flex gap-[20px] text-[16px]">
-                    <!-- <ButtonAtom custom-class="flex items-center gap-[6px]"
-                ><HeartOutlined class="text-[24px]" /> 좋아요
-                <b>{{ post.likedCount }}</b></ButtonAtom
-            > -->
-                    <LikeButton :liked-count="post.likedCount" />
+                    <LikeButton :liked-count="post.likedCount" @click="likeButtonHandler" />
                     <span class="flex items-center gap-[6px]"
                         ><CommentOutlined class="text-[24px]" /> 댓글 <b>{{ replyCount }}</b></span
                     >

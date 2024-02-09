@@ -31,13 +31,12 @@ const deleteButtonClick: Handler = () => {
         <div class="absolute top-[2px] left-[2px] flex gap-[5px] items-center">
             <BadgeAtom custom-class="text-[1rem] bg-A805Purple text-A805White m-1 py-[1px] w-[60px] text-center"
                 v-if="roomInfo.standbyYn">입장전</BadgeAtom>
+            <BadgeAtom custom-class="text-[1rem] bg-A805Khaki text-A805White m-1 py-[1px] w-[60px] text-center "
+                v-else-if="!roomInfo.roomStartYn">시작전</BadgeAtom>
             <BadgeAtom custom-class="text-[1rem] bg-A805DarkGrey text-A805White m-1 py-[1px] w-[60px] text-center"
                 v-else-if="roomInfo.roomStatus === 'END'
                     ">종료</BadgeAtom>
-            <BadgeAtom custom-class="text-[1rem] bg-A805Khaki text-A805White m-1 py-[1px] w-[60px] text-center "
-                v-else-if="!roomInfo.roomStartAt || new Date(roomInfo.roomStartAt) > new Date()">시작전</BadgeAtom>
-
-            <BadgeAtom custom-class="text-[1rem] bg-A805Red text-A805White m-1 py-[1px] w-[60px] text-center" v-else>참여중
+            <BadgeAtom custom-class="text-[1rem] bg-A805Red text-A805White m-1 py-[1px] w-[60px] text-center" v-else>게임중
             </BadgeAtom>
 
             <TextAtom custom-class="text-[1.2rem]">{{ $props.roomInfo.participantCnt }}명</TextAtom>

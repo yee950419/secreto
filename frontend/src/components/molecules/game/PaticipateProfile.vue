@@ -1,13 +1,15 @@
 <script setup lang="ts">
 const { imageUrl, nickName, customClass, maniti } = defineProps(['customClass', 'imageUrl', 'nickName', 'maniti', 'mine'])
+import { ref } from 'vue'
 import TextAtom from '@/components/atoms/TextAtom.vue'
 import AvatarAtom from '@/components/atoms/AvatarAtom.vue'
 import ButtonAtom from '@/components/atoms/ButtonAtom.vue';
+
 const emit = defineEmits(['predict-manito'])
 const predictButtonClick = () => {
-    alert('마니또 예측!')
     emit('predict-manito')
 }
+
 </script>
 
 <template>

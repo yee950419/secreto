@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import MissionHeader from '@/components/organisms/game/MissionHeader.vue'
 import PaticipateProfile from '@/components/molecules/game/PaticipateProfile.vue'
+import ModalTemplate from '@/components/template/ModalTemplate.vue';
+import InferenceModalContent from '@/components/organisms/modal/InferenceModalContent.vue';
 import type { userType, RoomUserInfoType } from '@/types/room'
 import { getUserList } from '@/api/room'
 import { ref, onMounted, inject, type Ref } from 'vue'
@@ -8,6 +10,13 @@ import { useRoute } from 'vue-router'
 
 const route = useRoute()
 const userList = ref<userType[]>()
+const modalSeen = ref(false)
+
+const modalToggle = () => {
+    modalSeen.value = false
+}
+
+const predictInfo = ref<userType>()
 
 const roomUserInfo = inject<Ref<RoomUserInfoType>>(
     'roomUserInfo',
@@ -33,13 +42,23 @@ const getRooms = () => {
     )
 }
 
+const predictManito = (user: userType) => {
+    modalSeen.value = true
+    console.log(user)
+    predictInfo.value = user
+}
+
 onMounted(() => {
     getRooms()
 })
 </script>
 
 <template>
-    <div class="flex flex-1 flex-col bg-A805White">
+    <div class="flex flex-1 flex-col bg-A805White ">
+        <ModalTemplate custom-id="modal" custom-class="modal-template-style-1" :seen="modalSeen" v-if="modalSeen"
+            @modal-close="modalToggle">
+            <InferenceModalContent :user-info="predictInfo" />
+        </ModalTemplate>
         <MissionHeader custom-class="flex w-full min-h-[100px] p-[20px] shadow-lg" />
         <div class="flex flex-1 items-center justify-center">
             <div class="flex flex-wrap items-center justify-center gap-[50px] md:m-[80px] max-md:m-[60px]">
@@ -51,7 +70,8 @@ onMounted(() => {
                     <PaticipateProfile :nick-name="user.nickname + ' (마니띠)'" :image-url="user.profileUrl" :maniti="true"
                         :title="user.email" v-else-if="user.usersManito === roomUserInfo.roomUserNo"
                         class="border-A805LightBlue border-2 border-solid" />
-                    <PaticipateProfile :nick-name="user.nickname" :image-url="user.profileUrl" :title="user.email" v-else />
+                    <PaticipateProfile :nick-name="user.nickname" :image-url="user.profileUrl" :title="user.email"
+                        @predict-manito="predictManito(user)" v-else />
                 </template>
             </div>
         </div>

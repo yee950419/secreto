@@ -18,7 +18,7 @@ const handleClick: Handler = () => {
 
 <template>
     <div :class="customClass" @click="handleClick">
-        <img :src="imageUrl ? imageUrl : defaultImage" alt="Avatar" />
+        <img :src="imageUrl ? imageUrl : defaultImage" alt="Avatar" class="w-full h-auto" />
     </div>
 </template>
 

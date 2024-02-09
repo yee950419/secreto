@@ -32,6 +32,7 @@ const roomUserInfo = ref<RoomUserInfoType>({
 })
 const roomInfo = ref<RoomInfoType>()
 const roomUserNo = ref<number>(-1)
+const roomNo = ref<number>(Number(route.params.roomNo))
 const hostRoomUserNo = ref<number>(-1)
 
 const updateRoomName = (name: string | undefined) => {
@@ -44,6 +45,7 @@ provide('roomUserNo', readonly(roomUserNo))
 provide('hostRoomUserNo', readonly(hostRoomUserNo))
 provide('roomCode', readonly(entryCode))
 provide('notifyLists', readonly(notificationLists))
+provide('roomNo', readonly(roomNo))
 
 const removeChatRoom = (name: string) => {
     const index = chatRooms.value.findIndex((room) => room.name === name)
@@ -71,14 +73,11 @@ const SSEConnection = (roomUserNo: number) => {
         console.log('Server Sent Event 연결이 열렸습니다.')
     }
 
-
     // 서버로부터 알림 메시지가 오면 적절한 처리 로직을 수행
     eventSource.addEventListener('message', (event) => {
         alert(event.data.author + ' 로부터 ' + event.data.content + '도착!')
         router.go(0)
     })
-
-
 
     eventSource.addEventListener('error', (event) => {
         console.error('Server Sent Event error:', event)
@@ -144,13 +143,25 @@ onUnmounted(() => {
 <template>
     <div class="flex flex-1 bg-A805RealWhite">
         <div v-for="room in chatRooms" :key="room.name">
-            <ChatRoom :name="room.name" :imageUrl="room.imageUrl" @close-chat-room="removeChatRoom" />
+            <ChatRoom
+                :name="room.name"
+                :imageUrl="room.imageUrl"
+                @close-chat-room="removeChatRoom"
+            />
         </div>
         <!-- pc버전이거나, 모바일 버전 + 메뉴가 체크된 상태일때만 nav가 보인다. -->
-        <NavBar @make-room="makeRoom" v-if="!isMobile || menuSeen" :room-name="roomUserInfo.roomName"
-            :room-info="roomInfo" />
+        <NavBar
+            @make-room="makeRoom"
+            v-if="!isMobile || menuSeen"
+            :room-name="roomUserInfo.roomName"
+            :room-info="roomInfo"
+        />
         <!-- pc버전이거나, 모바일 버전 + 메뉴가 닫힌 상태일때만 이 영역 이 보인다. -->
-        <RouterView v-if="!isMobile || !menuSeen" :room-info="roomInfo" @refresh-notify="getNotify" />
+        <RouterView
+            v-if="!isMobile || !menuSeen"
+            :room-info="roomInfo"
+            @refresh-notify="getNotify"
+        />
     </div>
 </template>
 

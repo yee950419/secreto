@@ -8,7 +8,7 @@ import type { ReplyWriteRequestType } from '@/types/board'
 import { useRoute } from 'vue-router'
 const route = useRoute()
 
-const roomNo: Ref<number> = ref(Number(route.params.roomNo))
+const roomNo: Ref<number> = inject('roomNo', ref(-1))
 const boardNo: Ref<number> = inject('boardNo', ref(-1))
 const props = defineProps(['parentReplyNo', 'tagUserNo'])
 const userStore = useUserStore()

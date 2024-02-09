@@ -7,6 +7,7 @@ import { onMounted, ref, type Ref } from 'vue'
 import type { Handler } from '@/types/common'
 import type { ModifyRequestType } from '@/types/user'
 import CloseButtonAtom from '@/components/atoms/CloseButtonAtom.vue'
+import InputImageAtom from '@/components/atoms/InputImageAtom.vue'
 import { getUser, withdraw, modify } from '@/api/user'
 import ModalTemplate from '@/components/template/ModalTemplate.vue'
 import AccountDeleteModalContent1 from '@/components/organisms/modal/AccountDeleteModalContent1.vue'
@@ -17,7 +18,7 @@ import { useRouter } from 'vue-router'
 
 const router = useRouter()
 const userStore = useUserStore()
-const { getUserToStore, clearUserStore } = userStore
+const { getUserToStore, clearUserStore, userInfo } = userStore
 const emit = defineEmits([
     'passwordChangeHandle',
     'closeButtonHandle',
@@ -29,8 +30,8 @@ const userInfoModifyRequest: Ref<ModifyRequestType> = ref({
     nickname: '',
     profileUrl: null
 })
-const profileImageChangeHandler: Handler = () => {
-    alert('profile image change')
+const profileImageChangeHandler = (imageUrl: string) => {
+    userInfoModifyRequest.value.profileUrl = imageUrl
 }
 const modifyButtonHandler: Handler = () => {
     modify(
@@ -50,8 +51,7 @@ const modifyButtonHandler: Handler = () => {
     )
 }
 const profileImageDeleteButtonHandler: Handler = () => {
-    alert('profile image delete')
-    changePasswordButtonHandler
+    userInfoModifyRequest.value.profileUrl = null
 }
 const changePasswordButtonHandler: Handler = () => {
     emit('passwordChangeHandle')
@@ -85,6 +85,9 @@ const withdrawSubmitButtonHandle = (password: string) => {
             emit('failHandle', error.response.data.message)
         }
     )
+}
+const withdrawOauth = () => {
+    alert('OAuth 로그인 회원 삭제')
 }
 
 onMounted(() => {
@@ -130,11 +133,12 @@ onMounted(() => {
                     v-model="userInfoModifyRequest.nickname"
                 ></InputBox>
                 <div class="w-full flex justify-left ps-[20px] items-center">
-                    <AvatarAtom
-                        custom-class="my-page-profile h-[100px] cursor-pointer"
-                        :image-url="userInfoModifyRequest.profileUrl"
-                        @image-click="profileImageChangeHandler"
-                    ></AvatarAtom>
+                    <InputImageAtom @image-upload-handle="profileImageChangeHandler">
+                        <AvatarAtom
+                            custom-class="my-page-profile h-[100px] cursor-pointer"
+                            :image-url="userInfoModifyRequest.profileUrl"
+                        ></AvatarAtom
+                    ></InputImageAtom>
                     <div class="flex flex-col text-[12px] text-A805DarkGrey ms-[14px]">
                         <TextAtom>200 X 200</TextAtom>
                         <TextAtom>5MB 이내</TextAtom>
@@ -154,6 +158,7 @@ onMounted(() => {
             >
             <div class="flex justify-around w-full">
                 <ButtonAtom
+                    v-if="userInfo.provider === 'none'"
                     custom-class="text-[14px] text-A805Blue"
                     @button-click="changePasswordButtonHandler"
                     >비밀번호 변경</ButtonAtom
@@ -180,7 +185,12 @@ onMounted(() => {
             />
             <AccountDeleteModalContent2
                 v-if="withdrawModalStep === 1"
-                @yes-button-handle="() => ++withdrawModalStep"
+                @yes-button-handle="
+                    () => {
+                        if (userInfo.provider === 'none') ++withdrawModalStep
+                        else withdrawOauth()
+                    }
+                "
                 @no-button-handle="modalToggle"
             />
             <AccountDeleteModalContent3

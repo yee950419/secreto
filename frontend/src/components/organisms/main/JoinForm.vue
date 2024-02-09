@@ -101,6 +101,7 @@ const joinButtonHandler: Handler = () => {
                 v-model="joinRequest.email"
                 button-label="인증"
                 @button-click="emailVerificationButtonHandler"
+                @keyup.enter="emailVerificationButtonHandler"
             ></ButtonInputBox>
             <ButtonInputBox
                 label="인증코드 입력"
@@ -113,6 +114,7 @@ const joinButtonHandler: Handler = () => {
                 v-model="verificationCode"
                 button-label="확인"
                 @button-click="verificationCodeButtonHandler"
+                @keyup.enter="verificationCodeButtonHandler"
             ></ButtonInputBox>
             <InputBox
                 label="비밀번호"
@@ -123,6 +125,7 @@ const joinButtonHandler: Handler = () => {
                 custom-id="password"
                 place-holder="비밀번호를 입력해주세요"
                 v-model="joinRequest.password"
+                @keyup.enter="joinButtonHandler"
             ></InputBox>
             <InputBox
                 label="비밀번호 확인"
@@ -133,6 +136,7 @@ const joinButtonHandler: Handler = () => {
                 custom-id="passwordConfirm"
                 place-holder="비밀번호 확인을 입력해주세요"
                 v-model="passwordConfirm"
+                @keyup.enter="joinButtonHandler"
             ></InputBox>
             <InputBox
                 label="닉네임"
@@ -143,6 +147,7 @@ const joinButtonHandler: Handler = () => {
                 custom-id="nickname"
                 place-holder="닉네임을 입력해주세요"
                 v-model="joinRequest.nickname"
+                @keyup.enter="joinButtonHandler"
             ></InputBox>
             <ButtonAtom
                 custom-class="button-style-2 w-full button-shadow button-cream mt-[15px]"

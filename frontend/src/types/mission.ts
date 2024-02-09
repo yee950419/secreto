@@ -9,6 +9,7 @@ export type RoomMission = {
 }
 
 export type UserMission = {
+    userMissionNo?: number
     content: string
     missionReceivedAt: string
     missionType: 'SUDDEN' | 'REGULAR'

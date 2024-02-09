@@ -62,8 +62,12 @@ onMounted(() => {
                 if (data.status === 'OK') {
                     const userMissions = data.result
                         .filter((mission: UserMission) => mission.missionCertifyYn === false)
-                        .map((mission: UserMission) => ({ label: mission.content, value: 2 }))
+                        .map((mission: UserMission) => ({
+                            label: mission.content,
+                            value: mission.userMissionNo
+                        }))
                     options.value = userMissions
+                    console.log(data.result)
                 }
             },
             (error) => {

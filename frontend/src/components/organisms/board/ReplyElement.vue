@@ -73,6 +73,11 @@ const deleteModalToggle = () => (deleteModalSeen.value = !deleteModalSeen.value)
                         >작성자</BadgeAtom
                     >
                 </div>
+                <TextAtom
+                    custom-class="text-[14px] text-A805DarkGrey"
+                    v-if="nested && reply.tagUserNickname"
+                    >{{ reply.tagUserNickname }}</TextAtom
+                >
                 <TextAtom custom-class="text-[16px]">{{ reply.content }}</TextAtom>
                 <div>
                     <TextAtom custom-class="text-[16px] text-A805DarkGrey">{{

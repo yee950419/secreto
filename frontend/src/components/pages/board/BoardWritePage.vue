@@ -5,7 +5,7 @@ import '@vueup/vue-quill/dist/vue-quill.snow.css'
 import CheckBox from '@/components/molecules/common/CheckBox.vue'
 import InputBox from '@/components/molecules/common/InputBox.vue'
 import SelectBox from '@/components/molecules/common/SelectBox.vue'
-import { computed, onMounted, ref, type Ref } from 'vue'
+import { computed, inject, onMounted, ref, type Ref } from 'vue'
 import { BoardCategory, type BoardWriteRequestType } from '@/types/board'
 import type { UserMission } from '@/types/mission'
 import { createPost } from '@/api/board'
@@ -15,7 +15,7 @@ import router from '@/router'
 import { getUserMission } from '@/api/mission'
 
 const route = useRoute()
-const roomNo: Ref<number> = ref(Number(route.params.roomNo))
+const roomNo: Ref<number> = inject('roomNo', ref(-1))
 const boardCategory = computed(() => {
     return String(route.query.boardCategory)
 })

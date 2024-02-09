@@ -5,7 +5,7 @@ import '@vueup/vue-quill/dist/vue-quill.snow.css'
 import CheckBox from '@/components/molecules/common/CheckBox.vue'
 import InputBox from '@/components/molecules/common/InputBox.vue'
 import SelectBox from '@/components/molecules/common/SelectBox.vue'
-import { computed, onMounted, ref, type Ref } from 'vue'
+import { computed, inject, onMounted, ref, type Ref } from 'vue'
 import { BoardCategory, type BoardModifyRequestType } from '@/types/board'
 import { modifyPost, getPost } from '@/api/board'
 import { useRoute } from 'vue-router'
@@ -13,7 +13,7 @@ import { toolbarOptions, modules } from '@/utils/editor'
 import router from '@/router'
 
 const route = useRoute()
-const roomNo: Ref<number> = ref(Number(route.params.roomNo))
+const roomNo: Ref<number> = inject('roomNo', ref(-1))
 const boardNo = computed(() => {
     return Number(route.query.boardNo)
 })

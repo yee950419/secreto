@@ -18,7 +18,7 @@ const boards: Ref<BoardResponseType[]> = ref([])
 const boardCategory = computed(() => {
     return String(route.query.boardCategory)
 })
-const roomNo: Ref<number> = ref(Number(route.params.roomNo))
+const roomNo: Ref<number> = inject('roomNo', ref(-1))
 const roomUserNo = inject<Ref<number>>('roomUserNo', ref(-1))
 const hostRoomUserNo = inject<Ref<number>>('hostRoomUserNo', ref(-1))
 const boardRequest: Ref<BoardRequestType> = ref({

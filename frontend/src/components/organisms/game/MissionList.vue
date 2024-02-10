@@ -12,6 +12,8 @@ const allMissionChecked = ref(false)
 const missionInputVisibility = ref(false)
 // 데이터 바뀌면 v-model로 바꿀 예정
 
+const test = ref(null)
+
 const missionList: ModelRef<Mission[]> = defineModel({ required: true })
 const addInputBox: Handler = () => {
     if (!missionInputVisibility.value) {
@@ -68,6 +70,7 @@ const allChangeHandler: Handler = () => {
                     custom-class="input-box-style-1 px-0 text-[14pt] text-A805DarkGrey"
                     custom-id="new-mission"
                     @input-enter="addMission"
+                    ref="test"
                 />
             </CheckBox>
         </div>

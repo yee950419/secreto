@@ -73,6 +73,14 @@ async function acceptRoomUsers(
     console.log(param)
     roomInstance.put(`/room/accept`, param).then(success).catch(fail)
 }
+async function rollbackRoomUsers(
+    param: { roomUserNos: Array<number> },
+    success: (response: AxiosResponse) => void,
+    fail: (error: any) => void
+) {
+    console.log(param)
+    roomInstance.put(`/room/standby`, param).then(success).catch(fail)
+}
 async function denyRoomUsers(
     param: { roomUserNos: Array<number> },
     success: (response: AxiosResponse) => void,
@@ -119,5 +127,6 @@ export {
     checkFavorite,
     denyRoomUsers,
     startRoom,
-    endRoom
+    endRoom,
+    rollbackRoomUsers
 }

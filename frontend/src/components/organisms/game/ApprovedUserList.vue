@@ -6,16 +6,34 @@ import type { Handler } from '@/types/common'
 import type { ProfileInfoType } from '@/types/user'
 import ProfileInfo from '@/components/molecules/game/ProfileInfo.vue'
 import type { userType } from '@/types/room'
+import { rollbackRoomUsers } from '@/api/room'
 
 defineProps({
     userList: {
         type: Array<ProfileInfoType>
     }
 })
+const emit = defineEmits(['test'])
+
+const testHandler: Handler = () => {
+    rollbackRoomUsers(
+        {
+            roomUserNos: [121]
+        },
+        ({ data }) => {
+            console.log('rollbackRoomUser success', data)
+            emit('test')
+        },
+        (error) => {
+            console.log('error', error)
+        }
+    )
+}
 const usersApproved: ModelRef<userType[]> = defineModel({ required: true })
 </script>
 
 <template>
+    <!-- <button @click="testHandler">123</button> -->
     <div class="flex flex-col bg-A805RealWhite overflow-hidden">
         <div>
             <p class="text-[32px] px-6 py-5">참여 유저</p>

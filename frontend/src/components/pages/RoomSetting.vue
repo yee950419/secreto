@@ -131,7 +131,11 @@ const gameStartHandler: Handler = () => {
     //     },
     //     roomUserInfo.value.roomNo
     // )
-    console.log(range.value, typeof range.value.start)
+    console.log(
+        crange.value[0].slice(0, 10),
+        crange.value[0].slice(11) + ':00',
+        crange.value[1] + ':00'
+    )
     startRoom(
         roomUserInfo.value.roomNo,
         {
@@ -200,7 +204,7 @@ const roomInfoGet: Handler = () => {
         roomUserInfo.value.roomNo,
         ({ data }) => {
             roomInfo.value = data.result
-            changeRoomNameHandler()
+            roomName.value = data.result.roomName
             console.log('roomInfo', roomInfo.value)
         },
         (error) => {
@@ -210,12 +214,14 @@ const roomInfoGet: Handler = () => {
 }
 
 const changeRoomNameHandler: Handler = () => {
+    console.log('???')
     changeRoomName(
         { roomName: roomName.value, roomNo: roomUserInfo.value.roomNo },
         ({ data }) => {
             if (data.status === 'OK') {
-                // console.log(':)', data)
-                emit('roomNameChanged', roomName)
+                console.log(':)', data)
+                console.log(roomName.value)
+                emit('roomNameChanged', roomName.value)
             } else {
                 console.log(':(', data)
             }
@@ -257,6 +263,22 @@ const gameEndHandler: Handler = () => {
         }
     )
 }
+
+const testHandler: Handler = () => {
+    getUserList(
+        roomUserInfo.value.roomNo,
+        ({ data }) => {
+            data.result.forEach((mission: userType) => {
+                mission['checked'] = true
+            })
+            console.log('userlist', data)
+            userList.value = data.result
+        },
+        (error) => {
+            console.log('error', error)
+        }
+    )
+}
 onMounted(async () => {
     await roomInfoGet()
     await missionGet()
@@ -265,7 +287,6 @@ onMounted(async () => {
 </script>
 
 <template>
-    <!-- {{ roomInfo }} -->
     <div class="flex flex-1">
         <div class="bg-A805RealWhite flex flex-col">
             <div class="flex justify-center max-md:flex-col gap-3 m-[3%]">
@@ -345,6 +366,11 @@ onMounted(async () => {
                             v-model.range="range"
                             mode="dateTime"
                             class="w-full"
+                            :rules="{
+                                minutes: 0,
+                                seconds: 0
+                            }"
+                            :time-accuracy="1"
                         ></VDatePicker>
                     </div>
                     <ButtonAtom
@@ -369,7 +395,11 @@ onMounted(async () => {
                         @users-denied="userListGet"
                     ></UnapprovedUserList>
                     <hr />
-                    <ApprovedUserList v-model="approvedUserList" class="h-[50%]"></ApprovedUserList>
+                    <ApprovedUserList
+                        v-model="approvedUserList"
+                        class="h-[50%]"
+                        @test="userListGet"
+                    ></ApprovedUserList>
                 </div>
             </div>
         </div>

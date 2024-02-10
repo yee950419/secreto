@@ -63,7 +63,7 @@ const denyUsersHandler: Handler = () => {
             emit('usersDenied')
         },
         (error) => {
-            console.log('error', error)
+            console.log('error', error.response.data.message)
         }
     )
 }

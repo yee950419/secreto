@@ -95,7 +95,8 @@ onMounted(() => {
         <MenuItem custom-class="menu-item">{{ roomName }}</MenuItem>
         <MenuItem custom-class="menu-item" :active="activeMenu === 1"
             @menu-click="handleMenuClick(1), handleClick(), router.push({ name: 'game-notification' })">알림 {{
-                unReadMessage }} 건</MenuItem>
+                unReadMessage }} 건 <span v-if="unReadMessage > 0" class="ml-[20px] text-A805Red">새로운 알림!</span>
+        </MenuItem>
         <MenuItem custom-class="menu-item" :active="activeMenu === 3" @menu-click="
             handleClick(), router.push({ name: 'game-participate' }), handleMenuClick(3)
             ">참여 인원</MenuItem>

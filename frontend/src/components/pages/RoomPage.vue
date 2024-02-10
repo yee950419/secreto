@@ -75,8 +75,9 @@ const SSEConnection = (roomUserNo: number) => {
 
     // 서버로부터 알림 메시지가 오면 적절한 처리 로직을 수행
     eventSource.addEventListener('message', (event) => {
-        alert(event.data.author + ' 로부터 ' + event.data.content + '도착!')
-        router.go(0)
+        const data = JSON.parse(event.data)
+        alert(data.author + '으로부터 ' + data.content + '도착!')
+        // router.go(0)
     })
 
     eventSource.addEventListener('error', (event) => {
@@ -143,25 +144,13 @@ onUnmounted(() => {
 <template>
     <div class="flex flex-1 bg-A805RealWhite">
         <div v-for="room in chatRooms" :key="room.name">
-            <ChatRoom
-                :name="room.name"
-                :imageUrl="room.imageUrl"
-                @close-chat-room="removeChatRoom"
-            />
+            <ChatRoom :name="room.name" :imageUrl="room.imageUrl" @close-chat-room="removeChatRoom" />
         </div>
         <!-- pc버전이거나, 모바일 버전 + 메뉴가 체크된 상태일때만 nav가 보인다. -->
-        <NavBar
-            @make-room="makeRoom"
-            v-if="!isMobile || menuSeen"
-            :room-name="roomUserInfo.roomName"
-            :room-info="roomInfo"
-        />
+        <NavBar @make-room="makeRoom" v-if="!isMobile || menuSeen" :room-name="roomUserInfo.roomName"
+            :room-info="roomInfo" />
         <!-- pc버전이거나, 모바일 버전 + 메뉴가 닫힌 상태일때만 이 영역 이 보인다. -->
-        <RouterView
-            v-if="!isMobile || !menuSeen"
-            :room-info="roomInfo"
-            @refresh-notify="getNotify"
-        />
+        <RouterView v-if="!isMobile || !menuSeen" :room-info="roomInfo" @refresh-notify="getNotify" />
     </div>
 </template>
 

@@ -384,6 +384,18 @@
         border-radius: 50%;
     }
 
+    .predict-result-profile {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+    }
+
+    .predict-result-profile img {
+        width: 100%;
+        height: 100%;
+        border-radius: 50%;
+    }
+
     .whole-chat-profile {
         width: 30px;
         height: 30px;

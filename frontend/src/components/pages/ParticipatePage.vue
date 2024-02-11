@@ -16,7 +16,7 @@ const modalToggle = () => {
     modalSeen.value = false
 }
 
-const predictInfo = ref<userType>()
+const predictInfo = ref() as Ref<userType>
 
 const roomUserInfo = inject<Ref<RoomUserInfoType>>(
     'roomUserInfo',

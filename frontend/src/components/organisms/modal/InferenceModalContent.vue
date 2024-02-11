@@ -11,7 +11,8 @@ import { memoUser, getUserMemo } from '@/api/mission'
 // 유저 정보 props
 const { predictInfo } = defineProps({
     predictInfo: {
-        type: Object as () => userType
+        type: Object as () => userType,
+        required: true
     }
 
 })

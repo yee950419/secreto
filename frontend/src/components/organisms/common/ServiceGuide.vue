@@ -7,7 +7,11 @@ import member5 from '@/assets/images/member/member5.jpg'
 import member6 from '@/assets/images/member/member6.png'
 import master1 from '@/assets/images/guides/master1.png'
 import master2 from '@/assets/images/guides/master2.png'
+import master3 from '@/assets/images/guides/master3.png'
+import master4 from '@/assets/images/guides/master4.png'
+import master5 from '@/assets/images/guides/master5.png'
 import master6 from '@/assets/images/guides/master6.png'
+import master7 from '@/assets/images/guides/master7.png'
 import master8 from '@/assets/images/guides/master8.png'
 import user1 from '@/assets/images/guides/user1.png'
 import user2 from '@/assets/images/guides/user2.png'
@@ -18,7 +22,10 @@ import user6 from '@/assets/images/guides/user6.png'
 import user7 from '@/assets/images/guides/user7.png'
 import user8 from '@/assets/images/guides/user8.png'
 import user9 from '@/assets/images/guides/user9.png'
-import user13 from '@/assets/images/guides/user13.png'
+import user10 from '@/assets/images/guides/user10.png'
+import user11 from '@/assets/images/guides/user11.png'
+
+import user14 from '@/assets/images/guides/user13.png'
 import TextAtom from '@/components/atoms/TextAtom.vue'
 import HeaderLogo from '@/components/molecules/common/HeaderLogo.vue'
 import CharacterAtom from '@/components/atoms/CharacterAtom.vue'
@@ -44,15 +51,15 @@ const setting = ref<Array<Guide>>([
         text: '2. 방만들기 전 방 이름과 방에서 쓸 닉네임을 설정할 수 있습니다.'
     },
     {
-        img: 'src/assets/images/guides/master3.png',
+        img: master3,
         text: '3. 방에 들어오시면 방 설정을 하실 수 있습니다.'
     },
     {
-        img: 'src/assets/images/guides/master4.png',
+        img: master4,
         text: '4. 게임기간, 미션의 주기, 방장의 참여여부, 미션의 종류, 참여 유저 관리를 하실 수 있습니다.'
     },
     {
-        img: 'src/assets/images/guides/master5.png',
+        img: master5,
         text: '5. 게임 시작버튼을 눌러 게임을 시작 하실 수 있습니다.'
     },
     {
@@ -60,7 +67,7 @@ const setting = ref<Array<Guide>>([
         text: '6. 게임이 시작되면 방 설정에서 돌발 미션을 거실수 있어요.'
     },
     {
-        img: 'src/assets/images/guides/master7.png',
+        img: master7,
         text: '7. 게임중 추가 인원 발생시 전체 셔플 또는 끼워넣기를 하실 수 있어요.'
     },
     {
@@ -131,27 +138,27 @@ const user = ref<Array<Guide>>([
     },
     {
         img: user9,
-        text: '8. 내 미션 탭에서는 나에게 주어진 미션, 전체미션을 확인할 수 있어요.'
+        text: '9. 내 미션 탭에서는 나에게 주어진 미션, 전체미션을 확인할 수 있어요.'
     },
     {
-        img: '@/assets/images/guides/user11.png',
-        text: '9. 미션을 수행하셨나요? 인증게시판을 통해 미션을 인증해보세요'
+        img: user10,
+        text: '10. 미션을 수행하셨나요? 인증게시판을 통해 미션을 인증해보세요'
     },
     {
-        img: '@/assets/images/guides/user8.png',
-        text: '10. 마니또로부터 선물을 받으셨나요? 자랑게시판을 통해 자랑해보세요'
+        img: user11,
+        text: '11. 마니또로부터 선물을 받으셨나요? 자랑게시판을 통해 자랑해보세요'
     },
     {
         img: '@/assets/images/guides/user7.png',
-        text: '11. 채팅 메뉴를 이용하시면 마니또, 마니띠와 익명으로 채팅하거나 단체채팅도 할 수 있어요'
+        text: '12. 채팅 메뉴를 이용하시면 마니또, 마니띠와 익명으로 채팅하거나 단체채팅도 할 수 있어요'
     },
     {
         img: '@/assets/images/guides/user9.png',
-        text: '12. 게임이 종료되면 게임 통계와 타임라인을 확인해보세요'
+        text: '13. 게임이 종료되면 게임 통계와 타임라인을 확인해보세요'
     },
     {
-        img: user13,
-        text: '13. 후기를 남겨보세요, 실시간으로 사람들의 반응을 볼 수 있어요'
+        img: user14,
+        text: '14. 후기를 남겨보세요, 실시간으로 사람들의 반응을 볼 수 있어요'
     }
 ])
 

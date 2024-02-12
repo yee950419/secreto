@@ -1,3 +1,4 @@
+
 <script setup lang="ts">
 import WideCardTemplate from '@/components/template/WideCardTemplate.vue'
 import type { Handler } from '@/types/common'
@@ -33,6 +34,11 @@ const SSEConnection = (roomUserNo: number) => {
         alert('게임 시작!')
         console.log(event)
         router.push(`/game/${route.params.roomNo}`)
+    })
+
+    eventSource.addEventListener('reject', (event) => {
+        alert('입장이 거절되었습니다.')
+        router.push('/')
     })
 
 }
@@ -90,3 +96,4 @@ onMounted(() => {
         </div>
     </div>
 </template>
+

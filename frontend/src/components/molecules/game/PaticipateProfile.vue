@@ -28,9 +28,10 @@ const predictButtonClick = () => {
             마니또
             예측하기
         </ButtonAtom>
-        <AvatarAtom :imageUrl="imageUrl" />
+        <AvatarAtom :imageUrl="imageUrl" customClass="w-full h-full" />
         <TextAtom>{{ nickName }}</TextAtom>
     </div>
 </template>
 
 <style scoped></style>
+

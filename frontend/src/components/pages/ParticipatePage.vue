@@ -1,12 +1,22 @@
+
 <script setup lang="ts">
 import MissionHeader from '@/components/organisms/game/MissionHeader.vue'
+import GameHeader from '@/components/organisms/game/GameHeader.vue';
 import PaticipateProfile from '@/components/molecules/game/PaticipateProfile.vue'
 import ModalTemplate from '@/components/template/ModalTemplate.vue';
 import InferenceModalContent from '@/components/organisms/modal/InferenceModalContent.vue';
 import type { userType, RoomUserInfoType } from '@/types/room'
+import type { UserMission } from '@/types/mission';
 import { getUserList } from '@/api/room'
 import { ref, onMounted, inject, type Ref } from 'vue'
 import { useRoute } from 'vue-router'
+
+defineProps({
+    userMission: {
+        type: Object as () => UserMission[],
+        required: true
+    }
+})
 
 const route = useRoute()
 const userList = ref<userType[]>()
@@ -59,13 +69,14 @@ onMounted(() => {
             @modal-close="modalToggle">
             <InferenceModalContent :predict-info="predictInfo" />
         </ModalTemplate>
-        <MissionHeader custom-class="flex w-full min-h-[100px] p-[20px] shadow-lg" />
+        <GameHeader :user-mission="userMission" />
+        <hr />
         <div class="flex flex-1 items-center justify-center">
             <div class="flex flex-wrap items-center justify-center gap-[50px] md:m-[80px] max-md:m-[60px]">
                 <template v-for="user in userList" :key="user.userNo">
                     <PaticipateProfile v-if="user.roomUserNo === roomUserInfo.roomUserNo"
                         :nick-name="user.nickname + ' (나)'" :image-url="user.profileUrl" :title="user.email" :mine="true"
-                        class="border-black border-2 border-solid" />
+                        class="border-A805Black border-2 border-solid" />
 
                     <PaticipateProfile :nick-name="user.nickname + ' (마니띠)'" :image-url="user.profileUrl" :maniti="true"
                         :title="user.email" v-else-if="user.usersManito === roomUserInfo.roomUserNo"
@@ -79,3 +90,4 @@ onMounted(() => {
 </template>
 
 <style scoped></style>
+

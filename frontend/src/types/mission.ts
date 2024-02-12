@@ -21,3 +21,10 @@ export type SuddenMissionResponse = {
     content: string
     missionSubmitAt: string
 }
+
+export type predictTypes = {
+    roomNo: number,
+    memo: string,
+    manitoPredictType: "YES" | "NO" | "UNKNOWN",
+    memoTo: number
+}

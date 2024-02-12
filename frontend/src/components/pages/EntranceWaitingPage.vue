@@ -5,18 +5,37 @@ import type { Ref } from 'vue'
 import { ref, onMounted, onUnmounted } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import { getRoom } from '@/api/room'
-
+import { SSEConnect } from '@/api/sse'
 const router = useRouter()
 const route = useRoute()
 const state = ref('')
 const enterApprove: Ref<boolean> = ref(false)
+let eventSource: EventSource
+
 const prevPageButtonHandler: Handler = () => {
     router.go(-1)
 }
 
+const SSEConnection = (roomUserNo: number) => {
+    console.log('SSEConnection', roomUserNo)
+    eventSource = SSEConnect(roomUserNo)
 
+    eventSource.onopen = () => {
+        console.log('Server Sent Event 연결이 열렸습니다.')
+    }
 
+    eventSource.addEventListener('accept', (event) => {
+        console.log(event)
+        enterApprove.value = true
+    })
 
+    eventSource.addEventListener('start', (event) => {
+        alert('게임 시작!')
+        console.log(event)
+        router.push(`/game/${route.params.roomNo}`)
+    })
+
+}
 
 const getStatus = () => {
     console.log('방 정보 호출!')
@@ -24,6 +43,7 @@ const getStatus = () => {
         ({ data }) => {
             console.table(data.result)
             state.value = data.result.roomStatus
+            SSEConnection(data.result.userInfo.roomUserNo)
             // 입장승인전
             if (state.value === 'WAIT') {
                 return;
@@ -34,6 +54,7 @@ const getStatus = () => {
             }
             //게임시작 혹은 종료한 경우.
             else if (state.value === 'END' || data.result.roomStartYn) {
+                eventSource.close()
                 router.push(`/game/${route.params.roomNo}`)
             }
             else {
@@ -47,20 +68,13 @@ const getStatus = () => {
         })
 }
 
-const setupInterval = () => {
-    const intervalId = setInterval(() => {
-        getStatus();
-    }, 5000);
 
-    onUnmounted(() => {
-        clearInterval(intervalId);
-    });
-};
 
 onMounted(() => {
     getStatus();
-    setupInterval();
-});
+})
+
+
 
 
 </script>

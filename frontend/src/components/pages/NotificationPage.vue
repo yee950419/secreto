@@ -26,7 +26,7 @@ const notifyReading = (alarmNo: number) => {
 <template>
     <div class="flex flex-1 flex-col bg-A805White">
         <TextAtom custom-class="text-1">알림 리스트</TextAtom>
-        <template v-for="notify in notificationLists" class="gap-[30px]">
+        <template v-for="notify in notificationLists.slice().reverse()" class="gap-[30px]">
             <div v-if="!notify.readYn"
                 class="flex md:flex-wrap items-center justify-center h-[60px] md:mx-[30px] max-md:mx-[10px] rounded-md border-black border-solid border-2 mt-[30px] bg-A805RealWhite md:gap-[30px] max-md:gap-[10px] px-[10px]"
                 @click="notifyReading(notify.alarmNo)">

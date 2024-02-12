@@ -1,5 +1,6 @@
 import type { AxiosInstance, AxiosResponse } from 'axios'
 import { localAxios } from '@/utils/http-commons'
+import type { predictTypes } from '@/types/mission'
 const missonInstance: AxiosInstance = localAxios()
 
 async function getSystemMission(
@@ -45,4 +46,19 @@ async function getRoomMission(
     missonInstance.get(`/mission/${roomNo}`).then(success).catch(fail)
 }
 
-export { getSystemMission, getSuddenMission, getUserMission, getRoomMission, addUnexpectedMission }
+async function memoUser(    
+    param : predictTypes,
+    success: (response: AxiosResponse) => void,
+    fail: (error: any) => void){
+    missonInstance.post(`/mission/memo_user`, param).then(success).catch(fail)
+} 
+
+async function getUserMemo(
+    roomNo: number,
+    memoTo: number,
+    success: (response: AxiosResponse) => void,
+    fail: (error: any) => void){
+    missonInstance.get(`/mission/memo_user/${roomNo}?memoTo=${memoTo}`).then(success).catch(fail)
+}
+
+export { getSystemMission, getSuddenMission, getUserMission, getRoomMission, addUnexpectedMission, memoUser, getUserMemo }

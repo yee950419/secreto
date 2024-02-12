@@ -16,7 +16,7 @@ const modalToggle = () => {
     modalSeen.value = false
 }
 
-const predictInfo = ref<userType>()
+const predictInfo = ref() as Ref<userType>
 
 const roomUserInfo = inject<Ref<RoomUserInfoType>>(
     'roomUserInfo',
@@ -57,7 +57,7 @@ onMounted(() => {
     <div class="flex flex-1 flex-col bg-A805White ">
         <ModalTemplate custom-id="modal" custom-class="modal-template-style-1" :seen="modalSeen" v-if="modalSeen"
             @modal-close="modalToggle">
-            <InferenceModalContent :user-info="predictInfo" />
+            <InferenceModalContent :predict-info="predictInfo" />
         </ModalTemplate>
         <MissionHeader custom-class="flex w-full min-h-[100px] p-[20px] shadow-lg" />
         <div class="flex flex-1 items-center justify-center">

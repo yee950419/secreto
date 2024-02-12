@@ -279,10 +279,10 @@ onMounted(async () => {
 
 <template>
     <div class="bg-A805RealWhite flex flex-1 max-w-[1920px] flex-col">
-        <div class="flex justify-center max-md:flex-col gap-3 m-[3%]">
+        <div class="flex justify-center max-lg:flex-col gap-3 m-[3%]">
             <div
                 name="main"
-                class="flex max-2xl:flex-col px-3 gap-3 w-full md:w-[130%] xl:w-[200%]"
+                class="flex max-2xl:flex-col px-3 gap-3 w-full lg:w-[130%] 2xl:w-[200%]"
             >
                 <div name="main-1" class="flex flex-col w-full px-3 gap-3">
                     <ButtonInputBox
@@ -364,7 +364,7 @@ onMounted(async () => {
                     </div>
                 </div>
             </div>
-            <div name="side-part" class="flex flex-col w-full md:w-[70%] px-3">
+            <div name="side-part" class="flex flex-col w-full lg:w-[70%] px-3">
                 <UnapprovedUserList
                     v-model="unapprovedUserList"
                     class="h-[50%] border-b-2"

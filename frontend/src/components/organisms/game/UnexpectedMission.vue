@@ -24,14 +24,14 @@ const reservationTime = defineModel<Dayjs>('time', { required: true })
             input-class="input-box-style-3 rounded-[100px] text-center line-darkgrey bg-white w-full min-h-[3rem]"
             custom-class="flex gap-2"
         ></InputBox>
-        <div name="mission-options" class="flex max-md:flex-col">
+        <!-- <div name="mission-options" class="flex max-md:flex-col">
             <CheckBox v-model="isReserved" custom-class="flex flex-1 gap-2 px-2">예약하기</CheckBox>
             <DatePicker
                 class="flex flex-1"
                 :disabled="true"
                 v-model:value="reservationTime"
             ></DatePicker>
-        </div>
+        </div> -->
         <ButtonAtom
             custom-class="flex flex-1 button-blue text-A805RealWhite items-center justify-center min-h-[3rem] max-h-[4rem] text-2xl"
             @button-click="emit('addUnexpectedMission')"

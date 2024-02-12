@@ -144,14 +144,13 @@ onUnmounted(() => {
 </script>
 
 <template>
-    <div class="modal md:absolute z-[1] max-md:relative flex flex-col flex-1 overflow-hidden max-md:w-screen max-md:h-full max-md:min-h-[600px] md:min-h-[600px] md:w-[350px] md:rounded-md md:border-2 md:border-solid md:border-A805Black bg-A805Grey md:left-[50%] md:top-[20%] cursor-pointer"
+    <div class="md:absolute z-10 max-md:relative max-md:min-h-[650px]  max-md:max-h-[650px] flex flex-col  overflow-hidden max-md:w-screen max-md:h-full  md:h-[600px] md:w-[350px] md:rounded-md md:border-2 md:border-solid md:border-A805Black bg-A805Grey md:left-[50%] md:top-[20%] cursor-pointer"
         ref="chatRoomRef" @mousedown="startDrag" @mousemove="drag" @mouseup="stopDrag">
-        <div class="flex flex-[1] px-[10px] items-center justify-between bg-A805White headerSection">
+        <div class="flex h-[15%]  px-[10px] items-center justify-between headerSection">
             <ChatProfile :imageUrl="imageUrl" :name="name" />
             <CloseOutlined style="font-size: 24px" @click="closeChatRoom" />
         </div>
-        <div class="flex flex-[6] flex-col bg-A805White contentsSection px-[10px] max-md:max-h-[400px] md:max-h-[400px] overflow-y-scroll"
-            ref="messageContainer">
+        <div class="flex h-[65%] flex-col bg-A805White contentsSection px-[10px]  overflow-y-scroll" ref="messageContainer">
             <div v-for="(message, index) in messages" :key="index">
                 <div class="flex items-end justify-start mb-2" v-if="message.type === 'received'">
                     <div class="bg-white p-3 rounded-md shadow-md">
@@ -175,7 +174,7 @@ onUnmounted(() => {
                 class="resize-none rounded-md border-2 border-solid border-A805Black cursor-text w-full bg-A805White m-[10px] p-[10px]"
                 v-model="textMessage" placeholder="내용을 입력해보세요"></textarea>
         </div>
-        <div class="flex justify-end">
+        <div class="flex  justify-end">
             <ButtonAtom custom-class="chat-button rounded-md m-[10px]" @button-click="sendMessage">전송</ButtonAtom>
         </div>
     </div>

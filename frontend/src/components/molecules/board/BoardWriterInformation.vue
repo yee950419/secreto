@@ -2,6 +2,7 @@
 import AvatarAtom from '@/components/atoms/AvatarAtom.vue'
 import TextAtom from '@/components/atoms/TextAtom.vue'
 import { convertStringToRegistrationDateTime } from '@/utils/date'
+import manitoAvatar from '@/assets/images/manito-avatar.png'
 defineProps([
     'writer',
     'writerEmail',
@@ -17,7 +18,7 @@ defineProps([
 <template>
     <div class="flex items-center">
         <AvatarAtom
-            :image-url="writerProfileUrl"
+            :image-url="isCertificate ? manitoAvatar : writerProfileUrl"
             custom-class="profile w-[60px] h-[60px] me-[10px]"
         />
         <div class="flex flex-col">

@@ -15,7 +15,7 @@ defineProps(['board'])
                 v-if="board.boardCategory === BoardCategory.CERTIFICATE"
                 class="text-A805DarkGrey"
             >
-                [{{ board.missionCategory }}]</span
+                [{{ board.userMission }}]</span
             >
             {{ board.title }}
         </TextAtom>

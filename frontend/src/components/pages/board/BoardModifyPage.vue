@@ -4,7 +4,6 @@ import { QuillEditor } from '@vueup/vue-quill'
 import '@vueup/vue-quill/dist/vue-quill.snow.css'
 import CheckBox from '@/components/molecules/common/CheckBox.vue'
 import InputBox from '@/components/molecules/common/InputBox.vue'
-import SelectBox from '@/components/molecules/common/SelectBox.vue'
 import { computed, inject, onMounted, ref, type Ref } from 'vue'
 import { BoardCategory, type BoardModifyRequestType } from '@/types/board'
 import { modifyPost, getPost } from '@/api/board'
@@ -24,14 +23,12 @@ const boardModifyRequest: Ref<BoardModifyRequestType> = ref({
     title: '',
     content: '',
     imageUrl: null,
-    userMissionNo: null,
     publicYn: false
 })
 const userMission: Ref<string> = ref('')
 const submitButtonHandle = () => {
     console.log(boardModifyRequest.value)
     if (boardCategory.value !== BoardCategory.CERTIFICATE) {
-        boardModifyRequest.value.userMissionNo = null
         boardModifyRequest.value.publicYn = true
     }
     modifyPost(
@@ -65,9 +62,8 @@ onMounted(() => {
                 console.log(data.result)
                 boardModifyRequest.value.title = data.result.title
                 boardModifyRequest.value.content = data.result.content
-                boardModifyRequest.value.userMissionNo = data.result.userMissionNo
                 boardModifyRequest.value.publicYn = data.result.publicYn
-                userMission.value = data.result.missionCategory
+                userMission.value = data.result.userMission
             }
         },
         (error) => alert('게시글 조회 실패')

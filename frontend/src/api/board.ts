@@ -101,7 +101,7 @@ async function boardUnlike(
     success: (response: AxiosResponse) => void,
     fail: (error: any) => void
 ) {
-    boardInstance.post(`/post/${boardNo}/unlike/room/${roomNo}`).then(success).catch(fail)
+    boardInstance.delete(`/post/${boardNo}/unlike/room/${roomNo}`).then(success).catch(fail)
 }
 
 export {

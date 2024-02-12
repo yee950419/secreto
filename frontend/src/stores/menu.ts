@@ -3,7 +3,7 @@ import { defineStore } from 'pinia'
 
 export const useMenuStore = defineStore('menuStore', () => {
     // 메인메뉴 체크 여부
-    const menuSeen = ref(window.innerWidth <= 768)
+    const menuSeen = ref(false)
 
     // 모바일, PC 체크
     const isMobile = ref(window.innerWidth <= 768)

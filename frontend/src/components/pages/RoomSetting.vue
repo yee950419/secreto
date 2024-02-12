@@ -56,7 +56,7 @@ const roomInfo = ref<RoomInfoType>({
 // const test: RoomInfoType = props.roomInfo
 const route = useRoute()
 
-const emit = defineEmits(['roomNameChanged'])
+const emit = defineEmits(['roomNameChanged', 'startRoom', 'endRoom'])
 const missionList = ref<Mission[]>([])
 const checkedMissons = computed<{ content: string }[]>(() => {
     return missionList.value
@@ -156,6 +156,7 @@ const gameStartHandler: Handler = () => {
             router.push({
                 name: 'game-participate'
             })
+            emit('startRoom')
         },
         (error) => {
             console.log(':(', error.response.data.message)
@@ -256,6 +257,7 @@ const gameEndHandler: Handler = () => {
             router.push({
                 name: 'game-statistic'
             })
+            emit('endRoom')
         },
         (error) => {
             console.error(':(', error)

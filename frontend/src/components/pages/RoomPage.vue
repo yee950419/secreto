@@ -39,6 +39,8 @@ const roomNo = ref<number>(Number(route.params.roomNo))
 const hostRoomUserNo = ref<number>(-1)
 const userMission = ref<UserMission[]>([])
 
+const navStatus = ref<number>(-1)
+
 const updateRoomName = (name: string | undefined) => {
     roomUserInfo.value.roomName = name ? name : '방 제목'
     console.log('sibling', roomUserInfo.value.roomName)
@@ -179,6 +181,7 @@ onUnmounted(() => {
             v-if="!isMobile || menuSeen"
             :room-name="roomUserInfo.roomName"
             :room-info="roomInfo"
+            :nav-status="navStatus"
         />
         <!-- pc버전이거나, 모바일 버전 + 메뉴가 닫힌 상태일때만 이 영역 이 보인다. -->
         <RouterView
@@ -188,6 +191,18 @@ onUnmounted(() => {
             @refresh-notify="getNotify"
             @room-name-changed="updateRoomName"
             @refresh-user-mission="getUserMissionHandler"
+            @start-room="
+                () => {
+                    console.log('emit?')
+                    navStatus = 3
+                }
+            "
+            @end-room="
+                () => {
+                    console.log('emit?2')
+                    navStatus = 7
+                }
+            "
         />
     </div>
 </template>

@@ -125,6 +125,7 @@ onMounted(() => {
                 @find-password-handle="findPasswordHandler"
                 @close-button-handle="cardCloseHandler"
                 @go-register-button-handle="buttonClickHandler"
+                @fail-handle="(message: string) => yesModalOpen('Fail', message)"
             />
             <JoinForm
                 class="max-md:max-w-full max-md:max-h-full max-md:h-full max-md:w-full"

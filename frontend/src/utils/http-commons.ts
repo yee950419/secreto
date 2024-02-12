@@ -59,7 +59,6 @@ function localAxios(contentType?: string) {
         console.log('토큰 만료.... 재갱신 요청 합니다.')
         const userStore = useUserStore()
         const { accessToken, refreshToken } = storeToRefs(userStore)
-        const router = useRouter()
 
         await regenerateToken(
             ({ data }) => {
@@ -73,9 +72,7 @@ function localAxios(contentType?: string) {
                 accessToken.value = ''
                 refreshToken.value = ''
                 // 로그인 페이지로 이동
-                setTimeout(() => {
-                router.push('/')
-                }, 1000)
+                location.href = '/'
             }
         )
     }

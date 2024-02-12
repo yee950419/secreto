@@ -10,7 +10,15 @@ const myMisssionName = ref('')
 const myMissionChecked = ref(true)
 const allMissionChecked = ref(false)
 const missionInputVisibility = ref(false)
+const vFocus = {
+    mounted: (el: HTMLElement) => {
+        el.focus()
+        el.scrollIntoView()
+    }
+}
 // 데이터 바뀌면 v-model로 바꿀 예정
+
+const test = ref(null)
 
 const missionList: ModelRef<Mission[]> = defineModel({ required: true })
 const addInputBox: Handler = () => {
@@ -34,7 +42,7 @@ const allChangeHandler: Handler = () => {
 
 <template>
     <div
-        class="flex flex-col relative bg-A805RealWhite border-2 border-A805DarkGrey rounded-md overflow-hidden h-[240px]"
+        class="flex flex-col relative bg-A805RealWhite border-2 border-A805DarkGrey rounded-md overflow-hidden h-full max-h-[440px]"
     >
         <!-- 전체 선택 -->
         <div class="bg-A805RealWhite border-b-2 border-A805DarkGrey">
@@ -58,7 +66,7 @@ const allChangeHandler: Handler = () => {
             >
             <!-- 추가 미션 -->
             <CheckBox
-                v-show="missionInputVisibility"
+                v-if="missionInputVisibility"
                 custom-class="checkbox-molecule-style-1"
                 custom-id="new-mission-checkbox"
                 v-model="myMissionChecked"
@@ -68,6 +76,8 @@ const allChangeHandler: Handler = () => {
                     custom-class="input-box-style-1 px-0 text-[14pt] text-A805DarkGrey"
                     custom-id="new-mission"
                     @input-enter="addMission"
+                    ref="test"
+                    v-focus
                 />
             </CheckBox>
         </div>
@@ -78,7 +88,7 @@ const allChangeHandler: Handler = () => {
                 custom-class="checkbox-molecule-style-1"
                 @click="addInputBox()"
             >
-                <PlusSquareOutlined class="text-A805DarkGrey my-[5px] mx-[8px]" />
+                <PlusSquareOutlined class="text-A805DarkGrey my-[5px] mx-[8px] text-[24pt]" />
                 추가하기
             </div>
         </div>

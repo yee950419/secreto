@@ -16,6 +16,7 @@
         "@ant-design/icons-vue": "^7.0.1",
         "@popperjs/core": "^2.11.8",
         "@vueup/vue-quill": "^1.2.0",
+        "@vueuse/core": "^10.7.2",
         "ant-design-vue": "^4.1.2",
         "axios": "^1.6.5",
         "event-source-polyfill": "^1.0.31",

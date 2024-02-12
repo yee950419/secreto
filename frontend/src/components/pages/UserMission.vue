@@ -11,8 +11,19 @@ import { getUserMission, getRoomMission } from '@/api/mission'
 import { type RoomUserInfoType } from '@/types/room'
 import { useRoute } from 'vue-router'
 import { type Dayjs } from 'dayjs'
+import router from '@/router'
 import dayjs from 'dayjs'
+import type { PropType } from 'vue'
+import GameHeader from '@/components/organisms/game/GameHeader.vue'
 // import { Card } from 'ant-design-vue'
+
+const props = defineProps({
+    userMission: {
+        type: Object as () => UserMission[],
+        required: true
+    }
+})
+const emit = defineEmits(['refreshUserMission'])
 const route = useRoute()
 const roomUserInfo = inject<Ref<RoomUserInfoType>>(
     'roomUserInfo',
@@ -25,41 +36,21 @@ const roomUserInfo = inject<Ref<RoomUserInfoType>>(
     })
 )
 
-const missions = ref<Array<UserMission>>([])
-
-const userMissionLength = computed(() => {
-    return missions.value.length
-})
 const roomMissions = ref<Array<Mission>>([])
 
 const roomMissionsModalOpen = ref<boolean>(false)
-const rerollHandler: Handler = () => {
-    console.log('reroll')
-}
 const goToMissionCertificationPage: DataHandler<UserMission> = (mission) => {
     console.log(mission)
+    router.push({
+        name: 'game-board-write',
+        query: { boardCategory: 'CERTIFICATE' }
+    })
 }
 const modalOpenHandler: Handler = () => {
     roomMissionsModalOpen.value = true
 }
 const modalCloseHandler: Handler = () => {
     roomMissionsModalOpen.value = false
-}
-const getUserMissionHandler: Handler = () => {
-    console.log('getUserMission')
-    getUserMission(
-        roomUserInfo.value.roomNo,
-        ({ data }) => {
-            console.log(':)', data)
-            data.result.forEach((mission: UserMission) => {
-                mission.missionReceivedAt = dayjs(mission.missionReceivedAt).format('YYYY/MM/DD')
-            })
-            missions.value = data.result
-        },
-        (error) => {
-            console.log(':(', error)
-        }
-    )
 }
 const getRoomMissionHandler: Handler = () => {
     console.log('getRoomMission')
@@ -75,46 +66,20 @@ const getRoomMissionHandler: Handler = () => {
     )
 }
 onMounted(async () => {
-    getUserMissionHandler()
+    emit('refreshUserMission')
     getRoomMissionHandler()
 })
 </script>
 
 <template>
     <div name="header" class="flex flex-col w-full bg-A805RealWhite">
-        <div
-            name="mission-header"
-            class="flex justify-between items-center md:px-5 md:py-6 px-3 py-5 w-full md:min-w-[980px] overflow-x-auto"
-        >
-            <div class="flex items-center gap-5 md:gap-10">
-                <div name="now-mission">
-                    <h1 class="flex text-[24pt] max-md:text-[12pt]">
-                        <p class="me-3">진행 중인 미션:</p>
-                        <p>
-                            {{
-                                userMissionLength > 0
-                                    ? missions[userMissionLength - 1].content
-                                    : '없음'
-                            }}
-                        </p>
-                    </h1>
-                </div>
-
-                <ButtonAtom
-                    v-if="userMissionLength > 0"
-                    class="relative flex text-[20pt] max-md:text-[10pt] justify-center items-center"
-                    @button-click="rerollHandler"
-                >
-                    <ReloadOutlined class="md:text-[40pt] text-[20pt] absolute"></ReloadOutlined>
-                    <p>{{ missions[userMissionLength - 1].missionRerollCount }}</p>
-                </ButtonAtom>
-            </div>
-            <ButtonAtom
+        <GameHeader :user-mission="props.userMission"
+            ><ButtonAtom
                 class="button-cream text-A805DarkGrey max-md:w-[90px] w-[210px] max-md:h-[20px] button-style-2 transition-none max-md:text-[8pt]"
                 @button-click="modalOpenHandler"
                 >전체 미션 보기</ButtonAtom
-            >
-        </div>
+            ></GameHeader
+        >
         <hr />
         <div name="content" class="flex max-md:flex-col text-[20pt]">
             <div name="user-mission-list" class="w-full max-md:w-full overflow-auto">
@@ -122,12 +87,12 @@ onMounted(async () => {
                 <div name="multiple-manito" class="md:p-4 flex flex-col-reverse">
                     <div
                         name="person`s missions"
-                        v-for="(mission, missionIndex) in missions"
+                        v-for="(mission, missionIndex) in userMission"
                         :key="missionIndex"
                         class="flex gap-7 content-center items-start mb-3 p-3 max-md:justify-between"
                     >
                         <div class="flex max-md:flex-col ps-3 items-start">
-                            <div class="flex content-center items-center gap-5 me-5">
+                            <div class="flex content-center items-center gap-4 me-5">
                                 <BadgeAtom
                                     :class="{
                                         'bg-A805Blue': mission.missionType === 'SUDDEN',
@@ -170,7 +135,7 @@ onMounted(async () => {
         </div>
         <ModalTemplate
             custom-id="modal"
-            custom-class="modal-template-style-1 w-[350px]"
+            custom-class="modal-template-style-1 max-w-[800px]"
             :seen="roomMissionsModalOpen"
             @modal-close="modalCloseHandler"
             ><RoomMissionModalContent :missions="roomMissions"

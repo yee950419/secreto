@@ -37,12 +37,7 @@ const roomEnterHandler: DataHandler<RoomListInfoType> = (roomInfo: RoomListInfoT
     // 1. 방장인 경우
     // 2. 입장이 승인됐으며 게임이 시작된 경우
     // 3. 입장이 승인됐으며 게임이 종료된 경우
-    if (
-        roomInfo.hostUserNo === userInfo.value.id ||
-        (!roomInfo.standbyYn && (roomInfo.roomStatus === 'END' ||
-            (roomInfo.roomStatus === 'PARTICIPANT' && (new Date(roomInfo.roomStartAt) < new Date())
-            )
-        ))) {
+    if (roomInfo.hostUserNo === userInfo.value.id || (!roomInfo.standbyYn && (roomInfo.roomStatus === 'END' || roomInfo.roomStartYn))) {
         router.push('/game/' + roomInfo.roomNo)
     }
     else {

@@ -71,7 +71,7 @@ export type BoardWriteRequestType = {
     imageUrl: string | null
     boardCategory: string
     publicYn: boolean
-    missionCategory: string | null
+    userMissionNo: number | null
 }
 
 export type BoardModifyRequestType = {
@@ -79,7 +79,7 @@ export type BoardModifyRequestType = {
     content: string
     imageUrl: string | null
     publicYn: boolean
-    missionCategory: string | null
+    userMissionNo: number | null
 }
 
 export const BoardCategory = Object.freeze({

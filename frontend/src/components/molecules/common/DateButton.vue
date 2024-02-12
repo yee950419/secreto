@@ -63,21 +63,18 @@ watch(model, (newPeriod) => {
                 >-</ButtonAtom
             >
             <div class="flex justify-center content-center items-center px-3">
-                <div class="">
-                    <input
-                        class="text-right w-[100%]"
-                        :id="customId"
-                        :type="type"
-                        :class="inputClass"
-                        :readonly="readonly"
-                        :name="name"
-                        :hidden="hidden"
-                        v-model="model"
-                    />
-                </div>
-                <div :class="slotClass">
-                    <slot class="text-left"></slot>
-                </div>
+                <input
+                    class="text-right w-[100%]"
+                    :id="customId"
+                    :type="type"
+                    :class="inputClass"
+                    :readonly="readonly"
+                    :name="name"
+                    :hidden="hidden"
+                    v-model="model"
+                />
+                <div class="text-left w-full">일마다</div>
+                <div :class="slotClass"></div>
             </div>
             <ButtonAtom class="rounded-s-none" :class="buttonClass" @buttonClick="plusNumber"
                 >+</ButtonAtom

@@ -43,7 +43,7 @@ export type RoomInfoType = {
     roomName: string
     roomNo: number
     roomStartAt: string
-    roomStartYn: string
+    roomStartYn: boolean
     roomStatus: string
     userInfo: {
         nickname: string
@@ -67,9 +67,12 @@ export type userType = {
     standbyYn: boolean
     roomUserNo: number
     roomNo: number
-    profileUrl: string
+    profileUrl: string | null
     nickname: string
     checked?: boolean
+    usersManiti: number
+    usersManito: number
+    email: string
 }
 
 export type roomStartType = {

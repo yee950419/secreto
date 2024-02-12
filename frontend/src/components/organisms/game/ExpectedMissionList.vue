@@ -38,11 +38,10 @@ onMounted(async () => {
 
 <template>
     <div class="flex flex-1 flex-col gap-3 overflow-hidden">
-        <h1 class="text-2xl">예약 리스트</h1>
-        {{ missionList }}
+        <h1 class="text-2xl p-2">예약 리스트</h1>
         <div
             name="list-container"
-            class="flex flex-1 flex-col-reverse border-2 max-h-[300px] overflow-y-auto"
+            class="flex flex-1 flex-col-reverse border-2 min-h-[200px] max-h-[400px] overflow-y-auto"
         >
             <ExpectedMission v-for="(event, index) in missionList" :key="index"
                 >{{ event.content }}{{ event.missionSubmitAt }}</ExpectedMission

@@ -1,15 +1,13 @@
 <script setup lang="ts">
 import MenuItem from '@/components/molecules/common/MenuItem.vue'
-import { SettingOutlined } from '@ant-design/icons-vue'
-import { ref, inject, watch, type Ref, onMounted } from 'vue'
 import type { RoomUserInfoType, RoomInfoType } from '@/types/room'
 import type { notificationTypes } from '@/types/notify'
-import { useRouter } from 'vue-router'
+import { SettingOutlined } from '@ant-design/icons-vue'
+import { ref, inject, watch, type Ref, onMounted } from 'vue'
 import { useMenuStore } from '@/stores/menu'
-const menuStore = useMenuStore()
-const { handleClick } = menuStore
+import { useRouter } from 'vue-router'
 
-defineProps({
+const prop = defineProps({
     roomName: {
         type: String as () => String,
         default: '방 제목'
@@ -19,6 +17,13 @@ defineProps({
     }
 })
 
+const menuStore = useMenuStore()
+const { handleClick } = menuStore
+
+const emit = defineEmits(['make-room'])
+
+
+
 const notificationLists: Ref<notificationTypes[]> = inject('notifyLists') as Ref<notificationTypes[]>
 const roomUserInfo = inject<RoomUserInfoType>('roomUserInfo')
 const showSubMenu = ref<string[]>([])
@@ -26,7 +31,7 @@ const activeMenu = ref(-1)
 const router = useRouter()
 const unReadMessage = ref(0)
 
-const emit = defineEmits(['make-room'])
+
 
 const makeRoom = (roomName: string) => {
     emit('make-room', {
@@ -49,8 +54,8 @@ watch(notificationLists, () => {
     calculateUnReadMessage()
 }, { deep: true })
 
-onMounted(() => {
-    calculateUnReadMessage()
+watch(() => prop.roomInfo, () => {
+    console.log(prop.roomInfo)
 })
 
 const toggleSubMenu = (menu: string) => {
@@ -71,6 +76,10 @@ const handleMenuClickAndToggleSubMenu = (index: number, menu: string) => {
     handleMenuClick(index)
     toggleSubMenu(menu)
 }
+
+onMounted(() => {
+    calculateUnReadMessage()
+})
 </script>
 
 <template>
@@ -86,9 +95,8 @@ const handleMenuClickAndToggleSubMenu = (index: number, menu: string) => {
         <MenuItem custom-class="menu-item">{{ roomName }}</MenuItem>
         <MenuItem custom-class="menu-item" :active="activeMenu === 1"
             @menu-click="handleMenuClick(1), handleClick(), router.push({ name: 'game-notification' })">알림 {{
-                unReadMessage }} 건</MenuItem>
-        <MenuItem custom-class="menu-item" :active="activeMenu === 2"
-            @menu-click="handleMenuClick(2), router.push('/main')">메인 화면</MenuItem>
+                unReadMessage }} 건 <span v-if="unReadMessage > 0" class="ml-[20px] text-A805Red">새로운 알림!</span>
+        </MenuItem>
         <MenuItem custom-class="menu-item" :active="activeMenu === 3" @menu-click="
             handleClick(), router.push({ name: 'game-participate' }), handleMenuClick(3)
             ">참여 인원</MenuItem>
@@ -121,11 +129,11 @@ const handleMenuClickAndToggleSubMenu = (index: number, menu: string) => {
                 handleClick()
                 ">자랑 게시판</MenuItem>
         </div>
-        <MenuItem custom-class="menu-item" :active="activeMenu === 7"
+        <MenuItem v-if="roomInfo?.roomStatus === 'END'" custom-class="menu-item" :active="activeMenu === 7"
             @menu-click="handleMenuClick(7), handleClick(), router.push({ name: 'game-statistic' })">게임 통계</MenuItem>
-        <MenuItem custom-class="menu-item" :active="activeMenu === 8"
+        <MenuItem v-if="roomInfo?.roomStatus === 'END'" custom-class="menu-item" :active="activeMenu === 8"
             @menu-click="handleMenuClick(8), handleClick(), router.push({ name: 'game-timeline' })">나의 히스토리</MenuItem>
-        <MenuItem custom-class="menu-item" :active="activeMenu === 9"
+        <MenuItem v-if="roomInfo?.roomStatus === 'END'" custom-class="menu-item" :active="activeMenu === 9"
             @menu-click="handleMenuClick(9), handleClick(), router.push({ name: 'game-wordcloud' })">후기</MenuItem>
     </div>
 </template>

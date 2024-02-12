@@ -39,6 +39,15 @@ async function modifyPost(
     boardInstance.put(`/post/${boardNo}/room/${roomNo}`, param).then(success).catch(fail)
 }
 
+async function deletePost(
+    boardNo: number,
+    roomNo: number,
+    success: (response: AxiosResponse) => void,
+    fail: (error: any) => void
+) {
+    boardInstance.delete(`/post/${boardNo}/room/${roomNo}`).then(success).catch(fail)
+}
+
 async function getReplies(
     roomNo: number,
     boardNo: number,
@@ -77,13 +86,34 @@ async function modifyReply(
     boardInstance.put(`/reply/${replyNo}/room/${roomNo}`, param).then(success).catch(fail)
 }
 
+async function boardLike(
+    roomNo: number,
+    boardNo: number,
+    success: (response: AxiosResponse) => void,
+    fail: (error: any) => void
+) {
+    boardInstance.post(`/post/${boardNo}/like/room/${roomNo}`).then(success).catch(fail)
+}
+
+async function boardUnlike(
+    roomNo: number,
+    boardNo: number,
+    success: (response: AxiosResponse) => void,
+    fail: (error: any) => void
+) {
+    boardInstance.post(`/post/${boardNo}/unlike/room/${roomNo}`).then(success).catch(fail)
+}
+
 export {
     getBoard,
     getPost,
     modifyPost,
+    deletePost,
     getReplies,
     postReply,
     deleteReply,
     modifyReply,
-    createPost
+    createPost,
+    boardLike,
+    boardUnlike
 }

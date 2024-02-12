@@ -43,7 +43,7 @@ export type RoomInfoType = {
     roomName: string
     roomNo: number
     roomStartAt: string
-    roomStartYn: string
+    roomStartYn: boolean
     roomStatus: string
     userInfo: {
         nickname: string

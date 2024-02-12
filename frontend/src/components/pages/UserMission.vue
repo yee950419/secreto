@@ -90,7 +90,7 @@ onMounted(async () => {
                         class="flex gap-7 content-center items-start mb-3 p-3 max-md:justify-between"
                     >
                         <div class="flex max-md:flex-col ps-3 items-start">
-                            <div class="flex content-center items-center gap-5 me-5">
+                            <div class="flex content-center items-center gap-4 me-5">
                                 <BadgeAtom
                                     :class="{
                                         'bg-A805Blue': mission.missionType === 'SUDDEN',

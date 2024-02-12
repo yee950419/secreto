@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, ref, type Ref, watch, onMounted, inject, type PropType } from 'vue'
+import { computed, ref, type Ref, watch, onMounted, onUnmounted, inject, type PropType } from 'vue'
 import ButtonAtom from '@/components/atoms/ButtonAtom.vue'
 import ButtonInputBox from '@/components/molecules/common/ButtonInputBox.vue'
 import CheckBox from '@/components/molecules/common/CheckBox.vue'
@@ -229,15 +229,19 @@ const addUnexpectedMissionHandler: Handler = () => {
         content: unexpectedMissionContent.value
     }
     console.log('?', testobj)
-    addUnexpectedMission(
-        testobj,
-        ({ data }) => {
-            console.log(':)', data)
-        },
-        (error) => {
-            console.error(':(', error)
-        }
-    )
+    if (testobj.content.length > 0) {
+        addUnexpectedMission(
+            testobj,
+            ({ data }) => {
+                console.log(':)', data)
+            },
+            (error) => {
+                console.error(':(', error)
+            }
+        )
+    } else {
+        alert('미션 내용을 입력해주세요.')
+    }
 }
 
 const gameEndHandler: Handler = () => {
@@ -270,10 +274,19 @@ const testHandler: Handler = () => {
         }
     )
 }
+
+const refreshUserList = setInterval(() => {
+    userListGet()
+}, 5000)
+
 onMounted(async () => {
     await roomInfoGet()
     await missionGet()
     await userListGet()
+})
+
+onUnmounted(() => {
+    clearInterval(refreshUserList)
 })
 </script>
 
@@ -310,7 +323,7 @@ onMounted(async () => {
                         </div>
                     </div>
                     <!-- <div v-else-if="test.roomStatus === 'PARTICIPANT'"> -->
-                    <div v-else>
+                    <div v-else class="flex flex-col gap-3 mt-5">
                         <UnexpectedMission
                             v-model:content="unexpectedMissionContent"
                             v-model:reserved="unexpectedMissionReserved"
@@ -318,7 +331,7 @@ onMounted(async () => {
                             @add-unexpected-mission="addUnexpectedMissionHandler"
                         ></UnexpectedMission>
                         <!-- 추후 개발 필요 -->
-                        <ExpectedMissionList v-if="false"></ExpectedMissionList>
+                        <!-- <ExpectedMissionList></ExpectedMissionList> -->
                     </div>
                 </div>
                 <div name="main-2" class="flex flex-col w-full px-3 gap-3">
@@ -348,7 +361,7 @@ onMounted(async () => {
                         ></ButtonInputBox>
                     </div>
 
-                    <label for="range">마니또 기간</label>
+                    <label for="range" class="text-[1.5rem]">마니또 기간</label>
                     <div name="calendar-div w-full" id="range">
                         <!-- <Calendar :fullscreen="false" class="h-[40%]"></Calendar> -->
                         <VDatePicker

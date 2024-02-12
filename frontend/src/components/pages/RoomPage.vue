@@ -187,6 +187,7 @@ onUnmounted(() => {
             :user-mission="userMission"
             @refresh-notify="getNotify"
             @room-name-changed="updateRoomName"
+            @refresh-user-mission="getUserMissionHandler"
         />
     </div>
 </template>

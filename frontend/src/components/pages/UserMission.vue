@@ -23,6 +23,7 @@ const props = defineProps({
         required: true
     }
 })
+const emit = defineEmits(['refreshUserMission'])
 const route = useRoute()
 const roomUserInfo = inject<Ref<RoomUserInfoType>>(
     'roomUserInfo',
@@ -65,6 +66,7 @@ const getRoomMissionHandler: Handler = () => {
     )
 }
 onMounted(async () => {
+    emit('refreshUserMission')
     getRoomMissionHandler()
 })
 </script>

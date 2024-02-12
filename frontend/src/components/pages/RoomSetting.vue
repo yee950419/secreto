@@ -77,6 +77,10 @@ const roomUserInfo = inject<Ref<RoomUserInfoType>>(
     })
 )
 const roomName = ref(roomUserInfo.value.roomName)
+
+watch(roomUserInfo, (newValue) => {
+    roomName.value = newValue.roomName
+})
 const userList = ref<userType[]>([])
 const unapprovedUserList = computed(() => {
     return userList.value.filter((user) => user.standbyYn)
@@ -259,22 +263,6 @@ const gameEndHandler: Handler = () => {
     )
 }
 
-const testHandler: Handler = () => {
-    getUserList(
-        roomUserInfo.value.roomNo,
-        ({ data }) => {
-            data.result.forEach((mission: userType) => {
-                mission['checked'] = true
-            })
-            console.log('userlist', data)
-            userList.value = data.result
-        },
-        (error) => {
-            console.log('error', error)
-        }
-    )
-}
-
 const refreshUserList = setInterval(() => {
     userListGet()
 }, 5000)
@@ -310,7 +298,10 @@ onUnmounted(() => {
                     />
                     <!-- status 연동 필요 -->
                     <!-- <div v-if="test.roomStatus === 'WAIT'" name="before-start"> -->
-                    <div v-if="roomInfo.roomStartYn === false" name="before-start">
+                    <div
+                        v-if="roomInfo.roomStartYn === false || roomInfo.roomStatus === 'END'"
+                        name="before-start"
+                    >
                         <MissionList v-model="missionList"></MissionList>
                         <div name="option-list" class="flex gap-[10%] pt-4 px-3">
                             <CheckBox v-model="isInvidual" class="gap-3"
@@ -390,7 +381,7 @@ onUnmounted(() => {
             </div>
         </div>
         <ButtonAtom
-            v-if="roomInfo.roomStartYn === false"
+            v-if="roomInfo.roomStartYn === false || roomInfo.roomStatus === 'END'"
             custom-class="button-blue h-[10%] min-h-[50px] text-A805RealWhite"
             @button-click="gameStartHandler"
             ><p class="md:text-[3rem]">게임 시작하기</p>

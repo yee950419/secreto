@@ -11,6 +11,7 @@ import { getUserMission, getRoomMission } from '@/api/mission'
 import { type RoomUserInfoType } from '@/types/room'
 import { useRoute } from 'vue-router'
 import { type Dayjs } from 'dayjs'
+import router from '@/router'
 import dayjs from 'dayjs'
 // import { Card } from 'ant-design-vue'
 const route = useRoute()
@@ -38,6 +39,10 @@ const rerollHandler: Handler = () => {
 }
 const goToMissionCertificationPage: DataHandler<UserMission> = (mission) => {
     console.log(mission)
+    router.push({
+        name: 'game-board-write',
+        query: { boardCategory: 'CERTIFICATE' }
+    })
 }
 const modalOpenHandler: Handler = () => {
     roomMissionsModalOpen.value = true
@@ -101,7 +106,10 @@ onMounted(async () => {
                 </div>
 
                 <ButtonAtom
-                    v-if="userMissionLength > 0"
+                    v-if="
+                        userMissionLength > 0 &&
+                        missions[userMissionLength - 1].missionType === 'REGULAR'
+                    "
                     class="relative flex text-[20pt] max-md:text-[10pt] justify-center items-center"
                     @button-click="rerollHandler"
                 >

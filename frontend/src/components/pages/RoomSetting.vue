@@ -118,20 +118,15 @@ const clipboardHandler: Handler = () => {
 }
 
 const gameStartHandler: Handler = () => {
-    // console.log(
-    //     ':<',
-    //     {
-    //         period: missionInterval.value,
-    //         commonYn: !isInvidual.value,
-    //         hostParticipantYn: hostInGame.value,
-    //         missionStartAt: gamePeriod.value[0].format(dateTimeFormat).slice(0, 10),
-    //         missionSubmitTime: gamePeriod.value[0].format(dateTimeFormat).slice(11) + ':00',
-    //         roomEndAt: gamePeriod.value[1].format(dateTimeFormat) + ':00',
-    //         missionList: checkedMissons.value
-    //     },
-    //     roomUserInfo.value.roomNo
-    // )
-    console.log(range.value, typeof range.value.start)
+    console.log('?', {
+        period: missionInterval.value,
+        commonYn: !isInvidual.value,
+        hostParticipantYn: hostInGame.value,
+        missionStartAt: crange.value[0].slice(0, 10),
+        missionSubmitTime: crange.value[0].slice(11) + ':00',
+        roomEndAt: crange.value[1] + ':00',
+        missionList: checkedMissons.value
+    })
     startRoom(
         roomUserInfo.value.roomNo,
         {
@@ -159,7 +154,7 @@ const gameStartHandler: Handler = () => {
             })
         },
         (error) => {
-            console.log(':(', error)
+            console.log(':(', error.response.data.message)
             alert(error.response.data.message)
         }
     )
@@ -200,7 +195,7 @@ const roomInfoGet: Handler = () => {
         roomUserInfo.value.roomNo,
         ({ data }) => {
             roomInfo.value = data.result
-            changeRoomNameHandler()
+            roomName.value = data.result.roomName
             console.log('roomInfo', roomInfo.value)
         },
         (error) => {
@@ -210,12 +205,14 @@ const roomInfoGet: Handler = () => {
 }
 
 const changeRoomNameHandler: Handler = () => {
+    console.log('???')
     changeRoomName(
         { roomName: roomName.value, roomNo: roomUserInfo.value.roomNo },
         ({ data }) => {
             if (data.status === 'OK') {
-                // console.log(':)', data)
-                emit('roomNameChanged', roomName)
+                console.log(':)', data)
+                console.log(roomName.value)
+                emit('roomNameChanged', roomName.value)
             } else {
                 console.log(':(', data)
             }
@@ -257,6 +254,22 @@ const gameEndHandler: Handler = () => {
         }
     )
 }
+
+const testHandler: Handler = () => {
+    getUserList(
+        roomUserInfo.value.roomNo,
+        ({ data }) => {
+            data.result.forEach((mission: userType) => {
+                mission['checked'] = true
+            })
+            console.log('userlist', data)
+            userList.value = data.result
+        },
+        (error) => {
+            console.log('error', error)
+        }
+    )
+}
 onMounted(async () => {
     await roomInfoGet()
     await missionGet()
@@ -265,16 +278,19 @@ onMounted(async () => {
 </script>
 
 <template>
-    <!-- {{ roomInfo }} -->
-    <div class="flex flex-1">
-        <div class="bg-A805RealWhite flex flex-col">
-            <div class="flex justify-center max-md:flex-col gap-3 m-[3%]">
-                <!-- <div name="main-part" class="flex selection:max-md:flex-col max-md:w-full"> -->
-                <div name="main-1" class="flex flex-col w-[500px] px-4 gap-8 max-md:w-full">
+    <div class="bg-A805RealWhite flex flex-1 max-w-[1920px] flex-col">
+        <div class="flex justify-center max-md:flex-col gap-3 m-[3%]">
+            <div
+                name="main"
+                class="flex max-2xl:flex-col px-3 gap-3 w-full md:w-[130%] xl:w-[200%]"
+            >
+                <div name="main-1" class="flex flex-col w-full px-3 gap-3">
                     <ButtonInputBox
                         label="방 제목"
+                        label-class="text-[1.5rem]"
+                        class="w-full"
                         button-class="button-blue text-white line-darkgrey  border-s-0"
-                        input-class="input-box-style-3 rounded-s-[100px] text-center line-darkgrey bg-white"
+                        input-class="w-full rounded-s-[100px] text-center line-darkgrey bg-white"
                         v-model="roomName"
                         button-label="수정"
                         @button-click="changeRoomNameHandler"
@@ -286,9 +302,11 @@ onMounted(async () => {
                         name="before-start"
                     >
                         <MissionList v-model="missionList"></MissionList>
-                        <div name="option-list" class="flex gap-[10%]">
-                            <CheckBox v-model="isInvidual">각자 다른 미션 받기</CheckBox>
-                            <CheckBox v-model="hostInGame">방장도 게임 참여</CheckBox>
+                        <div name="option-list" class="flex gap-[10%] pt-4 px-3">
+                            <CheckBox v-model="isInvidual" class="gap-3"
+                                >각자 다른 미션 받기</CheckBox
+                            >
+                            <CheckBox v-model="hostInGame" class="gap-3">방장도 게임 참여</CheckBox>
                         </div>
                     </div>
                     <!-- <div v-else-if="test.roomStatus === 'PARTICIPANT'"> -->
@@ -303,19 +321,18 @@ onMounted(async () => {
                         <ExpectedMissionList v-if="false"></ExpectedMissionList>
                     </div>
                 </div>
-                <div name="main-2" class="flex flex-col w-[500px] px-4 gap-[5%] max-md:w-full">
-                    <div name="main-2-1" class="flex justify-between">
+                <div name="main-2" class="flex flex-col w-full px-3 gap-3">
+                    <div name="main-2-1" class="flex gap-3 justify-between">
                         <DateButton
-                            class=""
-                            custon-class=""
-                            label-class="text-[15pt]"
-                            button-class="button-style-7 button-blue text-white"
-                            input-class="w-[60px] input-box-style-4"
-                            slot-class="w-[50px] text-[12pt]"
+                            class="w-full max-w-[210px]"
+                            custon-class="w-full"
+                            label-class="text-[1.5rem]"
+                            button-class="w-[50%] button-style-7 button-blue text-white"
+                            input-class="w-full min-w-[10px] input-box-style-4"
                             type="number"
                             label="미션 주기"
                             v-model="missionInterval"
-                            >일 마다
+                        >
                         </DateButton>
 
                         <ButtonInputBox
@@ -323,55 +340,56 @@ onMounted(async () => {
                             label="초대 코드"
                             button-label="복사"
                             v-model="roomInfo.entryCode"
-                            label-class="text-[15pt]"
-                            custom-class=""
-                            input-class="w-[150px] h-[45px] text-center text-[15pt]"
-                            button-class="button-blue button-style-7 text-white text-[20pt]"
+                            label-class="text-[1.5rem]"
+                            custom-class="w-full max-w-[210px]"
+                            input-class="w-[70%] h-[45px] text-center text-[1rem]"
+                            button-class="w-[30%] text-[11pt] min-w-15 button-blue button-style-7 text-white text-[20pt]"
                             @button-click="clipboardHandler"
                         ></ButtonInputBox>
                     </div>
-                    <div class="flex flex-col">
-                        <label for="range">마니또 기간</label>
-                        <!-- <RangePicker
-                            id="range"
-                            showTime
-                            v-model:value="gamePeriod"
-                            :format="dateTimeFormat"
-                        /> -->
-                    </div>
-                    <div name="calendar-div w-full">
+
+                    <label for="range">마니또 기간</label>
+                    <div name="calendar-div w-full" id="range">
                         <!-- <Calendar :fullscreen="false" class="h-[40%]"></Calendar> -->
                         <VDatePicker
                             v-model.range="range"
                             mode="dateTime"
-                            class="w-full"
+                            class="!w-full !text-18pt"
+                            :rules="{
+                                minutes: 0,
+                                seconds: 0
+                            }"
+                            :time-accuracy="1"
                         ></VDatePicker>
                     </div>
-                    <ButtonAtom
-                        v-if="roomInfo.roomStatus === 'WAIT' || roomInfo.roomStatus === 'END'"
-                        custom-class="button-blue h-[10%] text-A805RealWhite"
-                        @button-click="gameStartHandler"
-                        >게임 시작하기</ButtonAtom
-                    >
-                    <ButtonAtom
-                        v-else
-                        custom-class="bg-A805Red h-[10%] text-A805RealWhite"
-                        @button-click="gameEndHandler"
-                        >게임 종료하기</ButtonAtom
-                    >
-                </div>
-                <!-- </div> -->
-                <div name="side-part" class="flex flex-col w-[400px] max-md:w-full">
-                    <UnapprovedUserList
-                        v-model="unapprovedUserList"
-                        class="h-[50%] border-b-2"
-                        @users-approved="userListGet"
-                        @users-denied="userListGet"
-                    ></UnapprovedUserList>
-                    <hr />
-                    <ApprovedUserList v-model="approvedUserList" class="h-[50%]"></ApprovedUserList>
                 </div>
             </div>
+            <div name="side-part" class="flex flex-col w-full md:w-[70%] px-3">
+                <UnapprovedUserList
+                    v-model="unapprovedUserList"
+                    class="h-[50%] border-b-2"
+                    @users-approved="userListGet"
+                    @users-denied="userListGet"
+                ></UnapprovedUserList>
+                <hr />
+                <ApprovedUserList
+                    v-model="approvedUserList"
+                    class="h-[50%]"
+                    @test="userListGet"
+                ></ApprovedUserList>
+            </div>
         </div>
+        <ButtonAtom
+            v-if="roomInfo.roomStatus === 'WAIT' || roomInfo.roomStatus === 'END'"
+            custom-class="button-blue h-[10%] min-h-[50px] text-A805RealWhite"
+            @button-click="gameStartHandler"
+            >게임 시작하기</ButtonAtom
+        >
+        <ButtonAtom
+            v-else
+            custom-class="bg-A805Red h-[10%] text-A805RealWhite"
+            @button-click="gameEndHandler"
+            >게임 종료하기</ButtonAtom
+        >
     </div>
 </template>

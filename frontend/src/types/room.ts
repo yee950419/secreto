@@ -67,12 +67,12 @@ export type userType = {
     standbyYn: boolean
     roomUserNo: number
     roomNo: number
-    profileUrl: string
+    profileUrl: string | null
     nickname: string
     checked?: boolean
-    usersManiti : number,
-    usersManito : number,
-    email : string
+    usersManiti: number
+    usersManito: number
+    email: string
 }
 
 export type roomStartType = {
@@ -84,5 +84,3 @@ export type roomStartType = {
     period: number
     missionList: { content: string }[]
 }
-
-

@@ -20,7 +20,7 @@ defineProps({
 <template>
     <div class="flex items-center gap-[20px]" :class="customClass">
         <AvatarAtom customClass="profile-style-1" :imageUrl="imageUrl" />
-        <TextAtom class="text-[24px] text-A805Blue">{{ name }}</TextAtom>
+        <TextAtom class="text-[1rem] text-A805Blue">{{ name }}</TextAtom>
     </div>
 </template>
 

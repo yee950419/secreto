@@ -37,6 +37,7 @@ const hostRoomUserNo = ref<number>(-1)
 
 const updateRoomName = (name: string | undefined) => {
     roomUserInfo.value.roomName = name ? name : '방 제목'
+    console.log('sibling', roomUserInfo.value.roomName)
     emit('update-name', roomUserInfo.value.roomName)
 }
 
@@ -150,7 +151,12 @@ onUnmounted(() => {
         <NavBar @make-room="makeRoom" v-if="!isMobile || menuSeen" :room-name="roomUserInfo.roomName"
             :room-info="roomInfo" />
         <!-- pc버전이거나, 모바일 버전 + 메뉴가 닫힌 상태일때만 이 영역 이 보인다. -->
-        <RouterView v-if="!isMobile || !menuSeen" :room-info="roomInfo" @refresh-notify="getNotify" />
+        <RouterView
+            v-if="!isMobile || !menuSeen"
+            :room-info="roomInfo"
+            @refresh-notify="getNotify"
+            @room-name-changed="updateRoomName"
+        />
     </div>
 </template>
 

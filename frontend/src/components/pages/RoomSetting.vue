@@ -45,7 +45,7 @@ const roomInfo = ref<RoomInfoType>({
     roomName: '',
     roomNo: 0,
     roomStartAt: '',
-    roomStartYn: '',
+    roomStartYn: false,
     roomStatus: '',
     userInfo: {
         nickname: '',
@@ -310,10 +310,7 @@ onUnmounted(() => {
                     />
                     <!-- status 연동 필요 -->
                     <!-- <div v-if="test.roomStatus === 'WAIT'" name="before-start"> -->
-                    <div
-                        v-if="roomInfo.roomStatus === 'WAIT' || roomInfo.roomStatus === 'END'"
-                        name="before-start"
-                    >
+                    <div v-if="roomInfo.roomStartYn === false" name="before-start">
                         <MissionList v-model="missionList"></MissionList>
                         <div name="option-list" class="flex gap-[10%] pt-4 px-3">
                             <CheckBox v-model="isInvidual" class="gap-3"
@@ -393,7 +390,7 @@ onUnmounted(() => {
             </div>
         </div>
         <ButtonAtom
-            v-if="roomInfo.roomStatus === 'WAIT' || roomInfo.roomStatus === 'END'"
+            v-if="roomInfo.roomStartYn === false"
             custom-class="button-blue h-[10%] min-h-[50px] text-A805RealWhite"
             @button-click="gameStartHandler"
             ><p class="md:text-[3rem]">게임 시작하기</p>

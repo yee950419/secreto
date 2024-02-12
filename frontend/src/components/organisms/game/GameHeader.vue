@@ -1,21 +1,44 @@
 <script setup lang="ts">
-import { computed } from 'vue'
+import { computed, inject, ref, type Ref } from 'vue'
 import TextAtom from '@/components/atoms/TextAtom.vue'
 import { ReloadOutlined } from '@ant-design/icons-vue'
 import type { UserMission } from '@/types/mission'
-
+import { rerollMission } from '@/api/mission'
 const props = defineProps({
     userMission: {
         type: Object as () => UserMission[],
         required: true
     }
 })
-const userMissionLength = computed(() => {
+const roomNo: Ref<number> = inject('roomNo', ref(0))
+const emit = defineEmits(['reroll'])
+const userMissionLength = computed<number>(() => {
     return props.userMission.length
+})
+const lastMissionNo = computed<number>(() => {
+    if (userMissionLength.value > 0) {
+        return props.userMission[props.userMission.length - 1].userMissionNo
+    } else {
+        return 0
+    }
 })
 
 const rerollHandler = () => {
     console.log('reroll')
+    rerollMission(
+        {
+            roomNo: roomNo.value,
+            userMissionNo: lastMissionNo.value
+        },
+        ({ data }) => {
+            console.log(':)', data)
+        },
+        (error) => {
+            console.log(':(', error.response.data.message)
+            alert(error.response.data.message)
+        }
+    )
+    emit('reroll')
 }
 </script>
 

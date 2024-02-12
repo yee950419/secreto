@@ -87,7 +87,7 @@ const approvedUserList = computed(() => {
 const isInvidual = ref<boolean>(false)
 const hostInGame = ref<boolean>(false)
 const missionInterval = ref<number>(7)
-const roomCode: Ref<string> = inject('roomCode', ref('qwer1234'))
+const roomCode: Ref<string> = inject('roomCode', ref('testCode'))
 const dateTimeFormat = 'YYYY-MM-DD HH:mm'
 const gamePeriod = ref<[Dayjs, Dayjs]>([
     dayjs(),

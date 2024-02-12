@@ -1,18 +1,56 @@
 <script setup lang="ts">
+import { computed } from 'vue'
 import TextAtom from '@/components/atoms/TextAtom.vue'
-defineProps(['customClass'])
+import { ReloadOutlined } from '@ant-design/icons-vue'
+import type { UserMission } from '@/types/mission'
+
+const props = defineProps({
+    userMission: {
+        type: Object as () => UserMission[],
+        required: true
+    }
+})
+const userMissionLength = computed(() => {
+    return props.userMission.length
+})
+
+const rerollHandler = () => {
+    console.log('reroll')
+}
 </script>
 
 <template>
-    <div class="flex flex-col justify-center md:border-b border-A805Black" :class="customClass">
-        <div class="flex flex-wrap max-md:flex-col gap-[20px]">
-            <TextAtom custom-class="md:text-2 max-md:text-2 max-md:text-center max-md:font-bold">
-                진행중인 미션
-            </TextAtom>
-            <TextAtom custom-class="md:text-2 max-md:text-3 max-md:text-center "
-                >마니띠에게 삼행시 지어주기</TextAtom
+    <div
+        name="mission-header"
+        class="flex justify-between items-center md:px-5 md:py-6 px-3 py-5 w-full md:min-w-[590px] overflow-x-auto"
+    >
+        <div class="flex items-center gap-5 md:gap-10">
+            <div name="now-mission">
+                <h1 class="flex text-[24pt] max-md:text-[12pt]">
+                    <p class="me-3">진행 중인 미션:</p>
+                    <p>
+                        {{
+                            userMissionLength > 0
+                                ? userMission[userMissionLength - 1].content
+                                : '없음'
+                        }}
+                    </p>
+                </h1>
+            </div>
+
+            <ButtonAtom
+                v-if="
+                    userMissionLength > 0 &&
+                    userMission[userMissionLength - 1].missionType === 'REGULAR'
+                "
+                class="relative flex text-[20pt] max-md:text-[10pt] justify-center items-center"
+                @button-click="rerollHandler"
             >
+                <ReloadOutlined class="md:text-[40pt] text-[20pt] absolute"></ReloadOutlined>
+                <p>{{ userMission[userMissionLength - 1].missionRerollCount }}</p>
+            </ButtonAtom>
         </div>
+        <slot></slot>
     </div>
 </template>
 

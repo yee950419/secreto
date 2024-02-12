@@ -10,6 +10,9 @@ import { getNotificationLists } from '@/api/notification'
 import { onMounted, onUnmounted, ref, provide, readonly } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { storeToRefs } from 'pinia'
+import { getUserMission } from '@/api/mission'
+import type { UserMission } from '@/types/mission'
+import dayjs from 'dayjs'
 
 const router = useRouter()
 const route = useRoute()
@@ -34,6 +37,7 @@ const roomInfo = ref<RoomInfoType>()
 const roomUserNo = ref<number>(-1)
 const roomNo = ref<number>(Number(route.params.roomNo))
 const hostRoomUserNo = ref<number>(-1)
+const userMission = ref<UserMission[]>([])
 
 const updateRoomName = (name: string | undefined) => {
     roomUserInfo.value.roomName = name ? name : '방 제목'
@@ -125,10 +129,28 @@ const getNotify = () => {
     )
 }
 
+const getUserMissionHandler = () => {
+    console.log('getUserMission')
+    getUserMission(
+        roomUserInfo.value.roomNo,
+        ({ data }) => {
+            console.log(':)', data)
+            data.result.forEach((mission: UserMission) => {
+                mission.missionReceivedAt = dayjs(mission.missionReceivedAt).format('YYYY/MM/DD')
+            })
+            userMission.value = data.result
+        },
+        (error) => {
+            console.log(':(', error)
+        }
+    )
+}
+
 onMounted(() => {
     console.log('in-room은 true로 변경합니다.')
     getRoomData()
     getNotify()
+    getUserMissionHandler()
     emit('in-room', true)
 })
 
@@ -143,14 +165,28 @@ onUnmounted(() => {
 <template>
     <div class="flex flex-1 bg-A805RealWhite">
         <div v-for="room in chatRooms" :key="room.name">
-            <ChatRoom :name="room.name" :imageUrl="room.imageUrl" @close-chat-room="removeChatRoom" />
+            <ChatRoom
+                :name="room.name"
+                :imageUrl="room.imageUrl"
+                @close-chat-room="removeChatRoom"
+            />
         </div>
         <!-- pc버전이거나, 모바일 버전 + 메뉴가 체크된 상태일때만 nav가 보인다. -->
-        <NavBar @make-room="makeRoom" v-if="!isMobile || (isMobile && menuSeen)" :room-name="roomUserInfo.roomName"
-            :room-info="roomInfo" />
+        <NavBar
+            @make-room="makeRoom"
+            v-if="!isMobile || (isMobile && menuSeen)"
+            :room-name="roomUserInfo.roomName"
+            :room-info="roomInfo"
+        />
+
         <!-- pc버전이거나, 모바일 버전 + 메뉴가 닫힌 상태일때만 이 영역 이 보인다. -->
-        <RouterView v-if="!isMobile || !menuSeen" :room-info="roomInfo" @refresh-notify="getNotify"
-            @room-name-changed="updateRoomName" />
+        <RouterView
+            v-if="!isMobile || !menuSeen"
+            :room-info="roomInfo"
+            :user-mission="userMission"
+            @refresh-notify="getNotify"
+            @room-name-changed="updateRoomName"
+        />
     </div>
 </template>
 

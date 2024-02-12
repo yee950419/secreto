@@ -322,9 +322,9 @@ onMounted(async () => {
                     </div>
                 </div>
                 <div name="main-2" class="flex flex-col w-full px-3 gap-3">
-                    <div name="main-2-1" class="flex gap-3 justify-between">
+                    <div name="main-2-1" class="flex max-md:flex-col gap-3 md:justify-between">
                         <DateButton
-                            class="w-full max-w-[210px]"
+                            class="w-full max-w-[300px]"
                             custon-class="w-full"
                             label-class="text-[1.5rem]"
                             button-class="w-[50%] button-style-7 button-blue text-white"
@@ -341,7 +341,7 @@ onMounted(async () => {
                             button-label="복사"
                             v-model="roomInfo.entryCode"
                             label-class="text-[1.5rem]"
-                            custom-class="w-full max-w-[210px]"
+                            custom-class="w-full max-w-[300px]"
                             input-class="w-[70%] h-[45px] text-center text-[1rem]"
                             button-class="w-[30%] text-[11pt] min-w-15 button-blue button-style-7 text-white text-[20pt]"
                             @button-click="clipboardHandler"
@@ -383,13 +383,13 @@ onMounted(async () => {
             v-if="roomInfo.roomStatus === 'WAIT' || roomInfo.roomStatus === 'END'"
             custom-class="button-blue h-[10%] min-h-[50px] text-A805RealWhite"
             @button-click="gameStartHandler"
-            >게임 시작하기</ButtonAtom
-        >
+            ><p class="md:text-[3rem]">게임 시작하기</p>
+        </ButtonAtom>
         <ButtonAtom
             v-else
             custom-class="bg-A805Red h-[10%] text-A805RealWhite"
             @button-click="gameEndHandler"
-            >게임 종료하기</ButtonAtom
-        >
+            ><p class="md:text-[3rem]">게임 종료하기</p>
+        </ButtonAtom>
     </div>
 </template>

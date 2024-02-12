@@ -155,7 +155,7 @@ const gameStartHandler: Handler = () => {
         },
         (error) => {
             console.log(':(', error.response.data.message)
-            // alert(error.response.data.message)
+            alert(error.response.data.message)
         }
     )
 }
@@ -278,82 +278,90 @@ onMounted(async () => {
 </script>
 
 <template>
-    <div class="bg-A805RealWhite flex flex-1 flex-col">
+    <div class="bg-A805RealWhite flex flex-1 max-w-[1920px] flex-col">
         <div class="flex justify-center max-md:flex-col gap-3 m-[3%]">
-            <div name="main-1" class="flex flex-col w-full px-3 gap-3">
-                <ButtonInputBox
-                    label="방 제목"
-                    label-class="text-[1.5rem]"
-                    class="w-full"
-                    button-class="button-blue text-white line-darkgrey  border-s-0"
-                    input-class="w-full rounded-s-[100px] text-center line-darkgrey bg-white"
-                    v-model="roomName"
-                    button-label="수정"
-                    @button-click="changeRoomNameHandler"
-                />
-                <!-- status 연동 필요 -->
-                <!-- <div v-if="test.roomStatus === 'WAIT'" name="before-start"> -->
-                <div
-                    v-if="roomInfo.roomStatus === 'WAIT' || roomInfo.roomStatus === 'END'"
-                    name="before-start"
-                >
-                    <MissionList v-model="missionList"></MissionList>
-                    <div name="option-list" class="flex gap-[10%] pt-4 px-3">
-                        <CheckBox v-model="isInvidual" class="gap-3">각자 다른 미션 받기</CheckBox>
-                        <CheckBox v-model="hostInGame" class="gap-3">방장도 게임 참여</CheckBox>
+            <div
+                name="main"
+                class="flex max-2xl:flex-col px-3 gap-3 w-full md:w-[130%] xl:w-[200%]"
+            >
+                <div name="main-1" class="flex flex-col w-full px-3 gap-3">
+                    <ButtonInputBox
+                        label="방 제목"
+                        label-class="text-[1.5rem]"
+                        class="w-full"
+                        button-class="button-blue text-white line-darkgrey  border-s-0"
+                        input-class="w-full rounded-s-[100px] text-center line-darkgrey bg-white"
+                        v-model="roomName"
+                        button-label="수정"
+                        @button-click="changeRoomNameHandler"
+                    />
+                    <!-- status 연동 필요 -->
+                    <!-- <div v-if="test.roomStatus === 'WAIT'" name="before-start"> -->
+                    <div
+                        v-if="roomInfo.roomStatus === 'WAIT' || roomInfo.roomStatus === 'END'"
+                        name="before-start"
+                    >
+                        <MissionList v-model="missionList"></MissionList>
+                        <div name="option-list" class="flex gap-[10%] pt-4 px-3">
+                            <CheckBox v-model="isInvidual" class="gap-3"
+                                >각자 다른 미션 받기</CheckBox
+                            >
+                            <CheckBox v-model="hostInGame" class="gap-3">방장도 게임 참여</CheckBox>
+                        </div>
+                    </div>
+                    <!-- <div v-else-if="test.roomStatus === 'PARTICIPANT'"> -->
+                    <div v-else>
+                        <UnexpectedMission
+                            v-model:content="unexpectedMissionContent"
+                            v-model:reserved="unexpectedMissionReserved"
+                            v-model:time="unexpectedMissionReservationTime"
+                            @add-unexpected-mission="addUnexpectedMissionHandler"
+                        ></UnexpectedMission>
+                        <!-- 추후 개발 필요 -->
+                        <ExpectedMissionList v-if="false"></ExpectedMissionList>
                     </div>
                 </div>
-                <!-- <div v-else-if="test.roomStatus === 'PARTICIPANT'"> -->
-                <div v-else>
-                    <UnexpectedMission
-                        v-model:content="unexpectedMissionContent"
-                        v-model:reserved="unexpectedMissionReserved"
-                        v-model:time="unexpectedMissionReservationTime"
-                        @add-unexpected-mission="addUnexpectedMissionHandler"
-                    ></UnexpectedMission>
-                    <!-- 추후 개발 필요 -->
-                    <ExpectedMissionList v-if="false"></ExpectedMissionList>
-                </div>
-            </div>
-            <div name="main-2" class="flex flex-col w-full px-3 gap-3">
-                <div name="main-2-1" class="flex gap-3">
-                    <DateButton
-                        class="w-full max-w-[210px]"
-                        custon-class="w-full"
-                        label-class="text-[1.5rem]"
-                        button-class="button-style-7 button-blue text-white"
-                        input-class="min-w-[10px] input-box-style-4"
-                        type="number"
-                        label="미션 주기"
-                        v-model="missionInterval"
-                    >
-                    </DateButton>
+                <div name="main-2" class="flex flex-col w-full px-3 gap-3">
+                    <div name="main-2-1" class="flex gap-3 justify-between">
+                        <DateButton
+                            class="w-full max-w-[210px]"
+                            custon-class="w-full"
+                            label-class="text-[1.5rem]"
+                            button-class="w-[50%] button-style-7 button-blue text-white"
+                            input-class="w-full min-w-[10px] input-box-style-4"
+                            type="number"
+                            label="미션 주기"
+                            v-model="missionInterval"
+                        >
+                        </DateButton>
 
-                    <ButtonInputBox
-                        :readonly="true"
-                        label="초대 코드"
-                        button-label="복사"
-                        v-model="roomInfo.entryCode"
-                        label-class="text-[1.5rem]"
-                        custom-class="w-full max-w-[210px]"
-                        input-class="w-[70%] h-[45px] text-center text-[1rem]"
-                        button-class="w-[30%] text-[11pt] min-w-15 button-blue button-style-7 text-white text-[20pt]"
-                        @button-click="clipboardHandler"
-                    ></ButtonInputBox>
-                </div>
-                <label for="range">마니또 기간</label>
-                <div name="calendar-div w-full" id="range">
-                    <!-- <Calendar :fullscreen="false" class="h-[40%]"></Calendar> -->
-                    <VDatePicker
-                        v-model.range="range"
-                        mode="dateTime"
-                        class="!w-full !text-18pt"
-                        :rules="{
-                            minutes: 0,
-                            seconds: 0
-                        }"
-                        :time-accuracy="1"
-                    ></VDatePicker>
+                        <ButtonInputBox
+                            :readonly="true"
+                            label="초대 코드"
+                            button-label="복사"
+                            v-model="roomInfo.entryCode"
+                            label-class="text-[1.5rem]"
+                            custom-class="w-full max-w-[210px]"
+                            input-class="w-[70%] h-[45px] text-center text-[1rem]"
+                            button-class="w-[30%] text-[11pt] min-w-15 button-blue button-style-7 text-white text-[20pt]"
+                            @button-click="clipboardHandler"
+                        ></ButtonInputBox>
+                    </div>
+
+                    <label for="range">마니또 기간</label>
+                    <div name="calendar-div w-full" id="range">
+                        <!-- <Calendar :fullscreen="false" class="h-[40%]"></Calendar> -->
+                        <VDatePicker
+                            v-model.range="range"
+                            mode="dateTime"
+                            class="!w-full !text-18pt"
+                            :rules="{
+                                minutes: 0,
+                                seconds: 0
+                            }"
+                            :time-accuracy="1"
+                        ></VDatePicker>
+                    </div>
                 </div>
             </div>
             <div name="side-part" class="flex flex-col w-full md:w-[70%] px-3">
@@ -373,7 +381,7 @@ onMounted(async () => {
         </div>
         <ButtonAtom
             v-if="roomInfo.roomStatus === 'WAIT' || roomInfo.roomStatus === 'END'"
-            custom-class="button-blue h-[10%] text-A805RealWhite"
+            custom-class="button-blue h-[10%] min-h-[50px] text-A805RealWhite"
             @button-click="gameStartHandler"
             >게임 시작하기</ButtonAtom
         >

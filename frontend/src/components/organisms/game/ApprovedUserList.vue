@@ -18,7 +18,7 @@ const emit = defineEmits(['test'])
 const testHandler: Handler = () => {
     rollbackRoomUsers(
         {
-            roomUserNos: [143]
+            roomUserNos: [131]
         },
         ({ data }) => {
             console.log('rollbackRoomUser success', data)
@@ -33,7 +33,7 @@ const usersApproved: ModelRef<userType[]> = defineModel({ required: true })
 </script>
 
 <template>
-    <!-- <button @click="testHandler">RollBack</button> -->
+    <button @click="testHandler">RollBack</button>
     <div class="flex flex-col bg-A805RealWhite overflow-hidden">
         <div>
             <p class="text-3 px-6 py-3">참여 유저</p>

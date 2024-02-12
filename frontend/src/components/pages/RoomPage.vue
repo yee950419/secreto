@@ -37,6 +37,7 @@ const hostRoomUserNo = ref<number>(-1)
 
 const updateRoomName = (name: string | undefined) => {
     roomUserInfo.value.roomName = name ? name : '방 제목'
+    console.log('sibling', roomUserInfo.value.roomName)
     emit('update-name', roomUserInfo.value.roomName)
 }
 
@@ -161,6 +162,7 @@ onUnmounted(() => {
             v-if="!isMobile || !menuSeen"
             :room-info="roomInfo"
             @refresh-notify="getNotify"
+            @room-name-changed="updateRoomName"
         />
     </div>
 </template>

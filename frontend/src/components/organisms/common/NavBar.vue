@@ -36,7 +36,7 @@ const unReadMessage = ref(0)
 const makeRoom = (roomName: string) => {
     emit('make-room', {
         name: roomName,
-        imageUrl: 'src/assets/images/character.png'
+        imageUrl: ''
     })
 }
 

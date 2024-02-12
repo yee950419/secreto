@@ -8,6 +8,10 @@ const props = defineProps({
     userMission: {
         type: Object as () => UserMission[],
         required: true
+    },
+    customClass: {
+        type: String,
+        default: ''
     }
 })
 const roomNo: Ref<number> = inject('roomNo', ref(0))
@@ -46,6 +50,7 @@ const rerollHandler = () => {
     <div
         name="mission-header"
         class="flex justify-between items-center md:px-5 md:py-6 px-3 py-5 w-full md:min-w-[590px] overflow-x-auto"
+        :class="customClass"
     >
         <div class="flex items-center gap-5 md:gap-10">
             <div name="now-mission">

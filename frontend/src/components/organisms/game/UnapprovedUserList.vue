@@ -117,6 +117,7 @@ const denyUserHandler: DataHandler<number> = (no) => {
                             custom-class="w-full"
                             :name="user.nickname"
                             :image-url="user.profileUrl"
+                            :title="user.email"
                         ></ProfileInfo>
                     </CheckBox>
                     <div class="flex gap-5 md:text-[2rem] text-[1.5rem]">

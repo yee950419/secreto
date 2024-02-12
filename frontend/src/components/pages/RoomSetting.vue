@@ -93,12 +93,7 @@ const hostInGame = ref<boolean>(false)
 const missionInterval = ref<number>(7)
 const roomCode: Ref<string> = inject('roomCode', ref('testCode'))
 const dateTimeFormat = 'YYYY-MM-DD HH:mm'
-const gamePeriod = ref<[Dayjs, Dayjs]>([
-    dayjs(),
-    dayjs().add(1, 'day')
-    // dayjs(dayjs(), dateTimeFormat),
-    // dayjs(dayjs().add(1, 'day'), dateTimeFormat)
-])
+
 const range = ref<{ start: string; end: string }>({
     start: dayjs().format(dateTimeFormat),
     end: dayjs().add(1, 'day').format(dateTimeFormat)
@@ -113,7 +108,6 @@ const unexpectedMissionContent = ref<string>('')
 const unexpectedMissionReserved = ref<boolean>(false)
 const unexpectedMissionReservationTime = ref<Dayjs>(dayjs())
 
-const { RangePicker } = DatePicker
 const { toClipboard } = useClipboard()
 const clipboardHandler: Handler = () => {
     toClipboard(roomCode.value)
@@ -211,21 +205,23 @@ const roomInfoGet: Handler = () => {
 
 const changeRoomNameHandler: Handler = () => {
     console.log('???')
-    changeRoomName(
-        { roomName: roomName.value, roomNo: roomUserInfo.value.roomNo },
-        ({ data }) => {
-            if (data.status === 'OK') {
-                console.log(':)', data)
-                console.log(roomName.value)
-                emit('roomNameChanged', roomName.value)
-            } else {
-                console.log(':(', data)
+    if (!roomInfo.value.roomStartYn) {
+        changeRoomName(
+            { roomName: roomName.value, roomNo: roomUserInfo.value.roomNo },
+            ({ data }) => {
+                if (data.status === 'OK') {
+                    console.log(':)', data)
+                    console.log(roomName.value)
+                    emit('roomNameChanged', roomName.value)
+                } else {
+                    console.log(':(', data)
+                }
+            },
+            (error) => {
+                console.error('error!', error)
             }
-        },
-        (error) => {
-            console.error('error!', error)
-        }
-    )
+        )
+    }
 }
 
 const addUnexpectedMissionHandler: Handler = () => {
@@ -293,10 +289,18 @@ onUnmounted(() => {
                         label-class="text-[1.5rem]"
                         class="w-full"
                         button-class="button-blue text-white line-darkgrey  border-s-0"
-                        input-class="w-full rounded-s-[100px] text-center line-darkgrey bg-white"
+                        :input-class="[
+                            { 'bg-gray-200': roomInfo.roomStartYn },
+                            'w-full',
+                            'rounded-s-[100px]',
+                            'text-center',
+                            'line-darkgrey',
+                            'bg-white'
+                        ]"
                         v-model="roomName"
                         button-label="수정"
                         @button-click="changeRoomNameHandler"
+                        :disabling="roomInfo.roomStartYn"
                     />
                     <!-- status 연동 필요 -->
                     <!-- <div v-if="test.roomStatus === 'WAIT'" name="before-start"> -->

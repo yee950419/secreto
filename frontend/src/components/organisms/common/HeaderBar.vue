@@ -1,3 +1,4 @@
+
 <script setup lang="ts">
 import HeaderLogo from '@/components/molecules/common/HeaderLogo.vue'
 import HeaderProfile from '@/components/molecules/common/HeaderProfile.vue'
@@ -67,7 +68,7 @@ onUnmounted(() => {
     <div
         class="relative flex md:min-h-[140px] max-md:min-h-[100px] bg-A805Cream w-full md:justify-between items-center shadow-lg">
         <MenuOutlined v-if="!isMdOrLarger" style="font-size: 24px" class="ml-[40px]" @click="menuClick" />
-        <HeaderLogo class="md:ml-[20px] max-md:mx-auto" @click="router.push('/main')" />
+        <HeaderLogo class="md:ml-[20px] max-md:mx-auto cursor-pointer" @click="router.push('/main')" />
 
         <!-- 게임중에만 표시되도록 상태 표시 필요. -->
         <TextAtom class="text-2 truncate max-w-[20%]" v-if="isMdOrLarger && inRoom">{{ roomName }}</TextAtom>
@@ -77,3 +78,4 @@ onUnmounted(() => {
 </template>
 
 <style scoped></style>
+

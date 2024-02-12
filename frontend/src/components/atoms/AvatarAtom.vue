@@ -18,8 +18,9 @@ const handleClick: Handler = () => {
 
 <template>
     <div :class="customClass" @click="handleClick">
-        <img :src="imageUrl ? imageUrl : defaultImage" alt="Avatar" class="w-full h-auto" />
+        <img :src="imageUrl ? imageUrl : defaultImage" alt="Avatar" class="w-full h-full object-fill" />
     </div>
 </template>
 
 <style scoped></style>
+

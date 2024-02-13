@@ -1,11 +1,13 @@
 <script setup lang="ts">
-const { imageUrl, nickName, customClass, maniti } = defineProps(['customClass', 'imageUrl', 'nickName', 'maniti', 'mine'])
 import { ref } from 'vue'
 import TextAtom from '@/components/atoms/TextAtom.vue'
 import AvatarAtom from '@/components/atoms/AvatarAtom.vue'
 import ButtonAtom from '@/components/atoms/ButtonAtom.vue';
 
+const { imageUrl, nickName, customClass, maniti, predictType } = defineProps(['customClass', 'imageUrl', 'nickName', 'maniti', 'mine', 'predictType'])
+
 const emit = defineEmits(['predict-manito'])
+
 const predictButtonClick = () => {
     emit('predict-manito')
 }
@@ -23,12 +25,12 @@ const predictButtonClick = () => {
             나
         </ButtonAtom>
         <ButtonAtom v-else
-            class="absolute hidden group-hover:block w-[150px] rounded-lg text-white self-center p-[5px]  bg-A805Khaki"
+            class="absolute hidden group-hover:block w-[150px] rounded-lg text-white self-center p-[5px]  bg-A805Khaki z-10"
             @click="predictButtonClick">
             마니또
             예측하기
         </ButtonAtom>
-        <AvatarAtom :imageUrl="imageUrl" customClass="w-full h-full" />
+        <AvatarAtom :imageUrl="imageUrl" customClass="w-full h-full" :predict-type="predictType"></AvatarAtom>
         <TextAtom>{{ nickName }}</TextAtom>
     </div>
 </template>

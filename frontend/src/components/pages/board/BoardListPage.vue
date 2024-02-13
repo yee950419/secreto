@@ -112,6 +112,7 @@ watch(boardCategory, () => {
                 class="text-[1.5rem] text-center absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-10"
                 v-if="boards.length === 0"
             >
+                작성된 게시글이 없습니다.
             </TextAtom>
         </table>
 

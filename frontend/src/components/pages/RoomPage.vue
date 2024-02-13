@@ -28,7 +28,7 @@ let eventSource: EventSource
 
 const roomUserInfo = ref<RoomUserInfoType>({
     roomNo: Number(route.params.roomNo),
-    roomUserNo: 0,
+    roomUserNo: -1,
     roomName: '',
     roomNickname: '',
     profileUrl: ''
@@ -38,6 +38,8 @@ const roomUserNo = ref<number>(-1)
 const roomNo = ref<number>(Number(route.params.roomNo))
 const hostRoomUserNo = ref<number>(-1)
 const userMission = ref<UserMission[]>([])
+
+const navStatus = ref<number>(-1)
 
 const updateRoomName = (name: string | undefined) => {
     roomUserInfo.value.roomName = name ? name : '방 제목'
@@ -171,15 +173,42 @@ onUnmounted(() => {
 <template>
     <div class="flex flex-1 bg-A805RealWhite">
         <div v-for="room in chatRooms" :key="room.name">
-            <ChatRoom :name="room.name" :imageUrl="room.imageUrl" @close-chat-room="removeChatRoom" />
+            <ChatRoom
+                :name="room.name"
+                :imageUrl="room.imageUrl"
+                @close-chat-room="removeChatRoom"
+            />
         </div>
         <!-- pc버전이거나, 모바일 버전 + 메뉴가 체크된 상태일때만 nav가 보인다. -->
-        <NavBar @make-room="makeRoom" v-if="!isMobile || (isMobile && menuSeen)" :room-name="roomUserInfo.roomName"
-            :room-info="roomInfo" />
+        <NavBar
+            @make-room="makeRoom"
+            v-if="!isMobile || (isMobile && menuSeen)"
+            :room-name="roomUserInfo.roomName"
+            :room-info="roomInfo"
+            :nav-status="navStatus"
+        />
 
         <!-- pc버전이거나, 모바일 버전 + 메뉴가 닫힌 상태일때만 이 영역 이 보인다. -->
-        <RouterView v-if="!isMobile || !menuSeen" :room-info="roomInfo" :user-mission="userMission"
-            @refresh-notify="getNotify" @room-name-changed="updateRoomName" />
+        <RouterView
+            v-if="!isMobile || !menuSeen"
+            :room-info="roomInfo"
+            :user-mission="userMission"
+            @refresh-notify="getNotify"
+            @room-name-changed="updateRoomName"
+            @refresh-user-mission="getUserMissionHandler"
+            @start-room="
+                () => {
+                    console.log('emit?')
+                    navStatus = 3
+                }
+            "
+            @end-room="
+                () => {
+                    console.log('emit?2')
+                    navStatus = 7
+                }
+            "
+        />
     </div>
 </template>
 

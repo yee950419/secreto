@@ -55,7 +55,9 @@ const post: Ref<BoardDetailResponseType> = ref({
     roomUserNo: -1,
     hit: 0,
     publicYn: false,
-    missionCategory: '',
+    likedYn: false,
+    userMissionNo: null,
+    userMission: null,
     likedCount: 0
 })
 const replies: Ref<ReplyResponseType[]> = ref([])
@@ -150,15 +152,35 @@ const likeButtonHandler = () => {
     /**
      * 좋아요 눌렀는 지 여부 판단
      */
-    boardLike(
-        roomNo.value,
-        boardNo.value,
-        (response) => {},
-        (error) => {
-            console.error(error)
-            alert(error.response.data.message)
-        }
-    )
+    if (!post.value.likedYn) {
+        boardLike(
+            roomNo.value,
+            boardNo.value,
+            (response) => {
+                post.value.likedYn = true
+                ++post.value.likedCount
+                console.log(response)
+            },
+            (error) => {
+                console.error(error)
+                alert(error.response.data.message)
+            }
+        )
+    } else {
+        boardUnlike(
+            roomNo.value,
+            boardNo.value,
+            (response) => {
+                post.value.likedYn = false
+                --post.value.likedCount
+                console.log(response)
+            },
+            (error) => {
+                console.error(error)
+                alert(error.response.data.message)
+            }
+        )
+    }
 }
 
 // modal
@@ -203,12 +225,24 @@ const replyDeleteSuccessModalToggle = () =>
                 class="flex flex-col w-full border md:rounded border-A805LightGrey md:p-9 max-md:pt-3 max-md:border-x-0"
             >
                 <div class="w-full flex flex-col">
+                    <TextAtom
+                        v-if="post.boardCategory === BoardCategory.CERTIFICATE"
+                        class="text-A805DarkGrey"
+                    >
+                        <template v-if="post.publicYn">
+                            해당 게시글은 모든 유저가 볼 수 있도록 작성된 인증 게시글입니다.
+                        </template>
+                        <template v-else>
+                            해당 게시글은 작성자만 볼 수 있는 인증 게시글입니다.
+                            <br />게임이 종료된 후 나의 마니띠에게만 공개됩니다.
+                        </template>
+                    </TextAtom>
                     <TextAtom class="text-[28px] mb-2">
                         <span
                             v-if="post.boardCategory === BoardCategory.CERTIFICATE"
                             class="text-A805DarkGrey"
                         >
-                            [{{ post.missionCategory }}]
+                            [{{ post.userMission }}]
                         </span>
                         {{ post.title }}</TextAtom
                     >
@@ -226,7 +260,11 @@ const replyDeleteSuccessModalToggle = () =>
                 <LineAtom custom-class="my-4 border-A805LightGrey" />
                 <div class="min-h-[150px]" v-html="post.content"></div>
                 <div class="mt-[60px] flex gap-[20px] text-[16px]">
-                    <LikeButton :liked-count="post.likedCount" @click="likeButtonHandler" />
+                    <LikeButton
+                        :liked-count="post.likedCount"
+                        @click="likeButtonHandler"
+                        :liked="post.likedYn"
+                    />
                     <span class="flex items-center gap-[6px]"
                         ><CommentOutlined class="text-[24px]" /> 댓글 <b>{{ replyCount }}</b></span
                     >

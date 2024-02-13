@@ -39,3 +39,12 @@ export const modules = {
         }
     }
 }
+
+export const getFirstImageUrl = (content: string): string | null => {
+    const imageTagPrefix = '<img src="'
+    const tagSuffix = '">'
+    const index: number = content.indexOf(imageTagPrefix)
+    if (index === -1) return null
+    const ss = content.substring(index + imageTagPrefix.length)
+    return ss.substring(0, ss.indexOf(tagSuffix))
+}

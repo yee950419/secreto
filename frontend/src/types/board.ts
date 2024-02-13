@@ -17,7 +17,8 @@ export type BoardResponseType = {
     hit: number
     boardCategory: string
     publicYn: boolean
-    missionCategory: string | null
+    userMissionNo: number | null
+    userMission: string | null
     likedCount: number
     replyCount: number
 }
@@ -34,7 +35,9 @@ export type BoardDetailResponseType = {
     hit: number
     boardCategory: string
     publicYn: boolean
-    missionCategory: string | null
+    likedYn: boolean
+    userMissionNo: number | null
+    userMission: string | null
     likedCount: number
 }
 
@@ -79,7 +82,6 @@ export type BoardModifyRequestType = {
     content: string
     imageUrl: string | null
     publicYn: boolean
-    userMissionNo: number | null
 }
 
 export const BoardCategory = Object.freeze({

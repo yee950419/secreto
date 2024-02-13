@@ -56,7 +56,7 @@ const roomInfo = ref<RoomInfoType>({
 // const test: RoomInfoType = props.roomInfo
 const route = useRoute()
 
-const emit = defineEmits(['roomNameChanged'])
+const emit = defineEmits(['roomNameChanged', 'startRoom', 'endRoom'])
 const missionList = ref<Mission[]>([])
 const checkedMissons = computed<{ content: string }[]>(() => {
     return missionList.value
@@ -77,6 +77,10 @@ const roomUserInfo = inject<Ref<RoomUserInfoType>>(
     })
 )
 const roomName = ref(roomUserInfo.value.roomName)
+
+watch(roomUserInfo, (newValue) => {
+    roomName.value = newValue.roomName
+})
 const userList = ref<userType[]>([])
 const unapprovedUserList = computed(() => {
     return userList.value.filter((user) => user.standbyYn)
@@ -87,14 +91,9 @@ const approvedUserList = computed(() => {
 const isInvidual = ref<boolean>(false)
 const hostInGame = ref<boolean>(false)
 const missionInterval = ref<number>(7)
-const roomCode: Ref<string> = inject('roomCode', ref('qwer1234'))
+const roomCode: Ref<string> = inject('roomCode', ref('testCode'))
 const dateTimeFormat = 'YYYY-MM-DD HH:mm'
-const gamePeriod = ref<[Dayjs, Dayjs]>([
-    dayjs(),
-    dayjs().add(1, 'day')
-    // dayjs(dayjs(), dateTimeFormat),
-    // dayjs(dayjs().add(1, 'day'), dateTimeFormat)
-])
+
 const range = ref<{ start: string; end: string }>({
     start: dayjs().format(dateTimeFormat),
     end: dayjs().add(1, 'day').format(dateTimeFormat)
@@ -105,11 +104,13 @@ const crange = computed(() => {
         dayjs(range.value.end).format(dateTimeFormat)
     ]
 })
+const startTime = ref<string>(dayjs().format(dateTimeFormat))
+const EndTime = ref<string>(dayjs().format(dateTimeFormat))
+
 const unexpectedMissionContent = ref<string>('')
 const unexpectedMissionReserved = ref<boolean>(false)
 const unexpectedMissionReservationTime = ref<Dayjs>(dayjs())
 
-const { RangePicker } = DatePicker
 const { toClipboard } = useClipboard()
 const clipboardHandler: Handler = () => {
     toClipboard(roomCode.value)
@@ -152,6 +153,7 @@ const gameStartHandler: Handler = () => {
             router.push({
                 name: 'game-participate'
             })
+            emit('startRoom')
         },
         (error) => {
             console.log(':(', error.response.data.message)
@@ -206,21 +208,23 @@ const roomInfoGet: Handler = () => {
 
 const changeRoomNameHandler: Handler = () => {
     console.log('???')
-    changeRoomName(
-        { roomName: roomName.value, roomNo: roomUserInfo.value.roomNo },
-        ({ data }) => {
-            if (data.status === 'OK') {
-                console.log(':)', data)
-                console.log(roomName.value)
-                emit('roomNameChanged', roomName.value)
-            } else {
-                console.log(':(', data)
+    if (!roomInfo.value.roomStartYn) {
+        changeRoomName(
+            { roomName: roomName.value, roomNo: roomUserInfo.value.roomNo },
+            ({ data }) => {
+                if (data.status === 'OK') {
+                    console.log(':)', data)
+                    console.log(roomName.value)
+                    emit('roomNameChanged', roomName.value)
+                } else {
+                    console.log(':(', data)
+                }
+            },
+            (error) => {
+                console.error('error!', error)
             }
-        },
-        (error) => {
-            console.error('error!', error)
-        }
-    )
+        )
+    }
 }
 
 const addUnexpectedMissionHandler: Handler = () => {
@@ -252,25 +256,10 @@ const gameEndHandler: Handler = () => {
             router.push({
                 name: 'game-statistic'
             })
+            emit('endRoom')
         },
         (error) => {
             console.error(':(', error)
-        }
-    )
-}
-
-const testHandler: Handler = () => {
-    getUserList(
-        roomUserInfo.value.roomNo,
-        ({ data }) => {
-            data.result.forEach((mission: userType) => {
-                mission['checked'] = true
-            })
-            console.log('userlist', data)
-            userList.value = data.result
-        },
-        (error) => {
-            console.log('error', error)
         }
     )
 }
@@ -303,14 +292,25 @@ onUnmounted(() => {
                         label-class="text-[1.5rem]"
                         class="w-full"
                         button-class="button-blue text-white line-darkgrey  border-s-0"
-                        input-class="w-full rounded-s-[100px] text-center line-darkgrey bg-white"
+                        :input-class="[
+                            { 'bg-gray-200': roomInfo.roomStartYn },
+                            'w-full',
+                            'rounded-s-[100px]',
+                            'text-center',
+                            'line-darkgrey',
+                            'bg-white'
+                        ]"
                         v-model="roomName"
                         button-label="수정"
                         @button-click="changeRoomNameHandler"
+                        :disabling="roomInfo.roomStartYn"
                     />
                     <!-- status 연동 필요 -->
                     <!-- <div v-if="test.roomStatus === 'WAIT'" name="before-start"> -->
-                    <div v-if="roomInfo.roomStartYn === false" name="before-start">
+                    <div
+                        v-if="roomInfo.roomStartYn === false || roomInfo.roomStatus === 'END'"
+                        name="before-start"
+                    >
                         <MissionList v-model="missionList"></MissionList>
                         <div name="option-list" class="flex gap-[10%] pt-4 px-3">
                             <CheckBox v-model="isInvidual" class="gap-3"
@@ -361,6 +361,28 @@ onUnmounted(() => {
                     <label for="range" class="text-[1.5rem]">마니또 기간</label>
                     <div name="calendar-div w-full" id="range">
                         <!-- <Calendar :fullscreen="false" class="h-[40%]"></Calendar> -->
+                        <div class="flex">
+                            <div class="w-full flex flex-col items-center">
+                                <h2 class="text-[1.25rem]">미션 시작 시각</h2>
+                                <VDatePicker
+                                    class="!wfullfull"
+                                    v-model="startTime"
+                                    mode="time"
+                                    :time-accuracy="1"
+                                    :hide-time-header="true"
+                                />
+                            </div>
+                            <div class="w-full flex flex-col items-center">
+                                <h2 class="text-[1.25rem]">게임 종료 시각</h2>
+                                <VDatePicker
+                                    class="!wfullfull"
+                                    v-model="EndTime"
+                                    mode="time"
+                                    :time-accuracy="1"
+                                    :hide-time-header="true"
+                                />
+                            </div>
+                        </div>
                         <VDatePicker
                             v-model.range="range"
                             mode="dateTime"
@@ -390,7 +412,7 @@ onUnmounted(() => {
             </div>
         </div>
         <ButtonAtom
-            v-if="roomInfo.roomStartYn === false"
+            v-if="roomInfo.roomStartYn === false || roomInfo.roomStatus === 'END'"
             custom-class="button-blue h-[10%] min-h-[50px] text-A805RealWhite"
             @button-click="gameStartHandler"
             ><p class="md:text-[3rem]">게임 시작하기</p>

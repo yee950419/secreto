@@ -9,7 +9,7 @@ export type RoomMission = {
 }
 
 export type UserMission = {
-    userMissionNo?: number
+    userMissionNo: number
     content: string
     missionReceivedAt: string
     missionType: 'SUDDEN' | 'REGULAR'
@@ -23,8 +23,8 @@ export type SuddenMissionResponse = {
 }
 
 export type predictTypes = {
-    roomNo: number,
-    memo: string,
-    manitoPredictType: "YES" | "NO" | "UNKNOWN",
+    roomNo: number
+    memo: string
+    manitoPredictType: 'YES' | 'NO' | 'UNKNOWN'
     memoTo: number
 }

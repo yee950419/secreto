@@ -2,6 +2,7 @@
 import TextAtom from '@/components/atoms/TextAtom.vue'
 import { BoardCategory } from '@/types/board'
 import { convertStringToRegistrationDate } from '@/utils/date'
+import { FileImageOutlined } from '@ant-design/icons-vue'
 defineProps(['board'])
 </script>
 
@@ -14,13 +15,14 @@ defineProps(['board'])
                     v-if="board.boardCategory === BoardCategory.CERTIFICATE"
                     class="text-A805DarkGrey"
                 >
-                    [{{ board.missionCategory }}]</span
+                    [{{ board.userMission }}]</span
                 >
                 {{ board.title }}
             </TextAtom>
-            <TextAtom custom-class="text-A805Red font-bold ms-1">
+            <TextAtom custom-class="text-A805Red font-bold mx-1">
                 [{{ board.replyCount }}]</TextAtom
             >
+            <FileImageOutlined class="text-[#328815]" v-if="board.imageUrl != null" />
         </td>
         <td>{{ board.writer }}</td>
         <td>{{ convertStringToRegistrationDate(board.registerAt) }}</td>

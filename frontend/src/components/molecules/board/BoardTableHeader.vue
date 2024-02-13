@@ -8,7 +8,7 @@
             <th class="pb-3 font-bold">작성자</th>
             <th class="pb-3 font-bold">작성일</th>
             <th class="pb-3 font-bold">조회</th>
-            <th class="pb-3 font-bold">추천</th>
+            <th class="pb-3 font-bold">좋아요</th>
         </tr>
     </thead>
 </template>

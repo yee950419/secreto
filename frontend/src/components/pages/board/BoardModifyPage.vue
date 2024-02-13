@@ -8,7 +8,7 @@ import { computed, inject, onMounted, ref, type Ref } from 'vue'
 import { BoardCategory, type BoardModifyRequestType } from '@/types/board'
 import { modifyPost, getPost } from '@/api/board'
 import { useRoute } from 'vue-router'
-import { toolbarOptions, modules } from '@/utils/editor'
+import { toolbarOptions, modules, getFirstImageUrl } from '@/utils/editor'
 import router from '@/router'
 
 const route = useRoute()
@@ -31,6 +31,7 @@ const submitButtonHandle = () => {
     if (boardCategory.value !== BoardCategory.CERTIFICATE) {
         boardModifyRequest.value.publicYn = true
     }
+    boardModifyRequest.value.imageUrl = getFirstImageUrl(boardModifyRequest.value.content)
     modifyPost(
         boardNo.value,
         roomNo.value,

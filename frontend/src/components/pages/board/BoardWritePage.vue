@@ -10,7 +10,7 @@ import { BoardCategory, type BoardWriteRequestType } from '@/types/board'
 import type { UserMission } from '@/types/mission'
 import { createPost } from '@/api/board'
 import { useRoute } from 'vue-router'
-import { toolbarOptions, modules } from '@/utils/editor'
+import { toolbarOptions, modules, getFirstImageUrl } from '@/utils/editor'
 import router from '@/router'
 import { getUserMission } from '@/api/mission'
 
@@ -33,7 +33,7 @@ const submitButtonHandle = () => {
         boardWriteRequest.value.userMissionNo = null
         boardWriteRequest.value.publicYn = true
     }
-    console.log(boardWriteRequest.value)
+    boardWriteRequest.value.imageUrl = getFirstImageUrl(boardWriteRequest.value.content)
     createPost(
         roomNo.value,
         boardWriteRequest.value,

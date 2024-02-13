@@ -225,6 +225,18 @@ const replyDeleteSuccessModalToggle = () =>
                 class="flex flex-col w-full border md:rounded border-A805LightGrey md:p-9 max-md:pt-3 max-md:border-x-0"
             >
                 <div class="w-full flex flex-col">
+                    <TextAtom
+                        v-if="post.boardCategory === BoardCategory.CERTIFICATE"
+                        class="text-A805DarkGrey"
+                    >
+                        <template v-if="post.publicYn">
+                            해당 게시글은 모든 유저가 볼 수 있도록 작성된 인증 게시글입니다.
+                        </template>
+                        <template v-else>
+                            해당 게시글은 작성자만 볼 수 있는 인증 게시글입니다.
+                            <br />게임이 종료된 후 나의 마니띠에게만 공개됩니다.
+                        </template>
+                    </TextAtom>
                     <TextAtom class="text-[28px] mb-2">
                         <span
                             v-if="post.boardCategory === BoardCategory.CERTIFICATE"

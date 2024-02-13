@@ -1,21 +1,48 @@
 <script setup lang="ts">
-import { computed } from 'vue'
+import { computed, inject, ref, type Ref } from 'vue'
 import TextAtom from '@/components/atoms/TextAtom.vue'
 import { ReloadOutlined } from '@ant-design/icons-vue'
 import type { UserMission } from '@/types/mission'
-
+import { rerollMission } from '@/api/mission'
 const props = defineProps({
     userMission: {
         type: Object as () => UserMission[],
         required: true
+    },
+    customClass: {
+        type: String,
+        default: ''
     }
 })
-const userMissionLength = computed(() => {
+const roomNo: Ref<number> = inject('roomNo', ref(0))
+const emit = defineEmits(['reroll'])
+const userMissionLength = computed<number>(() => {
     return props.userMission.length
+})
+const lastMissionNo = computed<number>(() => {
+    if (userMissionLength.value > 0) {
+        return props.userMission[props.userMission.length - 1].userMissionNo
+    } else {
+        return 0
+    }
 })
 
 const rerollHandler = () => {
     console.log('reroll')
+    rerollMission(
+        {
+            roomNo: roomNo.value,
+            userMissionNo: lastMissionNo.value
+        },
+        ({ data }) => {
+            console.log(':)', data)
+        },
+        (error) => {
+            console.log(':(', error.response.data.message)
+            alert(error.response.data.message)
+        }
+    )
+    emit('reroll')
 }
 </script>
 
@@ -23,6 +50,7 @@ const rerollHandler = () => {
     <div
         name="mission-header"
         class="flex justify-between items-center md:px-5 md:py-6 px-3 py-5 w-full md:min-w-[590px] overflow-x-auto"
+        :class="customClass"
     >
         <div class="flex items-center gap-5 md:gap-10">
             <div name="now-mission">

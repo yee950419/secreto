@@ -46,19 +46,38 @@ async function getRoomMission(
     missonInstance.get(`/mission/${roomNo}`).then(success).catch(fail)
 }
 
-async function memoUser(    
-    param : predictTypes,
+async function memoUser(
+    param: predictTypes,
     success: (response: AxiosResponse) => void,
-    fail: (error: any) => void){
+    fail: (error: any) => void
+) {
     missonInstance.post(`/mission/memo_user`, param).then(success).catch(fail)
-} 
+}
 
 async function getUserMemo(
     roomNo: number,
     memoTo: number,
     success: (response: AxiosResponse) => void,
-    fail: (error: any) => void){
+    fail: (error: any) => void
+) {
     missonInstance.get(`/mission/memo_user/${roomNo}?memoTo=${memoTo}`).then(success).catch(fail)
 }
 
-export { getSystemMission, getSuddenMission, getUserMission, getRoomMission, addUnexpectedMission, memoUser, getUserMemo }
+async function rerollMission(
+    param: { roomNo: number; userMissionNo: number },
+    success: (response: AxiosResponse) => void,
+    fail: (error: any) => void
+) {
+    missonInstance.put(`/mission/reroll`, param).then(success).catch(fail)
+}
+
+export {
+    getSystemMission,
+    getSuddenMission,
+    getUserMission,
+    getRoomMission,
+    addUnexpectedMission,
+    memoUser,
+    getUserMemo,
+    rerollMission
+}

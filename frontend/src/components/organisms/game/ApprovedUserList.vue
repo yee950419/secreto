@@ -40,7 +40,11 @@ const usersApproved: ModelRef<userType[]> = defineModel({ required: true })
         </div>
         <div class="overflow-y-auto">
             <div v-for="user in usersApproved" :key="user.roomUserNo" class="px-4 py-2">
-                <ProfileInfo :name="user.nickname" :image-url="user.profileUrl"></ProfileInfo>
+                <ProfileInfo
+                    :name="user.nickname"
+                    :image-url="user.profileUrl"
+                    :title="user.email"
+                ></ProfileInfo>
             </div>
         </div>
     </div>

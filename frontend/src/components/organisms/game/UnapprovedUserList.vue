@@ -8,6 +8,9 @@ import ProfileInfo from '@/components/molecules/game/ProfileInfo.vue'
 import { CheckOutlined, MinusCircleOutlined } from '@ant-design/icons-vue'
 import type { userType } from '@/types/room'
 import { acceptRoomUsers, denyRoomUsers } from '@/api/room'
+import ModalTemplate from '@/components/template/ModalTemplate.vue'
+import ButtonAtom from '@/components/atoms/ButtonAtom.vue'
+import IntrudingModalContent from '../modal/IntrudingModalContent.vue'
 
 const emit = defineEmits(['usersApproved', 'usersDenied'])
 const targetUsers = computed<number[]>(() => {
@@ -23,11 +26,11 @@ const allChangeHandler: Handler = () => {
 
 const allUserChecked: Ref<boolean> = ref(true)
 
-const acceptUsersHandler: Handler = () => {
-    console.log('?', targetUsers.value, typeof targetUsers.value)
+const acceptUserHandler = (no?: number) => {
+    const targets = no ? [no] : targetUsers.value
     acceptRoomUsers(
         {
-            roomUserNos: targetUsers.value
+            roomUserNos: targets
         },
         ({ data }) => {
             console.log('acceptRoomUsers success', data)
@@ -38,40 +41,11 @@ const acceptUsersHandler: Handler = () => {
         }
     )
 }
-const acceptUserHandler: DataHandler<number> = (no) => {
-    acceptRoomUsers(
-        {
-            roomUserNos: [no]
-        },
-        ({ data }) => {
-            console.log('acceptRoomUsers success', data)
-            emit('usersApproved')
-        },
-        (error) => {
-            console.log('error', error)
-        }
-    )
-}
-const denyUsersHandler: Handler = () => {
-    console.log('?', targetUsers.value, typeof targetUsers.value)
+const denyUserHandler = (no?: number) => {
+    const targets = no ? [no] : targetUsers.value
     denyRoomUsers(
         {
-            roomUserNos: targetUsers.value
-        },
-        ({ data }) => {
-            console.log('denyRoomUser success', data)
-            emit('usersDenied')
-        },
-        (error) => {
-            console.log('error', error.response.data.message)
-        }
-    )
-}
-const denyUserHandler: DataHandler<number> = (no) => {
-    console.log('?')
-    denyRoomUsers(
-        {
-            roomUserNos: [no]
+            roomUserNos: targets
         },
         ({ data }) => {
             console.log('denyRoomUser success', data)
@@ -82,6 +56,11 @@ const denyUserHandler: DataHandler<number> = (no) => {
         }
     )
 }
+
+const modalSeen = ref<boolean>(true)
+const storedTargets = ref<number[]>([])
+const rematchHandler = () => {}
+const interceptHandler = () => {}
 </script>
 
 <template>
@@ -101,8 +80,8 @@ const denyUserHandler: DataHandler<number> = (no) => {
                 >전체 선택</CheckBox
             >
             <div class="flex justify-between gap-3 text-sm">
-                <p class="text-A805Blue cursor-pointer" @click="acceptUsersHandler">선택 승인</p>
-                <p class="cursor-pointer" @click="denyUsersHandler">선택 거절</p>
+                <p class="text-A805Blue cursor-pointer" @click="acceptUserHandler()">선택 승인</p>
+                <p class="cursor-pointer" @click="denyUserHandler()">선택 거절</p>
             </div>
         </div>
         <div class="flex flex-col h-[220px] overflow-y-auto">
@@ -134,6 +113,15 @@ const denyUserHandler: DataHandler<number> = (no) => {
             </div>
         </div>
     </div>
+    <ModalTemplate :seen="modalSeen" custom-class="modal-template-style-1"
+        ><IntrudingModalContent
+            content-title="MANITO"
+            title-class="font-iceland"
+            content-message="새로운 유저의 매칭 방식을 선택하세요"
+            @rematch="rematchHandler"
+            @intercept="interceptHandler"
+        ></IntrudingModalContent
+    ></ModalTemplate>
 </template>
 
 <style scoped></style>

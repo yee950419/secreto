@@ -10,7 +10,7 @@ defineProps({
 
 <template>
     <div
-        class="flex flex-col p-3 w-full md:max-w-[400px] border border-A805DarkGrey rounded-lg shadow-rb gap-3"
+        class="flex flex-col p-3 w-full md:max-w-[350px] border border-A805DarkGrey rounded-lg shadow-rb gap-3"
     >
         <TextAtom class="text-[20px] font-bold text-center">{{ title }}</TextAtom>
         <div class="flex h-full items-center">

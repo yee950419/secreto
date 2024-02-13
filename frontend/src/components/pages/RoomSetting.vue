@@ -31,9 +31,9 @@ import { Calendar as VCalendar, DatePicker as VDatePicker } from 'v-calendar'
 import IconArrowRight from 'v-calendar'
 import 'v-calendar/style.css'
 
-// const props = defineProps({
-//     roomInfo: { type: Object as () => RoomInfoType, required: true }
-// })
+const props = defineProps({
+    roomUserList: { type: Object as () => userType[], required: true }
+})
 const roomInfo = ref<RoomInfoType>({
     entryCode: '',
     commonYn: true,
@@ -56,7 +56,7 @@ const roomInfo = ref<RoomInfoType>({
 // const test: RoomInfoType = props.roomInfo
 const route = useRoute()
 
-const emit = defineEmits(['roomNameChanged', 'startRoom', 'endRoom'])
+const emit = defineEmits(['roomNameChanged', 'startRoom', 'endRoom', 'refreshUserList'])
 const missionList = ref<Mission[]>([])
 const checkedMissons = computed<{ content: string }[]>(() => {
     return missionList.value
@@ -76,18 +76,20 @@ const roomUserInfo = inject<Ref<RoomUserInfoType>>(
         profileUrl: ''
     })
 )
+
 const roomName = ref(roomUserInfo.value.roomName)
 
 watch(roomUserInfo, (newValue) => {
     roomName.value = newValue.roomName
 })
-const userList = ref<userType[]>([])
-const unapprovedUserList = computed(() => {
-    return userList.value.filter((user) => user.standbyYn)
+const unapprovedList = computed(() => {
+    return props.roomUserList.filter((user) => user.standbyYn)
 })
-const approvedUserList = computed(() => {
-    return userList.value.filter((user) => !user.standbyYn)
+
+const approvedList = computed(() => {
+    return props.roomUserList.filter((user) => !user.standbyYn)
 })
+
 const isInvidual = ref<boolean>(false)
 const hostInGame = ref<boolean>(false)
 const missionInterval = ref<number>(7)
@@ -169,21 +171,6 @@ const missionGet: Handler = () => {
     )
 }
 
-const userListGet: Handler = () => {
-    getUserList(
-        roomUserInfo.value.roomNo,
-        ({ data }) => {
-            data.result.forEach((mission: userType) => {
-                mission['checked'] = true
-            })
-            console.log('userlist', data)
-            userList.value = data.result
-        },
-        (error) => {
-            console.log('error', error)
-        }
-    )
-}
 const roomInfoGet: Handler = () => {
     getRoom(
         roomUserInfo.value.roomNo,
@@ -200,7 +187,7 @@ const roomInfoGet: Handler = () => {
 
 const changeRoomNameHandler: Handler = () => {
     console.log('???')
-    if (!roomInfo.value.roomStartYn) {
+    if (!roomInfo.value.roomStartYn || roomInfo.value.roomStatus === 'END') {
         changeRoomName(
             { roomName: roomName.value, roomNo: roomUserInfo.value.roomNo },
             ({ data }) => {
@@ -256,18 +243,9 @@ const gameEndHandler: Handler = () => {
     )
 }
 
-const refreshUserList = setInterval(() => {
-    userListGet()
-}, 5000)
-
 onMounted(async () => {
     await roomInfoGet()
     await missionGet()
-    await userListGet()
-})
-
-onUnmounted(() => {
-    clearInterval(refreshUserList)
 })
 </script>
 
@@ -398,16 +376,16 @@ onUnmounted(() => {
             </div>
             <div name="side-part" class="flex flex-col w-full lg:w-[70%] px-3">
                 <UnapprovedUserList
-                    v-model="unapprovedUserList"
+                    v-model="unapprovedList"
                     class="h-[50%] border-b-2"
-                    @users-approved="userListGet"
-                    @users-denied="userListGet"
+                    @users-approved="emit('refreshUserList')"
+                    @users-denied="emit('refreshUserList')"
                 ></UnapprovedUserList>
                 <hr />
                 <ApprovedUserList
-                    v-model="approvedUserList"
+                    v-model="approvedList"
                     class="h-[50%]"
-                    @test="userListGet"
+                    @test="emit('refreshUserList')"
                 ></ApprovedUserList>
             </div>
         </div>

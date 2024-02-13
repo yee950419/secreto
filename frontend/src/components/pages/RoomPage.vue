@@ -28,7 +28,7 @@ let eventSource: EventSource
 
 const roomUserInfo = ref<RoomUserInfoType>({
     roomNo: Number(route.params.roomNo),
-    roomUserNo: 0,
+    roomUserNo: -1,
     roomName: '',
     roomNickname: '',
     profileUrl: ''

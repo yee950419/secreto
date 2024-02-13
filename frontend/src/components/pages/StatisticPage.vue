@@ -139,6 +139,8 @@ const contentConstruct2 = (content: string): string => {
                             query: { boardNo: summaryBoardLikes.summary.id }
                         })
                     "
+                    :is-valid="summaryBoardLikes.summary.nickname !== ''"
+                    :fail-message="summaryBoardLikes.summary.contents"
                 />
                 <StatisticLargeCard
                     v-if="summaryBoardViews"
@@ -156,6 +158,8 @@ const contentConstruct2 = (content: string): string => {
                             query: { boardNo: summaryBoardViews.summary.id }
                         })
                     "
+                    :is-valid="summaryBoardViews.summary.nickname !== ''"
+                    :fail-message="summaryBoardViews.summary.contents"
                 />
                 <StatisticCard
                     v-if="summaryUserBest"
@@ -166,6 +170,8 @@ const contentConstruct2 = (content: string): string => {
                         contentConstruct1(summaryUserBest.summary.contents),
                         contentConstruct2(summaryUserBest.summary.contents)
                     ]"
+                    :is-valid="summaryUserBest.summary.nickname !== ''"
+                    :fail-message="summaryUserBest.summary.contents"
                 />
                 <StatisticCard
                     v-if="summaryUserFast"
@@ -178,6 +184,8 @@ const contentConstruct2 = (content: string): string => {
                             '일전',
                         convertStringToRegistrationDateTime(summaryUserFast.summary.dateTime)
                     ]"
+                    :is-valid="summaryUserFast.summary.nickname !== ''"
+                    :fail-message="summaryUserFast.summary.contents"
                 />
                 <StatisticCard
                     v-if="summaryUserCert"
@@ -188,6 +196,8 @@ const contentConstruct2 = (content: string): string => {
                         '인증글 ' + summaryUserCert.summary.amount + '개',
                         '&nbsp;'
                     ]"
+                    :is-valid="summaryUserCert.summary.nickname !== ''"
+                    :fail-message="summaryUserCert.summary.contents"
                 />
                 <StatisticCard
                     v-if="summaryUserBoast"
@@ -198,6 +208,8 @@ const contentConstruct2 = (content: string): string => {
                         '자랑글 ' + summaryUserBoast.summary.amount + '개',
                         '&nbsp;'
                     ]"
+                    :is-valid="summaryUserBoast.summary.nickname !== ''"
+                    :fail-message="summaryUserBoast.summary.contents"
                 />
             </div>
             <div

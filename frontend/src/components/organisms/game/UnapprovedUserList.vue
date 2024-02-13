@@ -1,17 +1,17 @@
 <script setup lang="ts">
 import CheckBox from '@/components/molecules/common/CheckBox.vue'
 import InputBox from '@/components/molecules/common/InputBox.vue'
-import { computed, ref, type ModelRef, type Ref } from 'vue'
+import { computed, ref, type ModelRef, type Ref, inject, watchEffect } from 'vue'
 import type { DataHandler, Handler } from '@/types/common'
 import type { ProfileInfoType, ProfileInfoCheckBoxType } from '@/types/user'
 import ProfileInfo from '@/components/molecules/game/ProfileInfo.vue'
 import { CheckOutlined, MinusCircleOutlined } from '@ant-design/icons-vue'
 import type { userType } from '@/types/room'
-import { acceptRoomUsers, denyRoomUsers } from '@/api/room'
+import { acceptRoomUsers, denyRoomUsers, rematch, interceptUser } from '@/api/room'
 import ModalTemplate from '@/components/template/ModalTemplate.vue'
 import ButtonAtom from '@/components/atoms/ButtonAtom.vue'
 import IntrudingModalContent from '../modal/IntrudingModalContent.vue'
-
+import type { RoomInfoType } from '@/types/room'
 const emit = defineEmits(['usersApproved', 'usersDenied'])
 const targetUsers = computed<number[]>(() => {
     return usersUnapproved.value.filter((user) => user.checked).map((user) => user.roomUserNo)
@@ -25,9 +25,14 @@ const allChangeHandler: Handler = () => {
 }
 
 const allUserChecked: Ref<boolean> = ref(true)
+const roomInfo: Ref<RoomInfoType> = inject('roomInfo') as Ref<RoomInfoType>
 
 const acceptUserHandler = (no?: number) => {
     const targets = no ? [no] : targetUsers.value
+    if (roomInfo.value.roomStartYn && roomInfo.value.roomStatus === 'PARTICIPANT') {
+        storedTargets.value = targets
+        modalSeen.value = true
+    }
     acceptRoomUsers(
         {
             roomUserNos: targets
@@ -57,10 +62,34 @@ const denyUserHandler = (no?: number) => {
     )
 }
 
-const modalSeen = ref<boolean>(true)
+const modalSeen = ref<boolean>(false)
 const storedTargets = ref<number[]>([])
-const rematchHandler = () => {}
-const interceptHandler = () => {}
+const rematchHandler = () => {
+    console.log('rematch!')
+    modalSeen.value = false
+    rematch(
+        { roomNo: roomInfo.value.roomNo },
+        ({ data }) => {
+            console.log('rematch :)', data)
+        },
+        (error) => {
+            console.log('rematch :(', error.response.data.message)
+        }
+    )
+}
+const interceptHandler = () => {
+    console.log('intercept!')
+    modalSeen.value = false
+    interceptUser(
+        { roomNo: roomInfo.value.roomNo, roomUserNos: storedTargets.value },
+        ({ data }) => {
+            console.log('intercept :)', data)
+        },
+        (error) => {
+            console.log('intercept :(', error.response.data.message)
+        }
+    )
+}
 </script>
 
 <template>

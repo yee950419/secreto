@@ -114,6 +114,22 @@ async function exitRoom(
     roomInstance.put(`/room/exit`, { roomNo: param }).then(success).catch(fail)
 }
 
+async function rematch(
+    param: { roomNo: number },
+    success: (response: AxiosResponse) => void,
+    fail: (error: any) => void
+) {
+    roomInstance.post(`/room/matching`, param).then(success).catch(fail)
+}
+
+async function interceptUser(
+    param: { roomNo: number; roomUserNos: number[] },
+    success: (response: AxiosResponse) => void,
+    fail: (error: any) => void
+) {
+    roomInstance.put(`/room/matching`, param).then(success).catch(fail)
+}
+
 export {
     createRoom,
     getRoom,
@@ -128,5 +144,7 @@ export {
     denyRoomUsers,
     startRoom,
     endRoom,
-    rollbackRoomUsers
+    rollbackRoomUsers,
+    rematch,
+    interceptUser
 }

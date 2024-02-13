@@ -27,7 +27,7 @@ defineProps({
         </div>
         <div class="flex items-center gap-2 w-full justify-end">
             <ArrowRightOutlined class="text-[28px]" />
-            <AvatarAtom customClass="predict-result-profile" :imageUrl="maniti.profileUrl" />
+            <AvatarAtom customClass="predict-result-profile" :imageUrl="manito.profileUrl" />
             <TextAtom class="text-A805LightBlue">{{ manito.nickname }}</TextAtom>
             <CheckCircleOutlined v-if="predictCorrect" class="ms- text-[32px] text-A805Green" />
             <CloseCircleOutlined v-else class="ms- text-[32px] text-A805Red" />

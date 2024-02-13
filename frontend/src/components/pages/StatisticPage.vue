@@ -111,6 +111,19 @@ const contentConstruct2 = (content: string): string => {
     const splited: string[] = content.split(',')
     return '좋아요 수 ' + splited[4] + '개 / 조회수 : ' + splited[5] + '개'
 }
+
+const isValid = (content: string): boolean => {
+    return content != '' && content != null
+}
+const boardMove = (content: SummaryContentType) => {
+    if (isValid(content.summary.contents)) {
+        return
+    }
+    router.push({
+        name: 'game-board-detail',
+        query: { boardNo: content.summary.id }
+    })
+}
 </script>
 
 <template>
@@ -125,7 +138,11 @@ const contentConstruct2 = (content: string): string => {
             >
                 <StatisticLargeCard
                     v-if="summaryBoardLikes"
-                    class="cursor-pointer"
+                    :class="
+                        summaryBoardLikes != null && isValid(summaryBoardLikes.summary.nickname)
+                            ? 'cursor-pointer'
+                            : ''
+                    "
                     :title="summaryBoardLikes.header"
                     :image-url="summaryBoardLikes.summary.imageUrl"
                     :content="[
@@ -134,17 +151,20 @@ const contentConstruct2 = (content: string): string => {
                         '좋아요 ' + summaryBoardLikes.summary.amount
                     ]"
                     @click="
-                        router.push({
-                            name: 'game-board-detail',
-                            query: { boardNo: summaryBoardLikes.summary.id }
-                        })
+                        () => {
+                            if (summaryBoardLikes != null) boardMove(summaryBoardLikes)
+                        }
                     "
                     :is-valid="summaryBoardLikes.summary.nickname !== ''"
                     :fail-message="summaryBoardLikes.summary.contents"
                 />
                 <StatisticLargeCard
                     v-if="summaryBoardViews"
-                    class="cursor-pointer"
+                    :class="
+                        summaryBoardViews != null && isValid(summaryBoardViews.summary.nickname)
+                            ? 'cursor-pointer'
+                            : ''
+                    "
                     :title="summaryBoardViews.header"
                     :image-url="summaryBoardViews.summary.imageUrl"
                     :content="[
@@ -153,12 +173,14 @@ const contentConstruct2 = (content: string): string => {
                         '조회수 ' + summaryBoardViews.summary.amount
                     ]"
                     @click="
-                        router.push({
-                            name: 'game-board-detail',
-                            query: { boardNo: summaryBoardViews.summary.id }
-                        })
+                        () => {
+                            if (summaryBoardViews != null) boardMove(summaryBoardViews)
+                        }
                     "
-                    :is-valid="summaryBoardViews.summary.nickname !== ''"
+                    :is-valid="
+                        summaryBoardViews.summary.nickname !== '' &&
+                        summaryBoardViews.summary.nickname !== null
+                    "
                     :fail-message="summaryBoardViews.summary.contents"
                 />
                 <StatisticCard
@@ -170,7 +192,10 @@ const contentConstruct2 = (content: string): string => {
                         contentConstruct1(summaryUserBest.summary.contents),
                         contentConstruct2(summaryUserBest.summary.contents)
                     ]"
-                    :is-valid="summaryUserBest.summary.nickname !== ''"
+                    :is-valid="
+                        summaryUserBest.summary.nickname !== '' &&
+                        summaryUserBest.summary.nickname !== null
+                    "
                     :fail-message="summaryUserBest.summary.contents"
                 />
                 <StatisticCard
@@ -184,7 +209,10 @@ const contentConstruct2 = (content: string): string => {
                             '일전',
                         convertStringToRegistrationDateTime(summaryUserFast.summary.dateTime)
                     ]"
-                    :is-valid="summaryUserFast.summary.nickname !== ''"
+                    :is-valid="
+                        summaryUserFast.summary.nickname !== '' &&
+                        summaryUserFast.summary.nickname !== null
+                    "
                     :fail-message="summaryUserFast.summary.contents"
                 />
                 <StatisticCard
@@ -196,7 +224,10 @@ const contentConstruct2 = (content: string): string => {
                         '인증글 ' + summaryUserCert.summary.amount + '개',
                         '&nbsp;'
                     ]"
-                    :is-valid="summaryUserCert.summary.nickname !== ''"
+                    :is-valid="
+                        summaryUserCert.summary.nickname !== '' &&
+                        summaryUserCert.summary.nickname !== null
+                    "
                     :fail-message="summaryUserCert.summary.contents"
                 />
                 <StatisticCard
@@ -208,7 +239,10 @@ const contentConstruct2 = (content: string): string => {
                         '자랑글 ' + summaryUserBoast.summary.amount + '개',
                         '&nbsp;'
                     ]"
-                    :is-valid="summaryUserBoast.summary.nickname !== ''"
+                    :is-valid="
+                        summaryUserBoast.summary.nickname !== '' &&
+                        summaryUserBoast.summary.nickname !== null
+                    "
                     :fail-message="summaryUserBoast.summary.contents"
                 />
             </div>

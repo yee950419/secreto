@@ -4,7 +4,9 @@ import defaultImage from '@/assets/images/character2.png'
 defineProps({
     title: { type: String, required: true },
     content: { type: Object as () => Array<String>, required: true },
-    imageUrl: { type: String as () => string | null }
+    imageUrl: { type: String as () => string | null },
+    isValid: { type: Boolean, default: true },
+    failMessage: { type: String, default: '존재하지 않습니다.' }
 })
 </script>
 
@@ -19,10 +21,17 @@ defineProps({
             :class="imageUrl ? 'object-cover' : 'object-contain'"
         />
         <div class="flex flex-col text-[22px] w-full items-center gap-1">
-            <TextAtom class="text-A805Black">{{ content[0] }}</TextAtom>
-            <div class="flex w-full justify-around">
-                <TextAtom class="text-[16px] text-A805DarkGrey">{{ content[1] }}</TextAtom>
-                <TextAtom class="text-[16px] text-A805Khaki font-bold">{{ content[2] }}</TextAtom>
+            <template v-if="isValid">
+                <TextAtom class="text-A805Black">{{ content[0] }}</TextAtom>
+                <div class="flex w-full justify-around">
+                    <TextAtom class="text-[16px] text-A805DarkGrey">{{ content[1] }}</TextAtom>
+                    <TextAtom class="text-[16px] text-A805Khaki font-bold">{{
+                        content[2]
+                    }}</TextAtom>
+                </div>
+            </template>
+            <div v-if="!isValid" class="h-[90px] w-full flex items-center justify-center">
+                <TextAtom>{{ failMessage }}</TextAtom>
             </div>
         </div>
     </div>

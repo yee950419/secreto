@@ -138,14 +138,17 @@ const loadRepliesAndShowModal = (content: string) => {
 const modifyButtonHandler: Handler = () => {
     router.push({
         name: 'game-board-modify',
-        query: { boardNo: boardNo.value, boardCategory: boardCategory.value }
+        query: { boardNo: boardNo.value, boardCategory: post.value.boardCategory }
     })
 }
 const topButtonHandler: Handler = () => {
     alert('맨 이벤트 발생')
 }
 const listButtonHandler: Handler = () => {
-    router.push({ name: 'game-board-list', query: { ...boardRequest.value } })
+    router.push({
+        name: 'game-board-list',
+        query: { ...boardRequest.value, boardCategory: post.value.boardCategory }
+    })
 }
 
 const likeButtonHandler = () => {
@@ -196,7 +199,7 @@ const postDeleteHandler: Handler = () => {
             console.log(response)
             router.push({
                 name: 'game-board-list',
-                query: { boardCategory: boardCategory.value }
+                query: { boardCategory: post.value.boardCategory }
             })
         },
         (error) => {
@@ -318,7 +321,7 @@ const replyDeleteSuccessModalToggle = () =>
                     () =>
                         router.push({
                             name: 'game-board-write',
-                            query: { boardCategory: boardCategory }
+                            query: { boardCategory: post.boardCategory }
                         })
                 "
                 @modify-button-handle="modifyButtonHandler"

@@ -6,7 +6,6 @@ import ModalTemplate from '@/components/template/ModalTemplate.vue';
 import InferenceModalContent from '@/components/organisms/modal/InferenceModalContent.vue';
 import type { userType, RoomUserInfoType } from '@/types/room'
 import type { UserMission } from '@/types/mission';
-import { getUserList } from '@/api/room'
 import { ref, onMounted, inject, type Ref } from 'vue'
 import { useRoute } from 'vue-router'
 
@@ -17,7 +16,7 @@ defineProps({
     }
 })
 const route = useRoute()
-const userList = ref<userType[]>()
+const userList = inject('userList') as Ref<userType[]>
 const modalSeen = ref(false)
 
 const modalToggle = () => {
@@ -37,28 +36,11 @@ const roomUserInfo = inject<Ref<RoomUserInfoType>>(
     })
 )
 
-const getRooms = () => {
-    getUserList(
-        Number(route.params.roomNo), // 방번호
-        ({ data }) => {
-            userList.value = data.result
-            console.log(userList.value)
-        },
-        (error) => {
-            console.error('error', error)
-        }
-    )
-}
-
 const predictManito = (user: userType) => {
     modalSeen.value = true
     console.log(user)
     predictInfo.value = user
 }
-
-onMounted(() => {
-    getRooms()
-})
 </script>
 
 <template>

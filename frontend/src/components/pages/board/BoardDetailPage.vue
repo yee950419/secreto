@@ -225,24 +225,15 @@ const replyDeleteSuccessModalToggle = () =>
                 class="flex flex-col w-full border md:rounded border-A805LightGrey md:p-9 max-md:pt-3 max-md:border-x-0"
             >
                 <div class="w-full flex flex-col">
-<<<<<<< HEAD
                     <TextAtom
                         v-if="post.boardCategory === BoardCategory.CERTIFICATE"
                         class="text-A805DarkGrey"
                     >
                         <template v-if="post.publicYn">
-                            해당 게시글은 모든 유저가 볼 수 있도록 작성된 인증 게시글입니다.
-                        </template>
-                        <template v-else>
-                            해당 게시글은 작성자만 볼 수 있는 인증 게시글입니다.
-=======
-                    <TextAtom v-if="roomUserNo === post.roomUserNo" class="text-A805DarkGrey">
-                        <template v-if="post.publicYn">
                             해당 게시글은 모든 유저가 볼 수 있도록 작성된 게시글입니다.
                         </template>
                         <template v-else>
                             해당 게시글은 작성자만 볼 수 있는 게시글입니다.
->>>>>>> 80a8a25c85ca1fe0ba25c4e5a417730682ddb8f6
                             <br />게임이 종료된 후 나의 마니띠에게만 공개됩니다.
                         </template>
                     </TextAtom>

@@ -230,10 +230,10 @@ const replyDeleteSuccessModalToggle = () =>
                         class="text-A805DarkGrey"
                     >
                         <template v-if="post.publicYn">
-                            해당 게시글은 모든 유저가 볼 수 있도록 작성된 게시글입니다.
+                            해당 게시글은 모든 유저가 볼 수 있도록 작성된 인증 게시글입니다.
                         </template>
                         <template v-else>
-                            해당 게시글은 작성자만 볼 수 있는 게시글입니다.
+                            해당 게시글은 작성자만 볼 수 있는 인증 게시글입니다.
                             <br />게임이 종료된 후 나의 마니띠에게만 공개됩니다.
                         </template>
                     </TextAtom>

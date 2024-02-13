@@ -104,6 +104,9 @@ const crange = computed(() => {
         dayjs(range.value.end).format(dateTimeFormat)
     ]
 })
+const startTime = ref<string>(dayjs().format(dateTimeFormat))
+const EndTime = ref<string>(dayjs().format(dateTimeFormat))
+
 const unexpectedMissionContent = ref<string>('')
 const unexpectedMissionReserved = ref<boolean>(false)
 const unexpectedMissionReservationTime = ref<Dayjs>(dayjs())
@@ -358,6 +361,28 @@ onUnmounted(() => {
                     <label for="range" class="text-[1.5rem]">마니또 기간</label>
                     <div name="calendar-div w-full" id="range">
                         <!-- <Calendar :fullscreen="false" class="h-[40%]"></Calendar> -->
+                        <div class="flex">
+                            <div class="w-full flex flex-col items-center">
+                                <h2 class="text-[1.25rem]">미션 시작 시각</h2>
+                                <VDatePicker
+                                    class="!wfullfull"
+                                    v-model="startTime"
+                                    mode="time"
+                                    :time-accuracy="1"
+                                    :hide-time-header="true"
+                                />
+                            </div>
+                            <div class="w-full flex flex-col items-center">
+                                <h2 class="text-[1.25rem]">게임 종료 시각</h2>
+                                <VDatePicker
+                                    class="!wfullfull"
+                                    v-model="EndTime"
+                                    mode="time"
+                                    :time-accuracy="1"
+                                    :hide-time-header="true"
+                                />
+                            </div>
+                        </div>
                         <VDatePicker
                             v-model.range="range"
                             mode="dateTime"

@@ -10,6 +10,7 @@ export const isToday: (date: Date) => boolean = (date) => {
 }
 
 export const convertStringToRegistrationDateTime = (dateString: string) => {
+    if (dateString === null) return ''
     return dateString.replace(/-/gi, '.').replace('T', '. ').substring(0, 20)
 }
 export const convertStringToRegistrationDate = (dateString: string) => {

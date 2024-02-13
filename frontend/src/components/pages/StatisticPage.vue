@@ -27,7 +27,7 @@ type SummaryContentType = {
     type: string
     summary: {
         amount: number
-        contents: object
+        contents: string
         dateTime: string
         id: number
         nickname: string

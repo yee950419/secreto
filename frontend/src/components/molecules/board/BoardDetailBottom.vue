@@ -46,11 +46,11 @@ const writeButtonClick: Handler = () => {
             >
         </div>
         <div class="flex gap-[10px] max-md:flex-col-reverse max-md:w-full max-md:mt-3">
-            <ButtonAtom
+            <!-- <ButtonAtom
                 custom-class="button-style-4 button-lightGrey text-[18px] w-[80px] font-bold flex justify-center items-center  max-md:w-full"
                 @button-click="() => emit('topButtonHandle')"
                 ><CaretUpOutlined /><span>TOP</span></ButtonAtom
-            >
+            > -->
             <ButtonAtom
                 custom-class="button-style-4 button-lightGrey text-[18px] w-[70px] font-bold  max-md:w-full"
                 @button-click="() => emit('listButtonHandle')"

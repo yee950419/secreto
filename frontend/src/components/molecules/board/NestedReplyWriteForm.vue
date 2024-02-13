@@ -14,6 +14,13 @@ const props = defineProps(['parentReplyNo', 'tagUserNo'])
 const userStore = useUserStore()
 const emit = defineEmits(['submitReplySuccessHandle', 'cancelButtonHandle'])
 
+const roomUserInfo = inject('roomUserInfo', {
+    roomNo: Number(route.params.roomNo),
+    roomUserNo: -1,
+    roomName: '',
+    roomNickname: '',
+    profileUrl: ''
+})
 const roomUserNo: Ref<number> = inject('roomUserNo', ref(-1))
 const textArea = ref<HTMLInputElement | null>(null)
 const resize = () => {
@@ -63,7 +70,7 @@ const replyWriteHandler = () => {
 <template>
     <div class="flex flex-col flex-1 border-2 rounded-lg p-3 text-[16px]">
         <TextAtom custom-class="font-bold">
-            {{ userStore.userInfo.nickname }} ({{ userStore.userInfo.email }})</TextAtom
+            {{ roomUserInfo.roomNickname }} ({{ userStore.userInfo.email }})</TextAtom
         >
         <textarea
             ref="textArea"

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { Handler } from '@/types/common'
 
-defineProps(['customClass'])
+defineProps(['customClass', 'disabled'])
 const emit = defineEmits(['buttonClick'])
 
 const handleClick: Handler = () => {
@@ -10,7 +10,7 @@ const handleClick: Handler = () => {
 </script>
 
 <template>
-    <button :class="customClass" @click="handleClick">
+    <button :class="customClass" :disabled="disabled" @click="handleClick">
         <slot></slot>
     </button>
 </template>

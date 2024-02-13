@@ -31,9 +31,9 @@ import { Calendar as VCalendar, DatePicker as VDatePicker } from 'v-calendar'
 import IconArrowRight from 'v-calendar'
 import 'v-calendar/style.css'
 
-// const props = defineProps({
-//     roomInfo: { type: Object as () => RoomInfoType, required: true }
-// })
+const props = defineProps({
+    roomUserList: { type: Object as () => userType[], required: true }
+})
 const roomInfo = ref<RoomInfoType>({
     entryCode: '',
     commonYn: true,
@@ -56,7 +56,7 @@ const roomInfo = ref<RoomInfoType>({
 // const test: RoomInfoType = props.roomInfo
 const route = useRoute()
 
-const emit = defineEmits(['roomNameChanged', 'startRoom', 'endRoom'])
+const emit = defineEmits(['roomNameChanged', 'startRoom', 'endRoom', 'refreshUserList'])
 const missionList = ref<Mission[]>([])
 const checkedMissons = computed<{ content: string }[]>(() => {
     return missionList.value
@@ -76,36 +76,39 @@ const roomUserInfo = inject<Ref<RoomUserInfoType>>(
         profileUrl: ''
     })
 )
+
 const roomName = ref(roomUserInfo.value.roomName)
 
 watch(roomUserInfo, (newValue) => {
     roomName.value = newValue.roomName
 })
-const userList = ref<userType[]>([])
-const unapprovedUserList = computed(() => {
-    return userList.value.filter((user) => user.standbyYn)
+const unapprovedList = computed(() => {
+    return props.roomUserList.filter((user) => user.standbyYn)
 })
-const approvedUserList = computed(() => {
-    return userList.value.filter((user) => !user.standbyYn)
+
+const approvedList = computed(() => {
+    return props.roomUserList.filter((user) => !user.standbyYn)
 })
+
 const isInvidual = ref<boolean>(false)
 const hostInGame = ref<boolean>(false)
 const missionInterval = ref<number>(7)
 const roomCode: Ref<string> = inject('roomCode', ref('testCode'))
-const dateTimeFormat = 'YYYY-MM-DD HH:mm'
+const dateTimeFormat = 'YYYY-MM-DD HH:mm:ss'
+const dateFormat = 'YYYY-MM-DD'
+const timeFormat = 'HH:mm:ss'
 
 const range = ref<{ start: string; end: string }>({
     start: dayjs().format(dateTimeFormat),
     end: dayjs().add(1, 'day').format(dateTimeFormat)
 })
 const crange = computed(() => {
-    return [
-        dayjs(range.value.start).format(dateTimeFormat),
-        dayjs(range.value.end).format(dateTimeFormat)
-    ]
+    return [dayjs(range.value.start).format(dateFormat), dayjs(range.value.end).format(dateFormat)]
 })
 const startTime = ref<string>(dayjs().format(dateTimeFormat))
-const EndTime = ref<string>(dayjs().format(dateTimeFormat))
+const computedStartTime = computed(() => dayjs(startTime.value).format(timeFormat))
+const endTime = ref<string>(dayjs().format(dateTimeFormat))
+const computedEndTime = computed(() => dayjs(endTime.value).format(timeFormat))
 
 const unexpectedMissionContent = ref<string>('')
 const unexpectedMissionReserved = ref<boolean>(false)
@@ -119,13 +122,13 @@ const clipboardHandler: Handler = () => {
 }
 
 const gameStartHandler: Handler = () => {
-    console.log('?', {
+    console.log('start?', {
         period: missionInterval.value,
         commonYn: !isInvidual.value,
         hostParticipantYn: hostInGame.value,
-        missionStartAt: crange.value[0].slice(0, 10),
-        missionSubmitTime: crange.value[0].slice(11) + ':00',
-        roomEndAt: crange.value[1] + ':00',
+        missionStartAt: crange.value[0],
+        missionSubmitTime: computedStartTime.value,
+        roomEndAt: crange.value[1] + ' ' + computedEndTime.value,
         missionList: checkedMissons.value
     })
     startRoom(
@@ -134,20 +137,11 @@ const gameStartHandler: Handler = () => {
             period: missionInterval.value,
             commonYn: !isInvidual.value,
             hostParticipantYn: hostInGame.value,
-            missionStartAt: crange.value[0].slice(0, 10),
-            missionSubmitTime: crange.value[0].slice(11) + ':00',
-            roomEndAt: crange.value[1] + ':00',
+            missionStartAt: crange.value[0],
+            missionSubmitTime: computedStartTime.value,
+            roomEndAt: crange.value[1] + ' ' + computedEndTime.value,
             missionList: checkedMissons.value
         },
-        // {
-        //     period: missionInterval.value,
-        //     commonYn: !isInvidual.value,
-        //     hostParticipantYn: hostInGame.value,
-        //     missionStartAt: gamePeriod.value[0].format(dateTimeFormat).slice(0, 10),
-        //     missionSubmitTime: gamePeriod.value[0].format(dateTimeFormat).slice(11) + ':00',
-        //     roomEndAt: gamePeriod.value[1].format(dateTimeFormat) + ':00',
-        //     missionList: checkedMissons.value
-        // },
         ({ data }) => {
             console.log(':)', data)
             router.push({
@@ -177,21 +171,6 @@ const missionGet: Handler = () => {
     )
 }
 
-const userListGet: Handler = () => {
-    getUserList(
-        roomUserInfo.value.roomNo,
-        ({ data }) => {
-            data.result.forEach((mission: userType) => {
-                mission['checked'] = true
-            })
-            console.log('userlist', data)
-            userList.value = data.result
-        },
-        (error) => {
-            console.log('error', error)
-        }
-    )
-}
 const roomInfoGet: Handler = () => {
     getRoom(
         roomUserInfo.value.roomNo,
@@ -208,7 +187,7 @@ const roomInfoGet: Handler = () => {
 
 const changeRoomNameHandler: Handler = () => {
     console.log('???')
-    if (!roomInfo.value.roomStartYn) {
+    if (!roomInfo.value.roomStartYn || roomInfo.value.roomStatus === 'END') {
         changeRoomName(
             { roomName: roomName.value, roomNo: roomUserInfo.value.roomNo },
             ({ data }) => {
@@ -264,18 +243,9 @@ const gameEndHandler: Handler = () => {
     )
 }
 
-const refreshUserList = setInterval(() => {
-    userListGet()
-}, 5000)
-
 onMounted(async () => {
     await roomInfoGet()
     await missionGet()
-    await userListGet()
-})
-
-onUnmounted(() => {
-    clearInterval(refreshUserList)
 })
 </script>
 
@@ -303,7 +273,7 @@ onUnmounted(() => {
                         v-model="roomName"
                         button-label="수정"
                         @button-click="changeRoomNameHandler"
-                        :disabling="roomInfo.roomStartYn"
+                        :disabled="roomInfo.roomStartYn && roomInfo.roomStatus === 'PARTICIPANT'"
                     />
                     <!-- status 연동 필요 -->
                     <!-- <div v-if="test.roomStatus === 'WAIT'" name="before-start"> -->
@@ -363,29 +333,37 @@ onUnmounted(() => {
                         <!-- <Calendar :fullscreen="false" class="h-[40%]"></Calendar> -->
                         <div class="flex">
                             <div class="w-full flex flex-col items-center">
-                                <h2 class="text-[1.25rem]">미션 시작 시각</h2>
+                                <h2 class="text-[1.25rem]">정기미션 배포 시각</h2>
                                 <VDatePicker
                                     class="!wfullfull"
                                     v-model="startTime"
                                     mode="time"
                                     :time-accuracy="1"
                                     :hide-time-header="true"
+                                    :rules="{
+                                        minutes: 0,
+                                        seconds: 0
+                                    }"
                                 />
                             </div>
                             <div class="w-full flex flex-col items-center">
                                 <h2 class="text-[1.25rem]">게임 종료 시각</h2>
                                 <VDatePicker
                                     class="!wfullfull"
-                                    v-model="EndTime"
+                                    v-model="endTime"
                                     mode="time"
                                     :time-accuracy="1"
                                     :hide-time-header="true"
+                                    :rules="{
+                                        minutes: 0,
+                                        seconds: 0
+                                    }"
                                 />
                             </div>
                         </div>
                         <VDatePicker
                             v-model.range="range"
-                            mode="dateTime"
+                            mode="date"
                             class="!w-full !text-18pt"
                             :rules="{
                                 minutes: 0,
@@ -398,16 +376,16 @@ onUnmounted(() => {
             </div>
             <div name="side-part" class="flex flex-col w-full lg:w-[70%] px-3">
                 <UnapprovedUserList
-                    v-model="unapprovedUserList"
+                    v-model="unapprovedList"
                     class="h-[50%] border-b-2"
-                    @users-approved="userListGet"
-                    @users-denied="userListGet"
+                    @users-approved="emit('refreshUserList')"
+                    @users-denied="emit('refreshUserList')"
                 ></UnapprovedUserList>
                 <hr />
                 <ApprovedUserList
-                    v-model="approvedUserList"
+                    v-model="approvedList"
                     class="h-[50%]"
-                    @test="userListGet"
+                    @test="emit('refreshUserList')"
                 ></ApprovedUserList>
             </div>
         </div>

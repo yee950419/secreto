@@ -2,8 +2,8 @@
 import NavBar from '@/components/organisms/common/NavBar.vue'
 import ChatRoom from '@/components/organisms/game/ChatRoom.vue'
 import type { ChatRoomType } from '@/types/chat'
-import type { RoomUserInfoType, RoomInfoType } from '@/types/room'
-import { getRoom } from '@/api/room'
+import type { RoomUserInfoType, RoomInfoType, userType } from '@/types/room'
+import { getRoom, getUserList } from '@/api/room'
 import { useMenuStore } from '@/stores/menu'
 import { SSEConnect } from '@/api/sse'
 import { getNotificationLists } from '@/api/notification'
@@ -38,7 +38,7 @@ const roomUserNo = ref<number>(-1)
 const roomNo = ref<number>(Number(route.params.roomNo))
 const hostRoomUserNo = ref<number>(-1)
 const userMission = ref<UserMission[]>([])
-
+const userList = ref<userType[]>([])
 const navStatus = ref<number>(-1)
 
 const updateRoomName = (name: string | undefined) => {
@@ -95,7 +95,7 @@ const SSEConnection = (roomUserNo: number) => {
     })
 
     eventSource.addEventListener('enter', (event) => {
-        //TODO: 로직 추가 필요.
+        userListGet()
     })
 
     eventSource.addEventListener('terminate', (event) => {
@@ -164,11 +164,28 @@ const getUserMissionHandler = () => {
     )
 }
 
+const userListGet = () => {
+    getUserList(
+        roomUserInfo.value.roomNo,
+        ({ data }) => {
+            data.result.forEach((mission: userType) => {
+                mission['checked'] = true
+            })
+            console.log('userlist', data)
+            userList.value = data.result
+        },
+        (error) => {
+            console.log('error', error)
+        }
+    )
+}
+
 onMounted(() => {
     console.log('in-room은 true로 변경합니다.')
     getRoomData()
     getNotify()
     getUserMissionHandler()
+    userListGet()
     emit('in-room', true)
 })
 
@@ -203,18 +220,18 @@ onUnmounted(() => {
             v-if="!isMobile || !menuSeen"
             :room-info="roomInfo"
             :user-mission="userMission"
+            :room-user-list="userList"
             @refresh-notify="getNotify"
             @room-name-changed="updateRoomName"
             @refresh-user-mission="getUserMissionHandler"
+            @refresh-user-list="userListGet"
             @start-room="
                 () => {
-                    console.log('emit?')
                     navStatus = 3
                 }
             "
             @end-room="
                 () => {
-                    console.log('emit?2')
                     navStatus = 7
                 }
             "

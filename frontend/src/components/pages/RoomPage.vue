@@ -73,7 +73,6 @@ const makeRoom = ({ name, imageUrl }: ChatRoomType) => {
 }
 
 const SSEConnection = (roomUserNo: number) => {
-    console.log('SSEConnection', roomUserNo)
     eventSource = SSEConnect(roomUserNo)
 
     eventSource.onopen = () => {
@@ -87,6 +86,11 @@ const SSEConnection = (roomUserNo: number) => {
         getUserMissionHandler()
         getNotify()
         // router.go(0)
+    })
+
+    eventSource.addEventListener('terminate', (event) => {
+        getRoomData()
+        alert('게임 종료!')
     })
 
     eventSource.addEventListener('error', (event) => {

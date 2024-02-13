@@ -126,26 +126,13 @@ onMounted(() => {
             >알림 {{ unReadMessage }} 건
             <span v-if="unReadMessage > 0" class="ml-[20px] text-A805Red">새로운 알림!</span>
         </MenuItem>
-        <MenuItem
-            custom-class="menu-item"
-            :active="activeMenu === 3"
-            @menu-click="
-                handleClick(), router.push({ name: 'game-participate' }), handleMenuClick(3)
-            "
-            >참여 인원</MenuItem
-        >
-        <MenuItem
-            custom-class="menu-item"
-            :active="activeMenu === 4"
-            @menu-click="handleMenuClick(4), router.push({ name: 'game-mission' }), handleClick()"
-            >내 미션</MenuItem
-        >
-        <MenuItem
-            custom-class="menu-item"
-            :active="activeMenu === 5"
-            @menu-click="handleMenuClickAndToggleSubMenu(5, 'chat')"
-            >채팅</MenuItem
-        >
+        <MenuItem v-if="roomInfo?.roomStartYn === true" custom-class="menu-item" :active="activeMenu === 3" @menu-click="
+            handleClick(), router.push({ name: 'game-participate' }), handleMenuClick(3)
+            ">참여 인원</MenuItem>
+        <MenuItem v-if="roomInfo?.roomStartYn === true" custom-class="menu-item" :active="activeMenu === 4"
+            @menu-click="handleMenuClick(4), router.push({ name: 'game-mission' }), handleClick()">내 미션</MenuItem>
+        <MenuItem v-if="roomInfo?.roomStartYn === true" custom-class="menu-item" :active="activeMenu === 5"
+            @menu-click="handleMenuClickAndToggleSubMenu(5, 'chat')">채팅</MenuItem>
         <div v-if="showSubMenu.includes('chat')">
             <MenuItem custom-class="sub-menu-item" @menu-click="makeRoom('마니또'), handleClick()"
                 >마니또와의 채팅</MenuItem
@@ -160,12 +147,8 @@ onMounted(() => {
             >
         </div>
         <!-- 다른 세부 메뉴들도 추가 가능 -->
-        <MenuItem
-            custom-class="menu-item"
-            :active="activeMenu === 6"
-            @menu-click="handleMenuClickAndToggleSubMenu(6, 'board')"
-            >게시판</MenuItem
-        >
+        <MenuItem v-if="roomInfo?.roomStartYn === true" custom-class="menu-item" :active="activeMenu === 6"
+            @menu-click="handleMenuClickAndToggleSubMenu(6, 'board')">게시판</MenuItem>
         <div v-if="showSubMenu.includes('board')">
             <MenuItem
                 custom-class="sub-menu-item"

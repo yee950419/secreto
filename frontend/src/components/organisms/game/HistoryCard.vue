@@ -36,7 +36,7 @@ const routerHandler = (link: number, category: string) => {
 </script>
 
 <template >
-    <div class="flex flex-col">
+    <div class="flex flex-col min-w-[600px]">
         <div>
             <div class="flex flex-col">
                 <div class="flex justify-between">
@@ -74,7 +74,8 @@ const routerHandler = (link: number, category: string) => {
                     </div>
                 </div>
                 <TextAtom>총 {{ HistoryData.value.post.length }}건...</TextAtom>
-                <TextAtom @click="isActive = false" custom-class="cursor-pointer">접기</TextAtom>
+                <TextAtom @click="isActive = false" custom-class="cursor-pointer" v-if="HistoryData.value.post.length > 1">
+                    접기</TextAtom>
             </div>
         </div>
     </div>

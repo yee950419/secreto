@@ -18,7 +18,7 @@ const emit = defineEmits(['test'])
 const testHandler: Handler = () => {
     rollbackRoomUsers(
         {
-            roomUserNos: [134]
+            roomUserNos: [135]
         },
         ({ data }) => {
             console.log('rollbackRoomUser success', data)

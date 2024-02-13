@@ -481,6 +481,14 @@
         text-align: center;
     }
 
+    .button-style-intruding {
+        font-size: 20pt;
+        width: 200px;
+        height: 60px;
+        border-radius: 6px;
+        transition: 0.3s;
+    }
+
     .button-style-certification {
         font-size: 20px;
         width: 100px;

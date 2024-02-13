@@ -30,6 +30,7 @@ import { addUnexpectedMission } from '@/api/mission'
 import { Calendar as VCalendar, DatePicker as VDatePicker } from 'v-calendar'
 import IconArrowRight from 'v-calendar'
 import 'v-calendar/style.css'
+import ModalTemplate from '@/components/template/ModalTemplate.vue'
 
 const props = defineProps({
     roomUserList: { type: Object as () => userType[], required: true }
@@ -177,6 +178,16 @@ const roomInfoGet: Handler = () => {
         ({ data }) => {
             roomInfo.value = data.result
             roomName.value = data.result.roomName
+            if (roomInfo.value.roomStartYn && roomInfo.value.roomStatus === 'PARTICIPANT') {
+                range.value = {
+                    start: dayjs(data.result.missionStartAt).format(dateTimeFormat),
+                    end: dayjs(data.result.roomEndAt).format(dateTimeFormat)
+                }
+                startTime.value = dayjs(
+                    data.result.missionStartAt + data.result.missionSubmitTime
+                ).format(dateTimeFormat)
+                endTime.value = dayjs(data.result.roomEndAt).format(dateTimeFormat)
+            }
             console.log('roomInfo', roomInfo.value)
         },
         (error) => {
@@ -401,5 +412,10 @@ onMounted(async () => {
             @button-click="gameEndHandler"
             ><p class="md:text-[3rem]">게임 종료하기</p>
         </ButtonAtom>
+        <ModalTemplate
+            ><div>
+                <ButtonAtom>완전 랜덤</ButtonAtom><ButtonAtom>사이에 끼어들기</ButtonAtom>
+            </div></ModalTemplate
+        >
     </div>
 </template>

@@ -6,7 +6,6 @@ import type { Message } from '@/types/chat'
 import type { Socket } from 'socket.io-client'
 import { ref, onMounted, onUnmounted, watch, type Ref, nextTick } from 'vue'
 import { io } from 'socket.io-client'
-import { message } from 'ant-design-vue'
 
 const emit = defineEmits(['close-chat-room'])
 
@@ -76,6 +75,7 @@ const sendMessage = () => {
 
 
 const closeChatRoom = () => {
+    socket.close()
     emit('close-chat-room', name)
 }
 

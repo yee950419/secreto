@@ -5,6 +5,7 @@ import PaticipateProfile from '@/components/molecules/game/PaticipateProfile.vue
 import ModalTemplate from '@/components/template/ModalTemplate.vue'
 import InferenceModalContent from '@/components/organisms/modal/InferenceModalContent.vue'
 import type { userType, RoomUserInfoType } from '@/types/room'
+import type { UserMission } from '@/types/mission'
 import { getUserList } from '@/api/room'
 import { ref, onMounted, inject, type Ref } from 'vue'
 import { useRoute } from 'vue-router'
@@ -75,7 +76,8 @@ onMounted(() => {
         >
             <InferenceModalContent :predict-info="predictInfo" />
         </ModalTemplate>
-        <GameHeader :user-mission="props.userMission" />
+        <GameHeader :user-mission="userMission" />
+        <hr />
         <div class="flex flex-1 items-center justify-center">
             <div
                 class="flex flex-wrap items-center justify-center gap-[50px] md:m-[80px] max-md:m-[60px]"
@@ -87,7 +89,7 @@ onMounted(() => {
                         :image-url="user.profileUrl"
                         :title="user.email"
                         :mine="true"
-                        class="border-black border-2 border-solid"
+                        class="border-A805Black border-2 border-solid"
                     />
 
                     <PaticipateProfile

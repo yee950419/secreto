@@ -84,6 +84,8 @@ const SSEConnection = (roomUserNo: number) => {
     eventSource.addEventListener('message', (event) => {
         const data = JSON.parse(event.data)
         alert(data.author + '으로부터 ' + data.content + '도착!')
+        getUserMissionHandler()
+        getNotify()
         // router.go(0)
     })
 
@@ -158,10 +160,8 @@ onMounted(() => {
 
 onUnmounted(() => {
     if (eventSource) {
-        console.log('SSE 연결을 종료합니다.')
         eventSource.close()
     }
-    console.log('in-room은 false로 변경합니다.')
     emit('in-room', false)
 })
 </script>
@@ -178,11 +178,12 @@ onUnmounted(() => {
         <!-- pc버전이거나, 모바일 버전 + 메뉴가 체크된 상태일때만 nav가 보인다. -->
         <NavBar
             @make-room="makeRoom"
-            v-if="!isMobile || menuSeen"
+            v-if="!isMobile || (isMobile && menuSeen)"
             :room-name="roomUserInfo.roomName"
             :room-info="roomInfo"
             :nav-status="navStatus"
         />
+
         <!-- pc버전이거나, 모바일 버전 + 메뉴가 닫힌 상태일때만 이 영역 이 보인다. -->
         <RouterView
             v-if="!isMobile || !menuSeen"

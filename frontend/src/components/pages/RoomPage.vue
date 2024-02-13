@@ -88,6 +88,15 @@ const SSEConnection = (roomUserNo: number) => {
         // router.go(0)
     })
 
+    eventSource.addEventListener('board', (event) => {
+        const data = JSON.parse(event.data)
+        console.log(data)
+    })
+
+    eventSource.addEventListener('enter', (event) => {
+        //TODO: 로직 추가 필요.
+    })
+
     eventSource.addEventListener('terminate', (event) => {
         getRoomData()
         alert('게임 종료!')

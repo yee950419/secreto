@@ -9,7 +9,6 @@ import type { UserMission } from '@/types/mission'
 import { getUserList } from '@/api/room'
 import { ref, onMounted, inject, type Ref } from 'vue'
 import { useRoute } from 'vue-router'
-import type { UserMission } from '@/types/mission'
 const props = defineProps({
     userMission: {
         type: Object as () => UserMission[],

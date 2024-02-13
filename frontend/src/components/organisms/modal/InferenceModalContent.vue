@@ -14,8 +14,9 @@ const { predictInfo } = defineProps({
         type: Object as () => userType,
         required: true
     }
-
 })
+
+const emit = defineEmits(['refresh-data'])
 
 
 const memoType = Object.freeze({
@@ -35,6 +36,7 @@ const submitHandler: Handler = () => {
             memoTo: predictInfo?.roomUserNo
         }, ({ data }) => {
             alert(data.message)
+            emit('refresh-data')
         }, (error) => {
             console.error('error', error)
         })

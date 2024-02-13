@@ -62,6 +62,7 @@ export type RoomUserInfoType = {
 
 export type userType = {
     userNo: number
+    manitoPredictType : string | null
     userLeaveAt: string
     userEntryAt: string
     standbyYn: boolean

@@ -53,6 +53,7 @@ provide('hostRoomUserNo', readonly(hostRoomUserNo))
 provide('roomCode', readonly(entryCode))
 provide('notifyLists', readonly(notificationLists))
 provide('roomNo', readonly(roomNo))
+provide('roomInfo', readonly(roomInfo))
 
 const removeChatRoom = (name: string) => {
     const index = chatRooms.value.findIndex((room) => room.name === name)

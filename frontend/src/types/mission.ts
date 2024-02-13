@@ -28,3 +28,9 @@ export type predictTypes = {
     manitoPredictType: 'YES' | 'NO' | 'UNKNOWN'
     memoTo: number
 }
+
+export enum predictOption {
+    "YES" = 'O',
+    "NO" = 'X',
+    "UNKNOWN" = '?'
+}

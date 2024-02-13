@@ -36,7 +36,7 @@ const routerHandler = (link: number, category: string) => {
 </script>
 
 <template >
-    <div class="flex flex-col min-w-[600px]">
+    <div class="flex flex-col w-full">
         <div>
             <div class="flex flex-col">
                 <div class="flex justify-between">

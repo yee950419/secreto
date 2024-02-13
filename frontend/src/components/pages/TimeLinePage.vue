@@ -75,7 +75,7 @@ onMounted(() => {
 </script>
 
 <template>
-    <div class="flex flex-1 bg-A805Neutral">
+    <div class="flex flex-1  bg-A805Neutral">
         <div class="flex flex-1 flex-col">
             <div class="flex flex-col md:ml-[30px] max-md:mx-auto gap-[10px] mt-[30px]">
                 <TextAtom custom-class="text-2">마니또 타임라인</TextAtom>
@@ -100,7 +100,7 @@ onMounted(() => {
                 <TextAtom customClass="text-center"> [방 제목] 에서의 마니또 기록이에요</TextAtom> -->
             </div>
 
-            <div class="timeline relative mx-auto">
+            <div class="timeline relative mx-auto w-full">
                 <template v-for="history in combinedArray">
                     <div class="container left" v-if="history.value.predictor">
                         <div class="predict">

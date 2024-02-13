@@ -92,20 +92,21 @@ const isInvidual = ref<boolean>(false)
 const hostInGame = ref<boolean>(false)
 const missionInterval = ref<number>(7)
 const roomCode: Ref<string> = inject('roomCode', ref('testCode'))
-const dateTimeFormat = 'YYYY-MM-DD HH:mm'
+const dateTimeFormat = 'YYYY-MM-DD HH:mm:ss'
+const dateFormat = 'YYYY-MM-DD'
+const timeFormat = 'HH:mm:ss'
 
 const range = ref<{ start: string; end: string }>({
     start: dayjs().format(dateTimeFormat),
     end: dayjs().add(1, 'day').format(dateTimeFormat)
 })
 const crange = computed(() => {
-    return [
-        dayjs(range.value.start).format(dateTimeFormat),
-        dayjs(range.value.end).format(dateTimeFormat)
-    ]
+    return [dayjs(range.value.start).format(dateFormat), dayjs(range.value.end).format(dateFormat)]
 })
 const startTime = ref<string>(dayjs().format(dateTimeFormat))
-const EndTime = ref<string>(dayjs().format(dateTimeFormat))
+const computedStartTime = computed(() => dayjs(startTime.value).format(timeFormat))
+const endTime = ref<string>(dayjs().format(dateTimeFormat))
+const computedEndTime = computed(() => dayjs(endTime.value).format(timeFormat))
 
 const unexpectedMissionContent = ref<string>('')
 const unexpectedMissionReserved = ref<boolean>(false)
@@ -119,13 +120,13 @@ const clipboardHandler: Handler = () => {
 }
 
 const gameStartHandler: Handler = () => {
-    console.log('?', {
+    console.log('start?', {
         period: missionInterval.value,
         commonYn: !isInvidual.value,
         hostParticipantYn: hostInGame.value,
-        missionStartAt: crange.value[0].slice(0, 10),
-        missionSubmitTime: crange.value[0].slice(11) + ':00',
-        roomEndAt: crange.value[1] + ':00',
+        missionStartAt: crange.value[0],
+        missionSubmitTime: computedStartTime.value,
+        roomEndAt: crange.value[1] + ' ' + computedEndTime.value,
         missionList: checkedMissons.value
     })
     startRoom(
@@ -134,20 +135,11 @@ const gameStartHandler: Handler = () => {
             period: missionInterval.value,
             commonYn: !isInvidual.value,
             hostParticipantYn: hostInGame.value,
-            missionStartAt: crange.value[0].slice(0, 10),
-            missionSubmitTime: crange.value[0].slice(11) + ':00',
-            roomEndAt: crange.value[1] + ':00',
+            missionStartAt: crange.value[0],
+            missionSubmitTime: computedStartTime.value,
+            roomEndAt: crange.value[1] + ' ' + computedEndTime.value,
             missionList: checkedMissons.value
         },
-        // {
-        //     period: missionInterval.value,
-        //     commonYn: !isInvidual.value,
-        //     hostParticipantYn: hostInGame.value,
-        //     missionStartAt: gamePeriod.value[0].format(dateTimeFormat).slice(0, 10),
-        //     missionSubmitTime: gamePeriod.value[0].format(dateTimeFormat).slice(11) + ':00',
-        //     roomEndAt: gamePeriod.value[1].format(dateTimeFormat) + ':00',
-        //     missionList: checkedMissons.value
-        // },
         ({ data }) => {
             console.log(':)', data)
             router.push({
@@ -363,29 +355,37 @@ onUnmounted(() => {
                         <!-- <Calendar :fullscreen="false" class="h-[40%]"></Calendar> -->
                         <div class="flex">
                             <div class="w-full flex flex-col items-center">
-                                <h2 class="text-[1.25rem]">미션 시작 시각</h2>
+                                <h2 class="text-[1.25rem]">정기미션 배포 시각</h2>
                                 <VDatePicker
                                     class="!wfullfull"
                                     v-model="startTime"
                                     mode="time"
                                     :time-accuracy="1"
                                     :hide-time-header="true"
+                                    :rules="{
+                                        minutes: 0,
+                                        seconds: 0
+                                    }"
                                 />
                             </div>
                             <div class="w-full flex flex-col items-center">
                                 <h2 class="text-[1.25rem]">게임 종료 시각</h2>
                                 <VDatePicker
                                     class="!wfullfull"
-                                    v-model="EndTime"
+                                    v-model="endTime"
                                     mode="time"
                                     :time-accuracy="1"
                                     :hide-time-header="true"
+                                    :rules="{
+                                        minutes: 0,
+                                        seconds: 0
+                                    }"
                                 />
                             </div>
                         </div>
                         <VDatePicker
                             v-model.range="range"
-                            mode="dateTime"
+                            mode="date"
                             class="!w-full !text-18pt"
                             :rules="{
                                 minutes: 0,

@@ -273,7 +273,7 @@ onMounted(async () => {
                         v-model="roomName"
                         button-label="수정"
                         @button-click="changeRoomNameHandler"
-                        :disabling="roomInfo.roomStartYn"
+                        :disabled="roomInfo.roomStartYn && roomInfo.roomStatus === 'PARTICIPANT'"
                     />
                     <!-- status 연동 필요 -->
                     <!-- <div v-if="test.roomStatus === 'WAIT'" name="before-start"> -->

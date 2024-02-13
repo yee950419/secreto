@@ -18,7 +18,8 @@ const props = defineProps([
     'min',
     'max',
     'name',
-    'buttonLabel'
+    'buttonLabel',
+    'disabled'
 ])
 const emit = defineEmits(['inputChange', 'buttonClick'])
 const inputRef: Ref<string> = ref(props.defaultValue ? props.defaultValue : '')
@@ -48,10 +49,12 @@ const buttonClick: Handler = () => {
                 :hidden="hidden"
                 @change="handleChange"
                 v-model.lazy="model"
+                :disabled="disabled"
             />
             <ButtonAtom
                 class="rounded-s-none button-style-6 button-claret pe-[3px]"
                 :class="buttonClass"
+                :disabled="disabled"
                 @buttonClick="buttonClick"
                 >{{ buttonLabel }}</ButtonAtom
             >

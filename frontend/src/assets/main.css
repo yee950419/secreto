@@ -574,6 +574,10 @@
         background-color: var(--A805Blue);
     }
 
+    .button-blue:disabled {
+        background-color: var(--A805Grey);
+    }
+
     .button-navy {
         background-color: var(--A805Blue);
     }

@@ -17,7 +17,7 @@ import dayjs from 'dayjs'
 import type { Mission } from '@/types/mission'
 import { getSystemMission } from '@/api/mission'
 import { getUserList, startRoom, endRoom } from '@/api/room'
-import { DatePicker, Calendar } from 'ant-design-vue'
+
 import { getRoom } from '@/api/room'
 import defaultImage from '@/assets/images/default-avatar.png'
 import { changeRoomName } from '@/api/room'
@@ -80,9 +80,13 @@ const roomUserInfo = inject<Ref<RoomUserInfoType>>(
 
 const roomName = ref(roomUserInfo.value.roomName)
 
-watch(roomUserInfo, (newValue) => {
-    roomName.value = newValue.roomName
-})
+watch(
+    roomUserInfo,
+    (newValue) => {
+        roomName.value = newValue.roomName
+    },
+    { deep: true }
+)
 const unapprovedList = computed(() => {
     return props.roomUserList.filter((user) => user.standbyYn)
 })
@@ -100,7 +104,7 @@ const dateFormat = 'YYYY-MM-DD'
 const timeFormat = 'HH:mm:ss'
 
 const range = ref<{ start: string; end: string }>({
-    start: dayjs().format(dateTimeFormat),
+    start: dayjs().add(1, 'hour').format(dateTimeFormat),
     end: dayjs().add(1, 'day').format(dateTimeFormat)
 })
 const crange = computed(() => {
@@ -178,6 +182,7 @@ const roomInfoGet: Handler = () => {
         ({ data }) => {
             roomInfo.value = data.result
             roomName.value = data.result.roomName
+            console.log('?roomInfo', roomInfo.value)
             if (roomInfo.value.roomStartYn && roomInfo.value.roomStatus === 'PARTICIPANT') {
                 range.value = {
                     start: dayjs(data.result.missionStartAt).format(dateTimeFormat),
@@ -188,7 +193,7 @@ const roomInfoGet: Handler = () => {
                 ).format(dateTimeFormat)
                 endTime.value = dayjs(data.result.roomEndAt).format(dateTimeFormat)
             }
-            console.log('roomInfo', roomInfo.value)
+            console.log('??roomInfo', range.value)
         },
         (error) => {
             console.log(':(', error)
@@ -381,6 +386,7 @@ onMounted(async () => {
                                 seconds: 0
                             }"
                             :time-accuracy="1"
+                            :min-date="crange[0]"
                         ></VDatePicker>
                     </div>
                 </div>
@@ -396,7 +402,11 @@ onMounted(async () => {
                 <ApprovedUserList
                     v-model="approvedList"
                     class="h-[50%]"
-                    @test="emit('refreshUserList')"
+                    @go-to-participate-page="
+                        router.push({
+                            name: 'game-participate'
+                        })
+                    "
                 ></ApprovedUserList>
             </div>
         </div>

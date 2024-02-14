@@ -18,7 +18,7 @@ const { accessToken, refreshToken } = storeToRefs(userStore)
 
 const chattingData = ref({
     authUrl: '',
-    stompUrl: 'http://i10a805.p.ssafy.io:8080/chatting',
+    stompUrl: 'https://i10a805.p.ssafy.io:8080/chatting',
     destination: '/send/chatting/1',
     subscribe: '/topic/1',
     headers: {
@@ -28,17 +28,9 @@ const chattingData = ref({
     credentials: true,
 });
 
-
 const chatNo = ref(-1)
 const isConnected = ref(false)
 const roomType = ref<'MANITO' | 'MANITI' | 'ALL'>('ALL')
-const messageData = ref({
-    message: ''
-});
-
-const incomingMessageData = ref({
-    message: []
-});
 
 const stompClient = ref<any>();
 
@@ -64,8 +56,6 @@ const connectToStompServer = () => {
     });
 };
 
-
-
 const sendMessage = () => {
     stompClient.value.send(
         chattingData.value.destination,
@@ -84,7 +74,6 @@ const sendMessage = () => {
 const getMessage = (message: any) => {
     if (message.body) {
         const data1 = JSON.parse(message.body).body.result;
-        console.log('data1', data1)
         messages.value.push(data1)
 
     } else {
@@ -93,11 +82,8 @@ const getMessage = (message: any) => {
 };
 
 const subscribe = () => {
-    console.log('구독 좋아요, 알람설정까지!', chattingData.value.subscribe)
     stompClient.value.subscribe(chattingData.value.subscribe, getMessage);
 };
-
-
 
 const emit = defineEmits(['close-chat-room'])
 
@@ -170,7 +156,8 @@ const getChatInfo = async () => {
 
 
 const closeChatRoom = () => {
-    stompClient.value.disconnect()
+    if (stompClient.value)
+        stompClient.value.disconnect()
     emit('close-chat-room', name)
 }
 
@@ -226,7 +213,6 @@ watch(() => messages, () => {
         scrollToBottom();
     });
 }, { deep: true });
-
 
 
 onMounted(() => {

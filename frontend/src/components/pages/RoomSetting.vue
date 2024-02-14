@@ -104,7 +104,7 @@ const dateFormat = 'YYYY-MM-DD'
 const timeFormat = 'HH:mm:ss'
 
 const range = ref<{ start: string; end: string }>({
-    start: dayjs().format(dateTimeFormat),
+    start: dayjs().add(1, 'hour').format(dateTimeFormat),
     end: dayjs().add(1, 'day').format(dateTimeFormat)
 })
 const crange = computed(() => {
@@ -386,6 +386,7 @@ onMounted(async () => {
                                 seconds: 0
                             }"
                             :time-accuracy="1"
+                            :min-date="crange[0]"
                         ></VDatePicker>
                     </div>
                 </div>

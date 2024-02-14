@@ -35,18 +35,18 @@ const acceptUserHandler = (no?: number) => {
         console.log(1)
         return
     }
-    // acceptRoomUsers(
-    //     {
-    //         roomUserNos: targets
-    //     },
-    //     ({ data }) => {
-    //         console.log('acceptRoomUsers success', data)
-    //         emit('usersApproved')
-    //     },
-    //     (error) => {
-    //         console.log('error', error)
-    //     }
-    // )
+    acceptRoomUsers(
+        {
+            roomUserNos: targets
+        },
+        ({ data }) => {
+            console.log('acceptRoomUsers success', data)
+            emit('usersApproved')
+        },
+        (error) => {
+            console.log('error', error)
+        }
+    )
 }
 const rematchHandler = () => {
     console.log('rematch!')

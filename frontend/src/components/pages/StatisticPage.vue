@@ -116,7 +116,7 @@ const isValid = (content: string): boolean => {
     return content != '' && content != null
 }
 const boardMove = (content: SummaryContentType) => {
-    if (isValid(content.summary.contents)) {
+    if (!isValid(content.summary.nickname)) {
         return
     }
     router.push({
@@ -152,7 +152,9 @@ const boardMove = (content: SummaryContentType) => {
                     ]"
                     @click="
                         () => {
-                            if (summaryBoardLikes != null) boardMove(summaryBoardLikes)
+                            if (summaryBoardLikes != null) {
+                                boardMove(summaryBoardLikes)
+                            }
                         }
                     "
                     :is-valid="summaryBoardLikes.summary.nickname !== ''"

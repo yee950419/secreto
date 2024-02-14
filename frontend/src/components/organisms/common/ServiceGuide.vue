@@ -24,6 +24,8 @@ import user8 from '@/assets/images/guides/user8.png'
 import user9 from '@/assets/images/guides/user9.png'
 import user10 from '@/assets/images/guides/user10.png'
 import user11 from '@/assets/images/guides/user11.png'
+import user12 from '@/assets/images/guides/user12.png'
+import user13 from '@/assets/images/guides/user13.png'
 import user14 from '@/assets/images/guides/user14.png'
 import TextAtom from '@/components/atoms/TextAtom.vue'
 import HeaderLogo from '@/components/molecules/common/HeaderLogo.vue'
@@ -148,11 +150,11 @@ const user = ref<Array<Guide>>([
         text: '11. 마니또로부터 선물을 받으셨나요? 자랑게시판을 통해 자랑해보세요'
     },
     {
-        img: '@/assets/images/guides/user7.png',
+        img: user12,
         text: '12. 채팅 메뉴를 이용하시면 마니또, 마니띠와 익명으로 채팅하거나 단체채팅도 할 수 있어요'
     },
     {
-        img: '@/assets/images/guides/user9.png',
+        img: user13,
         text: '13. 게임이 종료되면 게임 통계와 타임라인을 확인해보세요'
     },
     {
@@ -203,32 +205,21 @@ onMounted(() => {
         <div class="flex flex-col items-center md:mx-[20%] gap-[20px] max-md:gap-[15px]">
             <HeaderLogo />
             <TextAtom custom-class="md:text-1 max-md:text-2">시크리또를 소개합니다</TextAtom>
-            <TextAtom custom-class="text-4"
-                >시크리또는 마니또 게임에 필요한 다양한 기능을 제공합니다.</TextAtom
-            >
+            <TextAtom custom-class="text-4">시크리또는 마니또 게임에 필요한 다양한 기능을 제공합니다.</TextAtom>
             <ServiceFeature />
         </div>
         <div class="flex flex-1 flex-col">
             <div class="flex flex-col w-full items-center justify-evenly">
                 <TextAtom custom-class="md:text-1 max-md:text-2">서비스 사용법</TextAtom>
                 <div class="flex w-full justify-evenly">
-                    <div
-                        class="flex flex-col items-center justify-between cursor-pointer"
-                        @click="Secreto"
-                    >
+                    <div class="flex flex-col items-center justify-between cursor-pointer" @click="Secreto">
                         <CharacterAtom custom-class="w-[60px]" />
                         <TextAtom>시크리또 멤버</TextAtom>
                     </div>
-                    <div
-                        class="flex flex-col items-center justify-between cursor-pointer"
-                        @click="Setting"
-                    >
+                    <div class="flex flex-col items-center justify-between cursor-pointer" @click="Setting">
                         <HomeFilled style="font-size: 40px" /><text>방장 가이드</text>
                     </div>
-                    <div
-                        class="flex flex-col items-center justify-between cursor-pointer"
-                        @click="User"
-                    >
+                    <div class="flex flex-col items-center justify-between cursor-pointer" @click="User">
                         <UserOutlined style="font-size: 40px" /><text>유저 가이드</text>
                     </div>
                 </div>
@@ -236,24 +227,15 @@ onMounted(() => {
             <div class="flex justify-center md:h-[700px] max-md:h-[400px]">
                 <div class="flex max-w-[1200px] flex-col gap-[10px] w-full">
                     <div
-                        class="flex relative items-center min-h-[600px] max-h-[600px] max-md:min-h-[320px] max-md:max-h-[320px]"
-                    >
-                        <LeftOutlined
-                            style="font-size: 24px; cursor: pointer"
-                            class="absolute left-0 z-10"
-                            @click="leftHandler"
-                        />
+                        class="flex relative items-center min-h-[600px] max-h-[600px] max-md:min-h-[320px] max-md:max-h-[320px]">
+                        <LeftOutlined style="font-size: 24px; cursor: pointer" class="absolute left-0 z-10"
+                            @click="leftHandler" />
                         <img :src="showData[showIndex].img" class="w-full h-full object-contain" />
-                        <RightOutlined
-                            style="font-size: 24px; cursor: pointer"
-                            class="absolute right-0 z-10"
-                            @click="rightHandler"
-                        />
+                        <RightOutlined style="font-size: 24px; cursor: pointer" class="absolute right-0 z-10"
+                            @click="rightHandler" />
                     </div>
 
-                    <div
-                        class="flex h-[100px] bg-A805White items-center justify-center max-md:h-[80px]"
-                    >
+                    <div class="flex h-[100px] bg-A805White items-center justify-center max-md:h-[80px]">
                         <TextAtom>{{ showData[showIndex].text }}</TextAtom>
                     </div>
                 </div>

@@ -77,7 +77,7 @@ onMounted(async () => {
 <template>
     <div
         name="header"
-        class="flex w-full flex-col justify-center items-center bg-A805RealWhite pt-5 pb-10"
+        class="flex flex-1 h-full w-full flex-col justify-start items-center bg-A805RealWhite pt-5 pb-10"
     >
         <GameHeader
             class="mb-5 md:min-w-[568px] max-w-[1400px] max-md:min-w-0 md:px-4"

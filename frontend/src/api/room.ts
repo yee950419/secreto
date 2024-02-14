@@ -130,6 +130,14 @@ async function interceptUser(
     roomInstance.put(`/room/matching`, param).then(success).catch(fail)
 }
 
+async function assignHost(
+    param: { roomNo: number; newHost: number },
+    success: (response: AxiosResponse) => void,
+    fail: (error: any) => void
+) {
+    roomInstance.put(`/room/deligate`, param).then(success).catch(fail)
+}
+
 export {
     createRoom,
     getRoom,
@@ -146,5 +154,6 @@ export {
     endRoom,
     rollbackRoomUsers,
     rematch,
-    interceptUser
+    interceptUser,
+    assignHost
 }

@@ -17,7 +17,7 @@ import dayjs from 'dayjs'
 import type { Mission } from '@/types/mission'
 import { getSystemMission } from '@/api/mission'
 import { getUserList, startRoom, endRoom } from '@/api/room'
-import { DatePicker, Calendar } from 'ant-design-vue'
+
 import { getRoom } from '@/api/room'
 import defaultImage from '@/assets/images/default-avatar.png'
 import { changeRoomName } from '@/api/room'
@@ -401,7 +401,11 @@ onMounted(async () => {
                 <ApprovedUserList
                     v-model="approvedList"
                     class="h-[50%]"
-                    @test="emit('refreshUserList')"
+                    @go-to-participate-page="
+                        router.push({
+                            name: 'game-participate'
+                        })
+                    "
                 ></ApprovedUserList>
             </div>
         </div>

@@ -1,4 +1,3 @@
-
 <script setup lang="ts">
 import WideCardTemplate from '@/components/template/WideCardTemplate.vue'
 import type { Handler } from '@/types/common'
@@ -40,30 +39,32 @@ const SSEConnection = (roomUserNo: number) => {
         alert('입장이 거절되었습니다.')
         router.push('/')
     })
-
 }
 
 const getStatus = () => {
     console.log('방 정보 호출!')
-    getRoom(Number(route.params.roomNo),
+    getRoom(
+        Number(route.params.roomNo),
         ({ data }) => {
             console.table(data.result)
             state.value = data.result.roomStatus
             SSEConnection(data.result.userInfo.roomUserNo)
             // 입장승인전
             if (state.value === 'WAIT') {
-                return;
+                return
             }
-            //입장승인 됨, 게임시작안함 
-            else if (state.value === 'PARTICIPANT' && (data.result.roomStartYn !== null ? !data.result.roomStartYn : false)) {
+            //입장승인 됨, 게임시작안함
+            else if (
+                state.value === 'PARTICIPANT' &&
+                (data.result.roomStartYn !== null ? !data.result.roomStartYn : false)
+            ) {
                 enterApprove.value = true
             }
             //게임시작 혹은 종료한 경우.
             else if (state.value === 'END' || data.result.roomStartYn) {
                 eventSource.close()
                 router.push(`/game/${route.params.roomNo}`)
-            }
-            else {
+            } else {
                 alert('오류 발생!')
                 router.replace('/main')
             }
@@ -71,29 +72,30 @@ const getStatus = () => {
         (error) => {
             alert(error.response.data.message)
             router.replace('/main')
-        })
+        }
+    )
 }
 
-
-
 onMounted(() => {
-    getStatus();
+    getStatus()
 })
-
-
-
-
 </script>
 
 <template>
     <div class="bg-A805White h-full w-full flex justify-center items-center">
         <div class="card-template-container">
-            <WideCardTemplate title="Waiting..." :content-messages="enterApprove
-                ? ['입장이 승인되었습니다.', '', '게임이 시작될 때까지 기다려주세요']
-                : ['', '방장의 입장 승인 대기중입니다.', '']
-                " button-label="창 닫기" @close-button-handle="prevPageButtonHandler"
-                @button-click="prevPageButtonHandler" />
+            <WideCardTemplate
+                title="Waiting..."
+                :content-messages="
+                    enterApprove
+                        ? ['입장이 승인되었습니다.', '', '게임이 시작될 때까지 기다려주세요']
+                        : ['', '방장의 입장 승인 대기중입니다.', '']
+                "
+                button-label="창 닫기"
+                @close-button-handle="prevPageButtonHandler"
+                class="max-md:max-w-full max-md:max-h-full max-md:h-full max-md:w-full"
+                @button-click="prevPageButtonHandler"
+            />
         </div>
     </div>
 </template>
-

@@ -80,9 +80,13 @@ const roomUserInfo = inject<Ref<RoomUserInfoType>>(
 
 const roomName = ref(roomUserInfo.value.roomName)
 
-watch(roomUserInfo, (newValue) => {
-    roomName.value = newValue.roomName
-})
+watch(
+    roomUserInfo,
+    (newValue) => {
+        roomName.value = newValue.roomName
+    },
+    { deep: true }
+)
 const unapprovedList = computed(() => {
     return props.roomUserList.filter((user) => user.standbyYn)
 })
@@ -178,6 +182,7 @@ const roomInfoGet: Handler = () => {
         ({ data }) => {
             roomInfo.value = data.result
             roomName.value = data.result.roomName
+            console.log('?roomInfo', roomInfo.value)
             if (roomInfo.value.roomStartYn && roomInfo.value.roomStatus === 'PARTICIPANT') {
                 range.value = {
                     start: dayjs(data.result.missionStartAt).format(dateTimeFormat),
@@ -188,7 +193,7 @@ const roomInfoGet: Handler = () => {
                 ).format(dateTimeFormat)
                 endTime.value = dayjs(data.result.roomEndAt).format(dateTimeFormat)
             }
-            console.log('roomInfo', roomInfo.value)
+            console.log('??roomInfo', range.value)
         },
         (error) => {
             console.log(':(', error)

@@ -32,20 +32,77 @@ const acceptUserHandler = (no?: number) => {
     if (roomInfo.value.roomStartYn && roomInfo.value.roomStatus === 'PARTICIPANT') {
         storedTargets.value = targets
         modalSeen.value = true
+        console.log(1)
+        return
     }
+    // acceptRoomUsers(
+    //     {
+    //         roomUserNos: targets
+    //     },
+    //     ({ data }) => {
+    //         console.log('acceptRoomUsers success', data)
+    //         emit('usersApproved')
+    //     },
+    //     (error) => {
+    //         console.log('error', error)
+    //     }
+    // )
+}
+const rematchHandler = () => {
+    console.log('rematch!')
+
     acceptRoomUsers(
         {
-            roomUserNos: targets
+            roomUserNos: storedTargets.value
         },
         ({ data }) => {
             console.log('acceptRoomUsers success', data)
+            rematch(
+                { roomNo: roomInfo.value.roomNo },
+                ({ data }) => {
+                    console.log('rematch :)', data)
+                },
+                (error) => {
+                    console.log('rematch :(', error.response.data.message)
+                }
+            )
             emit('usersApproved')
         },
         (error) => {
             console.log('error', error)
         }
     )
+    modalSeen.value = false
 }
+const interceptHandler = () => {
+    console.log('intercept!', { roomNo: roomInfo.value.roomNo, roomUserNos: storedTargets.value })
+
+    interceptUser(
+        { roomNo: roomInfo.value.roomNo, roomUserNos: storedTargets.value },
+        (data) => {
+            console.log('intercept :)', data)
+
+            acceptRoomUsers(
+                {
+                    roomUserNos: storedTargets.value
+                },
+                ({ data }) => {
+                    console.log('acceptRoomUsers success', data)
+                    emit('usersApproved')
+                },
+                (error) => {
+                    console.log('error', error)
+                }
+            )
+        },
+        (error) => {
+            console.log('intercept :(', error.response.data.message)
+        }
+    )
+
+    modalSeen.value = false
+}
+
 const denyUserHandler = (no?: number) => {
     const targets = no ? [no] : targetUsers.value
     denyRoomUsers(
@@ -64,32 +121,6 @@ const denyUserHandler = (no?: number) => {
 
 const modalSeen = ref<boolean>(false)
 const storedTargets = ref<number[]>([])
-const rematchHandler = () => {
-    console.log('rematch!')
-    modalSeen.value = false
-    rematch(
-        { roomNo: roomInfo.value.roomNo },
-        ({ data }) => {
-            console.log('rematch :)', data)
-        },
-        (error) => {
-            console.log('rematch :(', error.response.data.message)
-        }
-    )
-}
-const interceptHandler = () => {
-    console.log('intercept!')
-    modalSeen.value = false
-    interceptUser(
-        { roomNo: roomInfo.value.roomNo, roomUserNos: storedTargets.value },
-        ({ data }) => {
-            console.log('intercept :)', data)
-        },
-        (error) => {
-            console.log('intercept :(', error.response.data.message)
-        }
-    )
-}
 </script>
 
 <template>
@@ -142,7 +173,14 @@ const interceptHandler = () => {
             </div>
         </div>
     </div>
-    <ModalTemplate :seen="modalSeen" custom-class="modal-template-style-1"
+    <ModalTemplate
+        :seen="modalSeen"
+        custom-class="modal-template-style-1"
+        @modal-close="
+            () => {
+                modalSeen = false
+            }
+        "
         ><IntrudingModalContent
             content-title="MANITO"
             title-class="font-iceland"

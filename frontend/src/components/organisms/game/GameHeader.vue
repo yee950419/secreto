@@ -4,6 +4,7 @@ import TextAtom from '@/components/atoms/TextAtom.vue'
 import { ReloadOutlined } from '@ant-design/icons-vue'
 import type { UserMission } from '@/types/mission'
 import { rerollMission } from '@/api/mission'
+import ButtonAtom from '@/components/atoms/ButtonAtom.vue'
 const props = defineProps({
     userMission: {
         type: Object as () => UserMission[],
@@ -36,13 +37,13 @@ const rerollHandler = () => {
         },
         ({ data }) => {
             console.log(':)', data)
+            emit('reroll')
         },
         (error) => {
             console.log(':(', error.response.data.message)
             alert(error.response.data.message)
         }
     )
-    emit('reroll')
 }
 </script>
 

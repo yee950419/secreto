@@ -41,10 +41,17 @@ const roomMissions = ref<Array<Mission>>([])
 const roomMissionsModalOpen = ref<boolean>(false)
 const goToMissionCertificationPage: DataHandler<UserMission> = (mission) => {
     console.log(mission)
-    router.push({
-        name: 'game-board-write',
-        query: { boardCategory: 'CERTIFICATE' }
-    })
+    if (!mission.missionCertifyYn) {
+        router.push({
+            name: 'game-board-write',
+            query: { boardCategory: 'CERTIFICATE' }
+        })
+    } else {
+        router.push({
+            name: 'game-board-list',
+            query: { boardCategory: 'CERTIFICATE' }
+        })
+    }
 }
 const modalOpenHandler: Handler = () => {
     roomMissionsModalOpen.value = true
@@ -73,7 +80,7 @@ onMounted(async () => {
 
 <template>
     <div name="header" class="flex flex-col w-full bg-A805RealWhite">
-        <GameHeader :user-mission="props.userMission"
+        <GameHeader :user-mission="props.userMission" @reroll="emit('refreshUserMission')"
             ><ButtonAtom
                 class="button-cream text-A805DarkGrey max-md:w-[90px] w-[210px] max-md:h-[20px] button-style-2 transition-none max-md:text-[8pt]"
                 @button-click="modalOpenHandler"

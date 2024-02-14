@@ -45,6 +45,7 @@ const loadBoardData = () => {
                 boardRequest.value.page = pageable.pageNumber
                 boardRequest.value.size = pageable.pageSize
                 total.value = data.result.totalElements
+                console.log('list response', boards.value)
             }
         },
         (error) => console.error(error)

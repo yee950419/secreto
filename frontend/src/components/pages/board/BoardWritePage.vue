@@ -23,7 +23,7 @@ const boardWriteRequest: Ref<BoardWriteRequestType> = ref({
     title: '',
     content: '',
     boardCategory: boardCategory.value,
-    imageUrl: null,
+    imgUrl: null,
     userMissionNo: null,
     publicYn: false
 })
@@ -33,7 +33,9 @@ const submitButtonHandle = () => {
         boardWriteRequest.value.userMissionNo = null
         boardWriteRequest.value.publicYn = true
     }
-    boardWriteRequest.value.imageUrl = getFirstImageUrl(boardWriteRequest.value.content)
+    boardWriteRequest.value.imgUrl = getFirstImageUrl(boardWriteRequest.value.content)
+
+    console.log('request', boardWriteRequest.value)
     createPost(
         roomNo.value,
         boardWriteRequest.value,

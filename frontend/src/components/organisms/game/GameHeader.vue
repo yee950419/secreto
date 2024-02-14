@@ -5,7 +5,6 @@ import ButtonAtom from '@/components/atoms/ButtonAtom.vue'
 import { ReloadOutlined } from '@ant-design/icons-vue'
 import type { UserMission } from '@/types/mission'
 import { rerollMission } from '@/api/mission'
-import ButtonAtom from '@/components/atoms/ButtonAtom.vue'
 const props = defineProps({
     userMission: {
         type: Object as () => UserMission[],
@@ -49,9 +48,11 @@ const rerollHandler = () => {
 </script>
 
 <template>
-    <div name="mission-header"
+    <div
+        name="mission-header"
         class="flex justify-between items-center md:px-5 md:py-6 px-3 py-5 w-full md:min-w-[590px] overflow-x-auto"
-        :class="customClass">
+        :class="customClass"
+    >
         <div class="flex items-center gap-5 md:gap-10">
             <div name="now-mission">
                 <h1 class="flex text-[24pt] max-md:text-[12pt]">
@@ -59,17 +60,21 @@ const rerollHandler = () => {
                     <p>
                         {{
                             userMissionLength > 0
-                            ? userMission[userMissionLength - 1].content
-                            : '없음'
+                                ? userMission[userMissionLength - 1].content
+                                : '없음'
                         }}
                     </p>
                 </h1>
             </div>
 
-            <ButtonAtom v-if="userMissionLength > 0 &&
+            <ButtonAtom
+                v-if="
+                    userMissionLength > 0 &&
                     userMission[userMissionLength - 1].missionType === 'REGULAR'
-                    " class="relative flex text-[20pt] max-md:text-[10pt] justify-center items-center"
-                @button-click="rerollHandler">
+                "
+                class="relative flex text-[20pt] max-md:text-[10pt] justify-center items-center"
+                @button-click="rerollHandler"
+            >
                 <ReloadOutlined class="md:text-[40pt] text-[20pt] absolute"></ReloadOutlined>
                 <p>{{ userMission[userMissionLength - 1].missionRerollCount }}</p>
             </ButtonAtom>

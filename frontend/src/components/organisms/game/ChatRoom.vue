@@ -12,6 +12,8 @@ import { CloseOutlined } from '@ant-design/icons-vue'
 import { ref, onMounted, onUnmounted, watch, nextTick, inject } from 'vue'
 import { storeToRefs } from 'pinia'
 import { over } from 'stompjs';
+import AvatarAtom from '@/components/atoms/AvatarAtom.vue'
+import TextAtom from '@/components/atoms/TextAtom.vue'
 const userStore = useUserStore()
 const { accessToken } = storeToRefs(userStore)
 
@@ -235,14 +237,26 @@ onUnmounted(() => {
                 <div class="text-center" v-if="message.type === 'info'">
                     <p class="whitespace-pre-line">{{ message.message }}</p>
                 </div>
-                <div class="flex items-end justify-end mb-2" v-else-if="message.senderId === roomUserInfo.roomUserNo">
-                    <div class="bg-yellow-500 p-3 rounded-md shadow-md text-white">
+                <div class="flex items-end justify-end mb-2 gap-[5px]"
+                    v-else-if="message.senderId === roomUserInfo.roomUserNo">
+                    <div class="bg-yellow-500 p-3 rounded-md shadow-md text-white truncate">
                         <p class="whitespace-pre-line">{{ message.message }}</p>
                     </div>
+                    <div class="flex flex-col items-center">
+                        <AvatarAtom custom-class="w-[40px] h-[40px]" :imageUrl="roomUserInfo.profileUrl" />
+                        <TextAtom custom-class="text-xs">{{ roomUserInfo.roomNickname }}</TextAtom>
+                    </div>
+
                 </div>
-                <div class="flex items-end justify-start mb-2" v-else>
-                    <div class="bg-white p-3 rounded-md shadow-md">
-                        <p>{{ message.message }}</p>
+                <div class="flex items-end justify-start mb-2 gap-[5px]" v-else>
+                    <div class="flex flex-col items-center">
+                        <AvatarAtom custom-class="w-[40px] h-[40px]" v-if="name === '마니또'" :imageUrl="imageUrl" />
+                        <AvatarAtom custom-class="w-[40px] h-[40px]" v-else :imageUrl="message.profileUrl" />
+                        <TextAtom custom-class="text-xs">{{ name === '마니또' ? '마니또' : message.sender?.slice(0, 3) }}
+                        </TextAtom>
+                    </div>
+                    <div class="bg-white p-3 rounded-md shadow-md truncate">
+                        <p class="whitespace-pre-line">{{ message.message }}</p>
                     </div>
                 </div>
             </div>

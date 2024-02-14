@@ -54,6 +54,7 @@ provide('roomCode', readonly(entryCode))
 provide('notifyLists', readonly(notificationLists))
 provide('roomNo', readonly(roomNo))
 provide('roomInfo', readonly(roomInfo))
+provide('userList', readonly(userList))
 
 const removeChatRoom = (name: string) => {
     const index = chatRooms.value.findIndex((room) => room.name === name)
@@ -200,42 +201,22 @@ onUnmounted(() => {
 <template>
     <div class="flex flex-1 bg-A805RealWhite">
         <div v-for="room in chatRooms" :key="room.name">
-            <ChatRoom
-                :name="room.name"
-                :imageUrl="room.imageUrl"
-                @close-chat-room="removeChatRoom"
-            />
+            <ChatRoom :name="room.name" :imageUrl="room.imageUrl" @close-chat-room="removeChatRoom" />
         </div>
         <!-- pc버전이거나, 모바일 버전 + 메뉴가 체크된 상태일때만 nav가 보인다. -->
-        <NavBar
-            @make-room="makeRoom"
-            v-if="!isMobile || (isMobile && menuSeen)"
-            :room-name="roomUserInfo.roomName"
-            :room-info="roomInfo"
-            :nav-status="navStatus"
-        />
+        <NavBar @make-room="makeRoom" v-if="!isMobile || (isMobile && menuSeen)" :room-name="roomUserInfo.roomName"
+            :room-info="roomInfo" :nav-status="navStatus" />
 
         <!-- pc버전이거나, 모바일 버전 + 메뉴가 닫힌 상태일때만 이 영역 이 보인다. -->
-        <RouterView
-            v-if="!isMobile || !menuSeen"
-            :room-info="roomInfo"
-            :user-mission="userMission"
-            :room-user-list="userList"
-            @refresh-notify="getNotify"
-            @room-name-changed="updateRoomName"
-            @refresh-user-mission="getUserMissionHandler"
-            @refresh-user-list="userListGet"
-            @start-room="
-                () => {
+        <RouterView v-if="!isMobile || !menuSeen" :room-info="roomInfo" :user-mission="userMission"
+            :room-user-list="userList" @refresh-notify="getNotify" @room-name-changed="updateRoomName"
+            @refresh-user-mission="getUserMissionHandler" @refresh-user-list="userListGet" @start-room="() => {
                     navStatus = 3
                 }
-            "
-            @end-room="
-                () => {
-                    navStatus = 7
-                }
-            "
-        />
+                " @end-room="() => {
+            navStatus = 7
+        }
+        " />
     </div>
 </template>
 

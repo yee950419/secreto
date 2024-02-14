@@ -20,7 +20,6 @@ const prop = defineProps({
             </div>
             <TextAtom>{{ HistoryData.value.predictor[HistoryData.value.predictor.length - 1].predictorNickname }} -> {{
                 HistoryData.value.predictor[HistoryData.value.predictor.length - 1].targetNickName }}</TextAtom>
-            <TextAtom>예측결과 : {{ HistoryData.value.predictor[0].correct ? '성공' : '실패' }}</TextAtom>
         </div>
         <div class="w-full my-[10px] cursor-pointer">
             <TextAtom> {{ HistoryData.value.predictor[HistoryData.value.predictor.length - 1].predictReason }} 의 사유로

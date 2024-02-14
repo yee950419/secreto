@@ -32,7 +32,6 @@ export type HistoryTypes = {
 
 
 export type PredictType = {
-    correct : boolean
     id : number
     entryAt : string
     predictReason: string

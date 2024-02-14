@@ -87,7 +87,6 @@ const calculateUnReadMessage = () => {
 watch(
     notificationLists,
     () => {
-        console.log(notificationLists.value)
         calculateUnReadMessage()
     },
     { deep: true }
@@ -96,14 +95,12 @@ watch(
 watch(
     () => prop.roomInfo,
     () => {
-        console.log(prop.roomInfo)
     }
 )
 
 watch(
     () => prop.navStatus,
     () => {
-        console.log('navbar?', prop.navStatus)
         activeMenu.value = prop.navStatus
     }
 )

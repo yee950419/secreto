@@ -29,14 +29,9 @@ const SelectState = {
 }
 const selectState: Ref<string> = ref(SelectState.ALL)
 watch(selectState, () => {
-    console.log('메뉴 변경', selectState.value)
 })
 
 const roomEnterHandler: DataHandler<RoomListInfoType> = (roomInfo: RoomListInfoType) => {
-    // 방으로 이동할 수 있는 경우
-    // 1. 방장인 경우
-    // 2. 입장이 승인됐으며 게임이 시작된 경우
-    // 3. 입장이 승인됐으며 게임이 종료된 경우
     if (roomInfo.hostUserNo === userInfo.value.id || (!roomInfo.standbyYn && (roomInfo.roomStatus === 'END' || roomInfo.roomStartYn))) {
         router.push('/game/' + roomInfo.roomNo)
     }
@@ -76,10 +71,7 @@ const roomCreateHandler: Handler = () => {
 const getRoomLists = () => {
     getRoomList(
         ({ data }) => {
-            console.log(data)
-
             roomInfoList.value = data.result
-            // console.log(data.result)
         },
         (error) => {
             console.error('error', error.response.data.message)

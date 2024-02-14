@@ -17,16 +17,12 @@ const setMyActivity = (value: boolean) => {
     myActivity.value = value
 }
 
-//TODO: API 연동 필요
-// 내가 마니띠에게 활동한 기록 가져오는 API
 const getMyActivity = () => {
     getMyHistoryList(roomUserInfo.value.roomNo, ({ data }) => {
         manitiData.value = data.result.result.maniti;
         manitoData.value = data.result.result.manito
-        console.log('maniti data : ', manitiData.value)
-        console.log('manito data : ', manitoData.value)
         ArrayHistoryData()
-    }, (error) => console.log(error))
+    }, (error) => console.error(error))
 }
 
 // 나의 마니또의 활동 기록 가져오는 API
@@ -34,11 +30,9 @@ const getMyManito = () => {
     getManitoHisotryList(roomUserInfo.value.roomNo, ({ data }) => {
         manitiData.value = data.result.result.maniti;
         manitoData.value = data.result.result.manito
-        console.log('maniti data : ', manitiData.value)
-        console.log('manito data : ', manitoData.value)
         ArrayHistoryData()
 
-    }, (error) => console.log(error))
+    }, (error) => console.error(error))
 }
 
 // 마니띠, 마니또의 데이터를 합쳐서 화면에 뿌려주기 위한 데이터
@@ -55,7 +49,6 @@ const ArrayHistoryData = () => {
         return new Date(a.date).getTime() - new Date(b.date).getTime();
     });
 
-    console.log(combinedArray.value)
 };
 
 

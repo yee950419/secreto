@@ -12,9 +12,7 @@ const route = useRoute()
 const notificationLists = inject('notifyLists') as Ref<notificationTypes[]>
 
 const notifyReading = (alarmNo: number) => {
-    console.log(alarmNo, Number(route.params.roomNo))
     notificationRead(alarmNo, Number(route.params.roomNo), ({ data }) => {
-        console.log(data)
         emit('refreshNotify')
     }, (error) => {
         console.log(error)

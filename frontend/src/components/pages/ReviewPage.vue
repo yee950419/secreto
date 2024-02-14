@@ -26,13 +26,13 @@ const buttonHandler = () => {
     sendWord(roomUserInfo.value.roomNo, inputValue.value, ({ data }) => {
         getWords(roomUserInfo.value.roomNo)
         inputValue.value = ''
-    }, (error) => console.log(error))
+    }, (error) => console.error(error))
 }
 
 const getWords = (roomNo: number) => {
     getWordCloud(roomNo, ({ data }) => {
         wordCloudList.value = data.result
-    }, (error) => console.log(error))
+    }, (error) => console.error(error))
 }
 
 const triggering = inject('trigger') as Ref<boolean>

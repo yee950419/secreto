@@ -44,7 +44,6 @@ const roomUserInfo = inject<Ref<RoomUserInfoType>>(
 
 const predictManito = (user: userType) => {
     modalSeen.value = true
-    console.log(user)
     predictInfo.value = user
 }
 </script>

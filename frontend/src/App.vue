@@ -27,7 +27,6 @@ const inRoom = ref<boolean>(false)
 const nickName = ref<string>('')
 
 const updateGameState = (state: boolean) => {
-    console.log('state 변경!', state)
     inRoom.value = state
 }
 const updateRoomName = (name: string | undefined) => {
@@ -35,7 +34,6 @@ const updateRoomName = (name: string | undefined) => {
 }
 
 const setNickName = (name: string) => {
-    console.log('닉네임 변경!', name)
     nickName.value = name
 }
 

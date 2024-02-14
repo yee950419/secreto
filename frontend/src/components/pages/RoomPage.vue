@@ -91,7 +91,7 @@ const SSEConnection = (roomUserNo: number) => {
     eventSource = SSEConnect(roomUserNo)
 
     eventSource.onopen = () => {
-        console.log('Server Sent Event 연결이 열렸습니다.')
+        console.info('Server Sent Event 연결이 열렸습니다.')
     }
 
     // 서버로부터 알림 메시지가 오면 적절한 처리 로직을 수행
@@ -158,7 +158,7 @@ const getNotify = () => {
             notificationLists.value = data.result
         },
         (error) => {
-            console.log(error)
+            console.error(error)
         }
     )
 }
@@ -173,7 +173,7 @@ const getUserMissionHandler = () => {
             userMission.value = data.result
         },
         (error) => {
-            console.log(':(', error)
+            console.error(':(', error)
         }
     )
 }
@@ -188,7 +188,7 @@ const userListGet = () => {
             userList.value = data.result
         },
         (error) => {
-            console.log('error', error)
+            console.error('error', error)
         }
     )
 }

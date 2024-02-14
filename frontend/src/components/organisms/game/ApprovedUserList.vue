@@ -83,8 +83,10 @@ const assignHandler = (newHostNo: number) => {
                     ></ProfileInfo>
 
                     <template #overlay>
-                        <Menu v-show="user.roomUserNo !== hostNo">
-                            <p class="text-center text-[1.2rem] font-bold my-2 px-3">123</p>
+                        <Menu v-show="user.roomUserNo !== hostNo && ri.roomStartYn">
+                            <p class="text-center text-[1.2rem] font-bold my-2 px-3">
+                                {{ user.nickname }}
+                            </p>
                             <MenuItem @click="() => assignHandler(user.roomUserNo)">
                                 권한 위임하기
                             </MenuItem>

@@ -1,11 +1,103 @@
 <script setup lang="ts">
 import ButtonAtom from '@/components/atoms/ButtonAtom.vue'
 import ChatProfile from '@/components/molecules/game/ChatProfile.vue'
-import { CloseOutlined } from '@ant-design/icons-vue'
+import SockJs from 'sockjs-client'
 import type { Message } from '@/types/chat'
-import type { Socket } from 'socket.io-client'
-import { ref, onMounted, onUnmounted, watch, type Ref, nextTick } from 'vue'
-import { io } from 'socket.io-client'
+import type { Ref } from 'vue'
+import type { RoomUserInfoType } from '@/types/room'
+import type { chatInfo } from '@/types/chat'
+import { useUserStore } from '@/stores/user'
+import { getChattingRoom, getMessages } from '@/api/chatting'
+import { CloseOutlined } from '@ant-design/icons-vue'
+import { ref, onMounted, onUnmounted, watch, nextTick, inject } from 'vue'
+import { storeToRefs } from 'pinia'
+import { over } from 'stompjs';
+
+const userStore = useUserStore()
+const { accessToken, refreshToken } = storeToRefs(userStore)
+
+const chattingData = ref({
+    authUrl: '',
+    stompUrl: 'http://i10a805.p.ssafy.io:8080/chatting',
+    destination: '/send/chatting/1',
+    subscribe: '/topic/1',
+    headers: {
+        "AccessToken": `bearer ${accessToken.value}`,
+        "Content-Type": "application/json"
+    },
+    credentials: true,
+});
+
+
+const chatNo = ref(-1)
+const isConnected = ref(false)
+const roomType = ref<'MANITO' | 'MANITI' | 'ALL'>('ALL')
+const messageData = ref({
+    message: ''
+});
+
+const incomingMessageData = ref({
+    message: []
+});
+
+const stompClient = ref<any>();
+
+const connectToStompServer = () => {
+    var sock = new SockJs(chattingData.value.stompUrl);
+    stompClient.value = over(sock);
+    stompClient.value.connect(chattingData.value.headers, () => {
+        console.log('WebSocket connected');
+        displayConnect('채팅방에 입장하였습니다.', 'info');
+        isConnected.value = true
+        subscribe();
+
+        getMessages(roomType.value, chatNo.value, ({ data }) => {
+            messages.value.push(...data.result)
+        }, (error) => {
+            console.log(error)
+        })
+
+    }, (error: any) => {
+        console.error('WebSocket connection error', error);
+        displayConnect('연결에 실패하였습니다.', 'info');
+
+    });
+};
+
+
+
+const sendMessage = () => {
+    stompClient.value.send(
+        chattingData.value.destination,
+        { 'content-type': 'application/json', "AccessToken": chattingData.value.headers.AccessToken },
+        JSON.stringify({
+            sender: roomUserInfo.value.roomNickname,
+            senderId: roomUserInfo.value.roomUserNo,
+            message: textMessage.value,
+            readYn: false,
+            chatNo: chatNo.value,
+            sendAt: new Date()
+        })
+    );
+};
+
+const getMessage = (message: any) => {
+    if (message.body) {
+        const data1 = JSON.parse(message.body).body.result;
+        console.log('data1', data1)
+        messages.value.push(data1)
+
+    } else {
+        console.log('no message');
+    }
+};
+
+const subscribe = () => {
+    console.log('구독 좋아요, 알람설정까지!', chattingData.value.subscribe)
+    stompClient.value.subscribe(chattingData.value.subscribe, getMessage);
+};
+
+
 
 const emit = defineEmits(['close-chat-room'])
 
@@ -24,6 +116,7 @@ const { imageUrl, name } = defineProps({
     }
 })
 
+const roomUserInfo = inject('roomUserInfo') as Ref<RoomUserInfoType>
 const messages = ref<Message[]>([])
 const attemp = ref(0)
 const textMessage = ref<string>('')
@@ -31,51 +124,53 @@ const chatRoomRef = ref<HTMLElement | null>(null)
 const dragging = ref(false)
 const offsetX = ref(0)
 const offsetY = ref(0)
-
-const socket: Socket = io('http://localhost:3000', {
-    reconnectionDelay: 1000, // 1초마다 재시도
-    reconnectionDelayMax: 5000, // 최대 5초까지 재시도 간격 증가
-    reconnectionAttempts: 3 // 최대 5번 재시도
-})
-
-socket.on('connect', () => {
-    displayConnect('You are connected!', 'connect')
-})
-
-socket.on('connect_error', () => {
-    if (attemp.value === 3) {
-        displayConnect('서버 에러, 다음에 다시 시도해주세요', 'connect')
-        return
-    }
-    displayConnect(`연결실패, 재시도중... ${++attemp.value}`, 'connect')
-})
-
-socket.emit('join-room', name, (datas: Message[]) => {
-    messages.value = datas
-})
-
-socket.on('message', ({ content, type }: Message) => {
-    console.log(content, type)
-    displayMessage(content, type)
-})
+const roomNo = inject('roomNo') as Ref<number>
 
 const displayConnect = (message: string, type: string) => {
-    messages.value.push({ content: message, type: type })
+    messages.value.push({ message, type })
 }
 
-const displayMessage = (message: string, type: string) => {
-    messages.value.push({ content: message, type: type })
-}
 
-const sendMessage = () => {
-    // 첫번째 인자로 이벤트명, 두번째 인자로 데이터, 세번째 인자로 방식별자
-    socket.emit('message', { content: textMessage.value, type: 'sent' }, name)
-    displayMessage(textMessage.value, 'sent')
+// const sendMessage = () => {
+//     // 첫번째 인자로 이벤트명, 두번째 인자로 데이터, 세번째 인자로 방식별자
+//     socket.emit('message', { content: textMessage.value, type: 'sent' }, name)
+//     displayMessage(textMessage.value, 'sent')
+// }
+
+const getChatInfo = async () => {
+    getChattingRoom(roomNo.value, ({ data }) => {
+        console.log('채팅유저 리스트', data)
+        let type = 'MANITO'
+        if (name === '마니또') {
+            type = 'MANITO'
+            roomType.value = 'MANITO'
+        }
+        else if (name === '단체 채팅') {
+            type = 'ALL'
+            roomType.value = 'ALL'
+        }
+        else {
+            type = 'MANITI'
+            roomType.value = 'MANITI'
+        }
+        console.log('type', type)
+
+        const chatInfo = data.result.find((chatInfo: chatInfo) => chatInfo.chattingUserType === type);
+
+        if (chatInfo) {
+            chattingData.value.destination = `/send/chatting/${chatInfo.chatNo}`;
+            chattingData.value.subscribe = `/topic/${chatInfo.chatNo}`;
+            chatNo.value = chatInfo.chatNo;
+        }
+    },
+        (error) => {
+            console.log(error)
+        })
 }
 
 
 const closeChatRoom = () => {
-    socket.close()
+    stompClient.value.disconnect()
     emit('close-chat-room', name)
 }
 
@@ -133,9 +228,12 @@ watch(() => messages, () => {
 }, { deep: true });
 
 
+
 onMounted(() => {
     handleResize()
     window.addEventListener('resize', handleResize)
+    connectToStompServer()
+    getChatInfo()
 })
 
 onUnmounted(() => {
@@ -152,20 +250,18 @@ onUnmounted(() => {
         </div>
         <div class="flex h-[65%] flex-col bg-A805White contentsSection px-[10px]  overflow-y-scroll" ref="messageContainer">
             <div v-for="(message, index) in messages" :key="index">
-                <div class="flex items-end justify-start mb-2" v-if="message.type === 'received'">
-                    <div class="bg-white p-3 rounded-md shadow-md">
-                        <p>{{ message.content }}</p>
-                    </div>
+                <div class="text-center" v-if="message.type === 'info'">
+                    <p>{{ message.message }}</p>
                 </div>
-
-                <div class="flex items-end justify-end mb-2" v-else-if="message.type === 'sent'">
+                <div class="flex items-end justify-end mb-2" v-else-if="message.senderId === roomUserInfo.roomUserNo">
                     <div class="bg-yellow-500 p-3 rounded-md shadow-md text-white">
-                        <p>{{ message.content }}</p>
+                        <p>{{ message.message }}</p>
                     </div>
                 </div>
-
-                <div class="text-center" v-else>
-                    <p>{{ message.content }}</p>
+                <div class="flex items-end justify-start mb-2" v-else>
+                    <div class="bg-white p-3 rounded-md shadow-md">
+                        <p>{{ message.message }}</p>
+                    </div>
                 </div>
             </div>
         </div>

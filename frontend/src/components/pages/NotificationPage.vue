@@ -31,13 +31,11 @@ const notifyReading = (alarmNo: number) => {
                 class="flex md:flex-wrap items-center justify-center h-[60px] md:mx-[30px] max-md:mx-[10px] rounded-md border-black border-solid border-2 mt-[30px] bg-A805RealWhite md:gap-[30px] max-md:gap-[10px] px-[10px]"
                 @click="notifyReading(notify.alarmNo)">
                 <TextAtom custom-class="text-A805Red">New!</TextAtom>
-                <TextAtom>{{ notify.author }}님이 {{ new Date(notify.generatedAt).toLocaleDateString() }} 에 {{ notify.content
-                }}를 알렸습니다.</TextAtom>
+                <TextAtom>{{ notify.content }}</TextAtom>
             </div>
             <div v-else @click="notifyReading(notify.alarmNo)"
                 class="flex  md:flex-wrap items-center justify-center h-[60px] md:mx-[30px] max-md:mx-[10px] rounded-md border-black border-solid border-2 mt-[30px] bg-A805Grey text-A805Cream max-md:gap-[10px] md:gap-[30px] px-[10px]">
-                <TextAtom>{{ notify.author }}님이 {{ new Date(notify.generatedAt).toLocaleDateString() }} 에 {{ notify.content
-                }}를 알렸습니다.</TextAtom>
+                <TextAtom>{{ notify.content }}</TextAtom>
                 <TextAtom>읽기 완료</TextAtom>
             </div>
         </template>

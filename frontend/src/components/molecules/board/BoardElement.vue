@@ -22,7 +22,7 @@ defineProps(['board'])
             <TextAtom custom-class="text-A805Red font-bold mx-1">
                 [{{ board.replyCount }}]</TextAtom
             >
-            <FileImageOutlined class="text-[#328815]" v-if="board.imageUrl != null" />
+            <FileImageOutlined class="text-[#328815]" v-if="board.imgUrl != null" />
         </td>
         <td>{{ board.writer }}</td>
         <td>{{ convertStringToRegistrationDate(board.registerAt) }}</td>

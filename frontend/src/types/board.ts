@@ -21,6 +21,7 @@ export type BoardResponseType = {
     userMission: string | null
     likedCount: number
     replyCount: number
+    imgUrl: string | null
 }
 
 export type BoardDetailResponseType = {
@@ -71,7 +72,7 @@ export type ReplyWriteRequestType = {
 export type BoardWriteRequestType = {
     title: string
     content: string
-    imageUrl: string | null
+    imgUrl: string | null
     boardCategory: string
     publicYn: boolean
     userMissionNo: number | null
@@ -80,7 +81,7 @@ export type BoardWriteRequestType = {
 export type BoardModifyRequestType = {
     title: string
     content: string
-    imageUrl: string | null
+    imgUrl: string | null
     publicYn: boolean
 }
 

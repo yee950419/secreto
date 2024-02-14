@@ -29,7 +29,7 @@ defineProps(['board'])
                 <span class="w-[60px]">댓글 : {{ board.replyCount }}</span>
             </div>
         </div>
-        <img class="w-[70px] h-[70px]" :src="board.imageUrl" v-if="board.imageUrl != null" />
+        <img class="w-[70px] h-[70px]" :src="board.imgUrl" v-if="board.imgUrl != null" />
     </div>
 </template>
 

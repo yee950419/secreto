@@ -22,7 +22,7 @@ const boardCategory = computed(() => {
 const boardModifyRequest: Ref<BoardModifyRequestType> = ref({
     title: '',
     content: '',
-    imageUrl: null,
+    imgUrl: null,
     publicYn: false
 })
 const userMission: Ref<string> = ref('')
@@ -31,7 +31,7 @@ const submitButtonHandle = () => {
     if (boardCategory.value !== BoardCategory.CERTIFICATE) {
         boardModifyRequest.value.publicYn = true
     }
-    boardModifyRequest.value.imageUrl = getFirstImageUrl(boardModifyRequest.value.content)
+    boardModifyRequest.value.imgUrl = getFirstImageUrl(boardModifyRequest.value.content)
     modifyPost(
         boardNo.value,
         roomNo.value,

@@ -40,6 +40,9 @@ const roomEnterHandler: DataHandler<RoomListInfoType> = (roomInfo: RoomListInfoT
     if (roomInfo.hostUserNo === userInfo.value.id || (!roomInfo.standbyYn && (roomInfo.roomStatus === 'END' || roomInfo.roomStartYn))) {
         router.push('/game/' + roomInfo.roomNo)
     }
+    else if (roomInfo.standbyYn && roomInfo.roomStatus === 'END') {
+        alert('종료된 방에는 입장하실 수 없습니다')
+    }
     else {
         router.push('/waiting/' + roomInfo.roomNo)
     }

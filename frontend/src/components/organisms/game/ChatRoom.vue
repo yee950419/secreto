@@ -12,9 +12,25 @@ import { CloseOutlined } from '@ant-design/icons-vue'
 import { ref, onMounted, onUnmounted, watch, nextTick, inject } from 'vue'
 import { storeToRefs } from 'pinia'
 import { over } from 'stompjs';
-
 const userStore = useUserStore()
-const { accessToken, refreshToken } = storeToRefs(userStore)
+const { accessToken } = storeToRefs(userStore)
+
+const { imageUrl, name } = defineProps({
+    imageUrl: {
+        type: String,
+        default: ''
+    },
+    name: {
+        type: String,
+        default: ''
+    },
+    customClass: {
+        type: String as () => string,
+        default: ''
+    }
+})
+
+const emit = defineEmits(['close-chat-room'])
 
 const chattingData = ref({
     authUrl: '',
@@ -22,23 +38,29 @@ const chattingData = ref({
     destination: '/send/chatting/1',
     subscribe: '/topic/1',
     headers: {
-        "AccessToken": `bearer ${accessToken.value}`,
-        "Content-Type": "application/json"
+        "AccessToken": `bearer ${accessToken.value}`
     },
     credentials: true,
 });
 
+const roomNo = inject('roomNo') as Ref<number>
 const chatNo = ref(-1)
 const isConnected = ref(false)
 const roomType = ref<'MANITO' | 'MANITI' | 'ALL'>('ALL')
-
 const stompClient = ref<any>();
+const roomUserInfo = inject('roomUserInfo') as Ref<RoomUserInfoType>
+const messages = ref<Message[]>([])
+const textMessage = ref<string>('')
+const chatRoomRef = ref<HTMLElement | null>(null)
+const dragging = ref(false)
+const offsetX = ref(0)
+const offsetY = ref(0)
+const messageContainer = ref<HTMLDivElement | null>(null);
 
 const connectToStompServer = () => {
     var sock = new SockJs(chattingData.value.stompUrl);
     stompClient.value = over(sock);
     stompClient.value.connect(chattingData.value.headers, () => {
-        console.log('WebSocket connected');
         displayConnect('채팅방에 입장하였습니다.', 'info');
         isConnected.value = true
         subscribe();
@@ -57,6 +79,7 @@ const connectToStompServer = () => {
 };
 
 const sendMessage = () => {
+    if (textMessage.value === '') return
     stompClient.value.send(
         chattingData.value.destination,
         { 'content-type': 'application/json', "AccessToken": chattingData.value.headers.AccessToken },
@@ -69,15 +92,13 @@ const sendMessage = () => {
             sendAt: new Date()
         })
     );
+    textMessage.value = '';
 };
 
 const getMessage = (message: any) => {
     if (message.body) {
         const data1 = JSON.parse(message.body).body.result;
         messages.value.push(data1)
-
-    } else {
-        console.log('no message');
     }
 };
 
@@ -85,47 +106,12 @@ const subscribe = () => {
     stompClient.value.subscribe(chattingData.value.subscribe, getMessage);
 };
 
-const emit = defineEmits(['close-chat-room'])
-
-const { imageUrl, name } = defineProps({
-    imageUrl: {
-        type: String,
-        default: ''
-    },
-    name: {
-        type: String,
-        default: ''
-    },
-    customClass: {
-        type: String as () => string,
-        default: ''
-    }
-})
-
-const roomUserInfo = inject('roomUserInfo') as Ref<RoomUserInfoType>
-const messages = ref<Message[]>([])
-const attemp = ref(0)
-const textMessage = ref<string>('')
-const chatRoomRef = ref<HTMLElement | null>(null)
-const dragging = ref(false)
-const offsetX = ref(0)
-const offsetY = ref(0)
-const roomNo = inject('roomNo') as Ref<number>
-
 const displayConnect = (message: string, type: string) => {
     messages.value.push({ message, type })
 }
 
-
-// const sendMessage = () => {
-//     // 첫번째 인자로 이벤트명, 두번째 인자로 데이터, 세번째 인자로 방식별자
-//     socket.emit('message', { content: textMessage.value, type: 'sent' }, name)
-//     displayMessage(textMessage.value, 'sent')
-// }
-
 const getChatInfo = async () => {
     getChattingRoom(roomNo.value, ({ data }) => {
-        console.log('채팅유저 리스트', data)
         let type = 'MANITO'
         if (name === '마니또') {
             type = 'MANITO'
@@ -139,7 +125,6 @@ const getChatInfo = async () => {
             type = 'MANITI'
             roomType.value = 'MANITI'
         }
-        console.log('type', type)
 
         const chatInfo = data.result.find((chatInfo: chatInfo) => chatInfo.chattingUserType === type);
 
@@ -154,10 +139,10 @@ const getChatInfo = async () => {
         })
 }
 
-
 const closeChatRoom = () => {
-    if (stompClient.value)
+    if (stompClient.value) {
         stompClient.value.disconnect()
+    }
     emit('close-chat-room', name)
 }
 
@@ -178,7 +163,6 @@ const drag = (e: MouseEvent) => {
     let newLeft = e.clientX - offsetX.value
     let newTop = e.clientY - offsetY.value
 
-    // Ensure the modal stays within the boundaries
     newLeft = Math.max(0, Math.min(newLeft, maxX))
     newTop = Math.max(0, Math.min(newTop, maxY))
 
@@ -197,9 +181,6 @@ const handleResize = () => {
     }
 }
 
-
-const messageContainer = ref<HTMLDivElement | null>(null);
-
 const scrollToBottom = () => {
     const container = messageContainer.value;
     if (container) {
@@ -207,23 +188,38 @@ const scrollToBottom = () => {
     }
 };
 
-// 메시지 배열이 변경될 때마다 스크롤을 맨 아래로 이동시킵니다.
+
+
+const handleKeyDown = (event: KeyboardEvent) => {
+    if (event.key === 'Enter') {
+        event.preventDefault();
+        if (event.shiftKey) {
+            textMessage.value += '\n'; // 줄바꿈 추가
+            return;
+        }
+        event.preventDefault();
+        sendMessage();
+
+    }
+};
+
 watch(() => messages, () => {
     nextTick(() => {
         scrollToBottom();
     });
 }, { deep: true });
 
-
 onMounted(() => {
     handleResize()
-    window.addEventListener('resize', handleResize)
     connectToStompServer()
     getChatInfo()
+
+    window.addEventListener('keydown', handleKeyDown);
 })
 
 onUnmounted(() => {
     window.removeEventListener('resize', handleResize)
+    window.removeEventListener('keydown', handleKeyDown);
 })
 </script>
 
@@ -237,11 +233,11 @@ onUnmounted(() => {
         <div class="flex h-[65%] flex-col bg-A805White contentsSection px-[10px]  overflow-y-scroll" ref="messageContainer">
             <div v-for="(message, index) in messages" :key="index">
                 <div class="text-center" v-if="message.type === 'info'">
-                    <p>{{ message.message }}</p>
+                    <p class="whitespace-pre-line">{{ message.message }}</p>
                 </div>
                 <div class="flex items-end justify-end mb-2" v-else-if="message.senderId === roomUserInfo.roomUserNo">
                     <div class="bg-yellow-500 p-3 rounded-md shadow-md text-white">
-                        <p>{{ message.message }}</p>
+                        <p class="whitespace-pre-line">{{ message.message }}</p>
                     </div>
                 </div>
                 <div class="flex items-end justify-start mb-2" v-else>
@@ -254,7 +250,7 @@ onUnmounted(() => {
         <div class="flex flex-[1] inputSection">
             <textarea
                 class="resize-none rounded-md border-2 border-solid border-A805Black cursor-text w-full bg-A805White m-[10px] p-[10px]"
-                v-model="textMessage" placeholder="내용을 입력해보세요"></textarea>
+                v-model.trim="textMessage" placeholder="내용을 입력해보세요"></textarea>
         </div>
         <div class="flex  justify-end">
             <ButtonAtom custom-class="chat-button rounded-md m-[10px]" @button-click="sendMessage">전송</ButtonAtom>

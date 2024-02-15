@@ -14,6 +14,7 @@ import { storeToRefs } from 'pinia'
 import { over } from 'stompjs';
 import AvatarAtom from '@/components/atoms/AvatarAtom.vue'
 import TextAtom from '@/components/atoms/TextAtom.vue'
+import { convertStringToRegistrationDateTime } from '@/utils/date'
 const userStore = useUserStore()
 const { accessToken } = storeToRefs(userStore)
 
@@ -83,6 +84,7 @@ const connectToStompServer = () => {
 
 const sendMessage = () => {
     if (textMessage.value === '') return
+    console.log(roomUserInfo.value)
     stompClient.value.send(
         chattingData.value.destination,
         { 'content-type': 'application/json', "AccessToken": chattingData.value.headers.AccessToken },
@@ -92,11 +94,18 @@ const sendMessage = () => {
             message: textMessage.value,
             readYn: false,
             chatNo: chatNo.value,
-            sendAt: new Date()
+            sendAt: getCurrentTime(),
+            profileUrl: roomUserInfo.value.profileUrl
         })
     );
     textMessage.value = '';
 };
+
+const getCurrentTime = () => {
+    const currentTime = new Date();
+    currentTime.setHours(currentTime.getHours() + 9);
+    return currentTime;
+}
 
 const getMessage = (message: any) => {
     if (message.body) {
@@ -243,6 +252,7 @@ onUnmounted(() => {
                     v-else-if="message.senderId === roomUserInfo.roomUserNo">
                     <div class="bg-yellow-500 p-3 rounded-md shadow-md text-white truncate">
                         <p class="whitespace-pre-line">{{ message.message }}</p>
+                        <p> {{ message.sendAt ? convertStringToRegistrationDateTime(message.sendAt) : '' }}</p>
                     </div>
                     <div class="flex flex-col items-center">
                         <AvatarAtom custom-class="w-[40px] h-[40px]" :imageUrl="roomUserInfo.profileUrl" />
@@ -259,6 +269,7 @@ onUnmounted(() => {
                     </div>
                     <div class="bg-white p-3 rounded-md shadow-md truncate">
                         <p class="whitespace-pre-line">{{ message.message }}</p>
+                        <p> {{ message.sendAt ? convertStringToRegistrationDateTime(message.sendAt) : '' }}</p>
                     </div>
                 </div>
             </div>

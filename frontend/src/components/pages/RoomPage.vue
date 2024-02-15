@@ -13,6 +13,8 @@ import { storeToRefs } from 'pinia'
 import { getUserMission } from '@/api/mission'
 import type { UserMission } from '@/types/mission'
 import dayjs from 'dayjs'
+import { notification } from 'ant-design-vue';
+import type { NotificationPlacement } from 'ant-design-vue';
 
 const router = useRouter()
 const route = useRoute()
@@ -40,10 +42,11 @@ const hostRoomUserNo = ref<number>(-1)
 const userMission = ref<UserMission[]>([])
 const userList = ref<userType[]>([])
 const navStatus = ref<number>(-1)
+const trigger = ref(false)
+
 
 const updateRoomName = (name: string | undefined) => {
     roomUserInfo.value.roomName = name ? name : '방 제목'
-    console.log('sibling', roomUserInfo.value.roomName)
     emit('update-name', roomUserInfo.value.roomName)
 }
 
@@ -55,6 +58,7 @@ provide('notifyLists', readonly(notificationLists))
 provide('roomNo', readonly(roomNo))
 provide('roomInfo', readonly(roomInfo))
 provide('userList', readonly(userList))
+provide('trigger', readonly(trigger))
 
 const removeChatRoom = (name: string) => {
     const index = chatRooms.value.findIndex((room) => room.name === name)
@@ -74,17 +78,26 @@ const makeRoom = ({ name, imageUrl }: ChatRoomType) => {
     }
 }
 
+const openNotification = (placement: NotificationPlacement, author: string, msg: string) => {
+    notification.open({
+        message: author,
+        description:
+            msg,
+        placement,
+    });
+};
+
 const SSEConnection = (roomUserNo: number) => {
     eventSource = SSEConnect(roomUserNo)
 
     eventSource.onopen = () => {
-        console.log('Server Sent Event 연결이 열렸습니다.')
+        console.info('Server Sent Event 연결이 열렸습니다.')
     }
 
     // 서버로부터 알림 메시지가 오면 적절한 처리 로직을 수행
     eventSource.addEventListener('message', (event) => {
         const data = JSON.parse(event.data)
-        alert(data.author + '으로부터 ' + data.content + '도착!')
+        openNotification('top', data.author, data.content)
         getUserMissionHandler()
         getNotify()
         // router.go(0)
@@ -92,16 +105,22 @@ const SSEConnection = (roomUserNo: number) => {
 
     eventSource.addEventListener('board', (event) => {
         const data = JSON.parse(event.data)
-        console.log(data)
+        openNotification('top', '알림도착', data.content)
     })
 
     eventSource.addEventListener('enter', (event) => {
+        openNotification('top', '새로운 유저', '새로운 유저가 들어왔습니다.')
         userListGet()
     })
 
     eventSource.addEventListener('terminate', (event) => {
+        const data = JSON.parse(event.data)
+        openNotification('top', data.author, data.content)
         getRoomData()
-        alert('게임 종료!')
+    })
+
+    eventSource.addEventListener('cloud', (event) => {
+        trigger.value = !trigger.value
     })
 
     eventSource.addEventListener('error', (event) => {
@@ -110,12 +129,9 @@ const SSEConnection = (roomUserNo: number) => {
 }
 
 const getRoomData = () => {
-    console.log('방정보를 호출')
     getRoom(
         roomUserInfo.value.roomNo,
         ({ data }) => {
-            console.table(data)
-            console.table(data.result)
             roomInfo.value = data.result
             roomUserInfo.value.profileUrl = data.result.userInfo.profileUrl
             roomUserInfo.value.roomNickname = data.result.userInfo.nickname
@@ -140,20 +156,17 @@ const getNotify = () => {
         Number(route.params.roomNo),
         ({ data }) => {
             notificationLists.value = data.result
-            console.log('알람리스트', notificationLists.value)
         },
         (error) => {
-            console.log(error)
+            console.error(error)
         }
     )
 }
 
 const getUserMissionHandler = () => {
-    console.log('getUserMission')
     getUserMission(
         roomUserInfo.value.roomNo,
         ({ data }) => {
-            console.log(':)', data)
             data.result.forEach((mission: UserMission) => {
                 mission.missionReceivedAt = dayjs(mission.missionReceivedAt).format('YYYY.MM.DD')
             })
@@ -161,7 +174,7 @@ const getUserMissionHandler = () => {
             userMission.value.reverse()
         },
         (error) => {
-            console.log(':(', error)
+            console.error(':(', error)
         }
     )
 }
@@ -173,17 +186,15 @@ const userListGet = () => {
             data.result.forEach((mission: userType) => {
                 mission['checked'] = true
             })
-            console.log('userlist', data)
             userList.value = data.result
         },
         (error) => {
-            console.log('error', error)
+            console.error('error', error)
         }
     )
 }
 
 onMounted(() => {
-    console.log('in-room은 true로 변경합니다.')
     getRoomData()
     getNotify()
     getUserMissionHandler()
@@ -218,26 +229,15 @@ onUnmounted(() => {
         />
 
         <!-- pc버전이거나, 모바일 버전 + 메뉴가 닫힌 상태일때만 이 영역 이 보인다. -->
-        <RouterView
-            v-if="!isMobile || !menuSeen"
-            :room-info="roomInfo"
-            :user-mission="userMission"
-            :room-user-list="userList"
-            @refresh-notify="getNotify"
-            @room-name-changed="updateRoomName"
-            @refresh-user-mission="getUserMissionHandler"
-            @refresh-user-list="userListGet"
-            @start-room="
-                () => {
-                    navStatus = 3
-                }
-            "
-            @end-room="
-                () => {
-                    navStatus = 7
-                }
-            "
-        />
+        <RouterView v-if="!isMobile || !menuSeen" :room-info="roomInfo" :user-mission="userMission"
+            :room-user-list="userList" @refresh-notify="getNotify" @room-name-changed="updateRoomName"
+            @refresh-user-mission="getUserMissionHandler" @refresh-user-list="userListGet" @start-room="() => {
+                navStatus = 3
+            }
+                " @end-room="() => {
+        navStatus = 7
+    }
+        " />
     </div>
 </template>
 

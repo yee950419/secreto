@@ -17,21 +17,18 @@ const prevPageButtonHandler: Handler = () => {
 }
 
 const SSEConnection = (roomUserNo: number) => {
-    console.log('SSEConnection', roomUserNo)
     eventSource = SSEConnect(roomUserNo)
 
     eventSource.onopen = () => {
-        console.log('Server Sent Event 연결이 열렸습니다.')
+        console.info('Server Sent Event 연결이 열렸습니다.')
     }
 
     eventSource.addEventListener('accept', (event) => {
-        console.log(event)
         enterApprove.value = true
     })
 
     eventSource.addEventListener('start', (event) => {
         alert('게임 시작!')
-        console.log(event)
         router.push(`/game/${route.params.roomNo}`)
     })
 
@@ -42,11 +39,9 @@ const SSEConnection = (roomUserNo: number) => {
 }
 
 const getStatus = () => {
-    console.log('방 정보 호출!')
     getRoom(
         Number(route.params.roomNo),
         ({ data }) => {
-            console.table(data.result)
             state.value = data.result.roomStatus
             SSEConnection(data.result.userInfo.roomUserNo)
             // 입장승인전
@@ -84,18 +79,12 @@ onMounted(() => {
 <template>
     <div class="bg-A805White h-full w-full flex justify-center items-center">
         <div class="card-template-container">
-            <WideCardTemplate
-                title="Waiting..."
-                :content-messages="
-                    enterApprove
-                        ? ['입장이 승인되었습니다.', '', '게임이 시작될 때까지 기다려주세요']
-                        : ['', '방장의 입장 승인 대기중입니다.', '']
-                "
-                button-label="창 닫기"
-                @close-button-handle="prevPageButtonHandler"
+            <WideCardTemplate title="Waiting..." :content-messages="enterApprove
+                ? ['입장이 승인되었습니다.', '', '게임이 시작될 때까지 기다려주세요']
+                : ['', '방장의 입장 승인 대기중입니다.', '']
+                " button-label="창 닫기" @close-button-handle="prevPageButtonHandler"
                 class="max-md:max-w-full max-md:max-h-full max-md:h-full max-md:w-full"
-                @button-click="prevPageButtonHandler"
-            />
+                @button-click="prevPageButtonHandler" />
         </div>
     </div>
 </template>

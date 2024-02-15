@@ -43,7 +43,9 @@ const userMission = ref<UserMission[]>([])
 const userList = ref<userType[]>([])
 const navStatus = ref<number>(-1)
 const trigger = ref(false)
-
+const manitoChat = ref(false)
+const manitiChat = ref(false)
+const partyChat = ref(false)
 
 const updateRoomName = (name: string | undefined) => {
     roomUserInfo.value.roomName = name ? name : '방 제목'
@@ -59,6 +61,9 @@ provide('roomNo', readonly(roomNo))
 provide('roomInfo', readonly(roomInfo))
 provide('userList', readonly(userList))
 provide('trigger', readonly(trigger))
+provide('manitoChat', manitoChat)
+provide('manitiChat', manitiChat)
+provide('partyChat', partyChat)
 
 const removeChatRoom = (name: string) => {
     const index = chatRooms.value.findIndex((room) => room.name === name)
@@ -100,22 +105,36 @@ const SSEConnection = (roomUserNo: number) => {
         openNotification('top', data.author, data.content)
         getUserMissionHandler()
         getNotify()
-        // router.go(0)
     })
+
 
     eventSource.addEventListener('board', (event) => {
         const data = JSON.parse(event.data)
+        getNotify()
         openNotification('top', '알림도착', data.content)
     })
 
     eventSource.addEventListener('enter', (event) => {
         openNotification('top', '새로운 유저', '새로운 유저가 들어왔습니다.')
+        getNotify()
         userListGet()
+    })
+
+    eventSource.addEventListener('chat', (event) => {
+        const data = JSON.parse(event.data)
+        console.log(data)
+        if (data.author === 'MANITO')
+            manitoChat.value = true
+        else if (data.author === 'MANITI')
+            manitiChat.value = true
+        else if (data.author === 'ALL')
+            partyChat.value = true
     })
 
     eventSource.addEventListener('terminate', (event) => {
         const data = JSON.parse(event.data)
         openNotification('top', data.author, data.content)
+        getNotify()
         getRoomData()
     })
 
@@ -213,20 +232,11 @@ onUnmounted(() => {
 <template>
     <div class="flex flex-1 bg-A805RealWhite">
         <div v-for="room in chatRooms" :key="room.name">
-            <ChatRoom
-                :name="room.name"
-                :imageUrl="room.imageUrl"
-                @close-chat-room="removeChatRoom"
-            />
+            <ChatRoom :name="room.name" :imageUrl="room.imageUrl" @close-chat-room="removeChatRoom" />
         </div>
         <!-- pc버전이거나, 모바일 버전 + 메뉴가 체크된 상태일때만 nav가 보인다. -->
-        <NavBar
-            @make-room="makeRoom"
-            v-if="!isMobile || (isMobile && menuSeen)"
-            :room-name="roomUserInfo.roomName"
-            :room-info="roomInfo"
-            :nav-status="navStatus"
-        />
+        <NavBar @make-room="makeRoom" v-if="!isMobile || (isMobile && menuSeen)" :room-name="roomUserInfo.roomName"
+            :room-info="roomInfo" :nav-status="navStatus" />
 
         <!-- pc버전이거나, 모바일 버전 + 메뉴가 닫힌 상태일때만 이 영역 이 보인다. -->
         <RouterView v-if="!isMobile || !menuSeen" :room-info="roomInfo" :user-mission="userMission"

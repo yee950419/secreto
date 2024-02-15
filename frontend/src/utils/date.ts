@@ -9,9 +9,9 @@ export const isToday: (date: Date) => boolean = (date) => {
     return isSameDate(date, new Date())
 }
 
-export const convertStringToRegistrationDateTime = (dateString: string) => {
+export const convertStringToRegistrationDateTime = (dateString: string, start:number=0, end:number=20) => {
     if (dateString === null) return ''
-    return dateString.replace(/-/gi, '.').replace('T', '. ').substring(0, 20)
+    return dateString.replace(/-/gi, '.').replace('T', '. ').substring(start, end)
 }
 export const convertStringToRegistrationDate = (dateString: string) => {
     if (isToday(new Date(dateString))) {

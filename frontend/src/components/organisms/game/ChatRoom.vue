@@ -84,7 +84,6 @@ const connectToStompServer = () => {
 
 const sendMessage = () => {
     if (textMessage.value === '') return
-    console.log(roomUserInfo.value)
     stompClient.value.send(
         chattingData.value.destination,
         { 'content-type': 'application/json', "AccessToken": chattingData.value.headers.AccessToken },
@@ -250,9 +249,11 @@ onUnmounted(() => {
                 </div>
                 <div class="flex items-end justify-end mb-2 gap-[5px]"
                     v-else-if="message.senderId === roomUserInfo.roomUserNo">
+                    <p class="text-[10px]"> {{ message.sendAt ? convertStringToRegistrationDateTime(message.sendAt, 12, 17)
+                        :
+                        '' }}</p>
                     <div class="bg-yellow-500 p-3 rounded-md shadow-md text-white truncate">
                         <p class="whitespace-pre-line">{{ message.message }}</p>
-                        <p> {{ message.sendAt ? convertStringToRegistrationDateTime(message.sendAt) : '' }}</p>
                     </div>
                     <div class="flex flex-col items-center">
                         <AvatarAtom custom-class="w-[40px] h-[40px]" :imageUrl="roomUserInfo.profileUrl" />
@@ -269,8 +270,10 @@ onUnmounted(() => {
                     </div>
                     <div class="bg-white p-3 rounded-md shadow-md truncate">
                         <p class="whitespace-pre-line">{{ message.message }}</p>
-                        <p> {{ message.sendAt ? convertStringToRegistrationDateTime(message.sendAt) : '' }}</p>
                     </div>
+                    <p class="text-[10px]"> {{ message.sendAt ? convertStringToRegistrationDateTime(message.sendAt, 12, 17)
+                        :
+                        '' }}</p>
                 </div>
             </div>
         </div>

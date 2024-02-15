@@ -122,7 +122,6 @@ const SSEConnection = (roomUserNo: number) => {
 
     eventSource.addEventListener('chat', (event) => {
         const data = JSON.parse(event.data)
-        console.log(data)
         if (data.author === 'MANITO')
             manitoChat.value = true
         else if (data.author === 'MANITI')

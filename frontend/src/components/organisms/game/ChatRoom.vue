@@ -225,18 +225,16 @@ onMounted(() => {
     connectToStompServer()
     getChatInfo()
 
-    window.addEventListener('keydown', handleKeyDown);
 })
 
 onUnmounted(() => {
     window.removeEventListener('resize', handleResize)
-    window.removeEventListener('keydown', handleKeyDown);
 })
 </script>
 
 <template>
     <div class="md:absolute z-10 max-md:relative max-md:min-h-[650px]  max-md:max-h-[650px] flex flex-col  overflow-hidden max-md:w-screen max-md:h-full  md:h-[600px] md:w-[350px] md:rounded-md md:border-2 md:border-solid md:border-A805Black bg-A805Grey md:left-[50%] md:top-[20%]"
-        ref="chatRoomRef">
+        ref="chatRoomRef" @keydown="handleKeyDown">
         <div class="flex h-[15%]  px-[10px] items-center justify-between headerSection cursor-pointer"
             @mousedown="startDrag" @mousemove="drag" @mouseup="stopDrag">
             <ChatProfile :imageUrl="imageUrl" :name="name" />

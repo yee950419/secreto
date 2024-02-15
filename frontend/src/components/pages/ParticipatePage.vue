@@ -50,7 +50,7 @@ const predictManito = (user: userType) => {
 </script>
 
 <template>
-    <div class="flex flex-1 flex-col bg-A805RealWhite pt-5 pb-10">
+    <div class="flex flex-1 flex-col bg-A805RealWhite pt-5 pb-10 items-center">
         <ModalTemplate
             custom-id="modal"
             custom-class="modal-template-style-1"

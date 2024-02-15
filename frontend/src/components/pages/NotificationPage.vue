@@ -12,15 +12,19 @@ const route = useRoute()
 const notificationLists = inject('notifyLists') as Ref<notificationTypes[]>
 
 const notifyReading = (alarmNo: number) => {
-    notificationRead(alarmNo, Number(route.params.roomNo), ({ data }) => {
-        emit('refreshNotify')
-    }, (error) => {
-        console.log(error)
-    })
+    notificationRead(
+        alarmNo,
+        Number(route.params.roomNo),
+        ({ data }) => {
+            emit('refreshNotify')
+        },
+        (error) => {
+            console.log(error)
+        }
+    )
 }
 
-const notifyClickHandle = (notify: notificationTypes) => {
-    notifyReading(notify.alarmNo)
+const boardDetailMove = (notify: notificationTypes) => {
     if (!!Number(notify.author) === true) {
         router.push({
             name: 'game-board-detail',
@@ -37,14 +41,14 @@ const notifyClickHandle = (notify: notificationTypes) => {
             <div
                 v-if="!notify.readYn"
                 class="flex md:flex-wrap items-center justify-center h-[60px] md:mx-[30px] max-md:mx-[10px] rounded-md border-black border-solid border-2 mt-[30px] bg-A805RealWhite md:gap-[30px] max-md:gap-[10px] px-[10px] cursor-pointer"
-                @click="() => notifyClickHandle(notify)"
+                @click="() => notifyReading(notify.alarmNo)"
             >
                 <TextAtom custom-class="text-A805Red">New!</TextAtom>
                 <TextAtom>{{ notify.content }}</TextAtom>
             </div>
             <div
                 v-else
-                @click="() => notifyClickHandle(notify)"
+                @click="() => boardDetailMove(notify)"
                 class="flex md:flex-wrap items-center justify-center h-[60px] md:mx-[30px] max-md:mx-[10px] rounded-md border-black border-solid border-2 mt-[30px] bg-A805Grey text-A805Cream max-md:gap-[10px] md:gap-[30px] px-[10px] cursor-pointer"
             >
                 <TextAtom>{{ notify.content }}</TextAtom>

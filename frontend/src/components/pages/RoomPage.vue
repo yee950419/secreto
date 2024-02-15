@@ -168,9 +168,10 @@ const getUserMissionHandler = () => {
         roomUserInfo.value.roomNo,
         ({ data }) => {
             data.result.forEach((mission: UserMission) => {
-                mission.missionReceivedAt = dayjs(mission.missionReceivedAt).format('YYYY/MM/DD')
+                mission.missionReceivedAt = dayjs(mission.missionReceivedAt).format('YYYY.MM.DD')
             })
             userMission.value = data.result
+            userMission.value.reverse()
         },
         (error) => {
             console.error(':(', error)
@@ -212,11 +213,20 @@ onUnmounted(() => {
 <template>
     <div class="flex flex-1 bg-A805RealWhite">
         <div v-for="room in chatRooms" :key="room.name">
-            <ChatRoom :name="room.name" :imageUrl="room.imageUrl" @close-chat-room="removeChatRoom" />
+            <ChatRoom
+                :name="room.name"
+                :imageUrl="room.imageUrl"
+                @close-chat-room="removeChatRoom"
+            />
         </div>
         <!-- pc버전이거나, 모바일 버전 + 메뉴가 체크된 상태일때만 nav가 보인다. -->
-        <NavBar @make-room="makeRoom" v-if="!isMobile || (isMobile && menuSeen)" :room-name="roomUserInfo.roomName"
-            :room-info="roomInfo" :nav-status="navStatus" />
+        <NavBar
+            @make-room="makeRoom"
+            v-if="!isMobile || (isMobile && menuSeen)"
+            :room-name="roomUserInfo.roomName"
+            :room-info="roomInfo"
+            :nav-status="navStatus"
+        />
 
         <!-- pc버전이거나, 모바일 버전 + 메뉴가 닫힌 상태일때만 이 영역 이 보인다. -->
         <RouterView v-if="!isMobile || !menuSeen" :room-info="roomInfo" :user-mission="userMission"

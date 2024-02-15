@@ -2,9 +2,11 @@
 import { computed, inject, ref, type Ref } from 'vue'
 import TextAtom from '@/components/atoms/TextAtom.vue'
 import ButtonAtom from '@/components/atoms/ButtonAtom.vue'
-import { ReloadOutlined } from '@ant-design/icons-vue'
+import { FileTextOutlined, ReloadOutlined } from '@ant-design/icons-vue'
 import type { UserMission } from '@/types/mission'
 import { rerollMission } from '@/api/mission'
+import LineAtom from '@/components/atoms/LineAtom.vue'
+import { BadgeRibbon } from 'ant-design-vue'
 const props = defineProps({
     userMission: {
         type: Object as () => UserMission[],
@@ -16,13 +18,13 @@ const props = defineProps({
     }
 })
 const roomNo: Ref<number> = inject('roomNo', ref(0))
-const emit = defineEmits(['reroll'])
+const emit = defineEmits(['reroll', 'headerModalOpen'])
 const userMissionLength = computed<number>(() => {
     return props.userMission.length
 })
 const lastMissionNo = computed<number>(() => {
     if (userMissionLength.value > 0) {
-        return props.userMission[props.userMission.length - 1].userMissionNo
+        return props.userMission[0].userMissionNo
     } else {
         return 0
     }
@@ -50,36 +52,32 @@ const rerollHandler = () => {
 <template>
     <div
         name="mission-header"
-        class="flex justify-between items-center md:px-5 md:py-6 px-3 py-5 w-full md:min-w-[590px] overflow-x-auto"
+        class="flex flex-col justify-between items-center py-2 w-full overflow-x-auto"
         :class="customClass"
     >
-        <div class="flex items-center gap-5 md:gap-10">
-            <div name="now-mission">
-                <h1 class="flex text-[24pt] max-md:text-[12pt]">
-                    <p class="me-3">진행 중인 미션:</p>
-                    <p>
-                        {{
-                            userMissionLength > 0
-                                ? userMission[userMissionLength - 1].content
-                                : '없음'
-                        }}
-                    </p>
-                </h1>
-            </div>
-
+        <div class="flex w-full justify-end">
             <ButtonAtom
-                v-if="
-                    userMissionLength > 0 &&
-                    userMission[userMissionLength - 1].missionType === 'REGULAR'
-                "
-                class="relative flex text-[20pt] max-md:text-[10pt] justify-center items-center"
-                @button-click="rerollHandler"
+                class="button-cream text-A805 w-[210px] button-style-2 max-md:w-full max-md:rounded-none max-md:h-16 mb-2 max-md:mb-6"
+                @button-click="() => emit('headerModalOpen')"
+                >전체 미션 보기</ButtonAtom
             >
-                <ReloadOutlined class="md:text-[40pt] text-[20pt] absolute"></ReloadOutlined>
-                <p>{{ userMission[userMissionLength - 1].missionRerollCount }}</p>
-            </ButtonAtom>
         </div>
-        <slot></slot>
+        <div class="flex flex-col w-full h-full justify-center items-center">
+            <TextAtom class="text-[24px] font-bold">최근 받은 미션</TextAtom>
+            <div name="now-mission" class="text-[24px] flex max-md:flex-col max-md:text-[22px]">
+                <TextAtom class="text-center">
+                    {{ userMissionLength > 0 ? userMission[0].content : '없음' }}
+                </TextAtom>
+                <ButtonAtom
+                    v-if="userMissionLength > 0 && userMission[0].missionType === 'REGULAR'"
+                    class="md:ms-5 relative inline-flex text-[16pt] max-md:mt-2 justify-center items-center"
+                    @button-click="rerollHandler"
+                >
+                    <ReloadOutlined class="text-[32pt] absolute"></ReloadOutlined>
+                    <p>{{ userMission[0].missionRerollCount }}</p>
+                </ButtonAtom>
+            </div>
+        </div>
     </div>
 </template>
 

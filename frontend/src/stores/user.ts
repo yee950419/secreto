@@ -36,6 +36,8 @@ export const useUserStore = defineStore(
         const accessToken = ref<string>('') // 사용자의 엑세스토큰 저장
         const refreshToken = ref<string>('') // 사용자의 리프레시 토큰 저장
         const viewState = ref<string>(ViewState.MAIN)
+        const idRemember = ref<boolean>(false)
+        const idRememberEmail = ref<string>('')
         const router = useRouter()
 
         const userLogin = (loginRequest: LoginRequestType, fail: () => void) => {
@@ -49,6 +51,8 @@ export const useUserStore = defineStore(
                     userInfo.value = data.userInfo
                     console.log(response.data.message)
                     router.push({ name: 'main' })
+                    idRememberEmail.value = userInfo.value.email
+                    if (idRemember.value === false) idRememberEmail.value = ''
                 },
                 (error) => {
                     console.log(error)
@@ -138,6 +142,8 @@ export const useUserStore = defineStore(
             accessToken,
             refreshToken,
             viewState,
+            idRemember,
+            idRememberEmail,
             userLogin,
             getUserToStore,
             clearUserStore,

@@ -8,9 +8,11 @@ import type { Handler } from '@/types/common'
 import type { LoginRequestType } from '@/types/user'
 import { useUserStore } from '@/stores/user'
 const userStore = useUserStore()
-const { userLogin } = userStore
+const { userLogin, idRememberEmail } = userStore
+const { idRemember } = storeToRefs(userStore)
 
 import CloseButtonAtom from '@/components/atoms/CloseButtonAtom.vue'
+import { storeToRefs } from 'pinia'
 
 const emit = defineEmits([
     'findPasswordHandle',
@@ -19,7 +21,7 @@ const emit = defineEmits([
     'failHandle'
 ])
 const loginRequest: Ref<LoginRequestType> = ref({
-    email: '',
+    email: idRemember ? idRememberEmail : '',
     password: ''
 })
 const loginButtonHandler: Handler = () => {
@@ -69,6 +71,7 @@ const findPasswordButtonHandler: Handler = () => {
                 <CheckBox
                     custom-class="checkbox-molecule-style-1 text-[14px] accent-[#E0AED0]"
                     custom-id="remember"
+                    v-model="idRemember"
                     >아이디 기억하기</CheckBox
                 >
                 <ButtonAtom custom-class="text-A805Blue" @button-click="findPasswordButtonHandler"

@@ -2,7 +2,7 @@
 import CheckBox from '@/components/molecules/common/CheckBox.vue'
 import InputBox from '@/components/molecules/common/InputBox.vue'
 import { Dropdown, Menu, MenuItem } from 'ant-design-vue'
-import { ref, type Ref, type ModelRef, inject, watch } from 'vue'
+import { ref, type Ref, type ModelRef, inject, watch, onMounted } from 'vue'
 import type { Handler } from '@/types/common'
 import type { ProfileInfoType } from '@/types/user'
 import ProfileInfo from '@/components/molecules/game/ProfileInfo.vue'
@@ -64,6 +64,11 @@ const assignHandler = (newHostNo: number) => {
         }
     )
 }
+
+onMounted(() => {
+    hostNo.value = roomInfo?.value?.hostRoomUserNo
+    ri.value = roomInfo.value
+})
 </script>
 
 <template>

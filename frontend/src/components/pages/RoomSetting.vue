@@ -110,7 +110,7 @@ const range = ref<{ start: string; end: string }>({
 const crange = computed(() => {
     return [dayjs(range.value.start).format(dateFormat), dayjs(range.value.end).format(dateFormat)]
 })
-const startTime = ref<string>(dayjs().format(dateTimeFormat))
+const startTime = ref<string>(dayjs().add(1, 'hour').format(dateTimeFormat))
 const computedStartTime = computed(() => dayjs(startTime.value).format(timeFormat))
 const endTime = ref<string>(dayjs().format(dateTimeFormat))
 const computedEndTime = computed(() => dayjs(endTime.value).format(timeFormat))

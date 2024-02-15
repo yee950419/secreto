@@ -62,6 +62,7 @@ const messageContainer = ref<HTMLDivElement | null>(null);
 const connectToStompServer = () => {
     var sock = new SockJs(chattingData.value.stompUrl);
     stompClient.value = over(sock);
+    stompClient.value.debug = () => { }
     stompClient.value.connect(chattingData.value.headers, () => {
         displayConnect('채팅방에 입장하였습니다.', 'info');
         isConnected.value = true
@@ -226,9 +227,10 @@ onUnmounted(() => {
 </script>
 
 <template>
-    <div class="md:absolute z-10 max-md:relative max-md:min-h-[650px]  max-md:max-h-[650px] flex flex-col  overflow-hidden max-md:w-screen max-md:h-full  md:h-[600px] md:w-[350px] md:rounded-md md:border-2 md:border-solid md:border-A805Black bg-A805Grey md:left-[50%] md:top-[20%] cursor-pointer"
-        ref="chatRoomRef" @mousedown="startDrag" @mousemove="drag" @mouseup="stopDrag">
-        <div class="flex h-[15%]  px-[10px] items-center justify-between headerSection">
+    <div class="md:absolute z-10 max-md:relative max-md:min-h-[650px]  max-md:max-h-[650px] flex flex-col  overflow-hidden max-md:w-screen max-md:h-full  md:h-[600px] md:w-[350px] md:rounded-md md:border-2 md:border-solid md:border-A805Black bg-A805Grey md:left-[50%] md:top-[20%]"
+        ref="chatRoomRef">
+        <div class="flex h-[15%]  px-[10px] items-center justify-between headerSection cursor-pointer"
+            @mousedown="startDrag" @mousemove="drag" @mouseup="stopDrag">
             <ChatProfile :imageUrl="imageUrl" :name="name" />
             <CloseOutlined style="font-size: 24px" @click="closeChatRoom" />
         </div>
@@ -244,7 +246,7 @@ onUnmounted(() => {
                     </div>
                     <div class="flex flex-col items-center">
                         <AvatarAtom custom-class="w-[40px] h-[40px]" :imageUrl="roomUserInfo.profileUrl" />
-                        <TextAtom custom-class="text-xs">{{ roomUserInfo.roomNickname }}</TextAtom>
+                        <TextAtom custom-class="text-xs">나</TextAtom>
                     </div>
 
                 </div>

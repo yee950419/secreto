@@ -10,7 +10,7 @@ import { ref, onMounted, inject, type Ref } from 'vue'
 import { useRoute } from 'vue-router'
 import LineAtom from '../atoms/LineAtom.vue'
 
-const emit = defineEmits(['refresh-user-list'])
+const emit = defineEmits(['refresh-user-list', 'refreshUserMission'])
 
 defineProps({
     userMission: {
@@ -62,6 +62,7 @@ const predictManito = (user: userType) => {
         </ModalTemplate>
         <GameHeader
             class="mb-5 md:min-w-[568px] max-w-[1400px] max-md:min-w-0 md:px-4"
+            @reroll="emit('refreshUserMission')"
             :user-mission="userMission"
         />
         <LineAtom class="border-A805Grey mb-8" />

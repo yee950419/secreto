@@ -16,7 +16,7 @@ export default {
                 A805Violet: '#AC87C5',
                 A805Green: '#01D04C',
                 A805Khaki: '#3D4A3D',
-                A805Grey: '#A0AFA0',
+                A805Grey: '#bbbbbb',
                 A805Blue: '#0085FF',
                 A805LightBlue: '#00B8FF',
                 A805DarkGrey: '#858585',

@@ -2,11 +2,9 @@
 import { computed, inject, ref, type Ref } from 'vue'
 import TextAtom from '@/components/atoms/TextAtom.vue'
 import ButtonAtom from '@/components/atoms/ButtonAtom.vue'
-import { FileTextOutlined, ReloadOutlined } from '@ant-design/icons-vue'
+import { ReloadOutlined } from '@ant-design/icons-vue'
 import type { UserMission } from '@/types/mission'
 import { rerollMission } from '@/api/mission'
-import LineAtom from '@/components/atoms/LineAtom.vue'
-import { BadgeRibbon } from 'ant-design-vue'
 const props = defineProps({
     userMission: {
         type: Object as () => UserMission[],
@@ -15,6 +13,9 @@ const props = defineProps({
     customClass: {
         type: String,
         default: ''
+    },
+    showAllMission: {
+        type: Boolean
     }
 })
 const roomNo: Ref<number> = inject('roomNo', ref(0))
@@ -55,7 +56,7 @@ const rerollHandler = () => {
         class="flex flex-col justify-between items-center py-2 w-full overflow-x-auto"
         :class="customClass"
     >
-        <div class="flex w-full justify-end">
+        <div class="flex w-full justify-end" v-if="showAllMission">
             <ButtonAtom
                 class="button-cream text-A805 w-[210px] button-style-2 max-md:w-full max-md:rounded-none max-md:h-16 mb-2 max-md:mb-6"
                 @button-click="() => emit('headerModalOpen')"

@@ -8,6 +8,7 @@ import type { userType, RoomUserInfoType } from '@/types/room'
 import type { UserMission } from '@/types/mission'
 import { ref, onMounted, inject, type Ref } from 'vue'
 import { useRoute } from 'vue-router'
+import LineAtom from '../atoms/LineAtom.vue'
 
 const emit = defineEmits(['refresh-user-list'])
 
@@ -49,25 +50,50 @@ const predictManito = (user: userType) => {
 </script>
 
 <template>
-    <div class="flex flex-1 flex-col bg-A805RealWhite">
-        <ModalTemplate custom-id="modal" custom-class="modal-template-style-1" :seen="modalSeen" v-if="modalSeen"
-            @modal-close="modalToggle">
+    <div class="flex flex-1 flex-col bg-A805RealWhite pt-5 pb-10">
+        <ModalTemplate
+            custom-id="modal"
+            custom-class="modal-template-style-1"
+            :seen="modalSeen"
+            v-if="modalSeen"
+            @modal-close="modalToggle"
+        >
             <InferenceModalContent :predict-info="predictInfo" @refresh-data="getRooms()" />
         </ModalTemplate>
-        <GameHeader :user-mission="userMission" />
-        <hr />
+        <GameHeader
+            class="mb-5 md:min-w-[568px] max-w-[1400px] max-md:min-w-0 md:px-4"
+            :user-mission="userMission"
+        />
+        <LineAtom class="border-A805Grey mb-8" />
         <div class="flex flex-1 items-center justify-center">
-            <div class="flex flex-wrap items-center justify-center gap-[50px] md:m-[80px] max-md:m-[60px]">
+            <div
+                class="flex flex-wrap items-center justify-center gap-[50px] md:m-[80px] max-md:m-[60px]"
+            >
                 <template v-for="user in userList" :key="user.userNo">
-                    <PaticipateProfile v-if="user.roomUserNo === roomUserInfo.roomUserNo"
-                        :nick-name="user.nickname + ' (나)'" :image-url="user.profileUrl" :title="user.email" :mine="true"
-                        class="border-A805Black border-2 border-solid" />
-                    <PaticipateProfile :nick-name="user.nickname + ' (마니띠)'" :image-url="user.profileUrl" :maniti="true"
-                        :title="user.email" v-else-if="user.usersManito === roomUserInfo.roomUserNo"
-                        class="border-A805LightBlue border-2 border-solid" />
-                    <PaticipateProfile :nick-name="user.nickname" :image-url="user.profileUrl" :title="user.email"
-                        @predict-manito="predictManito(user)" :predict-type="user.manitoPredictType"
-                        v-else-if="!user.standbyYn" />
+                    <PaticipateProfile
+                        v-if="user.roomUserNo === roomUserInfo.roomUserNo"
+                        :nick-name="user.nickname + ' (나)'"
+                        :image-url="user.profileUrl"
+                        :title="user.email"
+                        :mine="true"
+                        class="border-A805Black border-2 border-solid"
+                    />
+                    <PaticipateProfile
+                        :nick-name="user.nickname + ' (마니띠)'"
+                        :image-url="user.profileUrl"
+                        :maniti="true"
+                        :title="user.email"
+                        v-else-if="user.usersManito === roomUserInfo.roomUserNo"
+                        class="border-A805LightBlue border-2 border-solid"
+                    />
+                    <PaticipateProfile
+                        :nick-name="user.nickname"
+                        :image-url="user.profileUrl"
+                        :title="user.email"
+                        @predict-manito="predictManito(user)"
+                        :predict-type="user.manitoPredictType"
+                        v-else-if="!user.standbyYn"
+                    />
                 </template>
             </div>
         </div>

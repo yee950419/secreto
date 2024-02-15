@@ -84,6 +84,7 @@ onMounted(async () => {
             :user-mission="props.userMission"
             @reroll="emit('refreshUserMission')"
             @header-modal-open="modalOpenHandler"
+            :show-all-mission="true"
         ></GameHeader>
         <LineAtom class="border-A805Grey mb-8" />
         <div

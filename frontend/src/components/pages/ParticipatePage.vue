@@ -49,7 +49,7 @@ const predictManito = (user: userType) => {
 </script>
 
 <template>
-    <div class="flex flex-1 flex-col bg-A805White">
+    <div class="flex flex-1 flex-col bg-A805RealWhite">
         <ModalTemplate custom-id="modal" custom-class="modal-template-style-1" :seen="modalSeen" v-if="modalSeen"
             @modal-close="modalToggle">
             <InferenceModalContent :predict-info="predictInfo" @refresh-data="getRooms()" />

@@ -3,9 +3,10 @@ export interface Message {
     profileUrl?: string
     chatNo? : number
     readYn? : boolean
-    sendAt? : string
+    registeredAt? : string
     sender? : string
     senderId? : number
+    sendAt? : string
     type?: string
 }
 export interface ChatRoomType {

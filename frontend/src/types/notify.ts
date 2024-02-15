@@ -1,7 +1,7 @@
 export type notificationTypes = {
     author: string,
     content: string,
-    generatedAt: Date,
+    generatedAt: string,
     readYn: boolean,
     roomUserNo: number
     alarmNo : number

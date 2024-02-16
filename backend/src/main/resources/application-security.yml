@@ -1,0 +1,54 @@
+spring:
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            client-id: 787093774505-eks42l1227pfcefgftgerol4bpb7e50p.apps.googleusercontent.com
+            client-secret: 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
+            redirect-uri: https://i10a805.p.ssafy.io:8080/login/oauth2/code/google
+            scope: openid,profile,email
+
+          kakao:
+            client-id: 27791d30c5f0484aee5db5b1f69202d5
+            authorization-grant-type: authorization_code
+            redirect-uri: https://i10a805.p.ssafy.io:8080/login/oauth2/code/kakao
+            scope: openid,profile_nickname,profile_image,account_email
+
+        provider:
+          kakao:
+            issuer-uri: https://kauth.kakao.com
+            authorization-uri: https://kauth.kakao.com/oauth/authorize
+            token-uri: https://kauth.kakao.com/oauth/token
+            user-info-uri: https://kapi.kakao.com/v2/user/me
+            user-name-attribute: sub
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: pjg.secreto@gmail.com
+    password: pmry yvrh qngf beki
+    properties:
+      mail:
+        smtp:
+          starttls:
+            enable: true
+          auth: true
+
+
+jwt:
+  secret-key: 404E635266556A586E3272357538782F413F4428472B4B6250645367566B5970
+  access-token:
+    expiration: 7200000 # a day
+  refresh-token:
+    expiration: 604800000 # 7 days
+
+
+email:
+  expiration: 180
+
+password:
+  expiration: 1800
+
+
+oauth:
+  redirect: https://i10a805.p.ssafy.io:80/oauth/redirect
